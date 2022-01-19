@@ -98,7 +98,6 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
     sp_sb->dataBkStInx = sp_sb->iNodeDataBkStInx + sp_sb->iNodeDataBkCount;
 
     //Ð´FSInfoµ½FS_INFO_ST_BK_INX¿é
-//    wbk(sb->s_dev_no,sp_sb->FSInfoStBkInx,  (uint8_t*)pFsInfo, 0,  sizeof(FsInfo));
     sb->s_magic_num=SP_MAGIC_NUM;
 
     sp_write_super(sb);

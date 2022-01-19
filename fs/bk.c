@@ -1,7 +1,7 @@
 
 #include <mkrtos/bk.h>
 #include <type.h>
-#include <arch/atomic.h>
+#include <mkrtos/task.h>
 #include <mkrtos/fs.h>
 #include <string.h>
 #include <stdlib.h>
@@ -70,7 +70,7 @@ static struct bk_cache* sync_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,uint32
 
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
-        return -1;
+        fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
     }
 
     //Ëæ»ú½øÐÐÍ¬²½
@@ -84,11 +84,11 @@ static struct bk_cache* sync_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,uint32
         //ÏÈ²Á³ý
         if(bk_ops->erase_bk(sync_cache->bk_no)<0){
             sync_cache->flag=0;
-            while(1);
+            fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
         }
         if(bk_ops->write_bk(sync_cache->bk_no,sync_cache->cache)<0){
             sync_cache->flag=0;
-            while(1);
+            fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
         }
     }
     sync_cache->flag=0;
@@ -118,14 +118,14 @@ static int32_t sync_all_bk(dev_t dev_no){
         while(sem_take((bk_cache_ls[i].sem_lock))<0);
         if (GET_BIT(bk_cache_ls[i].flag,0)) {
             if(bk_ops->erase_bk(bk_cache_ls[i].bk_no)<0){
-                bk_cache_ls[i].flag=0;
-                while(1);
+//                bk_cache_ls[i].flag=0;
+//                while(1);
             }
         }
         if (GET_BIT(bk_cache_ls[i].flag, 1)) {
             if(bk_ops->read_bk(bk_cache_ls[i].bk_no,bk_cache_ls[i].cache)<0){
-                bk_cache_ls[i].flag=0;
-                while(1);
+//                bk_cache_ls[i].flag=0;
+//                while(1);
             }
         }
         bk_cache_ls[i].flag=0;
@@ -180,11 +180,11 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
 
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
-        return -1;
+        fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
     }
     bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
     if(bk_cache_ls==NULL){
-        return -1;
+        fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
     }
     struct bk_cache* bk_tmp;
     bk_tmp=find_bk_cache(bk_cache_ls,bk_no,cache_len);
@@ -203,7 +203,7 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
         //·ñÔò¶ÁÕâÒ»¿é
         if (!GET_BIT(bk_tmp->flag, 2)) {
             if (bk_ops->read_bk(bk_no, bk_tmp->cache) < 0) {
-                while (1);
+//                fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
             }
             SET_BIT(bk_tmp->flag, 2);
         }
@@ -211,7 +211,7 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
 
     if(ofs+size>bk_tmp->bk_size){
         //Ð´³¬³öÁË±ß½ç£¬ÔòËÀ»ú
-        while(1);
+        fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
     }
     memcpy(bk_tmp->cache+ofs,data,size);
     SET_BIT(bk_tmp->flag,1);
@@ -235,10 +235,13 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
 
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
+        fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
         return -1;
     }
     bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
     if(bk_cache_ls==NULL){
+        fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
+
         return -1;
     }
     struct bk_cache* bk_tmp;
@@ -251,13 +254,13 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     while(sem_take((bk_tmp->sem_lock))<0);
     if (!GET_BIT(bk_tmp->flag, 2)) {
         if (bk_ops->read_bk(bk_no, bk_tmp->cache) < 0) {
-            while (1);
+//            fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
         }
         SET_BIT(bk_tmp->flag, 2);
     }
     if(ofs+size>=bk_tmp->bk_size){
         //Ð´³¬³öÁË±ß½ç£¬ÔòËÀ»ú
-        while(1);
+        fatalk("%s %s ÖÂÃü´íÎó",__FUNCTION__ ,__LINE__);
     }
     memcpy(data,bk_tmp->cache+ofs,size);
     while(sem_release((bk_tmp->sem_lock)));

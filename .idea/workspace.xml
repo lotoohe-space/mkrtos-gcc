@@ -11,45 +11,42 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="inode增加等待队列，修正bug">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="emmmm">
+      <change afterPath="$PROJECT_DIR$/include/stdarg.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/xprintf.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kernel/printk.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/xprintf.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-790540a1bc2403d2efa0.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-01-18T14-41-25-0219.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-untitled1.elf-Debug-00f580699c3a7812eec6.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.21.1/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.21.1/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.21.1/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.21.1/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/bk.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/bk.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/dev.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/dev.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/inode.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/inode.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/namei.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/namei.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/open.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/open.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/rw.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/rw.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/super.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/super.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/main/task_main.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/main/task_main.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.elf" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/bk.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/inode.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/namei.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/open.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/open.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/rw.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_rw.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -119,7 +116,7 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/include" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="structure.view.defaults.are.configured" value="true" />
@@ -129,18 +126,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\include" />
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\lib" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\ipc" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\kernel" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\fs" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\include" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\arch\bsp\lib" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\include" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include\mkrtos" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include\ipc" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\arch\arm" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include\arch" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\main" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -197,7 +194,7 @@
       <workItem from="1642336691913" duration="477000" />
       <workItem from="1642337307740" duration="14935000" />
       <workItem from="1642401823493" duration="4321000" />
-      <workItem from="1642406527294" duration="47537000" />
+      <workItem from="1642406527294" duration="51689000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -213,7 +210,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642584052999</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="emmmm">
+      <created>1642587019404</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1642587019404</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -233,23 +237,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="首次提交" />
     <MESSAGE value="inode增加等待队列，修正bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="inode增加等待队列，修正bug" />
+    <MESSAGE value="emmmm" />
+    <option name="LAST_COMMIT_MESSAGE" value="emmmm" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>18</line>
-          <option name="timeStamp" value="113" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>23</line>
-          <option name="timeStamp" value="116" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="sysTasks.currentTask" language="ObjectiveC" />

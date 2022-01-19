@@ -26,7 +26,7 @@ struct super_block;
 //是否为目录文件
 #define IS_DIR_FILE(a) (((a)>>16)==1)
 //是否为普通文件
-#define IS_FILE(a) ((a)>>16)==1)
+#define IS_FILE(a) (((a)>>16)==0)
 
 struct wait_queue;
 //INode节点
@@ -190,23 +190,10 @@ void unlock_inode(struct inode* inode);
 
 
 //namei.c
-struct inode* _open_namei(const char*file_path);
+int32_t dir_namei(const char* file_path,struct inode** p_inode);
 struct inode* open_namei(const char* file_path,int32_t flags,int32_t mode);
 
-//块缓存相关
-struct bk_cache {
-    //块的Inx
-    uint32_t bk_no;
-    uint32_t bk_size;
-    //缓存擦除不需要缓存，则为Null
-    uint8_t* cache;
-    //usedCount用于计算该块被使用多少次，每次缓存满时总是踢出使用次数最小的那个
-//    uint32_t used_count;
-    uint32_t sem_lock;
-    //擦除标记 1bit写入 2bit读取 7bit被使用
-    uint8_t flag;
-};
-////////
+
 
 //dev.c
 extern dev_t root_dev_no;
@@ -239,13 +226,28 @@ int32_t unreg_bk_dev(dev_t major_no,const char* name);
 struct file_operations* get_ch_dev_ops(dev_t major_no);
 int32_t reg_ch_dev(dev_t major_no,const char* name ,struct file_operations *d_fops);
 int32_t unreg_ch_dev(dev_t major_no,const char* name);
+int32_t request_bk_no(dev_t dev_no);
+int32_t alloc_bk_no();
 
 void devs_init(void);
 /////////
 
 //bk.c
-int32_t request_bk_no(dev_t dev_no);
-int32_t alloc_bk_no();
+struct wait_queue;
+//块缓存相关
+struct bk_cache {
+    //块的Inx
+    uint32_t bk_no;
+    uint32_t bk_size;
+    //缓存擦除不需要缓存，则为Null
+    uint8_t* cache;
+    uint32_t sem_lock;
+    struct wait_queue* b_wait;
+    //擦除标记 1bit写入 2bit读取 7bit被使用
+    uint8_t flag;
+};
+////////
+
 
 //super.c
 struct super_block* get_empty_sb(void);

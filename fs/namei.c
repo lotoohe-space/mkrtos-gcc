@@ -34,14 +34,14 @@ uint32_t get_path_name(const char* file_path, char* path, uint32_t cache_len) {
     return end_inx;
 }
 
-struct inode* _open_namei(const char*file_path){
-//目录深度
+int32_t dir_namei(const char*file_path,struct inode** p_inode){
+    int32_t res=0;
+    //目录深度
     uint32_t dir_deep = 0;
     uint32_t word_st_inx = 0;
     uint32_t word_end_inx = 0;
     if (file_path == NULL) {
-        errno=EINVAL;
-        return NULL;
+        return -EINVAL;
     }
     struct inode* res_inode = NULL;
 
@@ -61,7 +61,6 @@ struct inode* _open_namei(const char*file_path){
             }
             else {
                 char *fnTemp;
-                uint32_t res;
                 if (res_inode == NULL) {
                     //等于NULL说明没有,则设置为当前工作目录
                     res_inode=PWD_INODE;
@@ -84,7 +83,6 @@ struct inode* _open_namei(const char*file_path){
                 atomic_inc(&res_inode->i_used_count);
                 if((res=res_inode->i_ops->lookup(res_inode,fnTemp,sizeof(struct inode),&res_inode))<0){
                     OSFree(fnTemp);
-                    errno=-res;
                     goto end;
                 }
                 OSFree(fnTemp);
@@ -93,35 +91,36 @@ struct inode* _open_namei(const char*file_path){
             dir_deep++;
         }
     }
+    *p_inode=res_inode;
     end:
     puti(res_inode);
-    return res_inode;
+    return res;
 }
 
 struct inode* open_namei(const char* file_path,int32_t flags,int32_t mode){
     struct inode* ino;
     int32_t res;
-    ino= _open_namei(file_path);
-    if(ino==NULL){
-        if(
-        (flags & O_CREAT)
-        &&(flags& O_WRONLY)
-        ){//是否需要创建文件
-            char cache[128];
-            struct  inode* path_inode;
-            uint32_t c_ofs = get_path_name(file_path,cache,sizeof(cache));
-            //获得所在路径的inode
-            if((path_inode=_open_namei(cache))==NULL){
-                errno=ENOENT;
-                return NULL;
+    res= dir_namei(file_path,&ino);
+    if(res<0){
+        if(res==-ENOENT) {
+            if ( (flags & O_CREAT)&& (flags & O_WRONLY) ) {//是否需要创建文件
+                char cache[128];
+                struct inode *path_inode;
+                uint32_t c_ofs = get_path_name(file_path, cache, sizeof(cache));
+                //获得所在路径的inode
+                if ((dir_namei(cache,&path_inode)<0)) {
+                    errno = ENOENT;
+                    return NULL;
+                }
+                atomic_inc(&path_inode->i_used_count);
+                //创建失败
+                if ((res = ino->i_ops->create(path_inode, file_path + c_ofs + 1, mode, sizeof(struct inode), &ino)) <
+                    0) {
+                    errno = res;
+                    return NULL;
+                }
+                goto next;
             }
-            atomic_inc(&path_inode->i_used_count);
-            //创建失败
-            if((res=ino->i_ops->create(path_inode,file_path+c_ofs+1,mode,sizeof(struct inode),&ino))<0){
-                errno=res;
-                return NULL;
-            }
-            goto next;
         }
         return NULL;
     }else{
@@ -152,7 +151,7 @@ int sys_mkdir(const char * pathname, int mode){
     int32_t res;
     c_ofs = get_path_name(pathname,cache,sizeof(cache));
     //获得所在路径的inode
-    if((path_inode=_open_namei(cache))==NULL){
+    if((dir_namei(cache,&path_inode))<0){
         return -ENOENT;
     }
     if(!IS_DIR_FILE(path_inode->i_type_mode)){
@@ -191,7 +190,7 @@ int sys_rmdir (const char *pathname){
     int32_t res;
     c_ofs = get_path_name(pathname,cache,sizeof(cache));
     //获得所在路径的inode
-    if((path_inode=_open_namei(cache))==NULL){
+    if((dir_namei(cache,&path_inode))<0){
         return -ENOENT;
     }
     if(!IS_DIR_FILE(path_inode->i_type_mode)){
@@ -226,7 +225,7 @@ int sys_unlink(const char * pathname){
     int32_t res;
     c_ofs = get_path_name(pathname,cache,sizeof(cache));
     //获得所在路径的inode
-    if((path_inode=_open_namei(cache))==NULL){
+    if((dir_namei(cache,&path_inode))<0){
         return -ENOENT;
     }
     if(!IS_DIR_FILE(path_inode->i_type_mode)){
@@ -273,7 +272,7 @@ int sys_mknod(const char * filename, int mode, dev_t dev){
     int32_t res;
     c_ofs = get_path_name(filename,cache,sizeof(cache));
     //获得所在路径的inode
-    if((path_inode=_open_namei(cache))==NULL){
+    if((dir_namei(cache,&path_inode))==NULL){
         return -ENOENT;
     }
     if(!IS_DIR_FILE(path_inode->i_type_mode)){

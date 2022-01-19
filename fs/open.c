@@ -11,8 +11,9 @@ int sys_ustat(int dev, struct ustat * ubuf){
 }
 int sys_statfs(const char * path, struct statfs * buf){
     struct inode * inode;
-    inode=_open_namei(path);
-    if(inode==NULL){
+    int32_t res;
+    res=dir_namei(path,&inode);
+    if(res<0){
         return -1;
     }
     if(!inode->i_sb->s_ops->statfs){
@@ -34,7 +35,7 @@ int sys_fstatfs(unsigned int fd, struct statfs * buf){
         return -ENOENT;
     }
     if((CUR_TASK->files[fd].f_inode->i_sb->s_ops->statfs)){
-        CUR_TASK->files[fd].f_inode->i_sb->s_ops->statfs(CUR_TASK->files[fd].f_inode,buf);
+        CUR_TASK->files[fd].f_inode->i_sb->s_ops->statfs(CUR_TASK->files[fd].f_inode->i_sb,buf);
     }else{
         return -ENOSYS;
     }
@@ -55,8 +56,9 @@ int sys_access(const char * filename,int mode){
 //进入某个目录
 int sys_chdir(const char * filename){
     struct inode *o_inode;
-    o_inode=_open_namei(filename);
-    if(o_inode==NULL){
+    int32_t res;
+    res=dir_namei(filename,&o_inode);
+    if(res<0){
         return -ENOENT;
     }
     if(!IS_DIR_FILE(o_inode->i_type_mode)){
@@ -96,8 +98,9 @@ int sys_fchdir(unsigned int fd){
 //更改根目录
 int sys_chroot(const char * filename){
     struct inode *o_inode;
-    o_inode=_open_namei(filename);
-    if(o_inode==NULL){
+    int32_t res;
+    res=dir_namei(filename,&o_inode);
+    if(res<0){
         return -ENOENT;
     }
     if(!IS_DIR_FILE(o_inode->i_type_mode)){
@@ -137,8 +140,9 @@ int sys_fchmod(unsigned int fd, mode_t mode){
 //改变指定文件的权限
 int sys_chmod(const char * filename, mode_t mode){
     struct inode *o_inode;
-    o_inode=_open_namei(filename);
-    if(o_inode==NULL){
+    int32_t res;
+    res=dir_namei(filename,&o_inode);
+    if(res<0){
         return -ENOENT;
     }
 
@@ -195,7 +199,7 @@ int32_t sys_open(const char* path,int32_t flags,int32_t mode){
         CUR_TASK->files[i].f_op
         &&CUR_TASK->files[i].f_op->open
         ) {
-        if (CUR_TASK->files[i].f_op->open(o_inode, CUR_TASK->files[i].f_op) < 0) {
+        if (CUR_TASK->files[i].f_op->open(o_inode, &(CUR_TASK->files[i])) < 0) {
             CUR_TASK->files[i].used = 0;
             puti(o_inode);
             return -1;

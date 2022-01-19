@@ -257,7 +257,6 @@ int32_t inode_alloc_new_bk(struct inode* inode, uint32_t* newBkNum){
     else {
        return -1;
     }
-
     return 0;
 }
 int sp_file_write(struct inode * inode, struct file * filp, char * buf, int count){
@@ -269,6 +268,11 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
     //写入的偏移位置
     uint32_t wOffset = 0;
     struct super_block *sb;
+
+    if(!IS_FILE(inode->i_type_mode)){
+        return -EISDIR;
+    }
+
     if (count == 0) {
         return 0;
     }
@@ -292,14 +296,14 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
                 && upSize != wOffset
                     ) {
                 //写入最后一块剩余的空间
-                uint32_t fpLastBkNum;
-                if (get_ofs_bk_no(inode,wOffset, &fpLastBkNum) < 0) {
+                uint32_t last_bk_no;
+                if (get_ofs_bk_no(inode,wOffset, &last_bk_no) < 0) {
                     return -1;
                 }
                 wSize = count > (sb->s_bk_size - (wOffset % sb->s_bk_size))
                         ? (sb->s_bk_size - (wOffset % sb->s_bk_size)) : count;
                 //写入文件
-                if (wbk(sb->s_dev_no, fpLastBkNum,wOffset % sb->s_bk_size, buf+wLen, wSize) < 0) {
+                if (wbk(sb->s_dev_no, last_bk_no,wOffset % sb->s_bk_size, buf+wLen, wSize) < 0) {
                     return -1;
                 }
                 wLen += wSize;
@@ -329,7 +333,7 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
             //计算还需要写入多少
             wSize = remainSize > sb->s_bk_size ?  sb->s_bk_size : remainSize;
             if (wbk(sb->s_dev_no, needWBk, 0, buf + wLen, wSize) < 0) {
-                return -1;
+//                return -1;
             }
             wLen += wSize;
             wOffset += wSize;

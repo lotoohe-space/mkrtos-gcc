@@ -324,4 +324,9 @@ void wake_up(struct wait_queue *queue);
 void add_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
 void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
 
+
+//printk.c
+void printk(const char *fmt, ...);
+void fatalk(const char* fmt, ...);
+
 #endif //UNTITLED1_TASK_H

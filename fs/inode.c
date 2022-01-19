@@ -12,14 +12,13 @@
 #define INODE_NUM 32
 struct inode inode_ls[INODE_NUM];
 
-//inode 链表信号量id
-#define INODE_SEM_ID 1
 //空闲的inode数量
 Atomic_t inode_free_num={
         .counter=INODE_NUM
 };
 struct wait_queue* ino_ls=NULL;
 Atomic_t ino_ls_lock={0};
+
 //锁住inode链表
 static void __wait_on_inode_list(void){
     struct wait_queue wait = {CUR_TASK , NULL };

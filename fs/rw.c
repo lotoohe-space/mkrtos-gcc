@@ -47,11 +47,10 @@ int sys_lseek(unsigned int fd, int32_t ofs, uint32_t origin){
             ){
         return -1;
     }
-    //调用自有的偏移函数驱动的偏移函数可嫩不一样
     if(
-            CUR_TASK->files[fd].f_op
-            &&CUR_TASK->files[fd].f_op->release
-            ) {
+        CUR_TASK->files[fd].f_op
+        &&CUR_TASK->files[fd].f_op->release
+        ) {
         CUR_TASK->files[fd].f_op->release(CUR_TASK->files[fd].f_inode, &(CUR_TASK->files[fd]));
     }
 
@@ -92,9 +91,7 @@ int sys_read (int fd,uint8_t *buf,uint32_t len){
     &&_file->f_op->read
     ){
         int32_t err=_file->f_op->read(_file->f_inode,_file,buf,len);
-        if(err<0){
-            return err;
-        }
+        return err;
     }else{
         return -EINVAL;
     }
@@ -119,9 +116,7 @@ int sys_write (int fd,uint8_t *buf,uint32_t len){
        &&_file->f_op->write
             ){
         int32_t err=_file->f_op->write(_file->f_inode,_file,buf,len);
-        if(err<0){
-            return err;
-        }
+        return err;
     }else{
         return -EINVAL;
     }
