@@ -1,0 +1,128 @@
+//
+// Created by Administrator on 2022/1/10.
+//
+
+#include <mkrtos/fs.h>
+#include <errno.h>
+#include <mkrtos/task.h>
+
+
+
+//读目录
+int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count){
+    if(fd>=NR_FILE){
+        return  -EBADF;
+    }
+    if(CUR_TASK->files[fd].used==0){
+        return -1;
+    }
+    struct file *_file=&(CUR_TASK->files[fd]);
+    if(_file->f_inode==0){
+        return -EBADF;
+    }
+    if(_file->f_op
+    &&_file->f_op->readdir){
+        int32_t err=_file->f_op->readdir(_file->f_inode,_file,dirent,count);
+        if(err<0){
+            return err;
+        }
+    }else{
+        return -ENOENT;
+    }
+
+    return 0;
+}
+int sys_lseek(unsigned int fd, int32_t ofs, uint32_t origin){
+    int32_t ofs_temp=0;
+    if(fd>=NR_FILE){
+        return  -EBADF;
+    }
+    if(CUR_TASK->files[fd].used==0){
+        return -1;
+    }
+    if(!CUR_TASK->files[fd].f_ofs
+       ||!CUR_TASK->files[fd].f_inode
+            ){
+        return -1;
+    }
+    //调用自有的偏移函数驱动的偏移函数可嫩不一样
+    if(
+            CUR_TASK->files[fd].f_op
+            &&CUR_TASK->files[fd].f_op->release
+            ) {
+        CUR_TASK->files[fd].f_op->release(CUR_TASK->files[fd].f_inode, &(CUR_TASK->files[fd]));
+    }
+
+    switch (origin) {
+        case 0:
+            ofs_temp = ofs;
+            break;
+        case 1:
+            ofs_temp += ofs;
+            break;
+        case 2:
+            if(!(CUR_TASK->files[fd].f_inode)){
+                return -1;
+            }
+            ofs_temp = CUR_TASK->files[fd].f_inode->i_file_size + ofs;
+            break;
+    }
+    if(ofs_temp<0){
+        return -1;
+    }
+    CUR_TASK->files[fd].f_ofs=ofs_temp;
+    return CUR_TASK->files[fd].f_ofs;
+}
+int sys_read (int fd,uint8_t *buf,uint32_t len){
+    if(fd>=NR_FILE){
+        return  -EBADF;
+    }
+    if(CUR_TASK->files[fd].used==0){
+        return -1;
+    }
+    struct file *_file=&(CUR_TASK->files[fd]);
+
+    if(!(_file->f_inode)){
+        return -EBADF;
+    }
+
+    if(_file->f_op
+    &&_file->f_op->read
+    ){
+        int32_t err=_file->f_op->read(_file->f_inode,_file,buf,len);
+        if(err<0){
+            return err;
+        }
+    }else{
+        return -EINVAL;
+    }
+
+    return -ENOSYS;
+}
+
+int sys_write (int fd,uint8_t *buf,uint32_t len){
+    if(fd>=NR_FILE){
+        return  -EBADF;
+    }
+    if(CUR_TASK->files[fd].used==0){
+        return -1;
+    }
+    struct file *_file=&(CUR_TASK->files[fd]);
+
+    if(!(_file->f_inode)){
+        return -EBADF;
+    }
+
+    if(_file->f_op
+       &&_file->f_op->write
+            ){
+        int32_t err=_file->f_op->write(_file->f_inode,_file,buf,len);
+        if(err<0){
+            return err;
+        }
+    }else{
+        return -EINVAL;
+    }
+    return -ENOSYS;
+}
+
