@@ -7,14 +7,13 @@
 #include <arch/arch.h>
 #include <string.h>
 
-extern PTaskBlock FindTask(int32_t PID);
-extern int32_t AddTask(PTaskBlock pTaskBlock);
+extern PTaskBlock find_task(int32_t PID);
+extern int32_t add_task(PTaskBlock pTaskBlock);
 //创建一个子进程
 int32_t sys_fork(uint32_t *psp){
     TaskStatus oldStatus;
-    PTaskBlock ptb=FindTask(-1);
-
     uint32_t t=DisCpuInter();
+    PTaskBlock ptb=find_task(-1);
     PTaskBlock newPtb=OSMalloc(sizeof(TaskBlock));
     if(newPtb==NULL){
         RestoreCpuInter(t);
@@ -23,7 +22,7 @@ int32_t sys_fork(uint32_t *psp){
     memcpy(newPtb,ptb,sizeof(TaskBlock));
     newPtb->status=TASK_SUSPEND;
     newPtb->next=NULL;
-    newPtb->nextBk=NULL;
+//    newPtb->nextBk=NULL;
     newPtb->nextAll=NULL;
     newPtb->memLowStack=(void *)OSMalloc(sizeof(uint32_t)*(newPtb->userStackSize+newPtb->kernelStackSize));
     if(newPtb->memLowStack==NULL){
@@ -58,7 +57,7 @@ int32_t sys_fork(uint32_t *psp){
     int32_t err;
 
     /*通过优先级添加任务*/
-    err = AddTask(newPtb);
+    err = add_task(newPtb);
     if(err != 0){
         //	RestoreCpuInter(t);
         /*释放申请的内存*/

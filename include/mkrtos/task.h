@@ -85,45 +85,6 @@ typedef struct _TaskCreatePar{
     int32_t err;
 }*PTaskCreatePar,TaskCreatePar;
 
-/**
-* @brief 系统阻塞条件
-*/
-typedef enum {
-
-    /**
-    * @brief 任务延时
-    */
-    TaskDelay=0x1,
-    /**
-    * @brief 互斥锁阻塞
-    */
-    MutexBlock=0x2,
-    /**
-    * @brief 信号量阻塞
-    */
-    SemBlock=0x4,
-    /**
-    * @brief 消息阻塞
-    */
-    MsgPutBlock=0x8,
-    /**
-    * @brief 消息获取阻塞
-    */
-    MsgGetBlock=0x10,
-    /**
-    * @brief 挂起操作
-    */
-    SuspendOp=0x20,
-    /**
-     * @brief 等待的其它操作
-     */
-    OtherOp=0x40,
-    /**
-    * @brief 停止应用
-    */
-    SigStop=0x100
-}BlockCon;
-
 
 /**
 * @brief 栈类型
@@ -148,7 +109,7 @@ struct sigaction;
 /**
 * @brief	任务控制块
 */
-typedef struct _TaskBlock{
+typedef struct task{
     /**
     * @brief 父节点
     */
@@ -156,21 +117,21 @@ typedef struct _TaskBlock{
     /**
      * @brief 父进程
      */
-    struct _TaskBlock *parentTask;
+    struct task *parentTask;
     /**
     * @brief 同优先级链表
     */
-    struct _TaskBlock *next;
+    struct task *next;
 
-    /**
-    * @brief 信号量链表
-    */
-    struct _TaskBlock *nextBk;
+//    /**
+//    * @brief 信号量链表
+//    */
+//    struct _TaskBlock *nextBk;
 
     /**
     * @brief 所有任务的链表
     */
-    struct _TaskBlock *nextAll;
+    struct task *nextAll;
 
     /**
     * @brief 堆栈的栈低指针，当任务终结时用于内存释放
@@ -337,28 +298,14 @@ typedef struct{
 
 extern SysTasks sysTasks;
 
-void TaskSche(void);
+void task_sche(void);
 /**
 * @brief 通过优先级添加任务，如果这个优先级不存在，则创建该优先级的任务节点
 * @param pSysTasks 任务管理对象
 * @return 添加是否成功
 */
-int32_t AddTask(PTaskBlock pTaskBlock);
-/**
-* @brief 阻塞任务
-* @brief pTaskBlock 需要阻塞的任务
-* @brief delayCount 延时的时间
-*/
-uint32_t TaskTryBlock(
-        int32_t pid,
-        BlockCon blockCon,
-        uint32_t delayCount
-);
-/**
-* @brief 信号检查，拥有flag标志的任务将会被唤醒
-* @param flag 信号标志
-*/
-void SignCheck(uint8_t flag,void *arg);
+int32_t add_task(PTaskBlock pTaskBlock);
+
 /**
  * @brief 创建任务
  * @param tcp 任务创建操作
@@ -367,7 +314,14 @@ void SignCheck(uint8_t flag,void *arg);
  */
 int32_t task_create(PTaskCreatePar tcp,void* progInfo);
 
-void TaskSuspend(int32_t pid);
-void TaskRun(int32_t pid);
+//等待链表
+struct wait_queue{
+    struct task* task;
+    struct wait_queue *next;
+};
+//sched.c
+void wake_up(struct wait_queue *queue);
+void add_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
+void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
 
 #endif //UNTITLED1_TASK_H

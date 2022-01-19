@@ -47,7 +47,7 @@ PendSV_Handler:
 
 thread_change://任务调度
 	//r0:psp r1:msp  r2:(0为msp 1 psp)
-	ldr.w r3,=SysTasksSche
+	ldr.w r3,=sys_task_sche
 	blx r3
 	//取得下一个任务的参数 r1 psp r2 msp
 	ldrd r1,r2,[r0]

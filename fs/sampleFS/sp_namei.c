@@ -112,12 +112,16 @@ int sp_lookup(struct inode* p_inode,const char* file_name,int len,struct inode**
     struct inode* r_inode;
     res = sp_dir_find(p_inode,file_name,len,&res_ino);
     if(res<0){
+        puti(p_inode);
         return res;
     }
     r_inode = geti(p_inode->i_sb,res_ino);
     if(r_inode==NULL){
+        puti(p_inode);
         return -ENOENT;
     }
+    puti(p_inode);
+
     *res_inode=r_inode;
     return 0;
 }
@@ -196,6 +200,7 @@ int sp_create(struct inode *dir,const char *name,int len,int mode,struct inode *
     struct super_block *p_sb;
     struct inode* new_inode=get_empty_inode();
     if (new_inode == NULL) {
+        puti(dir);
         ret = ENOMEM;
         goto end;
     }
@@ -205,10 +210,13 @@ int sp_create(struct inode *dir,const char *name,int len,int mode,struct inode *
     //添加到目录中
     if(add_file_to_entry(dir,name,new_inode)<0) {
         ret = ERROR;
+        puti(dir);
         puti(new_inode);
         //释放申请的内存
         goto end;
     }
+    puti(dir);
+    puti(new_inode);
     *result = new_inode;
     end:
     return ret;
@@ -274,8 +282,8 @@ int sp_mkdir(struct inode * dir, const char * name, int len, int mode)
     inode->i_dirt=TRUE;
     inode->i_hlink=2;
     if((res=add_file_to_entry(dir,name,inode))<0) {
-        puti(dir);
         inode->i_hlink=0;
+        puti(dir);
         puti(inode);
         return res;
     }

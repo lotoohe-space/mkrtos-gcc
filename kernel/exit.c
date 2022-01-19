@@ -7,9 +7,9 @@
 #include <arch/arch.h>
 #include <mkrtos/mem.h>
 
-extern PTaskBlock FindTask(int32_t PID);
-extern void UpdateCurTask(void);
-extern void TaskSche(void);
+extern PTaskBlock find_task(int32_t PID);
+extern void update_cur_task(void);
+extern void task_sche(void);
 /**
 * @brief 在系统中删除当前执行的任务，该删除只是设置为僵尸进程
 */
@@ -17,7 +17,7 @@ void DoExit(int16_t pid,int32_t exitCode){
     PTaskBlock ptb;
     //关所有中断
     uint32_t t=DisCpuInter();
-    ptb=FindTask(pid);
+    ptb=find_task(pid);
     if(ptb==NULL){
         ptb=sysTasks.currentTask;
     }
@@ -26,7 +26,7 @@ void DoExit(int16_t pid,int32_t exitCode){
     sysTasks.currentMaxTaskNode->taskReadyCount--;
     if(sysTasks.currentMaxTaskNode->taskReadyCount==0){
         //任务更新
-        UpdateCurTask();
+        update_cur_task();
     }
     ptb->exitCode=exitCode;
     RestoreCpuInter(t);
@@ -42,7 +42,7 @@ void DoExit(int16_t pid,int32_t exitCode){
     ptb->status=TASK_CLOSED;
     RestoreCpuInter(t);
     /*立刻进行任务调度*/
-    TaskSche();
+    task_sche();
 }
 static inline _syscall1(int,exit,int32_t,exitCode);
 /**

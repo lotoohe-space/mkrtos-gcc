@@ -179,7 +179,7 @@ void do_signal_isr(void* sp){
             }
             //信号一个一个处理，处理完成则返回,下次到来在处理另外一个
             if (do_signal(sp ,i+1) == 1) {
-                TaskSche();
+                task_sche();
             }
             return ;
         }

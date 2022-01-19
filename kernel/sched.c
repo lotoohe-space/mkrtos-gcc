@@ -16,7 +16,7 @@ SysTasks sysTasks={0};
 /**
 * @brief 通过PID找到任务对象
 */
-PTaskBlock FindTask(int32_t PID){
+PTaskBlock find_task(int32_t PID){
     PTaskBlock pstl;
     if(PID<0){
         return sysTasks.currentTask;
@@ -36,7 +36,7 @@ PTaskBlock FindTask(int32_t PID){
 /**
 * @brief 任务调度，如果任务调度关闭，则调用无效
 */
-void TaskSche(void){
+void task_sche(void){
     //监测是否可以调度
     if(atomic_test(&(sysTasks.isSch),TRUE)){
         _TaskSchedule();
@@ -46,7 +46,7 @@ void TaskSche(void){
 * @brief 更新就绪的最高优先级到任务节点，更新的链表中就绪任务必须大于0
 * @param pSysTasks 任务管理对象
 */
-void UpdateCurTask(void){
+void update_cur_task(void){
 
     PSysTaskBaseLinks ptl;
     uint32_t t=DisCpuInter();
@@ -126,7 +126,7 @@ static PSysTaskBaseLinks AddLinks(uint8_t prio){
 * @param pSysTasks 任务管理对象
 * @return 添加是否成功
 */
-int32_t AddTask(PTaskBlock pTaskBlock){
+int32_t add_task(PTaskBlock pTaskBlock){
 
     if(pTaskBlock==NULL){
         return -1;
@@ -186,134 +186,17 @@ int32_t AddTask(PTaskBlock pTaskBlock){
             &&
             pTaskBlock->prio>sysTasks.currentMaxTaskNode->taskPriority
             ) {
-        UpdateCurTask();
+        update_cur_task();
     }else if(sysTasks.currentMaxTaskNode==NULL){
-        UpdateCurTask();
+        update_cur_task();
     }
     return 0;
 }
+
 /**
-* @brief 从被阻塞链表中删除，只删除节点，不释放所占用的内存
+* @brief 对任务进行检查
 */
-void TaskBlockedDel(PTaskBlock ptb){
-    if(ptb==NULL){
-        ptb=sysTasks.currentTask;
-    }
-    PTaskBlock pTemp=sysTasks.pBlockedLinks;
-    PTaskBlock lastP=NULL;
-    while(pTemp){
-        if(ptb==pTemp){
-            if(lastP==NULL){
-                sysTasks.pBlockedLinks=pTemp->nextBk;
-                break;
-            }else{
-                lastP->nextBk=pTemp->nextBk;
-                break;
-            }
-        }
-        lastP=pTemp;
-        pTemp=pTemp->nextBk;
-    }
-}
-
-/**
- * @brief 发送信号
- * @param flag 信号标志
- * @param arg 需要检查的参数
- */
-void SignCheck(uint8_t flag,void *arg){
-    PTaskBlock ptb;
-    PTaskBlock last=NULL;
-    uint8_t schFg=FALSE;
-    /*关所有中断*/
-    uint32_t t=DisCpuInter();
-    ptb=sysTasks.pBlockedLinks;
-    while(ptb){
-        if(ptb->status != TASK_SUSPEND) {
-            goto next;
-        }
-        if(!(ptb->flag & flag)) {
-            goto next;
-        }
-        ptb->flag&=~flag;
-
-        /*设置为就绪状态*/
-        ptb->parent->taskReadyCount++;
-        ptb->status=TASK_RUNNING;
-
-        schFg=TRUE;
-        /*删除当前的*/
-        if(last==NULL){
-            sysTasks.pBlockedLinks=ptb->nextBk;
-            ptb=sysTasks.pBlockedLinks;
-            continue;
-        }else{
-            last->nextBk=ptb->nextBk;
-            ptb=ptb->nextBk;
-            continue;
-        }
-next:
-        last=ptb;
-        ptb=ptb->nextBk;
-    }
-    if(schFg){
-        UpdateCurTask();
-    }
-    RestoreCpuInter(t);
-    if(schFg){
-        TaskSche();
-    }
-}
-/**
-* @brief 阻塞任务
-* @brief pTaskBlock 需要阻塞的任务
-* @brief delayCount 延时的时间
-*/
-uint32_t TaskTryBlock(int32_t pid,BlockCon blockCon,uint32_t delayCount){
-    uint32_t t = DisCpuInter();
-    PTaskBlock pTaskBlock = FindTask(pid);
-    if(pTaskBlock == NULL){
-        pTaskBlock = sysTasks.currentTask;
-    }
-    if(pTaskBlock -> flag & blockCon){
-        RestoreCpuInter(t);
-        TaskSche();
-        return pTaskBlock->delayCount;
-    }
-    /*设置阻塞条件*/
-    pTaskBlock->flag |= blockCon;
-    pTaskBlock->delayCount = delayCount;
-    pTaskBlock->status = TASK_SUSPEND;
-
-    PTaskBlock temp=sysTasks.pBlockedLinks;
-    /*放到链表的第一个*/
-    if(temp == NULL){
-        pTaskBlock->nextBk=NULL;
-        sysTasks.pBlockedLinks=pTaskBlock;
-    }else{
-        pTaskBlock->nextBk=sysTasks.pBlockedLinks;
-        sysTasks.pBlockedLinks=pTaskBlock;
-    }
-
-    pTaskBlock->parent->taskReadyCount--;
-    /*最高优先级发生了变化*/
-    if(pTaskBlock->parent->taskReadyCount==0){
-        UpdateCurTask();
-    }
-    RestoreCpuInter(t);
-    /*立刻进行任务调度*/
-    TaskSche();
-    return pTaskBlock->delayCount;
-}
-/**
-* @brief 对挂起的任务进行检查，在SysTick中调用
-* 				TaskDelay=0x1,
-*					MutexBlock=0x2,
-*					SemBlock=0x4,
-*					MsgBLock=0x8,
-*					SuspendOp=0x10
-*/
-void TasksCheck(void){
+void tasks_check(void){
     PTaskBlock ptb;
     /*关所有中断*/
    // uint32_t t=DisCpuInter();
@@ -335,64 +218,6 @@ nextAll:
         ptb=ptb->nextAll;
     }
 
-    again:
-    ptb=sysTasks.pBlockedLinks;
-    while(ptb){
-        uint8_t i;
-        /*只检查挂起的任务*/
-        if(ptb->status != TASK_SUSPEND) {
-            goto next;
-        }
-        if (!(ptb->flag)) {
-        goto next;
-        }
-        for (i = 0; i < 32; i++) {
-            switch ((ptb->flag) & (1 << i)) {
-                /*检查下面事件的状态*/
-                case TaskDelay:
-                case MutexBlock:
-                case SemBlock:
-                case MsgPutBlock:
-                case MsgGetBlock:
-                    if (ptb->delayCount > 0) {
-                        ptb->delayCount--;
-                        if (ptb->delayCount == 0) {
-                            /*进入就绪状态*/
-                            _to_dis:
-                            ptb->parent->taskReadyCount++;
-                            ptb->status = TASK_RUNNING;
-                            ptb->flag &= ~(1 << i);
-                            TaskBlockedDel(ptb);
-                            /*设置当前最高优先级的任务*/
-                            if (ptb->parent->taskReadyCount == 1) {
-                                if (ptb->parent->taskPriority
-                                    > sysTasks.currentMaxTaskNode->taskPriority) {
-                                    sysTasks.currentMaxTaskNode = ptb->parent;
-                                }
-                            }
-                            goto again;
-                        }
-                    } else if (ptb->delayCount == 0) {
-                        goto _to_dis;
-                    }
-                    break;
-                case SuspendOp:
-                    break;
-                case OtherOp:
-                    break;
-            }
-        }
-//		else if((ptb->flag)&SigStop){//停止某一个应用，收到停止的信号
-//			//TaskBlockedLinksDel(ptb);
-//			if(ptb->skInfo.svcStatus==0){
-//				OSTaskDel(ptb->PID);
-//				goto again;
-//			}
-//		}
-    next:
-        ptb=ptb->nextBk;
-    }
-   // RestoreCpuInter(t);
 }
 
 
@@ -402,15 +227,14 @@ nextAll:
 * @brief SPType 使用的是MSP还是PSP 0使用msp 1使用psp
 * @return 返回栈顶
 */
-struct _stackInfo* SysTasksSche(void* psp,void* msp,uint32_t spType){
+struct _stackInfo* sys_task_sche(void* psp,void* msp,uint32_t spType){
     uint16_t svcStatus=FALSE;
     volatile uint32_t *svcPendReg=(uint32_t*)(0xE000ED24);
+    //保存svc状态
     if((*svcPendReg)&0x80L){
         (*svcPendReg)&=~(0x80L);
         svcStatus=TRUE;
     }
-
-
     if(sysTasks.isFirst==FALSE){
         /*第一次未分配，则分配一个*/
         PTaskBlock ptb=sysTasks.currentMaxTaskNode->pSysTaskLinks;
@@ -451,7 +275,7 @@ struct _stackInfo* SysTasksSche(void* psp,void* msp,uint32_t spType){
             ptb=ptb->next;
         }while(1);
     }
-
+    //恢复任务的svc状态
     if(sysTasks.currentTask->skInfo.svcStatus==1){
         (*svcPendReg)|=0x80L;
         (*svcPendReg)&=~(0x100L);
@@ -460,37 +284,6 @@ struct _stackInfo* SysTasksSche(void* psp,void* msp,uint32_t spType){
     return &(sysTasks.currentTask->skInfo);
 }
 
-/**
- * @brief 挂起任务
- * @param pid
- */
-void TaskSuspend(int32_t pid){
-    TaskTryBlock(pid,SuspendOp,0);
-}
-/**
-* @brief 进入就绪状态，将任务从挂起表中删除，并设置为就绪状态
-*/
-void TaskRun(int32_t pid){
-    uint8_t i=0;
-    PTaskBlock ptb;
-    uint32_t t;
-    t=DisCpuInter();
-    ptb=FindTask(pid);
-
-    /*进入就绪状态*/
-    ptb->status=TASK_RUNNING;
-    TaskBlockedDel(ptb);
-
-    ptb->parent->taskReadyCount++;
-    /*最高优先级可能发生了变化*/
-    if(ptb->parent->taskReadyCount==1){
-        if(ptb->parent->taskPriority
-           > sysTasks.currentMaxTaskNode->taskPriority){
-            sysTasks.currentMaxTaskNode=ptb->parent;
-        }
-    }
-    RestoreCpuInter(t);
-}
 // 系统调用功能 - 设置报警定时时间值(秒)。
 // 如果已经设置过alarm 值，则返回旧值，否则返回0。
 int32_t
@@ -502,6 +295,53 @@ sys_alarm (uint32_t seconds){
     sysTasks.currentTask->alarm = sysTasks.sysRunCount+(seconds*1000)/(1000/OS_WORK_HZ);
     return old;
 }
+
+
+
+//唤醒队列中所有的任务
+void wake_up(struct wait_queue *queue){
+    while(queue){
+        if(queue->task){
+            if(queue->task->status==TASK_SUSPEND){
+                queue->task->status=TASK_RUNNING;
+            }
+        }
+        queue=queue->next;
+    }
+}
+
+//添加一个到等待队列中
+void add_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
+    uint32_t t;
+    t=DisCpuInter();
+    if(*queue==NULL){
+        *queue=add_queue;
+    }else{
+       add_queue->next = (*queue);
+       *queue=add_queue;
+    }
+    RestoreCpuInter(t);
+}
+//移除一个等待的
+void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
+    struct wait_queue *temp=*queue;
+    struct wait_queue *prev=NULL;
+    while(temp){
+        if(temp==add_queue) {
+            if (prev==NULL) {
+                //删除的第一个
+                *queue=temp->next;
+                break;
+            }else{
+                prev->next=temp->next;
+                break;
+            }
+        }
+        prev=temp;
+        temp=temp->next;
+    }
+}
+
 
 // 取当前进程号pid。
 int32_t
@@ -562,8 +402,6 @@ extern void KernelTaskInit(void);
 void SchedInit(void)
 {
     InitMem();
-    /*自旋锁初始化*/
-//    SpinLockInit(&sysTasks.slh);
     /*OS是否调度初始化*/
     atomic_set(&sysTasks.isSch,1);
     /*进程pid分配变量*/

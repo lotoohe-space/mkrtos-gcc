@@ -28,6 +28,7 @@ struct super_block;
 //是否为普通文件
 #define IS_FILE(a) ((a)>>16)==1)
 
+struct wait_queue;
 //INode节点
 typedef struct inode {
     //文件类型与权限
@@ -36,22 +37,22 @@ typedef struct inode {
     uint32_t i_file_size;
     //自己的Inode号码
     uint32_t i_no;
-
     //硬连接数
     uint32_t i_hlink;
-
     //如果是设备文件，则这个代表设备号
     uint32_t i_rdev_no;
 
+    //上面的数据需要存到磁盘
+
     //设备号码
-//    uint32_t i_dev_no;
+    struct wait_queue *i_wait_q;
     //打开计数
-    Atomic_t i_open_count;
+//    Atomic_t i_open_count;
     //使用计数
     Atomic_t i_used_count;
 
     //用来锁这个inode
-    sem_t i_lock;
+    Atomic_t i_lock;
 
     //是否被修改过
     uint8_t i_dirt;
@@ -90,10 +91,11 @@ typedef struct super_block {
 struct file {
     uint8_t f_mode;		    /* 文件不存在时，创建文件的权限 */
     int32_t f_ofs;            /* 文件读写偏移量 */
+//    uint32_t f_count;           /*这个file被使用了多少次,暂时用不上*/
     unsigned short f_flags; /* 以什么样的方式打开文件，如只读，只写等等 */
     struct inode * f_inode;		/* 文件对应的inode */
-    struct file_operations * f_op;
-    uint8_t used;
+    struct file_operations * f_op; /*文件对应的操作符*/
+    uint8_t used;   /*是否被使用标记*/
 };
 
 struct dirent
@@ -181,7 +183,13 @@ void lose_inode(struct inode* p_inode);
 struct inode* get_empty_inode(void);
 struct inode* geti(struct super_block* p_sb,ino_t ino);
 int32_t puti(struct inode* put_inode);
-int32_t writei(struct inode* w_inode);
+
+void wait_on_inode(struct inode* inode);
+void lock_inode(struct inode* inode);
+void unlock_inode(struct inode* inode);
+
+
+//namei.c
 struct inode* _open_namei(const char*file_path);
 struct inode* open_namei(const char* file_path,int32_t flags,int32_t mode);
 
@@ -245,8 +253,8 @@ void free_sb(struct super_block* sb);
 
 
 //super.c
-struct _TaskBlock;
-void root_mount(struct _TaskBlock* task);
+struct task;
+void root_mount(struct task* task);
 
 /**
  * @breif: 不同编译器Setion的定义

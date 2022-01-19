@@ -155,9 +155,9 @@ void* SetIntoUserStack(void *callFunc,void *arg0,uint32_t *memStack,void* resAdd
 	*(--memStack) = (uint32_t)arg0; 				/* R0 : argument */
 	return memStack;
 }
-extern void TasksCheck(void);
-extern void TaskSche(void);
+extern void tasks_check(void);
+extern void task_sche(void);
 void SysTick_Handler(void){
-	TasksCheck();
-	TaskSche();
+    tasks_check();
+    task_sche();
 }

@@ -8,7 +8,7 @@
 #include <mkrtos/smem_knl.h>
 #include <fcntl.h>
 #include <string.h>
-
+#include <mkrtos/mem.h>
 //获取目录的名字，并返回截断的位置
 uint32_t get_path_name(const char* file_path, char* path, uint32_t cache_len) {
     uint32_t len;
@@ -56,6 +56,7 @@ struct inode* _open_namei(const char*file_path){
             if (dir_deep == 0 && (word_end_inx - word_st_inx == 0)) {
                 //设置根节点
                 res_inode = ROOT_INODE;
+                atomic_inc(&res_inode->i_used_count);
             }
             else {
                 char *fnTemp;
@@ -63,8 +64,12 @@ struct inode* _open_namei(const char*file_path){
                 if (res_inode == NULL) {
                     //等于NULL说明没有,则设置为当前工作目录
                     res_inode=PWD_INODE;
+                    atomic_inc(&res_inode->i_used_count);
                 }
-                fnTemp=(char*)share_mem_lock(512);
+                fnTemp=OSMalloc(512);
+                if(fnTemp==NULL){
+//                    while(1);
+                }
                 uint32_t j = 0;
                 for (j = word_st_inx; j <= word_end_inx; j++) {
                     fnTemp[j - word_st_inx] = file_path[j];
@@ -75,17 +80,20 @@ struct inode* _open_namei(const char*file_path){
                 else {
                     fnTemp[j - word_st_inx] = '\0';
                 }
+                atomic_inc(&res_inode->i_used_count);
                 if((res=res_inode->i_ops->lookup(res_inode,fnTemp,sizeof(struct inode),&res_inode))<0){
-                    share_mem_unlock();
+                    OSFree(fnTemp);
                     errno=-res;
-                    return NULL;
+                    goto end;
                 }
-                share_mem_unlock();
+                OSFree(fnTemp);
             }
             word_st_inx = i + 1;
             dir_deep++;
         }
     }
+    end:
+    puti(res_inode);
     return res_inode;
 }
 
@@ -104,11 +112,13 @@ struct inode* open_namei(const char* file_path,int32_t flags,int32_t mode){
             //获得所在路径的inode
             if((path_inode=_open_namei(cache))==NULL){
                 errno=ENOENT;
-                return -1;
+                return NULL;
             }
+            atomic_inc(&path_inode->i_used_count);
             //创建失败
             if((res=ino->i_ops->create(path_inode,file_path+c_ofs+1,mode,sizeof(struct inode),&ino))<0){
-                return res;
+                errno=res;
+                return NULL;
             }
             goto next;
         }
@@ -119,14 +129,16 @@ struct inode* open_namei(const char* file_path,int32_t flags,int32_t mode){
             &&(flags& O_WRONLY)
             ){
             if(ino->i_ops->truncate) {
+                atomic_inc(&ino->i_used_count);
                 ino->i_ops->truncate(ino);
             }else{
-                return -ENOSYS;
+                puti(ino);
+                errno=-ENOSYS;
+                return NULL;
             }
         }
     }
     next:
-    atomic_inc(&(ino->i_open_count));
 
     return ino;
 }
@@ -152,6 +164,7 @@ int sys_mkdir(const char * pathname, int mode){
     if(path_inode->i_ops
     &&path_inode->i_ops->mkdir
     ) {
+        atomic_inc(&path_inode->i_used_count);
         res = path_inode->i_ops->mkdir(path_inode, cache, strlen(pathname) - c_ofs, mode);
         if (res < 0) {
             puti(path_inode);
@@ -161,8 +174,6 @@ int sys_mkdir(const char * pathname, int mode){
         puti(path_inode);
         return -ENOSYS;
     }
-
-
     return 0;
 }
 /**
@@ -172,7 +183,7 @@ int sys_mkdir(const char * pathname, int mode){
  * @param name_len
  * @return
  */
-int sys_rmdir (struct inode *pathname){
+int sys_rmdir (const char *pathname){
     char cache[128];
     struct  inode* path_inode;
     uint32_t c_ofs;
@@ -190,6 +201,7 @@ int sys_rmdir (struct inode *pathname){
     if(path_inode->i_ops
        &&path_inode->i_ops->rmdir
             ) {
+        atomic_inc(&path_inode->i_used_count);
         res = path_inode->i_ops->rmdir(path_inode, cache, strlen(pathname) - c_ofs);
         if (res < 0) {
             puti(path_inode);
@@ -224,6 +236,7 @@ int sys_unlink(const char * pathname){
     if(path_inode->i_ops
        &&path_inode->i_ops->unlink
             ) {
+        atomic_inc(&path_inode->i_used_count);
         res = path_inode->i_ops->unlink(path_inode, cache, strlen(pathname) - c_ofs);
         if (res < 0) {
             puti(path_inode);
@@ -270,6 +283,7 @@ int sys_mknod(const char * filename, int mode, dev_t dev){
     if(path_inode->i_ops
     &&path_inode->i_ops->mknod
     ) {
+        atomic_inc(&path_inode->i_used_count);
         int32_t res=path_inode->i_ops->mknod(path_inode, cache + c_ofs + 1, strlen(filename) - c_ofs, mode, dev);
         if(res<0){
             return res;

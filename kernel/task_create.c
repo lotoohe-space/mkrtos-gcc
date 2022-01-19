@@ -75,7 +75,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     pTaskBlock->status=TASK_SUSPEND;
 
     pTaskBlock->next=NULL;
-    pTaskBlock->nextBk=NULL;
+//    pTaskBlock->nextBk=NULL;
     pTaskBlock->nextAll=NULL;
     if(userStackSize!=0){
         /*设置栈的初始化寄存器*/
@@ -93,7 +93,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     }
 
     /*通过优先级添加任务*/
-    int32_t err = AddTask(pTaskBlock);
+    int32_t err = add_task(pTaskBlock);
     if(err != 0){
         //	RestoreCpuInter(t);
         /*释放申请的内存*/

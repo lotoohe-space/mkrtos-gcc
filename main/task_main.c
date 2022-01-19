@@ -2,6 +2,7 @@
 // Created by Administrator on 2022/1/9.
 //
 #define __LIBRARY__
+#include <mkrtos/fs.h>
 #include "mkrtos/task.h"
 //#include "mkrtos/signal.h"
 #include <unistd.h>
@@ -9,22 +10,22 @@
 
 extern int32_t sys_open(const char* path,int32_t flags,int32_t mode);
 extern int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count);
+extern void sys_close(int fp);
 
 struct dirent dir;
 void KernelTask(void*arg0, void*arg1){
     int fd;
+    int res;
     if((fd=sys_open("/",O_RDONLY,0777))<0){
         while(1);
     }
-    if(sys_readdir(fd,&dir,sizeof(dir))<0){
-        while(1);
+    while(res>0) {
+        if ((res=sys_readdir(fd, &dir, sizeof(dir)))<= 0) {
+            break;
+        }
     }
-    if(sys_readdir(fd,&dir,sizeof(dir))<0){
-        while(1);
-    }
-    if(sys_readdir(fd,&dir,sizeof(dir))<0){
-        while(1);
-    }
+    sys_close(fd);
+
     while(1){
 
     }

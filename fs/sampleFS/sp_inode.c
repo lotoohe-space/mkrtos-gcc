@@ -157,7 +157,9 @@ void sp_write_inode (struct inode * i_node){
     //自己的Inode号码
     temp-> i_no= i_node->i_no;
     //硬连接数
-    temp-> i_hlink=temp->i_hlink;
+    temp-> i_hlink=i_node->i_hlink;
+    //设备号
+    temp->i_rdev_no=i_node->i_rdev_no;
 
     //回写
     if (wbk(sb->s_dev_no

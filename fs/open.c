@@ -200,8 +200,10 @@ int32_t sys_open(const char* path,int32_t flags,int32_t mode){
             puti(o_inode);
             return -1;
         }
+
     }
     CUR_TASK->files[i].f_inode=o_inode;
+    CUR_TASK->files[i].f_mode= FILE_MODE((o_inode->i_type_mode));
 
     return i;
 }
@@ -212,17 +214,23 @@ int sys_creat(const char * pathname, int mode){
 }
 //关闭文件
 void sys_close(int fp){
+    struct inode *inode;
+
     if(CUR_TASK->files[fp].used==0){
         //文件已经关闭了
         return ;
     }
+    inode=CUR_TASK->files[fp].f_inode;
 
     if(CUR_TASK->files[fp].f_op
     &&CUR_TASK->files[fp].f_op->release
     ){
-        CUR_TASK->files[fp].f_op->release(CUR_TASK->files[fp].f_inode,&CUR_TASK->files[fp]);
+        CUR_TASK->files[fp].f_op->release(inode,&CUR_TASK->files[fp]);
     }
     CUR_TASK->files[fp].used=0;
+
+    CUR_TASK->files[fp].f_inode=NULL;
+    puti(inode);
 }
 int sys_vhangup(void){
     return -ENOSYS;

@@ -9,7 +9,7 @@
 
 //等待队列头
 struct wait_queue_head{
-    struct _TaskBlock* tb;
+    struct task* tb;
     struct wait_queue_head *next;
 };
 
@@ -26,7 +26,7 @@ struct sem{
 
 //从等待链表中删除，返回-1，说明压根没找到
 //这个函数给exit函数用
-int32_t del_into_wait_queue(struct sem *mt,struct _TaskBlock *tb);
+int32_t del_into_wait_queue(struct sem *mt,struct task *tb);
 
 int32_t sem_get(sem_t mid);
 int32_t sem_alloc(void);

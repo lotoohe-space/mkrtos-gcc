@@ -15,7 +15,7 @@ struct sem sem_list[MUTEX_NUM]={0};
 static Atomic_t lock;
 static uint8_t first_used=0;
 //添加到等待链表中
-static int32_t add_into_wait_queue(struct sem *mt,struct _TaskBlock *tb){
+static int32_t add_into_wait_queue(struct sem *mt,struct task *tb){
 
     struct wait_queue_head *wqh=&mt->wait_list;
     struct wait_queue_head *new_wqh=OSMalloc(sizeof(struct wait_queue_head));
@@ -34,13 +34,13 @@ static int32_t add_into_wait_queue(struct sem *mt,struct _TaskBlock *tb){
     mt->wait_num++;
 
     //挂起任务
-    tb->status=SuspendOp;
-    TaskSche();
+    tb->status=TASK_SUSPEND;
+    task_sche();
 
     return 0;
 }
 //从等待链表中删除，返回-1，说明压根没找到
-int32_t del_into_wait_queue(struct sem *mt,struct _TaskBlock *tb){
+int32_t del_into_wait_queue(struct sem *mt,struct task *tb){
     uint32_t res=0;
     struct wait_queue_head *wqh=mt->wait_list.next;
     struct wait_queue_head *prev_wqh=&mt->wait_list;

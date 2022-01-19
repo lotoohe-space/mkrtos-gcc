@@ -76,7 +76,7 @@ int32_t sys_mount(void){
  * 挂载当前进程的根文件系统，每个进程应该都需要挂载一个
  *
  */
-void root_mount(struct _TaskBlock* task){
+void root_mount(struct task* task){
     uint32_t i=0;
     struct super_block* sb;
     for(i=0;i<fs_type_len;i++){
@@ -85,6 +85,11 @@ void root_mount(struct _TaskBlock* task){
         if(!sb){
             continue;
         }
+
+        //逻辑上使用了4次，. ..目录两次，super_block一次，当前进程一次
+        atomic_inc(&(sb->root_inode->i_used_count));
+        atomic_inc(&(sb->root_inode->i_used_count));
+        atomic_inc(&(sb->root_inode->i_used_count));
 
         task->root_inode = sb->root_inode;
         task->pwd_inode = sb->root_inode;

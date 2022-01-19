@@ -112,6 +112,8 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
 
     //新建. .. 文件，并且都指向自己
     struct dir_item di;
+    struct inode* r_inode;
+    struct sp_inode *sp_ino;
     if(alloc_bk(sb,&new_bk)<0){
        res=-1;
        goto end;
@@ -121,20 +123,22 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
         res=-1;
         goto end;
     }
-    struct inode* r_inode;
     r_inode = OSMalloc(sizeof(struct inode));
     if(r_inode==NULL){
         res=-1;
         //申请失败
         goto end1;
     }
-
+    r_inode->i_fs_priv_info=NULL;
     //填充参数
     r_inode->i_file_size=sizeof(struct dir_item)*2;
+    //设置为目录
     r_inode->i_type_mode=1<<16;
+    //设置sb
     r_inode->i_sb=sb;
-    r_inode->i_no=0;
-    r_inode->i_hlink=0;
+    r_inode->i_no=new_inode;
+    //硬链接数等于2
+    r_inode->i_hlink=2;
     atomic_set(&(r_inode->i_used_count),1);
     //申请一个inode
     if(sp_alloc_inode(r_inode) == NULL){
@@ -142,9 +146,11 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
         //申请失败
         goto end2;
     }
-    struct sp_inode *sp_ino=r_inode->i_fs_priv_info;
-    sp_ino->p_ino[0]=new_bk;
 
+    sp_ino=r_inode->i_fs_priv_info;
+    //填充新的bk号
+    sp_ino->p_ino[0]=new_bk;
+    //根目录下的. .. 目录
     strcpy(di.name, ".");
     di.used = TRUE;
     di.inode_no = 0;
@@ -161,12 +167,13 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
         res=-1;
         goto end2;
     }
-
+    //写inode
     sp_write_inode(r_inode);
     OSFree(r_inode);
     goto end;
 
     end2:
+    sp_free_inode(r_inode);
     OSFree(r_inode);
     end1:
     free_bk(sb,new_bk);
