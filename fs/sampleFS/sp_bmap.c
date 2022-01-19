@@ -56,7 +56,7 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
     for (uint32_t i = 0; i <sp_sb->bkUsedBkCount; i++) {
         for (uint32_t j = 0; j < sb->s_bk_size; j++) {
             uint32_t r;
-            if (rbk(sb->s_dev_no, sp_sb->bkUsedBkStInx + i, &r, j,  sizeof(r)) < 0) {
+            if (rbk(sb->s_dev_no, sp_sb->bkUsedBkStInx + i, (uint8_t*)&r, j,  sizeof(r)) < 0) {
                 return -1;
             }
             if (r != 0) {
@@ -158,7 +158,7 @@ int32_t alloc_inode_no(struct super_block* sb,ino_t *res_ino){
         for (uint32_t j = 0; j < sb->s_bk_size; j+=4) {
             uint32_t r;
             //每次获取4字节
-            if (rbk(sb->s_dev_no, sp_sb->inode_used_bk_st_inx + i, &r, j, sizeof(r)) <0) {
+            if (rbk(sb->s_dev_no, sp_sb->inode_used_bk_st_inx + i, (uint8_t*)&r, j, sizeof(r)) <0) {
                 return -1;
             }
             if (r != 0) {

@@ -28,6 +28,26 @@ struct super_block;
 //是否为普通文件
 #define IS_FILE(a) (((a)>>16)==0)
 
+
+
+typedef struct {
+    long    val[2];
+} fsid_t;
+
+/* 文件系统的信息结构 */
+struct statfs {
+    long f_type;
+    long f_bsize;
+    long f_blocks;
+    long f_bfree;
+    long f_bavail;
+    long f_files;
+    long f_ffree;
+    fsid_t f_fsid;
+    long f_namelen;
+    long f_spare[6];
+};
+
 struct wait_queue;
 //INode节点
 typedef struct inode {
@@ -159,6 +179,8 @@ struct super_operations {
     int (*remount_fs) (struct super_block *, int *, char *);
 };
 
+
+
 struct fs_type{
     //文件系统的名字
     const char* f_name;
@@ -213,7 +235,7 @@ struct bk_operations{
 uint32_t get_bk_size(dev_t major_no) ;
 struct bk_operations* get_bk_ops(dev_t major_no);
 uint32_t get_bk_count(dev_t major_no);
-struct dev_cache* get_bk_dev_cache(dev_t major_no,uint32_t *res_cache_len);
+struct bk_cache* get_bk_dev_cache(dev_t major_no,uint32_t *res_cache_len);
 int32_t reg_bk_dev(
         dev_t major_no,
         const char* name ,
@@ -241,11 +263,15 @@ struct bk_cache {
     uint32_t bk_size;
     //缓存擦除不需要缓存，则为Null
     uint8_t* cache;
-    uint32_t sem_lock;
+//    uint32_t sem_lock;
+    Atomic_t b_lock;
     struct wait_queue* b_wait;
     //擦除标记 1bit写入 2bit读取 7bit被使用
     uint8_t flag;
 };
+void lock_bk(struct bk_cache* bk);
+void unlock_bk(struct bk_cache* bk);
+void wait_on_bk(struct bk_cache* bk);
 ////////
 
 

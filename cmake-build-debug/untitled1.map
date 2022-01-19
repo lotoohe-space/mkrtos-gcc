@@ -18,6 +18,10 @@ Discarded input sections
                 0x00000000       0x12 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
  .text.AtomicSub
                 0x00000000       0x14 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
+ .text.atomic_test_set
+                0x00000000       0x24 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
+ .text.atomic_set_test
+                0x00000000       0x24 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
  .text.atomic_inc_test
                 0x00000000       0x26 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
  .text          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/call_sigreturn.s.obj
@@ -1394,18 +1398,6 @@ Discarded input sections
  .text          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
  .data          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
  .bss           0x00000000        0x0 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- .text          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .data          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .bss           0x00000000        0x0 CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .debug_info    0x00000000       0x6b CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .debug_abbrev  0x00000000       0x26 CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .debug_aranges
-                0x00000000       0x18 CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .debug_line    0x00000000       0x1d CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .debug_str     0x00000000      0x1bd CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .comment       0x00000000       0x4a CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
- .ARM.attributes
-                0x00000000       0x2d CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
  .text          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .data          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .bss           0x00000000        0x0 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
@@ -1499,12 +1491,34 @@ Discarded input sections
  .text          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
  .data          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
  .bss           0x00000000        0x0 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .text.active_all_wait
+                0x00000000       0x4c CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .text.add_into_wait_queue
+                0x00000000       0x4c CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
  .text.del_into_wait_queue
                 0x00000000       0x48 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
  .text.sem_alloc
                 0x00000000       0x2c CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
  .text.sem_put  0x00000000       0x38 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .text.sem_take
+                0x00000000       0x4c CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .text.sem_release
+                0x00000000       0x34 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
  .text.sem_get  0x00000000       0x50 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .bss.lock      0x00000000        0x4 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .bss.sem_list  0x00000000      0x140 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .debug_info    0x00000000     0x123d CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .debug_abbrev  0x00000000      0x29a CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .debug_loc     0x00000000      0x41e CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .debug_aranges
+                0x00000000       0x58 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .debug_ranges  0x00000000       0x48 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .debug_line    0x00000000      0x482 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .debug_str     0x00000000      0x879 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .comment       0x00000000       0x4a CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .debug_frame   0x00000000       0xf4 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+ .ARM.attributes
+                0x00000000       0x2d CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
  .text          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/ipc/spin_lock.c.obj
  .data          0x00000000        0x0 CMakeFiles/untitled1.elf.dir/ipc/spin_lock.c.obj
  .bss           0x00000000        0x0 CMakeFiles/untitled1.elf.dir/ipc/spin_lock.c.obj
@@ -1693,7 +1707,6 @@ LOAD CMakeFiles/untitled1.elf.dir/arch/bsp/lib/sys.c.obj
 LOAD CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
 LOAD CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj
 LOAD CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-LOAD CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj
 LOAD CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
 LOAD CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
 LOAD CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
@@ -1742,7 +1755,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x08000000                g_pfnVectors
                 0x080001e4                . = ALIGN (0x4)
 
-.text           0x080001e4     0x4004
+.text           0x080001e4     0x3f18
                 0x080001e4                . = ALIGN (0x4)
  *(.text)
  *(.text*)
@@ -1784,711 +1797,705 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
  .text.atomic_test
                 0x080003e6       0x22 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
                 0x080003e6                atomic_test
- .text.atomic_test_set
-                0x08000408       0x24 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
-                0x08000408                atomic_test_set
- .text.atomic_set_test
-                0x0800042c       0x24 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
-                0x0800042c                atomic_set_test
  .text.atomic_test_inc
-                0x08000450       0x26 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
-                0x08000450                atomic_test_inc
+                0x08000408       0x26 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
+                0x08000408                atomic_test_inc
  .text.atomic_test_dec_nq
-                0x08000476       0x26 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
-                0x08000476                atomic_test_dec_nq
+                0x0800042e       0x26 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
+                0x0800042e                atomic_test_dec_nq
  .text.call_sigreturn
-                0x0800049c        0x6 CMakeFiles/untitled1.elf.dir/arch/arm/call_sigreturn.s.obj
-                0x0800049c                call_sigreturn
- *fill*         0x080004a2        0x2 
- .text.Init     0x080004a4       0x38 CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj
-                0x080004a4                Init
+                0x08000454        0x6 CMakeFiles/untitled1.elf.dir/arch/arm/call_sigreturn.s.obj
+                0x08000454                call_sigreturn
+ *fill*         0x0800045a        0x2 
+ .text.Init     0x0800045c       0x38 CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj
+                0x0800045c                Init
  .text.SVC_Handler
-                0x080004dc       0x1a CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj
-                0x080004dc                SVC_Handler
+                0x08000494       0x1a CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj
+                0x08000494                SVC_Handler
  .text.GetISRNum
-                0x080004f6        0x6 CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj
-                0x080004f6                GetISRNum
+                0x080004ae        0x6 CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj
+                0x080004ae                GetISRNum
  .text.ExternInter
-                0x080004fc       0x30 CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj
-                0x080004fc                ExternInter
+                0x080004b4       0x30 CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj
+                0x080004b4                ExternInter
  .text.RegIsrFunc
-                0x0800052c       0x28 CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj
-                0x0800052c                RegIsrFunc
+                0x080004e4       0x28 CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj
+                0x080004e4                RegIsrFunc
  .text.isr_handler
-                0x08000554       0x12 CMakeFiles/untitled1.elf.dir/arch/arm/isr_handler.s.obj
-                0x08000554                isr_handler
- *fill*         0x08000566        0x2 
- .text.SysCall  0x08000568       0x18 CMakeFiles/untitled1.elf.dir/arch/arm/pre_syscall.s.obj
-                0x08000568                SysCall
+                0x0800050c       0x12 CMakeFiles/untitled1.elf.dir/arch/arm/isr_handler.s.obj
+                0x0800050c                isr_handler
+ *fill*         0x0800051e        0x2 
+ .text.SysCall  0x08000520       0x18 CMakeFiles/untitled1.elf.dir/arch/arm/pre_syscall.s.obj
+                0x08000520                SysCall
  .text._syscall
-                0x08000580        0x6 CMakeFiles/untitled1.elf.dir/arch/arm/pre_syscall.s.obj
-                0x08000580                _syscall
- *fill*         0x08000586        0x2 
+                0x08000538        0x6 CMakeFiles/untitled1.elf.dir/arch/arm/pre_syscall.s.obj
+                0x08000538                _syscall
+ *fill*         0x0800053e        0x2 
  .text.NVIC_PriorityGroupConfig
-                0x08000588       0x14 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/misc.c.obj
-                0x08000588                NVIC_PriorityGroupConfig
+                0x08000540       0x14 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/misc.c.obj
+                0x08000540                NVIC_PriorityGroupConfig
  .text.FLASH_ClearFlag
-                0x0800059c        0xc CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
-                0x0800059c                FLASH_ClearFlag
+                0x08000554        0xc CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
+                0x08000554                FLASH_ClearFlag
  .text.FLASH_GetBank1Status
-                0x080005a8       0x34 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
-                0x080005a8                FLASH_GetBank1Status
+                0x08000560       0x34 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
+                0x08000560                FLASH_GetBank1Status
  .text.FLASH_WaitForLastOperation
-                0x080005dc       0x20 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
-                0x080005dc                FLASH_WaitForLastOperation
+                0x08000594       0x20 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
+                0x08000594                FLASH_WaitForLastOperation
  .text.FLASH_ErasePage
-                0x080005fc       0x40 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
-                0x080005fc                FLASH_ErasePage
+                0x080005b4       0x40 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
+                0x080005b4                FLASH_ErasePage
  .text.FLASH_ProgramHalfWord
-                0x0800063c       0x3c CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
-                0x0800063c                FLASH_ProgramHalfWord
+                0x080005f4       0x3c CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
+                0x080005f4                FLASH_ProgramHalfWord
  .text.NMI_Handler
-                0x08000678        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
-                0x08000678                NMI_Handler
+                0x08000630        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
+                0x08000630                NMI_Handler
  .text.HardFault_Handler
-                0x0800067a        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
-                0x0800067a                HardFault_Handler
+                0x08000632        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
+                0x08000632                HardFault_Handler
  .text.MemManage_Handler
-                0x0800067c        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
-                0x0800067c                MemManage_Handler
+                0x08000634        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
+                0x08000634                MemManage_Handler
  .text.BusFault_Handler
-                0x0800067e        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
-                0x0800067e                BusFault_Handler
+                0x08000636        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
+                0x08000636                BusFault_Handler
  .text.UsageFault_Handler
-                0x08000680        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
-                0x08000680                UsageFault_Handler
+                0x08000638        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
+                0x08000638                UsageFault_Handler
  .text.DebugMon_Handler
-                0x08000682        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
-                0x08000682                DebugMon_Handler
+                0x0800063a        0x2 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
+                0x0800063a                DebugMon_Handler
  .text.SetSysClockTo72
-                0x08000684       0xc4 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
+                0x0800063c       0xc4 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
  .text.SetSysClock
-                0x08000748        0x8 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
+                0x08000700        0x8 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
  .text.SystemInit
-                0x08000750       0x50 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
-                0x08000750                SystemInit
+                0x08000708       0x50 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
+                0x08000708                SystemInit
  .text.Reset_Handler
-                0x080007a0       0x44 CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj
-                0x080007a0                Reset_Handler
+                0x08000758       0x44 CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj
+                0x08000758                Reset_Handler
  .text.erase_bk
-                0x080007e4       0x34 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x080007e4                erase_bk
+                0x0800079c       0x34 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x0800079c                erase_bk
  .text.bk_flash_init
-                0x08000818       0x50 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x08000818                bk_flash_init
+                0x080007d0       0x50 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x080007d0                bk_flash_init
  .text.bk_flash_exit
-                0x08000868       0x18 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x08000868                bk_flash_exit
+                0x08000820       0x18 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x08000820                bk_flash_exit
  .text.STMFLASH_Write_NoCheck
-                0x08000880       0x22 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x08000880                STMFLASH_Write_NoCheck
- *fill*         0x080008a2        0x2 
+                0x08000838       0x22 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x08000838                STMFLASH_Write_NoCheck
+ *fill*         0x0800085a        0x2 
  .text.write_bk
-                0x080008a4       0x34 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x080008a4                write_bk
+                0x0800085c       0x34 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x0800085c                write_bk
  .text.STMFLASH_ReadHalfWord
-                0x080008d8        0x6 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x080008d8                STMFLASH_ReadHalfWord
+                0x08000890        0x6 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x08000890                STMFLASH_ReadHalfWord
  .text.STMFLASH_Read
-                0x080008de       0x22 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x080008de                STMFLASH_Read
- .text.read_bk  0x08000900       0x16 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x08000900                read_bk
+                0x08000896       0x22 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x08000896                STMFLASH_Read
+ .text.read_bk  0x080008b8       0x16 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x080008b8                read_bk
  .text.find_bk_cache
-                0x08000916       0x4e CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- .text.sync_bk  0x08000964       0xa4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x080008ce       0x4e CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .text.__wait_on_bk
+                0x0800091c       0x54 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .text.bk_cache_init
-                0x08000a08       0x5e CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
-                0x08000a08                bk_cache_init
- *fill*         0x08000a66        0x2 
- .text.wbk      0x08000a68       0xe0 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
-                0x08000a68                wbk
- .text.rbk      0x08000b48       0xd0 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
-                0x08000b48                rbk
+                0x08000970       0x5e CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08000970                bk_cache_init
+ .text.wait_on_bk
+                0x080009ce       0x16 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x080009ce                wait_on_bk
+ .text.lock_bk  0x080009e4       0x14 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x080009e4                lock_bk
+ .text.unlock_bk
+                0x080009f8       0x14 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x080009f8                unlock_bk
+ .text.sync_bk  0x08000a0c       0x9c CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .text.wbk      0x08000aa8       0xd8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08000aa8                wbk
+ .text.rbk      0x08000b80       0xc0 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08000b80                rbk
  .text.chrdev_open
-                0x08000c18       0x2c CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000c18                chrdev_open
+                0x08000c40       0x2c CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000c40                chrdev_open
  .text.blkdev_open
-                0x08000c44       0x28 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000c44                blkdev_open
+                0x08000c6c       0x28 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000c6c                blkdev_open
  .text.request_bk_no
-                0x08000c6c       0x24 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000c6c                request_bk_no
+                0x08000c94       0x24 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000c94                request_bk_no
  .text.alloc_bk_no
-                0x08000c90       0x20 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000c90                alloc_bk_no
+                0x08000cb8       0x20 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000cb8                alloc_bk_no
  .text.get_bk_dev_cache
-                0x08000cb0       0x1c CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000cb0                get_bk_dev_cache
+                0x08000cd8       0x1c CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000cd8                get_bk_dev_cache
  .text.get_bk_size
-                0x08000ccc       0x18 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000ccc                get_bk_size
+                0x08000cf4       0x18 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000cf4                get_bk_size
  .text.get_bk_ops
-                0x08000ce4       0x18 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000ce4                get_bk_ops
+                0x08000d0c       0x18 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000d0c                get_bk_ops
  .text.get_bk_count
-                0x08000cfc       0x18 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000cfc                get_bk_count
+                0x08000d24       0x18 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000d24                get_bk_count
  .text.reg_bk_dev
-                0x08000d14       0x60 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000d14                reg_bk_dev
+                0x08000d3c       0x60 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000d3c                reg_bk_dev
  .text.unreg_bk_dev
-                0x08000d74       0x34 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000d74                unreg_bk_dev
+                0x08000d9c       0x34 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000d9c                unreg_bk_dev
  .text.devs_init
-                0x08000da8       0x28 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                0x08000da8                devs_init
- .text.dupfd    0x08000dd0       0x84 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+                0x08000dd0       0x28 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x08000dd0                devs_init
+ .text.dupfd    0x08000df8       0x84 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
  .text.sys_dup2
-                0x08000e54       0x58 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
-                0x08000e54                sys_dup2
- .text.sys_dup  0x08000eac        0xa CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
-                0x08000eac                sys_dup
- *fill*         0x08000eb6        0x2 
+                0x08000e7c       0x58 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+                0x08000e7c                sys_dup2
+ .text.sys_dup  0x08000ed4        0xa CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+                0x08000ed4                sys_dup
+ *fill*         0x08000ede        0x2 
  .text.sys_fcntl
-                0x08000eb8       0x2c CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
-                0x08000eb8                sys_fcntl
+                0x08000ee0       0x2c CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+                0x08000ee0                sys_fcntl
  .text.find_fs_type
-                0x08000ee4       0x38 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
-                0x08000ee4                find_fs_type
+                0x08000f0c       0x38 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+                0x08000f0c                find_fs_type
  .text.__wait_on_inode_list
-                0x08000f1c       0x54 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x08000f44       0x54 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
  .text.__wait_on_inode
-                0x08000f70       0x54 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x08000f98       0x54 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
  .text.wake_up_wait_inode_list
-                0x08000fc4       0x10 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
-                0x08000fc4                wake_up_wait_inode_list
+                0x08000fec       0x10 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x08000fec                wake_up_wait_inode_list
  .text.get_empty_inode
-                0x08000fd4       0x4c CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
-                0x08000fd4                get_empty_inode
+                0x08000ffc       0x4c CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x08000ffc                get_empty_inode
  .text.lose_inode
-                0x08001020       0x28 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
-                0x08001020                lose_inode
- .text.geti     0x08001048       0x5e CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
-                0x08001048                geti
+                0x08001048       0x28 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x08001048                lose_inode
+ .text.geti     0x08001070       0x5e CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x08001070                geti
  .text.wait_on_inode
-                0x080010a6       0x16 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
-                0x080010a6                wait_on_inode
- .text.puti     0x080010bc       0x60 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
-                0x080010bc                puti
+                0x080010ce       0x16 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x080010ce                wait_on_inode
+ .text.puti     0x080010e4       0x60 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x080010e4                puti
  .text.sys_ioctl
-                0x0800111c       0x70 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
-                0x0800111c                sys_ioctl
+                0x08001144       0x70 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+                0x08001144                sys_ioctl
  .text.get_path_name
-                0x0800118c       0x50 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x0800118c                get_path_name
+                0x080011b4       0x50 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x080011b4                get_path_name
  .text.dir_namei
-                0x080011dc      0x10c CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x080011dc                dir_namei
+                0x08001204      0x10c CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x08001204                dir_namei
  .text.open_namei
-                0x080012e8       0xb8 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x080012e8                open_namei
+                0x08001310       0xb8 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x08001310                open_namei
  .text.sys_mkdir
-                0x080013a0       0x88 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x080013a0                sys_mkdir
+                0x080013c8       0x88 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x080013c8                sys_mkdir
  .text.sys_rmdir
-                0x08001428       0x74 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x08001428                sys_rmdir
+                0x08001450       0x74 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x08001450                sys_rmdir
  .text.sys_link
-                0x0800149c        0x6 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x0800149c                sys_link
+                0x080014c4        0x6 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x080014c4                sys_link
  .text.sys_unlink
-                0x080014a2       0x74 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x080014a2                sys_unlink
+                0x080014ca       0x74 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x080014ca                sys_unlink
  .text.sys_rename
-                0x08001516        0x6 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x08001516                sys_rename
+                0x0800153e        0x6 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x0800153e                sys_rename
  .text.sys_mknod
-                0x0800151c       0x82 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                0x0800151c                sys_mknod
+                0x08001544       0x84 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x08001544                sys_mknod
  .text.sys_ustat
-                0x0800159e        0x6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x0800159e                sys_ustat
+                0x080015c8        0x6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x080015c8                sys_ustat
  .text.sys_statfs
-                0x080015a4       0x3c CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x080015a4                sys_statfs
+                0x080015ce       0x3c CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x080015ce                sys_statfs
+ *fill*         0x0800160a        0x2 
  .text.sys_fstatfs
-                0x080015e0       0x50 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x080015e0                sys_fstatfs
+                0x0800160c       0x50 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x0800160c                sys_fstatfs
  .text.sys_utime
-                0x08001630        0x6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x08001630                sys_utime
+                0x0800165c        0x6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x0800165c                sys_utime
  .text.sys_access
-                0x08001636        0x6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x08001636                sys_access
+                0x08001662        0x6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x08001662                sys_access
  .text.sys_chdir
-                0x0800163c       0x44 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x0800163c                sys_chdir
+                0x08001668       0x44 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x08001668                sys_chdir
  .text.sys_fchdir
-                0x08001680       0x5c CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x08001680                sys_fchdir
+                0x080016ac       0x5c CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x080016ac                sys_fchdir
  .text.sys_chroot
-                0x080016dc       0x44 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x080016dc                sys_chroot
+                0x08001708       0x44 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x08001708                sys_chroot
  .text.sys_fchmod
-                0x08001720       0x50 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x08001720                sys_fchmod
+                0x0800174c       0x50 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x0800174c                sys_fchmod
  .text.sys_chmod
-                0x08001770       0x34 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x08001770                sys_chmod
+                0x0800179c       0x34 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x0800179c                sys_chmod
  .text.sys_chown
-                0x080017a4        0x6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x080017a4                sys_chown
- *fill*         0x080017aa        0x2 
+                0x080017d0        0x6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x080017d0                sys_chown
+ *fill*         0x080017d6        0x2 
  .text.sys_open
-                0x080017ac       0xf4 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x080017ac                sys_open
+                0x080017d8       0xf4 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x080017d8                sys_open
  .text.sys_creat
-                0x080018a0        0xc CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x080018a0                sys_creat
+                0x080018cc        0xc CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x080018cc                sys_creat
  .text.sys_close
-                0x080018ac       0x60 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                0x080018ac                sys_close
+                0x080018d8       0x60 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x080018d8                sys_close
  .text.sys_readdir
-                0x0800190c       0x6c CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
-                0x0800190c                sys_readdir
+                0x08001938       0x6c CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+                0x08001938                sys_readdir
  .text.sys_lseek
-                0x08001978       0xc0 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
-                0x08001978                sys_lseek
+                0x080019a4       0xc0 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+                0x080019a4                sys_lseek
  .text.sys_read
-                0x08001a38       0x6c CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
-                0x08001a38                sys_read
+                0x08001a64       0x6c CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+                0x08001a64                sys_read
  .text.sys_write
-                0x08001aa4       0x6c CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
-                0x08001aa4                sys_write
+                0x08001ad0       0x6c CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+                0x08001ad0                sys_write
  .text.set_bk_no_status
-                0x08001b10       0x9e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
-                0x08001b10                set_bk_no_status
+                0x08001b3c       0x9e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                0x08001b3c                set_bk_no_status
  .text.alloc_bk
-                0x08001bae       0xf2 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
-                0x08001bae                alloc_bk
- .text.free_bk  0x08001ca0       0x8e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
-                0x08001ca0                free_bk
+                0x08001bda       0xf2 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                0x08001bda                alloc_bk
+ .text.free_bk  0x08001ccc       0x8e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                0x08001ccc                free_bk
  .text.alloc_inode_no
-                0x08001d2e       0xf2 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
-                0x08001d2e                alloc_inode_no
+                0x08001d5a       0xf2 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                0x08001d5a                alloc_inode_no
  .text.free_inode_no
-                0x08001e20       0x8e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
-                0x08001e20                free_inode_no
+                0x08001e4c       0x8e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                0x08001e4c                free_inode_no
  .text.check_inode_no
-                0x08001eae       0x4a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
-                0x08001eae                check_inode_no
+                0x08001eda       0x4a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                0x08001eda                check_inode_no
  .text.get_bk_no_ofs
-                0x08001ef8       0x7a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
-                0x08001ef8                get_bk_no_ofs
+                0x08001f24       0x7a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                0x08001f24                get_bk_no_ofs
  .text.sp_dir_read
-                0x08001f72        0x6 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
-                0x08001f72                sp_dir_read
+                0x08001f9e        0x6 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+                0x08001f9e                sp_dir_read
  .text.sp_readdir
-                0x08001f78       0x48 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
-                0x08001f78                sp_readdir
+                0x08001fa4       0x48 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+                0x08001fa4                sp_readdir
  .text.sp_alloc_inode
-                0x08001fc0       0x24 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
-                0x08001fc0                sp_alloc_inode
+                0x08001fec       0x24 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                0x08001fec                sp_alloc_inode
  .text.sp_free_inode
-                0x08001fe4       0x26 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
-                0x08001fe4                sp_free_inode
- *fill*         0x0800200a        0x2 
+                0x08002010       0x26 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                0x08002010                sp_free_inode
+ *fill*         0x08002036        0x2 
  .text.sp_read_inode
-                0x0800200c       0xb4 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
-                0x0800200c                sp_read_inode
+                0x08002038       0xb4 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                0x08002038                sp_read_inode
  .text.sp_write_inode
-                0x080020c0       0x72 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
-                0x080020c0                sp_write_inode
+                0x080020ec       0x72 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                0x080020ec                sp_write_inode
  .text.sp_write_super
-                0x08002132       0x2e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
-                0x08002132                sp_write_super
+                0x0800215e       0x2e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                0x0800215e                sp_write_super
  .text.sp_new_inode
-                0x08002160       0x5c CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
-                0x08002160                sp_new_inode
+                0x0800218c       0x5c CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                0x0800218c                sp_new_inode
  .text.sp_read_sb
-                0x080021bc       0xa8 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
-                0x080021bc                sp_read_sb
+                0x080021e8       0xa8 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                0x080021e8                sp_read_sb
  .text.sp_dir_find
-                0x08002264      0x14a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x08002264                sp_dir_find
+                0x08002290      0x14a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x08002290                sp_dir_find
  .text.sp_lookup
-                0x080023ae       0x42 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x080023ae                sp_lookup
+                0x080023da       0x42 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x080023da                sp_lookup
  .text.add_file_to_entry
-                0x080023f0       0xda CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x080023f0                add_file_to_entry
+                0x0800241c       0xda CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x0800241c                add_file_to_entry
  .text.sp_create
-                0x080024ca       0x54 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x080024ca                sp_create
+                0x080024f6       0x54 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x080024f6                sp_create
  .text.sp_mknod
-                0x0800251e        0x2 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x0800251e                sp_mknod
+                0x0800254a        0x2 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x0800254a                sp_mknod
  .text.sp_mkdir
-                0x08002520      0x114 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x08002520                sp_mkdir
+                0x0800254c      0x114 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x0800254c                sp_mkdir
  .text.empty_dir
-                0x08002634      0x10e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x08002634                empty_dir
+                0x08002660      0x10e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x08002660                empty_dir
  .text.del_dir_item
-                0x08002742      0x184 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x08002742                del_dir_item
+                0x0800276e      0x184 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x0800276e                del_dir_item
  .text.sp_rmdir
-                0x080028c6       0x88 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                0x080028c6                sp_rmdir
+                0x080028f2       0x88 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x080028f2                sp_rmdir
  .text.sp_file_read
-                0x0800294e      0x130 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
-                0x0800294e                sp_file_read
+                0x0800297a      0x130 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+                0x0800297a                sp_file_read
  .text.get_ofs_bk_no
-                0x08002a7e       0x82 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
-                0x08002a7e                get_ofs_bk_no
+                0x08002aaa       0x82 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+                0x08002aaa                get_ofs_bk_no
  .text.inode_alloc_new_bk
-                0x08002b00       0xe6 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
-                0x08002b00                inode_alloc_new_bk
+                0x08002b2c       0xe6 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+                0x08002b2c                inode_alloc_new_bk
  .text.sp_file_write
-                0x08002be6      0x10c CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
-                0x08002be6                sp_file_write
+                0x08002c12      0x10c CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+                0x08002c12                sp_file_write
  .text.sp_alloc_sb
-                0x08002cf2       0x12 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
-                0x08002cf2                sp_alloc_sb
- .text.sp_mkfs  0x08002d04      0x23c CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
-                0x08002d04                sp_mkfs
+                0x08002d1e       0x12 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+                0x08002d1e                sp_alloc_sb
+ .text.sp_mkfs  0x08002d30      0x23c CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+                0x08002d30                sp_mkfs
  .text.sp_sync_file
-                0x08002f40        0x4 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
-                0x08002f40                sp_sync_file
+                0x08002f6c        0x4 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+                0x08002f6c                sp_sync_file
  .text.get_empty_sb
-                0x08002f44       0x30 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
-                0x08002f44                get_empty_sb
- .text.free_sb  0x08002f74       0x34 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
-                0x08002f74                free_sb
- .text.find_sb  0x08002fa8       0x38 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
-                0x08002fa8                find_sb
- .text.read_sb  0x08002fe0       0x4a CMakeFiles/untitled1.elf.dir/fs/super.c.obj
-                0x08002fe0                read_sb
+                0x08002f70       0x30 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+                0x08002f70                get_empty_sb
+ .text.free_sb  0x08002fa0       0x34 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+                0x08002fa0                free_sb
+ .text.find_sb  0x08002fd4       0x38 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+                0x08002fd4                find_sb
+ .text.read_sb  0x0800300c       0x4a CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+                0x0800300c                read_sb
  .text.sys_mount
-                0x0800302a        0x4 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
-                0x0800302a                sys_mount
- *fill*         0x0800302e        0x2 
+                0x08003056        0x4 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+                0x08003056                sys_mount
+ *fill*         0x0800305a        0x2 
  .text.root_mount
-                0x08003030       0x60 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
-                0x08003030                root_mount
- .text.active_all_wait
-                0x08003090       0x4c CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .text.add_into_wait_queue
-                0x080030dc       0x4c CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .text.sem_take
-                0x08003128       0x4c CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
-                0x08003128                sem_take
- .text.sem_release
-                0x08003174       0x34 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
-                0x08003174                sem_release
- .text.DoExit   0x080031a8       0x60 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
-                0x080031a8                DoExit
+                0x0800305c       0x60 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+                0x0800305c                root_mount
+ .text.DoExit   0x080030bc       0x60 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+                0x080030bc                DoExit
  .text.TaskToEnd
-                0x08003208       0x1c CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
-                0x08003208                TaskToEnd
+                0x0800311c       0x1c CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+                0x0800311c                TaskToEnd
  .text.sys_exit
-                0x08003224       0x10 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
-                0x08003224                sys_exit
+                0x08003138       0x10 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+                0x08003138                sys_exit
  .text.sys_fork
-                0x08003234       0xe4 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
-                0x08003234                sys_fork
- .text.fatalk   0x08003318       0x18 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
-                0x08003318                fatalk
+                0x08003148       0xe4 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+                0x08003148                sys_fork
+ .text.fatalk   0x0800322c       0x18 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+                0x0800322c                fatalk
  .text.FindTaskLinks
-                0x08003330       0x18 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003244       0x18 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
  .text.AddLinks
-                0x08003348       0x2c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x0800325c       0x2c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
  .text.find_task
-                0x08003374       0x20 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003374                find_task
+                0x08003288       0x20 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003288                find_task
  .text.task_sche
-                0x08003394       0x18 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003394                task_sche
+                0x080032a8       0x18 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x080032a8                task_sche
  .text.update_cur_task
-                0x080033ac       0x3c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x080033ac                update_cur_task
+                0x080032c0       0x3c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x080032c0                update_cur_task
  .text.add_task
-                0x080033e8       0xa0 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x080033e8                add_task
+                0x080032fc       0xa0 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x080032fc                add_task
  .text.tasks_check
-                0x08003488       0x38 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003488                tasks_check
+                0x0800339c       0x38 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x0800339c                tasks_check
  .text.sys_task_sche
-                0x080034c0       0xc0 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x080034c0                sys_task_sche
+                0x080033d4       0xc0 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x080033d4                sys_task_sche
  .text.sys_alarm
-                0x08003580       0x24 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003580                sys_alarm
- .text.wake_up  0x080035a4       0x1e CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x080035a4                wake_up
+                0x08003494       0x24 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003494                sys_alarm
+ .text.wake_up  0x080034b8       0x1e CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x080034b8                wake_up
  .text.add_wait_queue
-                0x080035c2       0x1c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x080035c2                add_wait_queue
+                0x080034d6       0x1c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x080034d6                add_wait_queue
  .text.remove_wait_queue
-                0x080035de       0x22 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x080035de                remove_wait_queue
+                0x080034f2       0x22 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x080034f2                remove_wait_queue
  .text.sys_getpid
-                0x08003600        0xc CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003600                sys_getpid
+                0x08003514        0xc CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003514                sys_getpid
  .text.sys_getppid
-                0x0800360c        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x0800360c                sys_getppid
+                0x08003520        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003520                sys_getppid
  .text.sys_getuid
-                0x08003612        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003612                sys_getuid
+                0x08003526        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003526                sys_getuid
  .text.sys_geteuid
-                0x08003618        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003618                sys_geteuid
+                0x0800352c        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x0800352c                sys_geteuid
  .text.sys_getgid
-                0x0800361e        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x0800361e                sys_getgid
+                0x08003532        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003532                sys_getgid
  .text.sys_getegid
-                0x08003624        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003624                sys_getegid
- *fill*         0x0800362a        0x2 
+                0x08003538        0x6 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003538                sys_getegid
+ *fill*         0x0800353e        0x2 
  .text.sys_nice
-                0x0800362c       0x1c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x0800362c                sys_nice
+                0x08003540       0x1c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x08003540                sys_nice
  .text.SchedInit
-                0x08003648       0x2c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x08003648                SchedInit
+                0x0800355c       0x2c CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x0800355c                SchedInit
  .text.sys_setup
-                0x08003674       0x12 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
-                0x08003674                sys_setup
- *fill*         0x08003686        0x2 
+                0x08003588       0x12 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+                0x08003588                sys_setup
+ *fill*         0x0800359a        0x2 
  .text.sys_sgetmask
-                0x08003688       0x10 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
-                0x08003688                sys_sgetmask
+                0x0800359c       0x10 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x0800359c                sys_sgetmask
  .text.sys_ssetmask
-                0x08003698       0x1c CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
-                0x08003698                sys_ssetmask
+                0x080035ac       0x1c CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x080035ac                sys_ssetmask
  .text.sys_signal
-                0x080036b4       0x58 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
-                0x080036b4                sys_signal
+                0x080035c8       0x58 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x080035c8                sys_signal
  .text.sys_sigaction
-                0x0800370c       0x80 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
-                0x0800370c                sys_sigaction
+                0x08003620       0x80 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x08003620                sys_sigaction
  .text.do_signal
-                0x0800378c      0x138 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
-                0x0800378c                do_signal
+                0x080036a0      0x138 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x080036a0                do_signal
  .text.sys_sigreturn
-                0x080038c4       0x28 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
-                0x080038c4                sys_sigreturn
+                0x080037d8       0x28 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x080037d8                sys_sigreturn
  .text.do_signal_isr
-                0x080038ec       0x40 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
-                0x080038ec                do_signal_isr
+                0x08003800       0x40 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x08003800                do_signal_isr
  .text.sys_ftime
-                0x0800392c        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x0800392c                sys_ftime
+                0x08003840        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003840                sys_ftime
  .text.sys_break
-                0x08003932        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003932                sys_break
+                0x08003846        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003846                sys_break
  .text.sys_ptrace
-                0x08003938        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003938                sys_ptrace
+                0x0800384c        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x0800384c                sys_ptrace
  .text.sys_stty
-                0x0800393e        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x0800393e                sys_stty
+                0x08003852        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003852                sys_stty
  .text.sys_gtty
-                0x08003944        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003944                sys_gtty
+                0x08003858        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003858                sys_gtty
  .text.sys_prof
-                0x0800394a        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x0800394a                sys_prof
+                0x0800385e        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x0800385e                sys_prof
  .text.sys_setregid
-                0x08003950        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003950                sys_setregid
+                0x08003864        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003864                sys_setregid
  .text.sys_setgid
-                0x08003956        0xa CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003956                sys_setgid
+                0x0800386a        0xa CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x0800386a                sys_setgid
  .text.sys_acct
-                0x08003960        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003960                sys_acct
+                0x08003874        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003874                sys_acct
  .text.sys_phys
-                0x08003966        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003966                sys_phys
+                0x0800387a        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x0800387a                sys_phys
  .text.sys_lock
-                0x0800396c        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x0800396c                sys_lock
- .text.sys_mpx  0x08003972        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003972                sys_mpx
+                0x08003880        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003880                sys_lock
+ .text.sys_mpx  0x08003886        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003886                sys_mpx
  .text.sys_ulimit
-                0x08003978        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003978                sys_ulimit
+                0x0800388c        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x0800388c                sys_ulimit
  .text.sys_time
-                0x0800397e        0x4 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x0800397e                sys_time
+                0x08003892        0x4 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003892                sys_time
  .text.sys_setreuid
-                0x08003982        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003982                sys_setreuid
+                0x08003896        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x08003896                sys_setreuid
  .text.sys_setuid
-                0x08003988        0xa CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003988                sys_setuid
+                0x0800389c        0xa CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x0800389c                sys_setuid
  .text.sys_stime
-                0x08003992        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003992                sys_stime
+                0x080038a6        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x080038a6                sys_stime
  .text.sys_times
-                0x08003998        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x08003998                sys_times
- .text.sys_brk  0x0800399e        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x0800399e                sys_brk
+                0x080038ac        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x080038ac                sys_times
+ .text.sys_brk  0x080038b2        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x080038b2                sys_brk
  .text.sys_setpgid
-                0x080039a4        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x080039a4                sys_setpgid
+                0x080038b8        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x080038b8                sys_setpgid
  .text.sys_getpgrp
-                0x080039aa        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x080039aa                sys_getpgrp
+                0x080038be        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x080038be                sys_getpgrp
  .text.sys_setsid
-                0x080039b0        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x080039b0                sys_setsid
+                0x080038c4        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x080038c4                sys_setsid
  .text.sys_uname
-                0x080039b6        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x080039b6                sys_uname
+                0x080038ca        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x080038ca                sys_uname
  .text.sys_umask
-                0x080039bc        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
-                0x080039bc                sys_umask
+                0x080038d0        0x6 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x080038d0                sys_umask
  .text.svcHandler
-                0x080039c2       0x56 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
-                0x080039c2                svcHandler
+                0x080038d6       0x56 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+                0x080038d6                svcHandler
  .text.task_create
-                0x08003a18      0x158 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
-                0x08003a18                task_create
- .text.rand     0x08003b70       0x20 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
-                0x08003b70                rand
- .text.strcmp   0x08003b90       0x18 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
-                0x08003b90                strcmp
- .text.memcpy   0x08003ba8       0x14 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
-                0x08003ba8                memcpy
- .text.strlen   0x08003bbc       0x10 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
-                0x08003bbc                strlen
- .text.strcpy   0x08003bcc       0x14 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
-                0x08003bcc                strcpy
- .text.memset   0x08003be0       0x10 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
-                0x08003be0                memset
- .text.strncpy  0x08003bf0       0x20 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
-                0x08003bf0                strncpy
- .text.xfputc   0x08003c10       0x24 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
-                0x08003c10                xfputc
+                0x0800392c      0x158 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+                0x0800392c                task_create
+ .text.rand     0x08003a84       0x20 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+                0x08003a84                rand
+ .text.strcmp   0x08003aa4       0x18 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+                0x08003aa4                strcmp
+ .text.memcpy   0x08003abc       0x14 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+                0x08003abc                memcpy
+ .text.strlen   0x08003ad0       0x10 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+                0x08003ad0                strlen
+ .text.strcpy   0x08003ae0       0x14 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+                0x08003ae0                strcpy
+ .text.memset   0x08003af4       0x10 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+                0x08003af4                memset
+ .text.strncpy  0x08003b04       0x20 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+                0x08003b04                strncpy
+ .text.xfputc   0x08003b24       0x24 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+                0x08003b24                xfputc
  .text._xvfprintf
-                0x08003c34      0x278 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+                0x08003b48      0x278 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
  .text.xvsprintf
-                0x08003eac       0x1c CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
-                0x08003eac                xvsprintf
- .text.main     0x08003ec8       0x1c CMakeFiles/untitled1.elf.dir/main/main.c.obj
-                0x08003ec8                main
+                0x08003dc0       0x1c CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+                0x08003dc0                xvsprintf
+ .text.main     0x08003ddc       0x1c CMakeFiles/untitled1.elf.dir/main/main.c.obj
+                0x08003ddc                main
  .text.KernelTask
-                0x08003ee4       0x80 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x08003ee4                KernelTask
- .text.signal   0x08003f64       0x24 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x08003f64                signal
- .text.alarm    0x08003f88       0x20 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x08003f88                alarm
+                0x08003df8       0x80 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x08003df8                KernelTask
+ .text.signal   0x08003e78       0x24 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x08003e78                signal
+ .text.alarm    0x08003e9c       0x20 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x08003e9c                alarm
  .text.SignalFunc
-                0x08003fa8       0x24 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x08003fa8                SignalFunc
+                0x08003ebc       0x24 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x08003ebc                SignalFunc
  .text.TestTask
-                0x08003fcc       0x1c CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x08003fcc                TestTask
+                0x08003ee0       0x1c CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x08003ee0                TestTask
  .text.KernelTaskInit
-                0x08003fe8       0x78 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x08003fe8                KernelTaskInit
- .text.InitMem  0x08004060       0x40 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x08004060                InitMem
- .text._Malloc  0x080040a0       0xb0 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x080040a0                _Malloc
- .text._Free    0x08004150       0x58 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x08004150                _Free
+                0x08003efc       0x78 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x08003efc                KernelTaskInit
+ .text.InitMem  0x08003f74       0x40 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08003f74                InitMem
+ .text._Malloc  0x08003fb4       0xb0 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08003fb4                _Malloc
+ .text._Free    0x08004064       0x58 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08004064                _Free
  .text.OSMalloc
-                0x080041a8       0x1e CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x080041a8                OSMalloc
- .text.OSFree   0x080041c6       0x1a CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x080041c6                OSFree
+                0x080040bc       0x1e CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x080040bc                OSMalloc
+ .text.OSFree   0x080040da       0x1a CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x080040da                OSFree
  *(.glue_7)
- .glue_7        0x080041e0        0x0 linker stubs
+ .glue_7        0x080040f4        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x080041e0        0x0 linker stubs
+ .glue_7t       0x080040f4        0x0 linker stubs
  *(.eh_frame)
  *(.init)
  *(.fini)
-                0x080041e0                . = ALIGN (0x4)
-                0x080041e0                _etext = .
-                0x080041e0                . = ALIGN (0x4)
-                0x080041e0                _dev_reg_item_start = .
+                0x080040f4                . = ALIGN (0x4)
+                0x080040f4                _etext = .
+                0x080040f4                . = ALIGN (0x4)
+                0x080040f4                _dev_reg_item_start = .
  *(DevRegList)
- DevRegList     0x080041e0        0x8 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x080041e0                dev_reg_flash
-                0x080041e8                _dev_reg_item_end = .
+ DevRegList     0x080040f4        0x8 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x080040f4                dev_reg_flash
+                0x080040fc                _dev_reg_item_end = .
 
-.vfp11_veneer   0x080041e8        0x0
- .vfp11_veneer  0x080041e8        0x0 linker stubs
+.vfp11_veneer   0x080040fc        0x0
+ .vfp11_veneer  0x080040fc        0x0 linker stubs
 
-.v4_bx          0x080041e8        0x0
- .v4_bx         0x080041e8        0x0 linker stubs
+.v4_bx          0x080040fc        0x0
+ .v4_bx         0x080040fc        0x0 linker stubs
 
-.iplt           0x080041e8        0x0
- .iplt          0x080041e8        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
+.iplt           0x080040fc        0x0
+ .iplt          0x080040fc        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
 
-.rodata         0x080041e8       0x68
-                0x080041e8                . = ALIGN (0x4)
+.rodata         0x080040fc       0x68
+                0x080040fc                . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
  .rodata.bk_flash_init.str1.4
-                0x080041e8        0x6 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- *fill*         0x080041ee        0x2 
+                0x080040fc        0x6 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+ *fill*         0x08004102        0x2 
  .rodata.sync_bk.str1.4
-                0x080041f0        0xf CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- *fill*         0x080041ff        0x1 
+                0x08004104        0xf CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ *fill*         0x08004113        0x1 
  .rodata.__FUNCTION__.0
-                0x08004200        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08004114        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.1
-                0x08004204        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08004118        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.2
-                0x0800420c        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08004120        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.str1.4
-                0x08004210        0x3 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- *fill*         0x08004213        0x1 
+                0x08004124        0x3 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ *fill*         0x08004127        0x1 
  .rodata.sp_mkdir.str1.4
-                0x08004214        0x7 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x08004128        0x7 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
  .rodata.sp_mkfs.str1.4
-                0x0800421b        0x7 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+                0x0800412f        0x7 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
  .rodata._xvfprintf.str1.4
-                0x0800421b        0x7 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+                0x0800412f        0x7 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
                                   0x1 (size before relaxing)
- *fill*         0x0800421b        0x1 
+ *fill*         0x0800412f        0x1 
  .rodata.KernelTask.str1.4
-                0x0800421c       0x1d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- *fill*         0x08004239        0x3 
+                0x08004130       0x1d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ *fill*         0x0800414d        0x3 
  .rodata.KernelTaskInit.str1.4
-                0x0800423c       0x11 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x08004250                . = ALIGN (0x4)
- *fill*         0x0800424d        0x3 
+                0x08004150       0x11 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x08004164                . = ALIGN (0x4)
+ *fill*         0x08004161        0x3 
 
-.rel.dyn        0x08004250        0x0
- .rel.iplt      0x08004250        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
+.rel.dyn        0x08004164        0x0
+ .rel.iplt      0x08004164        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x08004250        0x0
-                0x08004250                __exidx_start = .
+.ARM            0x08004164        0x0
+                0x08004164                __exidx_start = .
  *(.ARM.exidx*)
-                0x08004250                __exidx_end = .
+                0x08004164                __exidx_end = .
 
-.preinit_array  0x08004250        0x0
+.preinit_array  0x08004164        0x0
                 [!provide]                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
                 [!provide]                PROVIDE (__preinit_array_end = .)
 
-.init_array     0x08004250        0x0
+.init_array     0x08004164        0x0
                 [!provide]                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
                 [!provide]                PROVIDE (__init_array_end = .)
 
-.fini_array     0x08004250        0x0
+.fini_array     0x08004164        0x0
                 [!provide]                PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
                 [!provide]                PROVIDE (__fini_array_end = .)
-                0x08004250                _sidata = LOADADDR (.data)
+                0x08004164                _sidata = LOADADDR (.data)
 
-.data           0x20000000      0x430 load address 0x08004250
+.data           0x20000000      0x430 load address 0x08004164
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -2538,11 +2545,11 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x20000430                . = ALIGN (0x4)
                 0x20000430                _edata = .
 
-.igot.plt       0x20000430        0x0 load address 0x08004680
+.igot.plt       0x20000430        0x0 load address 0x08004594
  .igot.plt      0x20000430        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
                 0x20000430                . = ALIGN (0x4)
 
-.bss            0x20000440     0xeb40 load address 0x08004680
+.bss            0x20000440     0xea00 load address 0x08004594
                 0x20000440                _sbss = .
                 0x20000440                __bss_start__ = _sbss
  *(.bss)
@@ -2576,41 +2583,38 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x20000e34        0x6 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
                 0x20000e34                sb_used_flag
  *fill*         0x20000e3a        0x2 
- .bss.lock      0x20000e3c        0x4 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .bss.sem_list  0x20000e40      0x140 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
-                0x20000e40                sem_list
  .bss.printk_cache
-                0x20000f80      0x200 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
- .bss.sysTasks  0x20001180       0x34 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                0x20001180                sysTasks
- .bss.errno     0x200011b4        0x4 CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
-                0x200011b4                errno
- .bss.strptr    0x200011b8        0x4 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
- .bss.dir       0x200011bc       0x8c CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x200011bc                dir
- .bss.tcp.0     0x20001248       0x1c CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- *fill*         0x20001264       0x1c 
- .bss.mem0      0x20001280     0xd000 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x20001280                mem0
+                0x20000e3c      0x200 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+ .bss.sysTasks  0x2000103c       0x34 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x2000103c                sysTasks
+ .bss.errno     0x20001070        0x4 CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
+                0x20001070                errno
+ .bss.strptr    0x20001074        0x4 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+ .bss.dir       0x20001078       0x8c CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x20001078                dir
+ .bss.tcp.0     0x20001104       0x1c CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ *fill*         0x20001120       0x20 
+ .bss.mem0      0x20001140     0xd000 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x20001140                mem0
  .bss.mem0ManTb
-                0x2000e280      0xd00 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x2000e280                mem0ManTb
+                0x2000e140      0xd00 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x2000e140                mem0ManTb
  *(COMMON)
-                0x2000ef80                . = ALIGN (0x4)
-                0x2000ef80                _ebss = .
-                0x2000ef80                __bss_end__ = _ebss
+                0x2000ee40                . = ALIGN (0x4)
+                0x2000ee40                _ebss = .
+                0x2000ee40                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2000ef80      0x400 load address 0x08004680
-                0x2000ef80                . = ALIGN (0x8)
+                0x2000ee40      0x400 load address 0x08004594
+                0x2000ee40                . = ALIGN (0x8)
                 [!provide]                PROVIDE (end = .)
                 [!provide]                PROVIDE (_end = .)
-                0x2000ef80                . = (. + _Min_Heap_Size)
-                0x2000f380                . = (. + _Min_Stack_Size)
- *fill*         0x2000ef80      0x400 
-                0x2000f380                . = ALIGN (0x8)
+                0x2000ee40                . = (. + _Min_Heap_Size)
+                0x2000f240                . = (. + _Min_Stack_Size)
+ *fill*         0x2000ee40      0x400 
+                0x2000f240                . = ALIGN (0x8)
 
-.ext_sram       0x68000000    0xff000 load address 0x08004680
+.ext_sram       0x68000000    0xff000 load address 0x08004594
                 0x68000000                . = ALIGN (0x4)
                 0x68000000                _sext_sram = .
  *(.ext_sram)
@@ -2689,43 +2693,41 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
  .ARM.attributes
                 0x0000051f       0x2d CMakeFiles/untitled1.elf.dir/fs/super.c.obj
  .ARM.attributes
-                0x0000054c       0x2d CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+                0x0000054c       0x2d CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
  .ARM.attributes
-                0x00000579       0x2d CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+                0x00000579       0x2d CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
  .ARM.attributes
-                0x000005a6       0x2d CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+                0x000005a6       0x2d CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
  .ARM.attributes
-                0x000005d3       0x2d CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+                0x000005d3       0x2d CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
  .ARM.attributes
-                0x00000600       0x2d CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x00000600       0x2d CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
  .ARM.attributes
-                0x0000062d       0x2d CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+                0x0000062d       0x2d CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
  .ARM.attributes
-                0x0000065a       0x2d CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x0000065a       0x2d CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
  .ARM.attributes
-                0x00000687       0x2d CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x00000687       0x2d CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
  .ARM.attributes
-                0x000006b4       0x2d CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+                0x000006b4       0x2d CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
  .ARM.attributes
-                0x000006e1       0x2d CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+                0x000006e1       0x2d CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
  .ARM.attributes
-                0x0000070e       0x2d CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
+                0x0000070e       0x2d CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
  .ARM.attributes
-                0x0000073b       0x2d CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+                0x0000073b       0x2d CMakeFiles/untitled1.elf.dir/lib/string.c.obj
  .ARM.attributes
-                0x00000768       0x2d CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+                0x00000768       0x2d CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
  .ARM.attributes
-                0x00000795       0x2d CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+                0x00000795       0x2d CMakeFiles/untitled1.elf.dir/main/main.c.obj
  .ARM.attributes
-                0x000007c2       0x2d CMakeFiles/untitled1.elf.dir/main/main.c.obj
+                0x000007c2       0x2d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
  .ARM.attributes
-                0x000007ef       0x2d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .ARM.attributes
-                0x0000081c       0x2d CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x000007ef       0x2d CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 OUTPUT(untitled1.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_line     0x00000000     0x9f7e
+.debug_line     0x00000000     0x9b1a
  .debug_line    0x00000000       0xab CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
  .debug_line    0x000000ab      0x331 CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj
  .debug_line    0x000003dc      0x19a CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
@@ -2740,43 +2742,42 @@ LOAD linker stubs
  .debug_line    0x0000158e      0x33b CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
  .debug_line    0x000018c9       0x9e CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj
  .debug_line    0x00001967      0x33b CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- .debug_line    0x00001ca2      0x5a8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- .debug_line    0x0000224a      0x4e4 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
- .debug_line    0x0000272e      0x267 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
- .debug_line    0x00002995      0x166 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- .debug_line    0x00002afb      0x407 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
- .debug_line    0x00002f02      0x180 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
- .debug_line    0x00003082      0x713 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
- .debug_line    0x00003795      0x60d CMakeFiles/untitled1.elf.dir/fs/open.c.obj
- .debug_line    0x00003da2      0x31a CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
- .debug_line    0x000040bc      0x6dc CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- .debug_line    0x00004798      0x192 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
- .debug_line    0x0000492a      0x110 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
- .debug_line    0x00004a3a      0x536 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
- .debug_line    0x00004f70      0xaef CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- .debug_line    0x00005a5f      0x66e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
- .debug_line    0x000060cd      0x459 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
- .debug_line    0x00006526      0x11f CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
- .debug_line    0x00006645      0x366 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
- .debug_line    0x000069ab      0x482 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .debug_line    0x00006e2d      0x211 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
- .debug_line    0x0000703e      0x263 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
- .debug_line    0x000072a1       0xf4 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
- .debug_line    0x00007395      0x79b CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
- .debug_line    0x00007b30       0xd6 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
- .debug_line    0x00007c06      0x452 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
- .debug_line    0x00008058      0x2b3 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
- .debug_line    0x0000830b      0x168 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
- .debug_line    0x00008473      0x357 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
- .debug_line    0x000087ca       0x4d CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
- .debug_line    0x00008817       0xc2 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
- .debug_line    0x000088d9      0x53a CMakeFiles/untitled1.elf.dir/lib/string.c.obj
- .debug_line    0x00008e13      0x83f CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
- .debug_line    0x00009652       0xc7 CMakeFiles/untitled1.elf.dir/main/main.c.obj
- .debug_line    0x00009719      0x2f1 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_line    0x00009a0a      0x574 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_line    0x00001ca2      0x5ce CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .debug_line    0x00002270      0x4e4 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+ .debug_line    0x00002754      0x267 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+ .debug_line    0x000029bb      0x166 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ .debug_line    0x00002b21      0x407 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+ .debug_line    0x00002f28      0x180 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+ .debug_line    0x000030a8      0x713 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+ .debug_line    0x000037bb      0x60d CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+ .debug_line    0x00003dc8      0x31a CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+ .debug_line    0x000040e2      0x6dc CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ .debug_line    0x000047be      0x192 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+ .debug_line    0x00004950      0x110 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
+ .debug_line    0x00004a60      0x52e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+ .debug_line    0x00004f8e      0xaef CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ .debug_line    0x00005a7d      0x66e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+ .debug_line    0x000060eb      0x459 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+ .debug_line    0x00006544      0x11f CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+ .debug_line    0x00006663      0x366 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+ .debug_line    0x000069c9      0x211 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+ .debug_line    0x00006bda      0x263 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+ .debug_line    0x00006e3d       0xf4 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+ .debug_line    0x00006f31      0x79b CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+ .debug_line    0x000076cc       0xd6 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+ .debug_line    0x000077a2      0x452 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+ .debug_line    0x00007bf4      0x2b3 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+ .debug_line    0x00007ea7      0x168 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+ .debug_line    0x0000800f      0x357 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+ .debug_line    0x00008366       0x4d CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
+ .debug_line    0x000083b3       0xc2 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+ .debug_line    0x00008475      0x53a CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+ .debug_line    0x000089af      0x83f CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+ .debug_line    0x000091ee       0xc7 CMakeFiles/untitled1.elf.dir/main/main.c.obj
+ .debug_line    0x000092b5      0x2f1 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ .debug_line    0x000095a6      0x574 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_info     0x00000000    0x1b167
+.debug_info     0x00000000    0x1bfbc
  .debug_info    0x00000000       0x26 CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
  .debug_info    0x00000026      0x803 CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj
  .debug_info    0x00000829       0x22 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
@@ -2791,43 +2792,42 @@ LOAD linker stubs
  .debug_info    0x00001bd2      0x46a CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
  .debug_info    0x0000203c       0x22 CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj
  .debug_info    0x0000205e      0x591 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- .debug_info    0x000025ef      0x911 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- .debug_info    0x00002f00      0xf81 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
- .debug_info    0x00003e81      0xd65 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
- .debug_info    0x00004be6      0x979 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- .debug_info    0x0000555f     0x122e CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
- .debug_info    0x0000678d      0xc90 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
- .debug_info    0x0000741d     0x1543 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
- .debug_info    0x00008960     0x12b6 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
- .debug_info    0x00009c16      0xe34 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
- .debug_info    0x0000aa4a     0x103b CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- .debug_info    0x0000ba85      0xa35 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
- .debug_info    0x0000c4ba      0x883 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
- .debug_info    0x0000cd3d     0x10d3 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
- .debug_info    0x0000de10     0x1845 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- .debug_info    0x0000f655      0xf77 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
- .debug_info    0x000105cc      0xf28 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
- .debug_info    0x000114f4      0x898 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
- .debug_info    0x00011d8c      0xe40 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
- .debug_info    0x00012bcc     0x116f CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .debug_info    0x00013d3b      0xe3e CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
- .debug_info    0x00014b79      0xdfe CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
- .debug_info    0x00015977      0x16f CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
- .debug_info    0x00015ae6     0x1213 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
- .debug_info    0x00016cf9       0xc4 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
- .debug_info    0x00016dbd      0xec8 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
- .debug_info    0x00017c85      0x3df CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
- .debug_info    0x00018064      0x21d CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
- .debug_info    0x00018281      0xf83 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
- .debug_info    0x00019204       0x68 CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
- .debug_info    0x0001926c       0xbf CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
- .debug_info    0x0001932b      0x678 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
- .debug_info    0x000199a3      0x77a CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
- .debug_info    0x0001a11d      0x12a CMakeFiles/untitled1.elf.dir/main/main.c.obj
- .debug_info    0x0001a247      0x648 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_info    0x0001a88f      0x8d8 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_info    0x000025ef     0x174b CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .debug_info    0x00003d3a     0x1058 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+ .debug_info    0x00004d92      0xe33 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+ .debug_info    0x00005bc5      0xa47 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ .debug_info    0x0000660c     0x12fc CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+ .debug_info    0x00007908      0xd5e CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+ .debug_info    0x00008666     0x1611 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+ .debug_info    0x00009c77     0x136e CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+ .debug_info    0x0000afe5      0xf02 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+ .debug_info    0x0000bee7     0x1109 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ .debug_info    0x0000cff0      0xb03 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+ .debug_info    0x0000daf3      0x951 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
+ .debug_info    0x0000e444     0x1196 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+ .debug_info    0x0000f5da     0x1913 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ .debug_info    0x00010eed     0x1045 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+ .debug_info    0x00011f32      0xff6 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+ .debug_info    0x00012f28      0x966 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+ .debug_info    0x0001388e      0xf0e CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+ .debug_info    0x0001479c      0xf0c CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+ .debug_info    0x000156a8      0xecc CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+ .debug_info    0x00016574      0x16f CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+ .debug_info    0x000166e3     0x12e1 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+ .debug_info    0x000179c4       0xc4 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+ .debug_info    0x00017a88      0xf96 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+ .debug_info    0x00018a1e      0x3df CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+ .debug_info    0x00018dfd      0x21d CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+ .debug_info    0x0001901a     0x1051 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+ .debug_info    0x0001a06b       0x68 CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
+ .debug_info    0x0001a0d3       0xbf CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+ .debug_info    0x0001a192      0x678 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+ .debug_info    0x0001a80a      0x768 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+ .debug_info    0x0001af72      0x12a CMakeFiles/untitled1.elf.dir/main/main.c.obj
+ .debug_info    0x0001b09c      0x648 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ .debug_info    0x0001b6e4      0x8d8 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_abbrev   0x00000000     0x4de5
+.debug_abbrev   0x00000000     0x4c9e
  .debug_abbrev  0x00000000       0x14 CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
  .debug_abbrev  0x00000014      0x2c2 CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj
  .debug_abbrev  0x000002d6       0x12 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
@@ -2842,43 +2842,42 @@ LOAD linker stubs
  .debug_abbrev  0x0000086a      0x1b8 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
  .debug_abbrev  0x00000a22       0x12 CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj
  .debug_abbrev  0x00000a34      0x1c8 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- .debug_abbrev  0x00000bfc      0x1fc CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- .debug_abbrev  0x00000df8      0x288 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
- .debug_abbrev  0x00001080      0x230 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
- .debug_abbrev  0x000012b0      0x166 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- .debug_abbrev  0x00001416      0x29c CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
- .debug_abbrev  0x000016b2      0x1d1 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
- .debug_abbrev  0x00001883      0x343 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
- .debug_abbrev  0x00001bc6      0x289 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
- .debug_abbrev  0x00001e4f      0x221 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
- .debug_abbrev  0x00002070      0x20f CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- .debug_abbrev  0x0000227f      0x19c CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
- .debug_abbrev  0x0000241b       0xed CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
- .debug_abbrev  0x00002508      0x282 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
- .debug_abbrev  0x0000278a      0x2c8 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- .debug_abbrev  0x00002a52      0x241 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
- .debug_abbrev  0x00002c93      0x1e8 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
- .debug_abbrev  0x00002e7b       0xff CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
- .debug_abbrev  0x00002f7a      0x23d CMakeFiles/untitled1.elf.dir/fs/super.c.obj
- .debug_abbrev  0x000031b7      0x2a3 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .debug_abbrev  0x0000345a      0x290 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
- .debug_abbrev  0x000036ea      0x203 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
- .debug_abbrev  0x000038ed       0xdf CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
- .debug_abbrev  0x000039cc      0x34a CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
- .debug_abbrev  0x00003d16       0x75 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
- .debug_abbrev  0x00003d8b      0x26b CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
- .debug_abbrev  0x00003ff6       0xfa CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
- .debug_abbrev  0x000040f0      0x15d CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
- .debug_abbrev  0x0000424d      0x22e CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
- .debug_abbrev  0x0000447b       0x39 CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
- .debug_abbrev  0x000044b4       0x91 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
- .debug_abbrev  0x00004545      0x12c CMakeFiles/untitled1.elf.dir/lib/string.c.obj
- .debug_abbrev  0x00004671      0x24f CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
- .debug_abbrev  0x000048c0      0x101 CMakeFiles/untitled1.elf.dir/main/main.c.obj
- .debug_abbrev  0x000049c1      0x1d8 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_abbrev  0x00004b99      0x24c CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_abbrev  0x00000bfc      0x326 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .debug_abbrev  0x00000f22      0x299 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+ .debug_abbrev  0x000011bb      0x227 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+ .debug_abbrev  0x000013e2      0x177 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ .debug_abbrev  0x00001559      0x293 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+ .debug_abbrev  0x000017ec      0x1c8 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+ .debug_abbrev  0x000019b4      0x33a CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+ .debug_abbrev  0x00001cee      0x289 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+ .debug_abbrev  0x00001f77      0x218 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+ .debug_abbrev  0x0000218f      0x220 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ .debug_abbrev  0x000023af      0x1ad CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+ .debug_abbrev  0x0000255c       0xfe CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
+ .debug_abbrev  0x0000265a      0x293 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+ .debug_abbrev  0x000028ed      0x2d9 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ .debug_abbrev  0x00002bc6      0x252 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+ .debug_abbrev  0x00002e18      0x1f9 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+ .debug_abbrev  0x00003011      0x110 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+ .debug_abbrev  0x00003121      0x234 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+ .debug_abbrev  0x00003355      0x287 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+ .debug_abbrev  0x000035dc      0x1fa CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+ .debug_abbrev  0x000037d6       0xdf CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+ .debug_abbrev  0x000038b5      0x341 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+ .debug_abbrev  0x00003bf6       0x75 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+ .debug_abbrev  0x00003c6b      0x262 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+ .debug_abbrev  0x00003ecd       0xfa CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+ .debug_abbrev  0x00003fc7      0x15d CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+ .debug_abbrev  0x00004124      0x225 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+ .debug_abbrev  0x00004349       0x39 CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
+ .debug_abbrev  0x00004382       0x91 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+ .debug_abbrev  0x00004413      0x12c CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+ .debug_abbrev  0x0000453f      0x23a CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+ .debug_abbrev  0x00004779      0x101 CMakeFiles/untitled1.elf.dir/main/main.c.obj
+ .debug_abbrev  0x0000487a      0x1d8 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ .debug_abbrev  0x00004a52      0x24c CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_aranges  0x00000000      0xe70
+.debug_aranges  0x00000000      0xe38
  .debug_aranges
                 0x00000000       0x20 CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
  .debug_aranges
@@ -2908,77 +2907,75 @@ LOAD linker stubs
  .debug_aranges
                 0x000003a0       0x58 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
  .debug_aranges
-                0x000003f8       0x48 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x000003f8       0x68 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .debug_aranges
-                0x00000440       0x90 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                0x00000460       0x90 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
  .debug_aranges
-                0x000004d0       0x38 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+                0x000004f0       0x38 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
  .debug_aranges
-                0x00000508       0x20 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+                0x00000528       0x20 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
  .debug_aranges
-                0x00000528       0x78 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                0x00000548       0x78 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
  .debug_aranges
-                0x000005a0       0x20 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+                0x000005c0       0x20 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
  .debug_aranges
-                0x000005c0       0x68 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                0x000005e0       0x68 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
  .debug_aranges
-                0x00000628       0xa8 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x00000648       0xa8 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
  .debug_aranges
-                0x000006d0       0x38 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+                0x000006f0       0x38 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
  .debug_aranges
-                0x00000708       0x50 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                0x00000728       0x50 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
  .debug_aranges
-                0x00000758       0x28 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+                0x00000778       0x28 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
  .debug_aranges
-                0x00000780       0x18 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
+                0x000007a0       0x18 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
  .debug_aranges
-                0x00000798       0x78 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                0x000007b8       0x78 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
  .debug_aranges
-                0x00000810       0x60 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x00000830       0x60 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
  .debug_aranges
-                0x00000870       0x38 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+                0x00000890       0x38 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
  .debug_aranges
-                0x000008a8       0x28 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+                0x000008c8       0x28 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
  .debug_aranges
-                0x000008d0       0x20 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+                0x000008f0       0x20 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
  .debug_aranges
-                0x000008f0       0x48 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+                0x00000910       0x48 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
  .debug_aranges
-                0x00000938       0x58 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
+                0x00000958       0x30 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
  .debug_aranges
-                0x00000990       0x30 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+                0x00000988       0x20 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
  .debug_aranges
-                0x000009c0       0x20 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+                0x000009a8       0x28 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
  .debug_aranges
-                0x000009e0       0x28 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+                0x000009d0       0xb8 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
  .debug_aranges
-                0x00000a08       0xb8 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                0x00000a88       0x20 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
  .debug_aranges
-                0x00000ac0       0x20 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+                0x00000aa8       0x50 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
  .debug_aranges
-                0x00000ae0       0x50 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                0x00000af8       0xd8 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
  .debug_aranges
-                0x00000b30       0xd8 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+                0x00000bd0       0x20 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
  .debug_aranges
-                0x00000c08       0x20 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+                0x00000bf0       0x20 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
  .debug_aranges
-                0x00000c28       0x20 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+                0x00000c10       0x18 CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
  .debug_aranges
-                0x00000c48       0x18 CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
+                0x00000c28       0x28 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
  .debug_aranges
-                0x00000c60       0x28 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+                0x00000c50       0x90 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
  .debug_aranges
-                0x00000c88       0x90 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+                0x00000ce0       0x78 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
  .debug_aranges
-                0x00000d18       0x78 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+                0x00000d58       0x20 CMakeFiles/untitled1.elf.dir/main/main.c.obj
  .debug_aranges
-                0x00000d90       0x20 CMakeFiles/untitled1.elf.dir/main/main.c.obj
+                0x00000d78       0x48 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
  .debug_aranges
-                0x00000db0       0x48 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_aranges
-                0x00000df8       0x78 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x00000dc0       0x78 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_str      0x00000000     0x2f94
+.debug_str      0x00000000     0x2f07
  .debug_str     0x00000000       0x7c CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj
  .debug_str     0x0000007c      0x6e4 CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj
                                 0x750 (size before relaxing)
@@ -3006,117 +3003,114 @@ LOAD linker stubs
                                  0x81 (size before relaxing)
  .debug_str     0x000010d9      0x14b CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
                                 0x374 (size before relaxing)
- .debug_str     0x00001224      0x107 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
-                                0x32b (size before relaxing)
- .debug_str     0x0000132b      0x311 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
-                                0x70f (size before relaxing)
- .debug_str     0x0000163c      0x2ac CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
-                                0x74b (size before relaxing)
- .debug_str     0x000018e8       0x76 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
-                                0x4fe (size before relaxing)
- .debug_str     0x0000195e      0x163 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
-                                0x87a (size before relaxing)
- .debug_str     0x00001ac1       0x36 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
-                                0x718 (size before relaxing)
- .debug_str     0x00001af7      0x115 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
-                                0x847 (size before relaxing)
- .debug_str     0x00001c0c      0x113 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
-                                0x847 (size before relaxing)
- .debug_str     0x00001d1f       0x62 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
-                                0x74a (size before relaxing)
- .debug_str     0x00001d81      0x1f2 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
-                                0x6a6 (size before relaxing)
- .debug_str     0x00001f73       0x96 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
-                                0x52d (size before relaxing)
- .debug_str     0x00002009       0x63 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
-                                0x4cb (size before relaxing)
- .debug_str     0x0000206c      0x130 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
-                                0x79c (size before relaxing)
- .debug_str     0x0000219c      0x135 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
-                                0x6b1 (size before relaxing)
- .debug_str     0x000022d1      0x129 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
-                                0x624 (size before relaxing)
- .debug_str     0x000023fa       0x84 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
-                                0x6e7 (size before relaxing)
- .debug_str     0x0000247e       0x44 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
-                                0x4ac (size before relaxing)
- .debug_str     0x000024c2       0x70 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
-                                0x725 (size before relaxing)
- .debug_str     0x00002532       0xf4 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
-                                0x820 (size before relaxing)
- .debug_str     0x00002626       0x7b CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
-                                0x7a1 (size before relaxing)
- .debug_str     0x000026a1       0x52 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
-                                0x78a (size before relaxing)
- .debug_str     0x000026f3       0x5c CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+ .debug_str     0x00001224      0x57c CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                                0x924 (size before relaxing)
+ .debug_str     0x000017a0      0x18b CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+                                0x763 (size before relaxing)
+ .debug_str     0x0000192b       0x6a CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+                                0x7a4 (size before relaxing)
+ .debug_str     0x00001995       0x76 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+                                0x557 (size before relaxing)
+ .debug_str     0x00001a0b      0x11d CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+                                0x8d3 (size before relaxing)
+ .debug_str     0x00001b28       0x36 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+                                0x771 (size before relaxing)
+ .debug_str     0x00001b5e      0x115 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+                                0x8a0 (size before relaxing)
+ .debug_str     0x00001c73      0x113 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                                0x8a0 (size before relaxing)
+ .debug_str     0x00001d86       0x62 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+                                0x7a3 (size before relaxing)
+ .debug_str     0x00001de8      0x1f2 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+                                0x6ff (size before relaxing)
+ .debug_str     0x00001fda       0x96 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+                                0x586 (size before relaxing)
+ .debug_str     0x00002070       0x63 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj
+                                0x524 (size before relaxing)
+ .debug_str     0x000020d3      0x130 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+                                0x7f5 (size before relaxing)
+ .debug_str     0x00002203      0x135 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                                0x70a (size before relaxing)
+ .debug_str     0x00002338      0x129 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+                                0x67d (size before relaxing)
+ .debug_str     0x00002461       0x84 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+                                0x740 (size before relaxing)
+ .debug_str     0x000024e5       0x44 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+                                0x505 (size before relaxing)
+ .debug_str     0x00002529       0x70 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+                                0x77e (size before relaxing)
+ .debug_str     0x00002599       0x7b CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+                                0x7fa (size before relaxing)
+ .debug_str     0x00002614       0x52 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+                                0x7e3 (size before relaxing)
+ .debug_str     0x00002666       0x5c CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
                                 0x1dd (size before relaxing)
- .debug_str     0x0000274f      0x145 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
-                                0x8d2 (size before relaxing)
- .debug_str     0x00002894       0x3a CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+ .debug_str     0x000026c2      0x145 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+                                0x92b (size before relaxing)
+ .debug_str     0x00002807       0x3a CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
                                 0x1c7 (size before relaxing)
- .debug_str     0x000028ce       0xa5 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
-                                0x7cb (size before relaxing)
- .debug_str     0x00002973      0x150 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+ .debug_str     0x00002841       0xa5 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+                                0x824 (size before relaxing)
+ .debug_str     0x000028e6      0x150 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
                                 0x288 (size before relaxing)
- .debug_str     0x00002ac3       0x8f CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+ .debug_str     0x00002a36       0x8f CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
                                 0x248 (size before relaxing)
- .debug_str     0x00002b52       0x81 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
-                                0x7f7 (size before relaxing)
- .debug_str     0x00002bd3       0x2d CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
+ .debug_str     0x00002ac5       0x81 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+                                0x850 (size before relaxing)
+ .debug_str     0x00002b46       0x2d CMakeFiles/untitled1.elf.dir/lib/errno.c.obj
                                 0x1a0 (size before relaxing)
- .debug_str     0x00002c00       0x39 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+ .debug_str     0x00002b73       0x39 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
                                 0x1c1 (size before relaxing)
- .debug_str     0x00002c39       0x82 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+ .debug_str     0x00002bac       0x82 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
                                 0x230 (size before relaxing)
- .debug_str     0x00002cbb       0x88 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+ .debug_str     0x00002c2e       0x88 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
                                 0x254 (size before relaxing)
- .debug_str     0x00002d43       0x40 CMakeFiles/untitled1.elf.dir/main/main.c.obj
+ .debug_str     0x00002cb6       0x40 CMakeFiles/untitled1.elf.dir/main/main.c.obj
                                 0x1ed (size before relaxing)
- .debug_str     0x00002d83       0x6b CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ .debug_str     0x00002cf6       0x6b CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
                                 0x35c (size before relaxing)
- .debug_str     0x00002dee      0x1a6 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_str     0x00002d61      0x1a6 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                                 0x38f (size before relaxing)
 
-.debug_loc      0x00000000     0x94c7
+.debug_loc      0x00000000     0x9141
  .debug_loc     0x00000000      0x292 CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj
  .debug_loc     0x00000292      0x141 CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj
  .debug_loc     0x000003d3      0x16b CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/misc.c.obj
  .debug_loc     0x0000053e      0x717 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj
  .debug_loc     0x00000c55       0xff CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
  .debug_loc     0x00000d54      0x250 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- .debug_loc     0x00000fa4      0x5b6 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- .debug_loc     0x0000155a      0x6a6 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
- .debug_loc     0x00001c00      0x249 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
- .debug_loc     0x00001e49       0x55 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- .debug_loc     0x00001e9e      0x25d CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
- .debug_loc     0x000020fb      0x138 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
- .debug_loc     0x00002233      0x709 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
- .debug_loc     0x0000293c      0x60f CMakeFiles/untitled1.elf.dir/fs/open.c.obj
- .debug_loc     0x00002f4b      0x52b CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
- .debug_loc     0x00003476      0x7b8 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- .debug_loc     0x00003c2e       0xb0 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
- .debug_loc     0x00003cde      0x342 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
- .debug_loc     0x00004020      0xea9 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- .debug_loc     0x00004ec9      0x9e1 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
- .debug_loc     0x000058aa      0x25a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
- .debug_loc     0x00005b04       0x25 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
- .debug_loc     0x00005b29      0x254 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
- .debug_loc     0x00005d7d      0x41e CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .debug_loc     0x0000619b      0x197 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
- .debug_loc     0x00006332       0xe1 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
- .debug_loc     0x00006413       0x5a CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
- .debug_loc     0x0000646d      0x54f CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
- .debug_loc     0x000069bc      0x581 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
- .debug_loc     0x00006f3d      0x197 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
- .debug_loc     0x000070d4      0x183 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
- .debug_loc     0x00007257      0x29e CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
- .debug_loc     0x000074f5      0x80e CMakeFiles/untitled1.elf.dir/lib/string.c.obj
- .debug_loc     0x00007d03      0xcb3 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
- .debug_loc     0x000089b6       0x32 CMakeFiles/untitled1.elf.dir/main/main.c.obj
- .debug_loc     0x000089e8      0x27a CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_loc     0x00008c62      0x865 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_loc     0x00000fa4      0x64e CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .debug_loc     0x000015f2      0x6a6 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+ .debug_loc     0x00001c98      0x249 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+ .debug_loc     0x00001ee1       0x55 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ .debug_loc     0x00001f36      0x25d CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+ .debug_loc     0x00002193      0x138 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+ .debug_loc     0x000022cb      0x709 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+ .debug_loc     0x000029d4      0x60f CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+ .debug_loc     0x00002fe3      0x52b CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+ .debug_loc     0x0000350e      0x7b8 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ .debug_loc     0x00003cc6       0xb0 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+ .debug_loc     0x00003d76      0x342 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+ .debug_loc     0x000040b8      0xea9 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ .debug_loc     0x00004f61      0x9e1 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+ .debug_loc     0x00005942      0x25a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+ .debug_loc     0x00005b9c       0x25 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+ .debug_loc     0x00005bc1      0x254 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+ .debug_loc     0x00005e15      0x197 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+ .debug_loc     0x00005fac       0xe1 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+ .debug_loc     0x0000608d       0x5a CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+ .debug_loc     0x000060e7      0x54f CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+ .debug_loc     0x00006636      0x581 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+ .debug_loc     0x00006bb7      0x197 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+ .debug_loc     0x00006d4e      0x183 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+ .debug_loc     0x00006ed1      0x29e CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+ .debug_loc     0x0000716f      0x80e CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+ .debug_loc     0x0000797d      0xcb3 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+ .debug_loc     0x00008630       0x32 CMakeFiles/untitled1.elf.dir/main/main.c.obj
+ .debug_loc     0x00008662      0x27a CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ .debug_loc     0x000088dc      0x865 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_ranges   0x00000000      0xf30
+.debug_ranges   0x00000000      0xf08
  .debug_ranges  0x00000000       0x48 CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj
  .debug_ranges  0x00000048       0x78 CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj
  .debug_ranges  0x000000c0       0x20 CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj
@@ -3128,39 +3122,38 @@ LOAD linker stubs
  .debug_ranges  0x00000278       0x28 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
  .debug_ranges  0x000002a0       0x20 CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj
  .debug_ranges  0x000002c0       0x48 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- .debug_ranges  0x00000308       0x38 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- .debug_ranges  0x00000340       0x80 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
- .debug_ranges  0x000003c0       0x28 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
- .debug_ranges  0x000003e8       0x10 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- .debug_ranges  0x000003f8       0x68 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
- .debug_ranges  0x00000460       0x10 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
- .debug_ranges  0x00000470       0x88 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
- .debug_ranges  0x000004f8       0x98 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
- .debug_ranges  0x00000590       0x28 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
- .debug_ranges  0x000005b8      0x138 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- .debug_ranges  0x000006f0       0x18 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
- .debug_ranges  0x00000708       0x68 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
- .debug_ranges  0x00000770      0x1e0 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- .debug_ranges  0x00000950       0xe8 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
- .debug_ranges  0x00000a38       0x30 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
- .debug_ranges  0x00000a68       0x10 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
- .debug_ranges  0x00000a78       0x38 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
- .debug_ranges  0x00000ab0       0x48 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .debug_ranges  0x00000af8       0x38 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
- .debug_ranges  0x00000b30       0x10 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
- .debug_ranges  0x00000b40       0x18 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
- .debug_ranges  0x00000b58       0xc0 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
- .debug_ranges  0x00000c18       0x10 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
- .debug_ranges  0x00000c28       0x40 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
- .debug_ranges  0x00000c68       0xc8 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
- .debug_ranges  0x00000d30       0x10 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
- .debug_ranges  0x00000d40       0x10 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
- .debug_ranges  0x00000d50       0x18 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
- .debug_ranges  0x00000d68       0x80 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
- .debug_ranges  0x00000de8       0x68 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
- .debug_ranges  0x00000e50       0x28 CMakeFiles/untitled1.elf.dir/main/main.c.obj
- .debug_ranges  0x00000e78       0x38 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_ranges  0x00000eb0       0x80 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_ranges  0x00000308       0x58 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .debug_ranges  0x00000360       0x80 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+ .debug_ranges  0x000003e0       0x28 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+ .debug_ranges  0x00000408       0x10 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ .debug_ranges  0x00000418       0x68 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+ .debug_ranges  0x00000480       0x10 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+ .debug_ranges  0x00000490       0x88 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+ .debug_ranges  0x00000518       0x98 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+ .debug_ranges  0x000005b0       0x28 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+ .debug_ranges  0x000005d8      0x138 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ .debug_ranges  0x00000710       0x18 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+ .debug_ranges  0x00000728       0x68 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+ .debug_ranges  0x00000790      0x1e0 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ .debug_ranges  0x00000970       0xe8 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+ .debug_ranges  0x00000a58       0x30 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+ .debug_ranges  0x00000a88       0x10 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+ .debug_ranges  0x00000a98       0x38 CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+ .debug_ranges  0x00000ad0       0x38 CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+ .debug_ranges  0x00000b08       0x10 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+ .debug_ranges  0x00000b18       0x18 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+ .debug_ranges  0x00000b30       0xc0 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+ .debug_ranges  0x00000bf0       0x10 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+ .debug_ranges  0x00000c00       0x40 CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+ .debug_ranges  0x00000c40       0xc8 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+ .debug_ranges  0x00000d08       0x10 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+ .debug_ranges  0x00000d18       0x10 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+ .debug_ranges  0x00000d28       0x18 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+ .debug_ranges  0x00000d40       0x80 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+ .debug_ranges  0x00000dc0       0x68 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+ .debug_ranges  0x00000e28       0x28 CMakeFiles/untitled1.elf.dir/main/main.c.obj
+ .debug_ranges  0x00000e50       0x38 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ .debug_ranges  0x00000e88       0x80 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
 .comment        0x00000000       0x49
  .comment       0x00000000       0x49 CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj
@@ -3189,7 +3182,6 @@ LOAD linker stubs
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/fs/super.c.obj
- .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
@@ -3207,7 +3199,7 @@ LOAD linker stubs
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_frame    0x00000000     0x1ff8
+.debug_frame    0x00000000     0x1f6c
  .debug_frame   0x00000000       0xb8 CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj
  .debug_frame   0x000000b8       0x6c CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj
  .debug_frame   0x00000124       0x60 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/misc.c.obj
@@ -3215,36 +3207,35 @@ LOAD linker stubs
  .debug_frame   0x000003d8       0x70 CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj
  .debug_frame   0x00000448       0x6c CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj
  .debug_frame   0x000004b4       0xe4 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- .debug_frame   0x00000598       0xf0 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- .debug_frame   0x00000688      0x170 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
- .debug_frame   0x000007f8       0x84 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
- .debug_frame   0x0000087c       0x2c CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- .debug_frame   0x000008a8      0x144 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
- .debug_frame   0x000009ec       0x34 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
- .debug_frame   0x00000a20      0x168 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
- .debug_frame   0x00000b88      0x1b8 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
- .debug_frame   0x00000d40       0xac CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
- .debug_frame   0x00000dec      0x140 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- .debug_frame   0x00000f2c       0x44 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
- .debug_frame   0x00000f70      0x154 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
- .debug_frame   0x000010c4      0x194 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- .debug_frame   0x00001258       0xd4 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
- .debug_frame   0x0000132c       0x58 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
- .debug_frame   0x00001384       0x20 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
- .debug_frame   0x000013a4       0x8c CMakeFiles/untitled1.elf.dir/fs/super.c.obj
- .debug_frame   0x00001430       0xf4 CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj
- .debug_frame   0x00001524       0x5c CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
- .debug_frame   0x00001580       0x30 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
- .debug_frame   0x000015b0       0x64 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
- .debug_frame   0x00001614      0x1a4 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
- .debug_frame   0x000017b8       0x28 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
- .debug_frame   0x000017e0       0xcc CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
- .debug_frame   0x000018ac      0x1a0 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
- .debug_frame   0x00001a4c       0x2c CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
- .debug_frame   0x00001a78       0x48 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
- .debug_frame   0x00001ac0       0x30 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
- .debug_frame   0x00001af0      0x144 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
- .debug_frame   0x00001c34      0x1a0 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
- .debug_frame   0x00001dd4       0x28 CMakeFiles/untitled1.elf.dir/main/main.c.obj
- .debug_frame   0x00001dfc       0xa4 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_frame   0x00001ea0      0x158 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_frame   0x00000598      0x158 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .debug_frame   0x000006f0      0x170 CMakeFiles/untitled1.elf.dir/fs/dev.c.obj
+ .debug_frame   0x00000860       0x84 CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj
+ .debug_frame   0x000008e4       0x2c CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ .debug_frame   0x00000910      0x144 CMakeFiles/untitled1.elf.dir/fs/inode.c.obj
+ .debug_frame   0x00000a54       0x34 CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj
+ .debug_frame   0x00000a88      0x168 CMakeFiles/untitled1.elf.dir/fs/namei.c.obj
+ .debug_frame   0x00000bf0      0x1b8 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+ .debug_frame   0x00000da8       0xac CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+ .debug_frame   0x00000e54      0x140 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ .debug_frame   0x00000f94       0x44 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj
+ .debug_frame   0x00000fd8      0x154 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj
+ .debug_frame   0x0000112c      0x194 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ .debug_frame   0x000012c0       0xd4 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+ .debug_frame   0x00001394       0x58 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+ .debug_frame   0x000013ec       0x20 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj
+ .debug_frame   0x0000140c       0x8c CMakeFiles/untitled1.elf.dir/fs/super.c.obj
+ .debug_frame   0x00001498       0x5c CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj
+ .debug_frame   0x000014f4       0x30 CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj
+ .debug_frame   0x00001524       0x64 CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj
+ .debug_frame   0x00001588      0x1a4 CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj
+ .debug_frame   0x0000172c       0x28 CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj
+ .debug_frame   0x00001754       0xcc CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj
+ .debug_frame   0x00001820      0x1a0 CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+ .debug_frame   0x000019c0       0x2c CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+ .debug_frame   0x000019ec       0x48 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+ .debug_frame   0x00001a34       0x30 CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj
+ .debug_frame   0x00001a64      0x144 CMakeFiles/untitled1.elf.dir/lib/string.c.obj
+ .debug_frame   0x00001ba8      0x1a0 CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj
+ .debug_frame   0x00001d48       0x28 CMakeFiles/untitled1.elf.dir/main/main.c.obj
+ .debug_frame   0x00001d70       0xa4 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ .debug_frame   0x00001e14      0x158 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj

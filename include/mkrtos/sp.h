@@ -101,7 +101,7 @@ struct inode * sp_alloc_inode(struct inode * p_inode);
 int32_t sp_free_inode(struct inode *p_inode);
 void sp_write_inode (struct inode * i_node);
 
-int32_t sp_new_inode(struct inode* p_inode);
+struct inode* sp_new_inode(struct inode* p_inode);
 
 
 struct super_block* sp_alloc_sb(struct super_block* sb);

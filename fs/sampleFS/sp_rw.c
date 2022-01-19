@@ -185,7 +185,7 @@ int32_t inode_alloc_new_bk(struct inode* inode, uint32_t* newBkNum){
         }
         //这里还有点问题
         //填充二级
-        if (wbk(sb->s_dev_no, sp_ino->pp_ino[pFileBksInx], pFileBksi * 4, (uint8_t*)&b, sizeof(b)) != 0) {
+        if (wbk(sb->s_dev_no, sp_ino->pp_ino[pFileBksInx], (uint8_t*)&b,pFileBksi * 4,  sizeof(b)) != 0) {
 //            free_bk(sb,a);
             free_bk(sb,b);
             return -1;
@@ -303,7 +303,7 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
                 wSize = count > (sb->s_bk_size - (wOffset % sb->s_bk_size))
                         ? (sb->s_bk_size - (wOffset % sb->s_bk_size)) : count;
                 //写入文件
-                if (wbk(sb->s_dev_no, last_bk_no,wOffset % sb->s_bk_size, buf+wLen, wSize) < 0) {
+                if (wbk(sb->s_dev_no, last_bk_no,buf+wLen, wOffset % sb->s_bk_size, wSize) < 0) {
                     return -1;
                 }
                 wLen += wSize;
@@ -332,7 +332,7 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
             }
             //计算还需要写入多少
             wSize = remainSize > sb->s_bk_size ?  sb->s_bk_size : remainSize;
-            if (wbk(sb->s_dev_no, needWBk, 0, buf + wLen, wSize) < 0) {
+            if (wbk(sb->s_dev_no, needWBk, buf + wLen,0 , wSize) < 0) {
 //                return -1;
             }
             wLen += wSize;

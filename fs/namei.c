@@ -272,7 +272,7 @@ int sys_mknod(const char * filename, int mode, dev_t dev){
     int32_t res;
     c_ofs = get_path_name(filename,cache,sizeof(cache));
     //获得所在路径的inode
-    if((dir_namei(cache,&path_inode))==NULL){
+    if((dir_namei(cache,&path_inode))<0){
         return -ENOENT;
     }
     if(!IS_DIR_FILE(path_inode->i_type_mode)){

@@ -181,7 +181,10 @@ void xfputc (			/* Put a character to the specified device */
 }
 
 
-
+void xfputs (			/* Put a string to the specified device */
+        void(*func)(int),	/* Pointer to the output function */
+        const char*	str		/* Pointer to the string */
+);
 /*----------------------------------------------*/
 /* Put a null-terminated string                 */
 /*----------------------------------------------*/

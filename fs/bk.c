@@ -7,13 +7,13 @@
 #include <stdlib.h>
 #include <mkrtos/mem.h>
 #include <ipc/ipc.h>
+
 //设置BIT
 #define SET_BIT(a,b) ((a)|=1<<(b))
 //清楚BIT
 #define CLR_BIT(a,b) ((a)&=~(1<<(b)))
 #define GET_BIT(a,b) (((a)>>(b))&0x1)
 #define ABS(a) ((a)<0?-(a):(a))
-
 
 /**
  * 块缓存初始化
@@ -78,7 +78,7 @@ static struct bk_cache* sync_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,uint32
 
     sync_cache=&bk_cache_ls[sync_bk_no];
 
-    while(sem_take((sync_cache->sem_lock))<0);
+    lock_bk(sync_cache);
 
     if (GET_BIT(sync_cache->flag, 1)) {
         //先擦除
@@ -92,7 +92,7 @@ static struct bk_cache* sync_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,uint32
         }
     }
     sync_cache->flag=0;
-    while(sem_release((sync_cache->sem_lock)));
+    unlock_bk(sync_cache);
 
     return sync_cache;
 }
@@ -115,7 +115,7 @@ static int32_t sync_all_bk(dev_t dev_no){
         if(GET_BIT(bk_cache_ls[i].flag,7)){
             continue;
         }
-        while(sem_take((bk_cache_ls[i].sem_lock))<0);
+        lock_bk(bk_cache_ls+i);
         if (GET_BIT(bk_cache_ls[i].flag,0)) {
             if(bk_ops->erase_bk(bk_cache_ls[i].bk_no)<0){
 //                bk_cache_ls[i].flag=0;
@@ -129,7 +129,7 @@ static int32_t sync_all_bk(dev_t dev_no){
             }
         }
         bk_cache_ls[i].flag=0;
-        while(sem_release((bk_cache_ls[i].sem_lock)));
+        unlock_bk(bk_cache_ls+i);
     }
     return 0;
 }
@@ -194,8 +194,7 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
         bk_tmp->bk_no=bk_no;
         bk_tmp->flag=0x80;
     }
-
-    while(sem_take((bk_tmp->sem_lock))<0);
+    lock_bk(bk_tmp);
     if(ofs==0 && size==bk_tmp->bk_size) {
         //如果刚好写一块，则没必要读
         SET_BIT(bk_tmp->flag,2);
@@ -215,7 +214,7 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     }
     memcpy(bk_tmp->cache+ofs,data,size);
     SET_BIT(bk_tmp->flag,1);
-    while(sem_release((bk_tmp->sem_lock)));
+    unlock_bk(bk_tmp);
 
     return 0;
 }
@@ -251,7 +250,7 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
         bk_tmp=sync_bk(dev_no,bk_cache_ls,cache_len);
         bk_tmp->flag=0x80;
     }
-    while(sem_take((bk_tmp->sem_lock))<0);
+    lock_bk(bk_tmp);
     if (!GET_BIT(bk_tmp->flag, 2)) {
         if (bk_ops->read_bk(bk_no, bk_tmp->cache) < 0) {
 //            fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
@@ -263,7 +262,36 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
     }
     memcpy(data,bk_tmp->cache+ofs,size);
-    while(sem_release((bk_tmp->sem_lock)));
+    unlock_bk(bk_tmp);
 
     return 0;
+}
+
+static void __wait_on_bk(struct bk_cache* bk){
+    struct wait_queue wait = {CUR_TASK , NULL };
+
+    add_wait_queue(&bk->b_wait, &wait);
+    again:
+    CUR_TASK->status = TASK_SUSPEND;
+    if (atomic_read(&( bk->b_lock))) {
+        task_sche();
+        goto again;
+    }
+    remove_wait_queue(&bk->b_wait, &wait);
+    CUR_TASK->status = TASK_RUNNING;
+}
+
+void wait_on_bk(struct bk_cache* bk){
+    if(atomic_read(&bk->b_lock)){
+        __wait_on_bk(bk);
+    }
+}
+void lock_bk(struct bk_cache* bk){
+    wait_on_bk(bk);
+    atomic_set(&bk->b_lock,1);
+}
+
+void unlock_bk(struct bk_cache* bk){
+    atomic_set(&bk->b_lock,0);
+    wake_up(bk->b_wait);
 }

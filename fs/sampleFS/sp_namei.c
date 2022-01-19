@@ -155,7 +155,7 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
         pdi.used = TRUE;
         dir->i_file_size += sizeof(struct dir_item);
         //写文件信息
-        if (wbk(sb->s_dev_no, new_bk, 0, (uint8_t*)&pdi, sizeof(pdi)) < 0) {
+        if (wbk(sb->s_dev_no, new_bk, (uint8_t*)&pdi,0,  sizeof(pdi)) < 0) {
             free_bk(sb,new_bk);
             return -1;
         }

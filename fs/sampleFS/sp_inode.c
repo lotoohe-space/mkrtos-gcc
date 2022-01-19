@@ -33,7 +33,7 @@ int32_t sp_free_inode(struct inode *p_inode){
  * @param p_inode
  * @return
  */
-int32_t sp_new_inode(struct inode* p_inode){
+struct inode* sp_new_inode(struct inode* p_inode){
     ino_t res_ino;
     struct inode* new_inode;
 
