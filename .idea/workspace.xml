@@ -11,15 +11,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="首次提交">
-      <change afterPath="$PROJECT_DIR$/README.m" afterDir="false" />
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="inode增加等待队列，修正bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/PendSV_Handler.s" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/PendSV_Handler.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/arch.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/arch.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/bk.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/bk.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/dev.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/untitled1.elf.dir/fs/dev.c.obj" afterDir="false" />
@@ -52,20 +47,9 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/inode.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/namei.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/open.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/open.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/rw.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/super.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/ipc/ipc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ipc/ipc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/sem.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/sem.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/fork.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/fork.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/signal.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/signal.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -213,7 +197,7 @@
       <workItem from="1642336691913" duration="477000" />
       <workItem from="1642337307740" duration="14935000" />
       <workItem from="1642401823493" duration="4321000" />
-      <workItem from="1642406527294" duration="44915000" />
+      <workItem from="1642406527294" duration="47537000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -222,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642570191777</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="inode增加等待队列，修正bug">
+      <created>1642584052999</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1642584052999</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,12 +232,28 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="首次提交" />
-    <option name="LAST_COMMIT_MESSAGE" value="首次提交" />
+    <MESSAGE value="inode增加等待队列，修正bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="inode增加等待队列，修正bug" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main/task_main.c</url>
+          <line>18</line>
+          <option name="timeStamp" value="113" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main/task_main.c</url>
+          <line>23</line>
+          <option name="timeStamp" value="116" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="sysTasks.currentTask" language="ObjectiveC" />
+        <watch expression="file_path[i]" language="ObjectiveC" />
         <watch expression="o_inode" language="ObjectiveC" />
         <watch expression="dir" language="ObjectiveC" />
       </configuration>

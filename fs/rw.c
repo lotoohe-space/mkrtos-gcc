@@ -10,6 +10,8 @@
 
 //¶ÁÄ¿Â¼
 int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count){
+    int32_t err;
+
     if(fd>=NR_FILE){
         return  -EBADF;
     }
@@ -22,7 +24,7 @@ int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count){
     }
     if(_file->f_op
     &&_file->f_op->readdir){
-        int32_t err=_file->f_op->readdir(_file->f_inode,_file,dirent,count);
+        err=_file->f_op->readdir(_file->f_inode,_file,dirent,count);
         if(err<0){
             return err;
         }
@@ -30,7 +32,7 @@ int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count){
         return -ENOENT;
     }
 
-    return 0;
+    return err;
 }
 int sys_lseek(unsigned int fd, int32_t ofs, uint32_t origin){
     int32_t ofs_temp=0;

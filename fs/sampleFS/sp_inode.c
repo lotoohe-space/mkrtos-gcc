@@ -46,9 +46,9 @@ int32_t sp_new_inode(struct inode* p_inode){
     new_inode->i_file_size=0;
     new_inode->i_sb=p_inode->i_sb;
     new_inode->i_dirt=0;
-    new_inode->i_ops=p_inode->i_ops;
+    new_inode->i_ops=NULL;
     atomic_set(&(new_inode->i_used_count),1);
-    atomic_set(&(new_inode->i_lock),1);
+    atomic_set(&(new_inode->i_lock),0);
     if(sp_alloc_inode((new_inode))==NULL){
         free_inode_no(p_inode->i_sb,new_inode);
     }

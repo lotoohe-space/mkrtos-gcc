@@ -11,13 +11,19 @@
 extern int32_t sys_open(const char* path,int32_t flags,int32_t mode);
 extern int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count);
 extern void sys_close(int fp);
-
+extern int sys_mkdir(const char * pathname, int mode);
 struct dirent dir;
 void KernelTask(void*arg0, void*arg1){
     int fd;
     int res;
     if((fd=sys_open("/",O_RDONLY,0777))<0){
         while(1);
+    }
+    sys_mkdir("/zz",0777);
+    if(sys_mkdir("/zz",0777)<0){
+        sys_mkdir("/zz1",0777);
+        sys_mkdir("/zz2",0777);
+        sys_mkdir("/zz3",0777);
     }
     while(res>0) {
         if ((res=sys_readdir(fd, &dir, sizeof(dir)))<= 0) {

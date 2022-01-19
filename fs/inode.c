@@ -68,7 +68,7 @@ struct inode* get_empty_inode(void){
     for(i=0;i<INODE_NUM;i++){
         if(atomic_test_inc(&(inode_ls[i].i_used_count))){
             atomic_dec(&inode_free_num);
-            return &inode_ls;
+            return &(inode_ls[i]);
         }
     }
     //如果这里找不到，应该让系统休眠等待释放信号到来
@@ -86,8 +86,9 @@ void lose_inode(struct inode* p_inode){
     if(atomic_read(&(p_inode->i_used_count))==0){
         //释放等待的进程
         wake_up_wait_inode_list();
+        atomic_inc(&inode_free_num);
     }
-    atomic_inc(&inode_free_num);
+
 }
 
 /**

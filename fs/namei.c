@@ -48,7 +48,8 @@ struct inode* _open_namei(const char*file_path){
     if (file_path[0] == '\0') {
         //目录长度为0，则标志为当前工作目录
         res_inode = PWD_INODE;
-        return res_inode;
+        atomic_inc(&res_inode->i_used_count);
+        goto end;
     }
     for (uint32_t i = 0; file_path[i]; i++) {
         if (file_path[i] == '\\' || file_path[i] == '/' || file_path[i + 1] == '\0') {
@@ -139,7 +140,7 @@ struct inode* open_namei(const char* file_path,int32_t flags,int32_t mode){
         }
     }
     next:
-
+    atomic_inc(&ino->i_used_count);
     return ino;
 }
 
@@ -165,7 +166,7 @@ int sys_mkdir(const char * pathname, int mode){
     &&path_inode->i_ops->mkdir
     ) {
         atomic_inc(&path_inode->i_used_count);
-        res = path_inode->i_ops->mkdir(path_inode, cache, strlen(pathname) - c_ofs, mode);
+        res = path_inode->i_ops->mkdir(path_inode, pathname+c_ofs+1, strlen(pathname) - c_ofs-1, mode);
         if (res < 0) {
             puti(path_inode);
             return res;

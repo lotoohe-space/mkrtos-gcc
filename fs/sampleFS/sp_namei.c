@@ -250,7 +250,7 @@ int sp_mkdir(struct inode * dir, const char * name, int len, int mode)
         puti(dir);
         return -ENOSPC;
     }
-    inode->i_ops = NULL;
+    inode->i_ops = &sp_dir_inode_operations;
     inode->i_file_size = 2 * sizeof (struct dir_item);
 
     //得到一个新的块
