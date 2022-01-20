@@ -162,26 +162,43 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
     }
     else {
         //最后一块还有空位
-        uint32_t ofs_no = (file_cn % (sb->s_bk_size / sizeof(struct dir_item)));
+        uint32_t ofs_no;
         //获取文件最后一块的块号
         uint32_t bk_num = 0;
         struct dir_item pdi;
+        uint32_t file_size;
+        uint32_t bk_num_tmp;
+        struct bk_cache* tmp_bk_ch;
+
+        again:
         if (get_bk_no_ofs(dir,dir->i_file_size, &bk_num) < 0) {
             return -1;
         }
-        //读取数据
-        if (rbk(sb->s_dev_no, bk_num, NULL, 0,  0) < 0) {
-            return -1;
+        file_size=dir->i_file_size;
+
+        tmp_bk_ch=bk_read(sb->s_dev_no,bk_num);
+        if(file_size != dir->i_file_size){
+            //需要重新检查块号
+            if (get_bk_no_ofs(dir,dir->i_file_size, &bk_num_tmp) < 0) {
+                bk_release(tmp_bk_ch);
+                return -1;
+            }
+            if(bk_num!=bk_num_tmp){
+                //块号已经变了，重新获取
+                goto again;
+            }
         }
+
+        ofs_no= (file_cn % (sb->s_bk_size / sizeof(struct dir_item)));
         strcpy(pdi.name, name);
         pdi.inode_no =  p_inode->i_no;
         pdi.used = TRUE;
-        //写回去
-        if (wbk(sb->s_dev_no, bk_num,  (uint8_t*)(&pdi),
-                ofs_no * sizeof(struct dir_item),  sizeof(struct dir_item)) < 0) {
-            return -1;
-        }
+
+        //复制到缓存的指定偏移处
+        memcpy(tmp_bk_ch->cache+ofs_no * sizeof(struct dir_item),(uint8_t*)(&pdi),sizeof(struct dir_item));
+
         dir->i_file_size += sizeof(struct dir_item);
+        bk_release(tmp_bk_ch);
     }
     dir->i_dirt=1;
     return 0;

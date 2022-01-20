@@ -269,9 +269,7 @@ struct bk_cache {
     //擦除标记 1bit写入 2bit读取 7bit被使用
     uint8_t flag;
 };
-void lock_bk(struct bk_cache* bk);
-void unlock_bk(struct bk_cache* bk);
-void wait_on_bk(struct bk_cache* bk);
+
 ////////
 
 

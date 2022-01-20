@@ -50,18 +50,19 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
     uint32_t free_bk=0;
     uint32_t fn_inx=0;
     uint32_t bk_inx=0;
+    uint8_t r;
 //    if(sp_sb->blockFree==0) {
 //        return -1;
 //    }
     for (uint32_t i = 0; i <sp_sb->bkUsedBkCount; i++) {
         for (uint32_t j = 0; j < sb->s_bk_size; j++) {
-            uint32_t r;
+
             if (rbk(sb->s_dev_no, sp_sb->bkUsedBkStInx + i, (uint8_t*)&r, j,  sizeof(r)) < 0) {
                 return -1;
             }
             if (r != 0) {
                 //有空的
-                for (uint8_t m = 0; m < 32; m++) {
+                for (uint8_t m = 0; m < 8; m++) {
                     if (((r) & (1 << m))) {
                         //找到为1的空块
                         free_bk = fn_inx;
@@ -76,7 +77,7 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
                 }
             }
             else {
-                fn_inx += 32;
+                fn_inx += 8;
             }
         }
     }
@@ -155,15 +156,15 @@ int32_t alloc_inode_no(struct super_block* sb,ino_t *res_ino){
     //先从bitmap中查找空闲的inode
     for (i = 0; i < sp_sb->inode_used_bk_count; i++) {
         uint32_t f_inx = 0;
-        for (uint32_t j = 0; j < sb->s_bk_size; j+=4) {
-            uint32_t r;
+        for (uint32_t j = 0; j < sb->s_bk_size; j++) {
+            uint8_t r;
             //每次获取4字节
             if (rbk(sb->s_dev_no, sp_sb->inode_used_bk_st_inx + i, (uint8_t*)&r, j, sizeof(r)) <0) {
                 return -1;
             }
             if (r != 0) {
                 //有空的
-                for (uint8_t m = 0; m < 32; m++) {
+                for (uint8_t m = 0; m < 8; m++) {
                     if (((r) & (1 << m))) {
                         f_inx += m;
                         free_inode = f_inx;
@@ -175,7 +176,7 @@ int32_t alloc_inode_no(struct super_block* sb,ino_t *res_ino){
                 }
             }
             else {
-                f_inx += 32;
+                f_inx += 8;
             }
         }
     }

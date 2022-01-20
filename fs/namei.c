@@ -91,8 +91,8 @@ int32_t dir_namei(const char*file_path,struct inode** p_inode){
             dir_deep++;
         }
     }
-    *p_inode=res_inode;
     end:
+    *p_inode=res_inode;
     puti(res_inode);
     return res;
 }

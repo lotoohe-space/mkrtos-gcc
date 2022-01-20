@@ -37,6 +37,30 @@ void KernelTask(void*arg0, void*arg1){
 
     }
 }
+void KernelTask1(void*arg0, void*arg1){
+    int fd;
+    int res;
+    if((fd=sys_open("/",O_RDONLY,0777))<0){
+        while(1);
+    }
+    sys_mkdir("/zz4",0777);
+    if(sys_mkdir("/zz4",0777)<0){
+        sys_mkdir("/zz5",0777);
+        sys_mkdir("/zz6",0777);
+        sys_mkdir("/zz7",0777);
+    }
+    while(res>0) {
+        if ((res=sys_readdir(fd, &dir, sizeof(dir)))<= 0) {
+            break;
+        }
+    }
+    sys_close(fd);
+
+
+    while(1){
+
+    }
+}
 
 //调用call_sigreturn，这里面会调用系统调用sigreturn完成用户栈恢复
 extern void call_sigreturn(void);
@@ -56,8 +80,8 @@ void TestTask(void*arg0, void*arg1){
 
 //    sysTasks.currentTask->signalBMap=(1<<(3-1));
 //    sys_signal(3,SignalFunc,0);
-    signal(SIGALRM,SignalFunc,call_sigreturn);
-    alarm(5);
+//    signal(SIGALRM,SignalFunc,call_sigreturn);
+//    alarm(5);
     while(1){
 
     }
@@ -84,6 +108,13 @@ void KernelTaskInit(void){
     if(pid<0){
         while(1);
     }
+    tcp.taskFun=KernelTask1;
+    tcp.taskName="KernelTask1";
+    pid=task_create(&tcp,NULL);
+    if(pid<0){
+        while(1);
+    }
+
     tcp.taskFun=TestTask;
     tcp.arg0=(void*)0;
     tcp.arg1=0;

@@ -38,7 +38,7 @@ struct inode* sp_new_inode(struct inode* p_inode){
     struct inode* new_inode;
 
     if(alloc_inode_no(p_inode->i_sb,&res_ino)<0){
-        return -1;
+        return NULL;
     }
     new_inode=get_empty_inode();
     new_inode->i_no=res_ino;
@@ -51,6 +51,7 @@ struct inode* sp_new_inode(struct inode* p_inode){
     atomic_set(&(new_inode->i_lock),0);
     if(sp_alloc_inode((new_inode))==NULL){
         free_inode_no(p_inode->i_sb,new_inode);
+        return NULL;
     }
     return new_inode;
 }
@@ -76,7 +77,7 @@ int32_t sp_read_inode(struct inode * inode){
 
     uint8_t w_ch[128]={0};
 
-    ndReadBkInx = (ino * sb->s_inode_size) / sb->s_bk_size + sp_sb->inode_used_bk_st_inx;
+    ndReadBkInx = (ino * sb->s_inode_size) / sb->s_bk_size + sp_sb->iNodeDataBkStInx;
     ndReadBkInInx = (ino) % (sb->s_bk_size / sb->s_inode_size);
     if (rbk(sb->s_dev_no,
             ndReadBkInx,
@@ -163,7 +164,7 @@ void sp_write_inode (struct inode * i_node){
 
     //»ØÐ´
     if (wbk(sb->s_dev_no
-            , sp_sb->inode_used_bk_st_inx + bk_inx
+            , sp_sb->iNodeDataBkStInx + bk_inx
             , w_ch
             , sb->s_inode_size * (i_node->i_no % INODE_NUM_IN_BK(sb))
             , sb->s_inode_size) <0) {

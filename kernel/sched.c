@@ -300,6 +300,8 @@ sys_alarm (uint32_t seconds){
 
 //唤醒队列中所有的任务
 void wake_up(struct wait_queue *queue){
+    uint32_t t;
+    t=DisCpuInter();
     while(queue){
         if(queue->task){
             if(queue->task->status==TASK_SUSPEND){
@@ -308,6 +310,7 @@ void wake_up(struct wait_queue *queue){
         }
         queue=queue->next;
     }
+    RestoreCpuInter(t);
 }
 
 //添加一个到等待队列中

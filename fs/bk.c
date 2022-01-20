@@ -63,7 +63,7 @@ int32_t bk_cache_destory(struct bk_cache* p_bk_ch_ls,uint32_t cache_len){
  * @param bk_ch
  * @return
  */
-static struct bk_cache* sync_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,uint32_t cache_len) {
+static struct bk_cache* sync_get_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,uint32_t cache_len,bk_no_t new_bk_no) {
     struct bk_operations *bk_ops;
     struct bk_cache *sync_cache;
     uint32_t sync_bk_no;
@@ -91,7 +91,8 @@ static struct bk_cache* sync_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,uint32
             fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
         }
     }
-    sync_cache->flag=0;
+    sync_cache->bk_no=new_bk_no;
+    sync_cache->flag=0x80;
     unlock_bk(sync_cache);
 
     return sync_cache;
@@ -177,6 +178,7 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     struct bk_operations *bk_ops;
     uint32_t cache_len;
     uint32_t i;
+    struct bk_cache* bk_tmp;
 
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
@@ -186,15 +188,18 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     if(bk_cache_ls==NULL){
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
     }
-    struct bk_cache* bk_tmp;
+    again:
     bk_tmp=find_bk_cache(bk_cache_ls,bk_no,cache_len);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_bk(dev_no,bk_cache_ls,cache_len);
-        bk_tmp->bk_no=bk_no;
-        bk_tmp->flag=0x80;
+        bk_tmp=sync_get_bk(dev_no,bk_cache_ls,cache_len,bk_no);
     }
     lock_bk(bk_tmp);
+    if(bk_tmp->bk_no!=bk_no){
+        unlock_bk(bk_tmp);
+        //如果是同步了块，则说明
+        goto again;
+    }
     if(ofs==0 && size==bk_tmp->bk_size) {
         //如果刚好写一块，则没必要读
         SET_BIT(bk_tmp->flag,2);
@@ -218,6 +223,51 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
 
     return 0;
 }
+/**
+ * 获取缓存
+ * @param dev_no
+ * @param bk_no
+ * @return
+ */
+struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no){
+    struct bk_cache* bk_cache_ls;
+    struct bk_operations *bk_ops;
+    struct bk_cache* bk_tmp;
+    uint32_t cache_len=0;
+    bk_ops=get_bk_ops(dev_no);
+    if(bk_ops==NULL){
+        fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+    }
+    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
+    if(bk_cache_ls==NULL){
+        fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+    }
+    again:
+    bk_tmp=find_bk_cache(bk_cache_ls,bk_no,cache_len);
+    if(bk_tmp==NULL){
+        //没有则释放一个
+        bk_tmp=sync_get_bk(dev_no,bk_cache_ls,cache_len,bk_no);
+    }
+    lock_bk(bk_tmp);
+    if(bk_tmp->bk_no!=bk_no){
+        //当时锁的那个bk cache已经被改变了，这个时候需要重新获取一个新的缓存
+        unlock_bk(bk_tmp);
+        goto again;
+    }
+    if (!GET_BIT(bk_tmp->flag, 2)) {
+        if (bk_ops->read_bk(bk_no, bk_tmp->cache) < 0) {
+        }
+        SET_BIT(bk_tmp->flag, 2);
+    }
+    return bk_tmp;
+}
+/**
+ * 释放缓存
+ * @param bk_tmp
+ */
+void bk_release(struct bk_cache* bk_tmp){
+    unlock_bk(bk_tmp);
+}
 
 /**
  * 读块
@@ -231,6 +281,7 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     struct bk_operations *bk_ops;
     uint32_t cache_len;
     uint32_t i;
+    struct bk_cache* bk_tmp;
 
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
@@ -243,14 +294,18 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
 
         return -1;
     }
-    struct bk_cache* bk_tmp;
+    again:
     bk_tmp=find_bk_cache(bk_cache_ls,bk_no,cache_len);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_bk(dev_no,bk_cache_ls,cache_len);
-        bk_tmp->flag=0x80;
+        bk_tmp=sync_get_bk(dev_no,bk_cache_ls,cache_len,bk_no);
     }
     lock_bk(bk_tmp);
+    if(bk_tmp->bk_no!=bk_no){
+        //当时锁的那个bk cache已经被改变了，这个时候需要重新获取一个新的缓存
+        unlock_bk(bk_tmp);
+        goto again;
+    }
     if (!GET_BIT(bk_tmp->flag, 2)) {
         if (bk_ops->read_bk(bk_no, bk_tmp->cache) < 0) {
 //            fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);

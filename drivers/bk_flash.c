@@ -52,7 +52,7 @@ int32_t write_bk(uint32_t bk_no,uint8_t *data){
     FLASH->KEYR = FLASH_KEY2;
     STMFLASH_Write_NoCheck(bk_no*BK_SIZE+FLASH_W_BASE_ADDR,
                            (uint16_t*)data,
-                           bk_no*BK_SIZE/2);//写已经擦除了的,直接写入扇区剩余区间.
+                           BK_SIZE/2);//写已经擦除了的,直接写入扇区剩余区间.
     FLASH->CR |= CR_LOCK_Set;
 }
 int32_t erase_bk(uint32_t bk_no){
