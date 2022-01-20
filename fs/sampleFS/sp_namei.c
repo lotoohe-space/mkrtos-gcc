@@ -7,6 +7,7 @@
 #include <mkrtos/bk.h>
 #include <errno.h>
 #include <mkrtos/sp.h>
+#include <mkrtos/task.h>
 #define DIR_TYPE 1
 
 
@@ -37,24 +38,29 @@ int sp_dir_find(struct inode* dir,const char* file_name,int len,ino_t* res_inode
 
     for (uint32_t i = 0; i < inode_bk_num; i++) {
         if (i < A_BK_NUM(p_sp_inode)) {
+            struct bk_cache* bk_tmp;
+            bk_tmp=bk_read(sb->s_dev_no,p_sp_inode->p_ino[i],0);
             for (uint16_t j = 0; j < DIR_NUM(dir); j++) {
-                struct dir_item pdi;
+                struct dir_item *pdi;
                 if (tempi >= dir_num) {
+                    bk_release(bk_tmp);
                     return -ENOENT;
                 }
                 //读取目录
-                if (rbk(sb->s_dev_no, p_sp_inode->p_ino[i],
-                        (uint8_t*)( &pdi), j*sizeof(struct dir_item),
-                        sizeof(struct dir_item)) < 0) {
-                    return -ENOENT;
-                }
-                if (strcmp(pdi.name, file_name) == 0 && pdi.used == TRUE) {
-                    *res_inode = pdi.inode_no;
+//                if (rbk(sb->s_dev_no, p_sp_inode->p_ino[i],
+//                        (uint8_t*)( &pdi), j*sizeof(struct dir_item),
+//                        sizeof(struct dir_item)) < 0) {
+//                    return -ENOENT;
+//                }
+                pdi=bk_tmp->cache+sizeof(struct dir_item)*j;
+                if (strcmp(pdi->name, file_name) == 0 && pdi->used == TRUE) {
+                    *res_inode = pdi->inode_no;
+                    bk_release(bk_tmp);
                     return tempi;
                 }
                 tempi++;
             }
-
+            bk_release(bk_tmp);
         }
         else if (i < A_BK_NUM(p_sp_inode) + B_BK_NUM(dir->i_sb,p_sp_inode)) {
 
@@ -136,29 +142,44 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
     //有多少项文件
     uint32_t file_cn = 0;
     struct super_block *sb;
+    struct bk_cache* tmp_bk_ch;
+    uint32_t file_size;
     //放置的iNode不是目录
     if (FILE_TYPE(dir->i_type_mode) != DIR_TYPE) {
         return -ENOTDIR;
     }
     sb=dir->i_sb;
+
+    again:
+    file_size=dir->i_file_size;
     file_cn = dir->i_file_size / sizeof(struct dir_item);
     //大于，则肯定是存放数据的最后一个块
     if (file_cn % (sb->s_bk_size / sizeof(struct dir_item)) == 0) {
         uint32_t new_bk = 0;
         int32_t ret;
         struct dir_item pdi;
-        if ((ret = alloc_bk(sb,&new_bk)) < 0) {
+        //给这个inode分配一个新的块
+        if ((ret = inode_alloc_new_bk(dir,&new_bk)) < 0) {
             return ret;
         }
         strcpy(pdi.name, name);
         pdi.inode_no = p_inode->i_no;
         pdi.used = TRUE;
-        dir->i_file_size += sizeof(struct dir_item);
-        //写文件信息
-        if (wbk(sb->s_dev_no, new_bk, (uint8_t*)&pdi,0,  sizeof(pdi)) < 0) {
-            free_bk(sb,new_bk);
-            return -1;
+        tmp_bk_ch=bk_read(sb->s_dev_no,new_bk,1);
+        if(dir->i_file_size!=file_size){
+            bk_release(tmp_bk_ch);
+            goto again;
         }
+        printk("%s %d new bk %d\r\n",__FUNCTION__ ,__LINE__,new_bk);
+
+        memcpy(tmp_bk_ch->cache,&pdi,sizeof(pdi));
+//        //写文件信息
+//        if (wbk(sb->s_dev_no, new_bk, (uint8_t*)&pdi,0,  sizeof(pdi)) < 0) {
+//            free_bk(sb,new_bk);
+//            return -1;
+//        }
+        dir->i_file_size += sizeof(struct dir_item);
+        bk_release(tmp_bk_ch);
     }
     else {
         //最后一块还有空位
@@ -166,17 +187,14 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
         //获取文件最后一块的块号
         uint32_t bk_num = 0;
         struct dir_item pdi;
-        uint32_t file_size;
         uint32_t bk_num_tmp;
-        struct bk_cache* tmp_bk_ch;
 
-        again:
         if (get_bk_no_ofs(dir,dir->i_file_size, &bk_num) < 0) {
             return -1;
         }
-        file_size=dir->i_file_size;
 
-        tmp_bk_ch=bk_read(sb->s_dev_no,bk_num);
+        tmp_bk_ch=bk_read(sb->s_dev_no,bk_num,1);
+        trace("旧文件大小%d,新文件大小%d\r\n",file_size,dir->i_file_size);
         if(file_size != dir->i_file_size){
             //需要重新检查块号
             if (get_bk_no_ofs(dir,dir->i_file_size, &bk_num_tmp) < 0) {
@@ -184,16 +202,22 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
                 return -1;
             }
             if(bk_num!=bk_num_tmp){
-                //块号已经变了，重新获取
+                trace("块已经被修改\r\n");
+                bk_release(tmp_bk_ch);
+                //块号已经变了，重新计算写入位置
                 goto again;
             }
+            file_cn = dir->i_file_size / sizeof(struct dir_item);
         }
 
         ofs_no= (file_cn % (sb->s_bk_size / sizeof(struct dir_item)));
         strcpy(pdi.name, name);
         pdi.inode_no =  p_inode->i_no;
         pdi.used = TRUE;
-
+#if 1
+#include <mkrtos/task.h>
+        trace("进程%d,写块%d,偏移%d,旧文件大小%d,新文件大小%d\r\n",CUR_TASK->PID ,bk_num,ofs_no*sizeof(struct dir_item),file_size,dir->i_file_size);
+#endif
         //复制到缓存的指定偏移处
         memcpy(tmp_bk_ch->cache+ofs_no * sizeof(struct dir_item),(uint8_t*)(&pdi),sizeof(struct dir_item));
 
@@ -275,6 +299,7 @@ int sp_mkdir(struct inode * dir, const char * name, int len, int mode)
         puti(dir);
         return -ENOSPC;
     }
+    trace("进程%d,函数%s,行%d,新块号%d\r\n",CUR_TASK->PID,__FUNCTION__ ,__LINE__,new_bk);
     strcpy(di.name, ".");
     di.used = TRUE;
     di.inode_no = inode->i_no;

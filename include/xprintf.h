@@ -44,15 +44,15 @@ void xsprintf (char* buff, const char* fmt, ...);
 void xfprintf (void (*func)(int), const char* fmt, ...);
 void put_dump (const void* buff, unsigned long addr, int len, int width);
 
-#define putc xputc
-#define fputc xfputc
-#define xputs puts
-#define xfputs fputs
+#define xputc putc
+#define xfputc fputc
+#define puts xputs
+#define fputs xfputs
 #define vfprintf xvfprintf
 #define vsprintf xvsprintf
-#define xprintf printf
-#define xsprintf sprintf
-#define xfprintf fprintf
+#define printf xprintf
+#define sprintf xsprintf
+#define fprintf xfprintf
 #endif
 
 #if XF_USE_INPUT

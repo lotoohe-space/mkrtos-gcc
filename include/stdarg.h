@@ -1,50 +1,127 @@
- #ifndef _STDARG_H
- #define _STDARG_H
- 
- typedef char *va_list;  // 定义va_list是一个字符指针类型。
- 
- /* Amount of space required in an argument list for an arg of type TYPE.
-    TYPE may alternatively be an expression whose type is used.  */
- /* 下面给出了类型为TYPE的arg参数列表所要求的空间容量。
-    TYPE也可以是使用该类型的一个表达式 */
- 
- // 下面这句定义了取整后的TYPE类型的字节长度值。是int长度(4)的倍数。
- #define __va_rounded_size(TYPE)  \
-   (((sizeof (TYPE) + sizeof (int) - 1) / sizeof (int)) * sizeof (int))
- 
- // 下面这个宏初始化指针AP，使其指向传给函数的可变参数表的第一个参数。
- // 在第一次调用va_arg或va_end之前，必须首先调用va_start宏。参数LASTARG是函数定义
- // 中最右边参数的标识符，即'...'左边的一个标识符。AP是可变参数表参数指针，LASTARG是
- // 最后一个指定参数。&(LASTARG) 用于取其地址（即其指针），并且该指针是字符类型。加上
- // LASTARG的宽度值后AP就是可变参数表中第一个参数的指针。该宏没有返回值。
- // 第17行上的函数 __builtin_saveregs() 是在gcc的库程序libgcc2.c中定义的，用于保存
- // 寄存器。 相关说明参见 gcc手册“Target Description Macros”章中“Implementing the
- // Varargs Macros”小节。
- #ifndef __sparc__
- #define va_start(AP, LASTARG)                                           \
-  (AP = ((char *) &(LASTARG) + __va_rounded_size (LASTARG)))
- #else
- #define va_start(AP, LASTARG)                                           \
-  (__builtin_saveregs (),                                                \
-   AP = ((char *) &(LASTARG) + __va_rounded_size (LASTARG)))
- #endif
- 
- // 下面该宏用于被调用函数完成一次正常返回。va_end可以修改AP使其在重新调用
- // va_start之前不能被使用。va_end必须在va_arg读完所有的参数后再被调用。
- void va_end (va_list);          /* Defined in gnulib */  /* 在gnulib中定义 */
- #define va_end(AP)
- 
- // 下面宏用于扩展表达式使其与下一个被传递参数具有相同的类型和值。
- // 对于缺省值，va_arg 可以用字符、无符号字符和浮点类型。在第一次使用 va_arg时，它返
- // 回表中的第一个参数，后续的每次调用都将返回表中的下一个参数。这是通过先访问AP，然
- // 后增加其值以指向下一项来实现的。va_arg 使用TYPE 来完成访问和定位下一项，每调用一
- // 次va_arg，它就修改AP以指示表中的下一参数。
- #define va_arg(AP, TYPE)                           \
-  (AP += __va_rounded_size (TYPE),                  \
-   *((TYPE *) (AP - __va_rounded_size (TYPE))))
- 
- #endif /* _STDARG_H */
- 
+/* Copyright (C) 1989-2020 Free Software Foundation, Inc.
 
- 
- 
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+GCC is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+/*
+ * ISO C Standard:  7.15  Variable arguments  <stdarg.h>
+ */
+
+#ifndef _STDARG_H
+#ifndef _ANSI_STDARG_H_
+#ifndef __need___va_list
+#define _STDARG_H
+#define _ANSI_STDARG_H_
+#endif /* not __need___va_list */
+#undef __need___va_list
+
+/* Define __gnuc_va_list.  */
+
+#ifndef __GNUC_VA_LIST
+#define __GNUC_VA_LIST
+typedef __builtin_va_list __gnuc_va_list;
+#endif
+
+/* Define the standard macros for the user,
+   if this invocation was from the user program.  */
+#ifdef _STDARG_H
+
+#define va_start(v,l)	__builtin_va_start(v,l)
+#define va_end(v)	__builtin_va_end(v)
+#define va_arg(v,l)	__builtin_va_arg(v,l)
+#if !defined(__STRICT_ANSI__) || __STDC_VERSION__ + 0 >= 199900L \
+    || __cplusplus + 0 >= 201103L
+#define va_copy(d,s)	__builtin_va_copy(d,s)
+#endif
+#define __va_copy(d,s)	__builtin_va_copy(d,s)
+
+/* Define va_list, if desired, from __gnuc_va_list. */
+/* We deliberately do not define va_list when called from
+   stdio.h, because ANSI C says that stdio.h is not supposed to define
+   va_list.  stdio.h needs to have access to that data type, 
+   but must not use that name.  It should use the name __gnuc_va_list,
+   which is safe because it is reserved for the implementation.  */
+
+#ifdef _BSD_VA_LIST
+#undef _BSD_VA_LIST
+#endif
+
+#if defined(__svr4__) || (defined(_SCO_DS) && !defined(__VA_LIST))
+/* SVR4.2 uses _VA_LIST for an internal alias for va_list,
+   so we must avoid testing it and setting it here.
+   SVR4 uses _VA_LIST as a flag in stdarg.h, but we should
+   have no conflict with that.  */
+#ifndef _VA_LIST_
+#define _VA_LIST_
+#ifdef __i860__
+#ifndef _VA_LIST
+#define _VA_LIST va_list
+#endif
+#endif /* __i860__ */
+typedef __gnuc_va_list va_list;
+#ifdef _SCO_DS
+#define __VA_LIST
+#endif
+#endif /* _VA_LIST_ */
+#else /* not __svr4__ || _SCO_DS */
+
+/* The macro _VA_LIST_ is the same thing used by this file in Ultrix.
+   But on BSD NET2 we must not test or define or undef it.
+   (Note that the comments in NET 2's ansi.h
+   are incorrect for _VA_LIST_--see stdio.h!)  */
+#if !defined (_VA_LIST_) || defined (__BSD_NET2__) || defined (____386BSD____) || defined (__bsdi__) || defined (__sequent__) || defined (__FreeBSD__) || defined(WINNT)
+/* The macro _VA_LIST_DEFINED is used in Windows NT 3.5  */
+#ifndef _VA_LIST_DEFINED
+/* The macro _VA_LIST is used in SCO Unix 3.2.  */
+#ifndef _VA_LIST
+/* The macro _VA_LIST_T_H is used in the Bull dpx2  */
+#ifndef _VA_LIST_T_H
+/* The macro __va_list__ is used by BeOS.  */
+#ifndef __va_list__
+typedef __gnuc_va_list va_list;
+#endif /* not __va_list__ */
+#endif /* not _VA_LIST_T_H */
+#endif /* not _VA_LIST */
+#endif /* not _VA_LIST_DEFINED */
+#if !(defined (__BSD_NET2__) || defined (____386BSD____) || defined (__bsdi__) || defined (__sequent__) || defined (__FreeBSD__))
+#define _VA_LIST_
+#endif
+#ifndef _VA_LIST
+#define _VA_LIST
+#endif
+#ifndef _VA_LIST_DEFINED
+#define _VA_LIST_DEFINED
+#endif
+#ifndef _VA_LIST_T_H
+#define _VA_LIST_T_H
+#endif
+#ifndef __va_list__
+#define __va_list__
+#endif
+
+#endif /* not _VA_LIST_, except on certain systems */
+
+#endif /* not __svr4__ */
+
+#endif /* _STDARG_H */
+
+#endif /* not _ANSI_STDARG_H_ */
+#endif /* not _STDARG_H */

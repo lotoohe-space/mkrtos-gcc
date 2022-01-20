@@ -5,8 +5,10 @@
 #include <mkrtos/fs.h>
 #include "mkrtos/task.h"
 //#include "mkrtos/signal.h"
+#include <xprintf.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 extern int32_t sys_open(const char* path,int32_t flags,int32_t mode);
 extern int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count);
@@ -16,19 +18,22 @@ struct dirent dir;
 void KernelTask(void*arg0, void*arg1){
     int fd;
     int res;
+    uint8_t data[32];
+    printk("kernel task start..\r\n");
     if((fd=sys_open("/",O_RDONLY,0777))<0){
         while(1);
     }
-    sys_mkdir("/zz",0777);
-    if(sys_mkdir("/zz",0777)<0){
-        sys_mkdir("/zz1",0777);
-        sys_mkdir("/zz2",0777);
-        sys_mkdir("/zz3",0777);
+    int i=10;
+    while(i){
+        sprintf(data,"/mkrtos%d",i);
+        sys_mkdir(data,0777);
+        i--;
     }
     while(res>0) {
         if ((res=sys_readdir(fd, &dir, sizeof(dir)))<= 0) {
             break;
         }
+        printk("%s\r\n",dir.d_name);
     }
     sys_close(fd);
 
@@ -40,19 +45,23 @@ void KernelTask(void*arg0, void*arg1){
 void KernelTask1(void*arg0, void*arg1){
     int fd;
     int res;
+    uint8_t data[32];
+    printk("kernel task start..\r\n");
     if((fd=sys_open("/",O_RDONLY,0777))<0){
         while(1);
     }
-    sys_mkdir("/zz4",0777);
-    if(sys_mkdir("/zz4",0777)<0){
-        sys_mkdir("/zz5",0777);
-        sys_mkdir("/zz6",0777);
-        sys_mkdir("/zz7",0777);
+    int i=10;
+    while(i){
+        sprintf(data,"/mkrtos%d",i);
+        sys_mkdir(data,0777);
+        i--;
     }
+    delay_ms(3000);
     while(res>0) {
         if ((res=sys_readdir(fd, &dir, sizeof(dir)))<= 0) {
             break;
         }
+        printk("%s\r\n",dir.d_name);
     }
     sys_close(fd);
 
@@ -120,7 +129,7 @@ void KernelTaskInit(void){
     tcp.arg1=0;
     tcp.prio=6;
     tcp.userStackSize=256;
-    tcp.kernelStackSize=256;
+    tcp.kernelStackSize=512;
     tcp.taskName="test";
 
     pid=task_create(&tcp,NULL);

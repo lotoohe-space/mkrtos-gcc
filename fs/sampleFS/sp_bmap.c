@@ -7,7 +7,6 @@
 #include <mkrtos/sp.h>
 #include <mkrtos/bk.h>
 #include <string.h>
-
 /**
  * 设置bk块的占用状态
  * @param sb
@@ -50,23 +49,27 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
     uint32_t free_bk=0;
     uint32_t fn_inx=0;
     uint32_t bk_inx=0;
+    uint32_t j;
     uint8_t r;
+    uint8_t m;
+    struct bk_cache *bk_tmp;
 //    if(sp_sb->blockFree==0) {
 //        return -1;
 //    }
     for (uint32_t i = 0; i <sp_sb->bkUsedBkCount; i++) {
-        for (uint32_t j = 0; j < sb->s_bk_size; j++) {
 
-            if (rbk(sb->s_dev_no, sp_sb->bkUsedBkStInx + i, (uint8_t*)&r, j,  sizeof(r)) < 0) {
-                return -1;
-            }
+        bk_tmp=bk_read(sb->s_dev_no,sp_sb->bkUsedBkStInx + i,1);
+        trace("bk map %x %x\n",bk_tmp->cache[0],bk_tmp->cache[1]);
+        for (j = 0; j < sb->s_bk_size; j++) {
+            r = bk_tmp->cache[j];
             if (r != 0) {
                 //有空的
-                for (uint8_t m = 0; m < 8; m++) {
+                for (m = 0; m < 8; m++) {
                     if (((r) & (1 << m))) {
                         //找到为1的空块
                         free_bk = fn_inx;
                         if (fn_inx >= sp_sb->blockCount) {
+                            bk_release(bk_tmp);
                             return -1;
                         }
                         goto next;
@@ -80,32 +83,19 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
                 fn_inx += 8;
             }
         }
+        bk_release(bk_tmp);
     }
+    return -1;
     next:
-    //先读Inode used block
-    bk_inx = ROUND_DOWN(free_bk, sb->s_bk_size * 8);
-    uint8_t rByte;
-    if (rbk(sb->s_dev_no,
-            sp_sb->bkUsedBkStInx + bk_inx,
-            &rByte,
-            ROUND_DOWN(free_bk, 8)% sb->s_bk_size ,
-            1) <0) {
-        return -1;
-    }
-    rByte&=~(1<<( free_bk % 8));
-    //回写
-    if (wbk(sb->s_dev_no,
-            sp_sb->bkUsedBkStInx + bk_inx,
-            &rByte,
-            ROUND_DOWN(free_bk, 8)% sb->s_bk_size,
-            1) < 0) {
-        return -1;
-    }
+    r &= ~(1<<( free_bk % 8));
+    bk_tmp->cache[j] = r;
+
     if(sp_sb->blockFree) {
         sp_sb->blockFree--;
     }
     *res_bk=free_bk;
     sb->s_dirt=1;
+    bk_release(bk_tmp);
     return 0;
 }
 /**
@@ -149,26 +139,29 @@ int32_t alloc_inode_no(struct super_block* sb,ino_t *res_ino){
     uint32_t i;
     uint32_t bk_inx=0;
     uint32_t free_inode=0;
-    struct sp_super_block * sp_sb=sb->s_sb_priv_info;
+    uint32_t f_inx = 0;
+    uint32_t j;
+    uint8_t m;
+    uint8_t r;
+    struct sp_super_block * sp_sb;
+    struct bk_cache* bk_tmp;
+    sp_sb=sb->s_sb_priv_info;
 //    if(sp_sb->iNodeFree==0) {
 //        return -1;
 //    }
     //先从bitmap中查找空闲的inode
     for (i = 0; i < sp_sb->inode_used_bk_count; i++) {
-        uint32_t f_inx = 0;
-        for (uint32_t j = 0; j < sb->s_bk_size; j++) {
-            uint8_t r;
-            //每次获取4字节
-            if (rbk(sb->s_dev_no, sp_sb->inode_used_bk_st_inx + i, (uint8_t*)&r, j, sizeof(r)) <0) {
-                return -1;
-            }
+        bk_tmp=bk_read(sb->s_dev_no,sp_sb->inode_used_bk_st_inx + i,1);
+        for (j = 0; j < sb->s_bk_size; j++) {
+            r=bk_tmp->cache[j];
             if (r != 0) {
                 //有空的
-                for (uint8_t m = 0; m < 8; m++) {
+                for (m = 0; m < 8; m++) {
                     if (((r) & (1 << m))) {
                         f_inx += m;
                         free_inode = f_inx;
                         if (free_inode >= sp_sb->iNodeCount) {
+                            bk_release(bk_tmp);
                             return -1;
                         }
                         goto next;
@@ -179,33 +172,19 @@ int32_t alloc_inode_no(struct super_block* sb,ino_t *res_ino){
                 f_inx += 8;
             }
         }
+        bk_release(bk_tmp);
     }
+    return -1;
     next:
-    //先读Inode used block
-    bk_inx = ROUND_DOWN(free_inode, sb->s_bk_size * 8);
-    uint8_t rByte;
-    if (rbk(sb->s_dev_no,
-            sp_sb->inode_used_bk_st_inx + bk_inx,
-            &rByte,
-            ROUND_DOWN(free_inode, 8) % sb->s_bk_size,
-            1) < 0) {
-        return -1;
-    }
-    rByte&=~(1<<( free_inode % 8));
-    //回写
-    if (wbk(sb->s_dev_no,
-            sp_sb->inode_used_bk_st_inx + bk_inx,
-            &rByte,
-            ROUND_DOWN(free_inode, 8) % sb->s_bk_size,
-            1) < 0) {
-        return -1;
-    }
-
+    r&=~(1<<( free_inode % 8));
+    bk_tmp->cache[j] = r;
     if(sp_sb->iNodeFree) {
         sp_sb->iNodeFree--;
     }
     *res_ino=free_inode;
     sb->s_dirt=1;
+    bk_release(bk_tmp);
+    trace("分配新inode %d\r\n",free_inode);
 
     return 0;
 }

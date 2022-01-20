@@ -22,7 +22,7 @@ int32_t rbk(dev_t dev,uint32_t bk_inx,uint8_t *data,uint32_t ofs,uint32_t bk_siz
 void lock_bk(struct bk_cache* bk);
 void unlock_bk(struct bk_cache* bk);
 void wait_on_bk(struct bk_cache* bk);
-struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no);
+struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write);
 void bk_release(struct bk_cache* bk_tmp);
 
 #endif 

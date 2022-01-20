@@ -143,4 +143,6 @@ int sp_sync_file(struct inode * inode, struct file * file) ;
 extern struct inode_operations sp_file_inode_operations;
 //sp_dir.c
 extern struct inode_operations sp_dir_inode_operations;
+//sp_rw.c
+int32_t inode_alloc_new_bk(struct inode* inode, uint32_t* newBkNum);
 #endif //UNTITLED1_SP_H

@@ -137,7 +137,7 @@ struct file_operations {
     int (*select) (struct inode *, struct file *, int, uint32_t *);
     int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);
     int (*mmap) (struct inode *, struct file *, unsigned long, size_t, int, unsigned long);
-    int (*open) (struct inode *, struct file *);
+    int (*open) (struct inode * inode, struct file * fp);
     void (*release) (struct inode * ino, struct file * f);
     int (*fsync) (struct inode *, struct file *);
 };
@@ -250,7 +250,9 @@ int32_t reg_ch_dev(dev_t major_no,const char* name ,struct file_operations *d_fo
 int32_t unreg_ch_dev(dev_t major_no,const char* name);
 int32_t request_bk_no(dev_t dev_no);
 int32_t alloc_bk_no();
-
+int32_t request_char_no(dev_t dev_no);
+void lock_bk_ls(dev_t bk_dev_no);
+void unlock_bk_ls(dev_t bk_dev_no);
 void devs_init(void);
 /////////
 
@@ -263,7 +265,6 @@ struct bk_cache {
     uint32_t bk_size;
     //缓存擦除不需要缓存，则为Null
     uint8_t* cache;
-//    uint32_t sem_lock;
     Atomic_t b_lock;
     struct wait_queue* b_wait;
     //擦除标记 1bit写入 2bit读取 7bit被使用
@@ -311,5 +312,8 @@ struct dev_reg{
 			.exit=_exitFun\
 		}
 
-
+void trace(const char* fmt, ...);
+void printk(const char *fmt, ...);
+void fatalk(const char* fmt, ...);
+void console_write(const char* str);
 #endif //UNTITLED1_FS_H

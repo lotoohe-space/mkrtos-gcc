@@ -3,6 +3,7 @@
 #include <mkrtos/fs.h>
 #include <string.h>
 #include <mkrtos/bk.h>
+#include <mkrtos/task.h>
 
 #define CH_DEV_MAX_NUM 4
 #define BK_DEV_MAX_NUM 4
@@ -38,9 +39,11 @@ struct bk_dev{
     uint32_t bk_cache_count;
     //块大小
     uint32_t bk_size;
-
+    //锁缓存表
+    Atomic_t bk_ch_ls_lock;
+    //等待队列
+    struct wait_queue *b_ch_ls_wait;
 };
-
 /**
  * 字符设备驱动列表
  */
@@ -50,7 +53,6 @@ struct ch_dev devs_char[CH_DEV_MAX_NUM]={0};
  * 块设备驱动列表
  */
 struct bk_dev devs_bk[BK_DEV_MAX_NUM]={0};
-
 
 /**
  * 请求一个块设备号
@@ -241,6 +243,36 @@ int32_t unreg_bk_dev(dev_t major_no,const char* name){
     devs_bk[major_no].d_name=NULL;
     devs_bk[major_no].bk_ops=NULL;
     return 0;
+}
+
+
+static void __wait_on_bk_ch_ls(dev_t bk_dev_no){
+    struct wait_queue wait = {CUR_TASK , NULL };
+
+    add_wait_queue(&(devs_bk[bk_dev_no].b_ch_ls_wait), &wait);
+    again:
+    CUR_TASK->status = TASK_SUSPEND;
+    if (atomic_read(&(devs_bk[bk_dev_no].bk_ch_ls_lock))) {
+        task_sche();
+        goto again;
+    }
+    remove_wait_queue(&(devs_bk[bk_dev_no].b_ch_ls_wait), &wait);
+    CUR_TASK->status = TASK_RUNNING;
+}
+
+void wait_on_bk_ch_ls(dev_t bk_dev_no){
+    if(atomic_read(&devs_bk[bk_dev_no].bk_ch_ls_lock)){
+        __wait_on_bk_ch_ls(bk_dev_no);
+    }
+}
+void lock_bk_ls(dev_t bk_dev_no){
+    wait_on_bk_ch_ls(bk_dev_no);
+    atomic_set(&devs_bk[bk_dev_no].bk_ch_ls_lock,1);
+}
+
+void unlock_bk_ls(dev_t bk_dev_no){
+    atomic_set(&devs_bk[bk_dev_no].bk_ch_ls_lock,0);
+    wake_up(devs_bk[bk_dev_no].b_ch_ls_wait);
 }
 
 

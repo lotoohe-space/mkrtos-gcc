@@ -7,6 +7,7 @@
 #include <arch/arch.h>
 #include <mkrtos/mem.h>
 #include <mkrtos/task.h>
+#include "fcntl.h"
 
 /**
  * @brief 创建任务
@@ -120,6 +121,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
         pTaskBlock->files[i].used=0;
     }
     root_mount(pTaskBlock);
+//    sys_open("/",O_RDONLY,0777);
 #endif
 
     atomic_inc(&sysTasks.pidTemp);

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <mkrtos/mem.h>
 #include <ipc/ipc.h>
-
+#include <arch/arch.h>
 //设置BIT
 #define SET_BIT(a,b) ((a)|=1<<(b))
 //清楚BIT
@@ -57,29 +57,27 @@ int32_t bk_cache_destory(struct bk_cache* p_bk_ch_ls,uint32_t cache_len){
     return 0;
 }
 /**
-/**
  * 随机同步一个块
  * @param dev_no
  * @param bk_ch
  * @return
  */
-static struct bk_cache* sync_get_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,uint32_t cache_len,bk_no_t new_bk_no) {
+static struct bk_cache* sync_bk(dev_t dev_no,uint32_t new_bk) {
     struct bk_operations *bk_ops;
     struct bk_cache *sync_cache;
-    uint32_t sync_bk_no;
+    uint32_t cache_len;
+    struct bk_cache* bk_cache_ls;
 
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
     }
+    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
 
-    //随机进行同步
-    sync_bk_no=ABS(rand())%cache_len;
-
-    sync_cache=&bk_cache_ls[sync_bk_no];
-
+    lock_bk_ls(dev_no);
+    //随机进行同步，不行，两个进程如果要操作同一个bk，但是随机出来的不一样，那么要等待的也不一样，两个则释放了不同的bk块
+    sync_cache=&bk_cache_ls[ABS(rand()) % cache_len];
     lock_bk(sync_cache);
-
     if (GET_BIT(sync_cache->flag, 1)) {
         //先擦除
         if(bk_ops->erase_bk(sync_cache->bk_no)<0){
@@ -91,10 +89,10 @@ static struct bk_cache* sync_get_bk(dev_t dev_no,struct bk_cache* bk_cache_ls,ui
             fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
         }
     }
-    sync_cache->bk_no=new_bk_no;
-    sync_cache->flag=0x80;
+//    sync_cache->bk_no=new_bk;
+    sync_cache->flag=0x0;
     unlock_bk(sync_cache);
-
+    unlock_bk_ls(dev_no);
     return sync_cache;
 }
 static int32_t sync_all_bk(dev_t dev_no){
@@ -141,9 +139,15 @@ static int32_t sync_all_bk(dev_t dev_no){
  * @param cache_len
  * @return
  */
-static struct bk_cache* find_bk_cache(struct bk_cache* bk_cache_ls,uint32_t bk_no,uint32_t cache_len){
+static struct bk_cache* find_bk_cache(dev_t dev_no,uint32_t bk_no){
     uint32_t i;
     int32_t prev_i=-1;
+    uint32_t cache_len;
+    struct bk_cache* bk_cache_ls;
+    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
+
+    lock_bk_ls(dev_no);
+
     //这里用hash时最快的，后面优化
     for(i=0;i<cache_len;i++){
         if(!GET_BIT(bk_cache_ls[i].flag,7)){
@@ -153,16 +157,22 @@ static struct bk_cache* find_bk_cache(struct bk_cache* bk_cache_ls,uint32_t bk_n
         if(bk_cache_ls[i].bk_no!=bk_no){
             continue;
         }
+//        lock_bk(&bk_cache_ls[i]);
 //        bk_cache_ls[i].flag=0x80;
+        unlock_bk_ls(dev_no);
        return &bk_cache_ls[i];
     }
     if(prev_i!=-1){
+//        lock_bk(&bk_cache_ls[prev_i]);
         //不等于-1则说明没有，而且有空的块
         bk_cache_ls[prev_i].flag=0x80;
         bk_cache_ls[prev_i].bk_no=bk_no;
 //        bk_cache_ls[prev_i].used_count++;
+        unlock_bk_ls(dev_no);
+
         return &(bk_cache_ls[prev_i]);
     }
+    unlock_bk_ls(dev_no);
 
     return NULL;
 }
@@ -189,10 +199,11 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
     }
     again:
-    bk_tmp=find_bk_cache(bk_cache_ls,bk_no,cache_len);
+    bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_get_bk(dev_no,bk_cache_ls,cache_len,bk_no);
+        bk_tmp=sync_bk(dev_no,bk_no);
+        goto again;
     }
     lock_bk(bk_tmp);
     if(bk_tmp->bk_no!=bk_no){
@@ -223,51 +234,7 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
 
     return 0;
 }
-/**
- * 获取缓存
- * @param dev_no
- * @param bk_no
- * @return
- */
-struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no){
-    struct bk_cache* bk_cache_ls;
-    struct bk_operations *bk_ops;
-    struct bk_cache* bk_tmp;
-    uint32_t cache_len=0;
-    bk_ops=get_bk_ops(dev_no);
-    if(bk_ops==NULL){
-        fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
-    }
-    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
-    if(bk_cache_ls==NULL){
-        fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
-    }
-    again:
-    bk_tmp=find_bk_cache(bk_cache_ls,bk_no,cache_len);
-    if(bk_tmp==NULL){
-        //没有则释放一个
-        bk_tmp=sync_get_bk(dev_no,bk_cache_ls,cache_len,bk_no);
-    }
-    lock_bk(bk_tmp);
-    if(bk_tmp->bk_no!=bk_no){
-        //当时锁的那个bk cache已经被改变了，这个时候需要重新获取一个新的缓存
-        unlock_bk(bk_tmp);
-        goto again;
-    }
-    if (!GET_BIT(bk_tmp->flag, 2)) {
-        if (bk_ops->read_bk(bk_no, bk_tmp->cache) < 0) {
-        }
-        SET_BIT(bk_tmp->flag, 2);
-    }
-    return bk_tmp;
-}
-/**
- * 释放缓存
- * @param bk_tmp
- */
-void bk_release(struct bk_cache* bk_tmp){
-    unlock_bk(bk_tmp);
-}
+
 
 /**
  * 读块
@@ -295,10 +262,12 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
         return -1;
     }
     again:
-    bk_tmp=find_bk_cache(bk_cache_ls,bk_no,cache_len);
+    bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_get_bk(dev_no,bk_cache_ls,cache_len,bk_no);
+        bk_tmp=sync_bk(dev_no,bk_no);
+        goto again;
+
     }
     lock_bk(bk_tmp);
     if(bk_tmp->bk_no!=bk_no){
@@ -312,7 +281,7 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
         }
         SET_BIT(bk_tmp->flag, 2);
     }
-    if(ofs+size>=bk_tmp->bk_size){
+    if(ofs+size>bk_tmp->bk_size){
         //写超出了边界，则死机
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
     }
@@ -320,6 +289,57 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     unlock_bk(bk_tmp);
 
     return 0;
+}
+
+/**
+ * 获取缓存
+ * @param dev_no
+ * @param bk_no
+ * @return
+ */
+struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
+    struct bk_cache* bk_cache_ls;
+    struct bk_operations *bk_ops;
+    struct bk_cache* bk_tmp;
+    uint32_t cache_len=0;
+    bk_ops=get_bk_ops(dev_no);
+    if(bk_ops==NULL){
+        fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+    }
+    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
+    if(bk_cache_ls==NULL){
+        fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+    }
+    again:
+    bk_tmp=find_bk_cache(dev_no,bk_no);
+    if(bk_tmp==NULL){
+        //没有则释放一个
+        bk_tmp=sync_bk(dev_no,bk_no);
+        goto again;
+
+    }
+    lock_bk(bk_tmp);
+    if(bk_tmp->bk_no!=bk_no){
+        //当时锁的那个bk cache已经被改变了，这个时候需要重新获取一个新的缓存
+        unlock_bk(bk_tmp);
+        goto again;
+    }
+    if (!GET_BIT(bk_tmp->flag, 2)) {
+        if (bk_ops->read_bk(bk_no, bk_tmp->cache) < 0) {
+        }
+        SET_BIT(bk_tmp->flag, 2);
+    }
+    if(may_write){
+        SET_BIT(bk_tmp->flag,1);
+    }
+    return bk_tmp;
+}
+/**
+ * 释放缓存
+ * @param bk_tmp
+ */
+void bk_release(struct bk_cache* bk_tmp){
+    unlock_bk(bk_tmp);
 }
 
 static void __wait_on_bk(struct bk_cache* bk){
