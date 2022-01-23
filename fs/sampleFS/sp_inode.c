@@ -42,7 +42,7 @@ struct inode* sp_new_inode(struct inode* p_inode){
     }
     new_inode=get_empty_inode();
     new_inode->i_no=res_ino;
-    new_inode->i_hlink=0;
+    new_inode->i_hlink=1;
     new_inode->i_file_size=0;
     new_inode->i_sb=p_inode->i_sb;
     new_inode->i_dirt=0;
@@ -50,7 +50,8 @@ struct inode* sp_new_inode(struct inode* p_inode){
     atomic_set(&(new_inode->i_used_count),1);
     atomic_set(&(new_inode->i_lock),0);
     if(sp_alloc_inode((new_inode))==NULL){
-        free_inode_no(p_inode->i_sb,new_inode);
+        free_inode_no(p_inode->i_sb,res_ino);
+        puti(new_inode);
         return NULL;
     }
     return new_inode;
@@ -244,14 +245,28 @@ struct super_block* sp_read_sb(struct super_block* sb){
     memcpy(sb->s_sb_priv_info,(uint8_t*)(data)+sizeof(struct super_block),sizeof(struct sp_super_block));
 
     sb->root_inode=geti(sb,0);
+    sb->root_inode->i_ops=&sp_dir_inode_operations;
 
     OSFree(data);
     return sb;
 }
 void sp_write_super (struct super_block * sb){
-    wbk(sb->s_dev_no,1,sb,0,sizeof(struct super_block));
-    wbk(sb->s_dev_no,1,sb->s_sb_priv_info,sizeof(struct super_block),sizeof(struct sp_super_block));
+    struct bk_cache* bk_tmp;
+    bk_tmp=bk_read(sb->s_dev_no,1,1);
+    memcpy(bk_tmp->cache,sb,sizeof(struct super_block));
+//    wbk(sb->s_dev_no,1,sb,0,sizeof(struct super_block));
+    memcpy(bk_tmp->cache+sizeof(struct super_block),sb->s_sb_priv_info,sizeof(struct sp_super_block));
+//    wbk(sb->s_dev_no,1,sb->s_sb_priv_info,sizeof(struct super_block),sizeof(struct sp_super_block));
     sb->s_dirt=0;
+    bk_release(bk_tmp);
+}
+int sp_sync_inode(struct inode * inode)
+{
+    lock_inode(inode);
+    sp_write_inode(inode);
+    inode->i_dirt=0;
+    unlock_inode(inode);
+    return 0;
 }
 
 void sp_statfs (struct super_block * sb, struct statfs * s_fs){

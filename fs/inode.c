@@ -6,7 +6,7 @@
 #include <mkrtos/mem.h>
 #include <ipc/ipc.h>
 #include <mkrtos/task.h>
-
+#include <string.h>
 
 //系统内支持的最大inode数量
 #define INODE_NUM 32
@@ -67,6 +67,7 @@ struct inode* get_empty_inode(void){
     for(i=0;i<INODE_NUM;i++){
         if(atomic_test_inc(&(inode_ls[i].i_used_count))){
             atomic_dec(&inode_free_num);
+            memset(&(inode_ls[i]),0,sizeof(struct inode));
             return &(inode_ls[i]);
         }
     }
@@ -74,6 +75,24 @@ struct inode* get_empty_inode(void){
     __wait_on_inode_list();
     //重新查找可用的
     goto again;
+}
+/**
+ * 获取一个inode,并让i_used_count++
+ * @param ino
+ * @return
+ */
+struct inode* get_inode(ino_t ino){
+    uint32_t i;
+    for(i=0;i<INODE_NUM;i++){
+        if(atomic_read(&(inode_ls[i].i_used_count))
+        && inode_ls[i].i_no==ino
+        ){
+//            memset(&(inode_ls[i]),0,sizeof(struct inode));
+            atomic_inc(&(inode_ls[i].i_used_count));
+            return &(inode_ls[i]);
+        }
+    }
+    return NULL;
 }
 /**
  * 放弃一个inode
@@ -99,12 +118,27 @@ void lose_inode(struct inode* p_inode){
 struct inode* geti(struct super_block* p_sb,ino_t ino){
 
     struct inode* r_inode= NULL;
-    r_inode=get_empty_inode();
 
+    r_inode=get_inode(ino);
+    if(r_inode!=NULL){
+        if (r_inode->i_mount) {
+            //如果被挂载了，则获取挂载的点
+            struct inode * tmp = r_inode->i_mount;
+            atomic_inc(&(tmp->i_used_count));
+            puti(r_inode);
+            r_inode = tmp;
+//            wait_on_inode(r_inode);
+        }
+        return r_inode;
+    }
+
+    //缓存没有，则重新读取一个
+    r_inode=get_empty_inode();
     //使用计数
     atomic_set(&(r_inode->i_used_count),1);
     atomic_set(&(r_inode->i_lock),0);
 
+    r_inode->i_file_size=0;
     r_inode->i_wait_q=NULL;
     //填充参数
     r_inode->i_sb=p_sb;
@@ -121,6 +155,7 @@ struct inode* geti(struct super_block* p_sb,ino_t ino){
     if(p_sb->s_ops->read_inode(r_inode)<0){
         p_sb->s_ops->free_inode(r_inode);
         lose_inode(r_inode);
+        return NULL;
     }
 
     return r_inode;
@@ -132,6 +167,9 @@ struct inode* geti(struct super_block* p_sb,ino_t ino){
  */
 int32_t puti(struct inode* put_inode){
 
+    if(!put_inode){
+        return -1;
+    }
     wait_on_inode(put_inode);
 
     if(!atomic_read(&( put_inode->i_used_count))){

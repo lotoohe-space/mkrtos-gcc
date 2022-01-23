@@ -19,7 +19,7 @@ struct fs_type *find_fs_type(const char *fs_name){
     int32_t i;
     for(i=0;i<fs_type_len;i++){
         if(strcmp(fs_type_list[i].f_name,fs_name)==0){
-            return &(fs_type_list);
+            return &(fs_type_list[i]);
         }
     }
     return NULL;

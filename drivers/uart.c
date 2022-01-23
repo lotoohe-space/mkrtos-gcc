@@ -3,6 +3,10 @@
 #include <string.h>
 #include <mkrtos/fs.h>
 static uint8_t initFlag=0;
+
+
+uint8_t fifo[128]={0};
+
 //这里是中断的回调
 static void CH432TRecvCB(uint8_t port,uint8_t * data,uint16_t len){
     if(port==1){
@@ -26,6 +30,16 @@ static int32_t open(struct inode * inode, struct file * fp) {
     CH432T_recv_1_data_fun = CH432TRecvCB;
     return 0;
 }
+static int read(struct inode *ino, struct file *fp, char * buf, int count){
+
+
+
+    return 0;
+}
+static int write(struct inode *ino, struct file * fp, char * buf, int count){
+    CH432Seril1Send((uint8_t*)buf,count);
+    return count;
+}
 /*关闭设备*/
 static void release (struct inode * ino, struct file * f){
     //printf("设备关闭 INodeNum:%d \r\n", pInode->iNodeNum);
@@ -45,6 +59,7 @@ void console_write(const char* str){
 }
 //设备注册结构体
 static struct file_operations uart_fops={
+        .write=write,
         .open=open,
         .release=release
 };
@@ -57,6 +72,8 @@ static int32_t uart_init(void) {
         if((used_dev_no=alloc_bk_no())<0){
             return -1;
         }
+    }else{
+        used_dev_no=TTY_DEV_NO;
     }
     extern void EXTI9_5_IRQHandler(void);
 
@@ -68,6 +85,12 @@ static int32_t uart_init(void) {
     )<0){
         return -1;
     }
+
+    extern int sys_mknod(const char * filename, int mode, dev_t dev);
+    if(sys_mknod("/dev/tty0",0777|(2<<16),used_dev_no)<0){
+
+    }
+
     return 0;
 }
 //删除驱动所执行的操作

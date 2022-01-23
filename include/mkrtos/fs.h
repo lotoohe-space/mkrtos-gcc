@@ -23,10 +23,8 @@ struct super_block;
 //取得文件模式
 #define FILE_MODE(a) ((a)&0xffff)
 
-//是否为目录文件
-#define IS_DIR_FILE(a) (((a)>>16)==1)
-//是否为普通文件
-#define IS_FILE(a) (((a)>>16)==0)
+
+
 
 
 
@@ -64,6 +62,7 @@ typedef struct inode {
 
     //上面的数据需要存到磁盘
 
+    struct inode *i_mount;
     //设备号码
     struct wait_queue *i_wait_q;
     //打开计数
@@ -99,6 +98,7 @@ typedef struct super_block {
     uint32_t s_fs_no;
     //文件系统根节点的inode
     struct inode *root_inode;
+    struct inode *s_covered;
     //是否修改过
     uint8_t s_dirt;
     //super操作函数
@@ -159,7 +159,7 @@ struct inode_operations {
     int (*readlink) (struct inode *,char *,int);
     int (*follow_link) (struct inode *,struct inode *,int,int,struct inode **);
     int (*bmap) (struct inode *,int);
-    void (*truncate) (struct inode *);
+    void (*truncate) (struct inode *,int);
     int (*permission) (struct inode *, int);
 };
 
@@ -212,9 +212,10 @@ void unlock_inode(struct inode* inode);
 
 
 //namei.c
-int32_t dir_namei(const char* file_path,struct inode** p_inode);
-struct inode* open_namei(const char* file_path,int32_t flags,int32_t mode);
-
+int namei(const char * pathname, struct inode ** res_inode);
+int32_t dir_namei(const char * pathname, int32_t * namelen, const char ** name,
+                  struct inode * base, struct inode ** res_inode);
+int32_t open_namei(const char* file_path,int32_t flags,int32_t mode,struct inode **res_inode,struct inode *base_dir);
 
 
 //dev.c
@@ -278,10 +279,15 @@ struct bk_cache {
 struct super_block* get_empty_sb(void);
 void free_sb(struct super_block* sb);
 
-
 //super.c
 struct task;
 void root_mount(struct task* task);
+
+//file_name.c
+int32_t _getname(const char* file_name,uint32_t len,char** to);
+int32_t getname(const char* file_name, char** to);
+void putname(const char* file_name);
+char* path_name(char* file_path);
 
 /**
  * @breif: 不同编译器Setion的定义

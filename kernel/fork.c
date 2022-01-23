@@ -22,7 +22,6 @@ int32_t sys_fork(uint32_t *psp){
     memcpy(newPtb,ptb,sizeof(TaskBlock));
     newPtb->status=TASK_SUSPEND;
     newPtb->next=NULL;
-//    newPtb->nextBk=NULL;
     newPtb->nextAll=NULL;
     newPtb->memLowStack=(void *)OSMalloc(sizeof(uint32_t)*(newPtb->userStackSize+newPtb->kernelStackSize));
     if(newPtb->memLowStack==NULL){

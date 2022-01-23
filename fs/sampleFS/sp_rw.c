@@ -5,6 +5,9 @@
 #include <mkrtos/fs.h>
 #include <mkrtos/sp.h>
 #include <mkrtos/bk.h>
+#include <fcntl.h>
+#include <string.h>
+#include <mkrtos/stat.h>
 int sp_file_read(struct inode * inode, struct file * filp, char * buf, int count){
     uint32_t fileUsedBKNum;
     uint32_t rLen = 0;
@@ -47,12 +50,12 @@ int sp_file_read(struct inode * inode, struct file * filp, char * buf, int count
             bkRemainSize = sb->s_bk_size;
         }
         if (i < A_BK_NUM(sp_ino)) {
-            //读取一块数据
-            if (rbk(sb->s_dev_no,sp_ino->p_ino[i], buf+rLen, bInx,  rSize) < 0) {
-                return -1;
-            }
+            struct bk_cache *tmp;
+            tmp= bk_read(sb->s_dev_no,sp_ino->p_ino[i],0);
+            memcpy(buf+rLen,tmp->cache+bInx,rSize);
             rLen += rSize;
             filp->f_ofs+=rSize;
+            bk_release(tmp);
         }
         else if (i < A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino)) {
 
@@ -60,14 +63,17 @@ int sp_file_read(struct inode * inode, struct file * filp, char * buf, int count
             uint32_t bkNo = overNum / BK_INC_X_NUM(sb);
             uint32_t bkInx = overNum % BK_INC_X_NUM(sb);
             uint32_t readBkInx;
-            if (rbk(sb->s_dev_no, sp_ino->pp_ino[bkNo],  (uint8_t*)(&readBkInx), bkInx*sizeof(uint32_t), sizeof(uint32_t))< 0) {
-                return -1;
-            }
-            if (rbk(sb->s_dev_no, readBkInx, buf + rLen, bInx, rSize) < 0) {
-                return -1;
-            }
+            struct bk_cache *tmp;
+            struct bk_cache *tmp1;
+            tmp= bk_read(sb->s_dev_no,sp_ino->pp_ino[bkNo],0);
+            memcpy((uint8_t*)(&readBkInx),tmp->cache+bkInx*sizeof(uint32_t),sizeof(uint32_t));
+            bk_release(tmp);
+            tmp1= bk_read(sb->s_dev_no,readBkInx,0);
+            memcpy(buf + rLen,tmp1->cache+bInx,rSize);
             rLen += rSize;
             filp->f_ofs+=rSize;
+
+            bk_release(tmp1);
         }
         else if (i < A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino) + C_BK_NUM(sb, sp_ino)) {
             return -1;
@@ -76,6 +82,7 @@ int sp_file_read(struct inode * inode, struct file * filp, char * buf, int count
             return -1;
         }
     }
+
     return rLen;
 }
 /**
@@ -91,32 +98,33 @@ int32_t get_ofs_bk_no(struct inode* inode, uint32_t offset,uint32_t* fpBkNum) {
     if(inode==NULL){
         return -1;
     }
+
     sb=inode->i_sb;
     sp_ino=(struct sp_inode *)(inode->i_fs_priv_info);
     if(offset > inode->i_file_size){
         return -1;
     }
-    uint32_t usedBkNum = ROUND_UP(offset+1, sb->s_bk_size);
-    if (usedBkNum <= A_BK_NUM(sp_ino)) {
-        *fpBkNum = sp_ino->p_ino[usedBkNum - 1];
+    uint32_t usedBkNum = ROUND_UP(offset, sb->s_bk_size)-1;
+    if (usedBkNum < A_BK_NUM(sp_ino)) {
+        *fpBkNum = sp_ino->p_ino[usedBkNum ];
         return 0;
     }
-    else if (usedBkNum <= A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino)) {
+    else if (usedBkNum < A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino)) {
         //超过A部分的大小
-        uint32_t overANum = usedBkNum - A_BK_NUM(sp_ino)-1;
+        uint32_t overANum = usedBkNum - A_BK_NUM(sp_ino);
         //二级大小
         uint32_t pFileBksInx = overANum / BK_INC_X_NUM(sb);
         uint32_t pFileBksi = overANum % BK_INC_X_NUM(sb);
         uint32_t bkNum;
-        //二级大小
-        if (rbk(sb->s_dev_no, sp_ino->p_ino[pFileBksInx],
-                         (uint8_t*)(&bkNum), pFileBksi*sizeof(uint32_t), sizeof(uint32_t))) {
-            return -1;
-        }
+
+        struct bk_cache* tmp;
+        tmp=bk_read(sb->s_dev_no,sp_ino->pp_ino[pFileBksInx],0);
+        memcpy((uint8_t*)(&bkNum), tmp->cache+pFileBksi*sizeof(uint32_t),sizeof(uint32_t));
+        bk_release(tmp);
         *fpBkNum = bkNum;
         return 0;
     }
-    else if (usedBkNum <= A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino) + C_BK_NUM(sb, sp_ino)) {
+    else if (usedBkNum < A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino) + C_BK_NUM(sb, sp_ino)) {
 //        //三级部分的大小
 //        uint32_t overANum = usedBkNum - A_BK_NUM(pINode)-B_BK_NUM(pFsInfo, pINode)-1;
 //        //得到一级偏移
@@ -147,49 +155,49 @@ int32_t inode_alloc_new_bk(struct inode* inode, uint32_t* newBkNum){
     struct sp_inode *sp_ino;
     sb=inode->i_sb;
     sp_ino=(struct sp_inode *)(inode->i_fs_priv_info);
-    uint32_t usedNewBkNum = FILE_USED_BK_NUM(sb, inode) + 1;
-    int32_t ret = 0;
+    uint32_t usedNewBkNum;
+    if(inode->i_file_size==0){
+        usedNewBkNum =0;
+    }else{
+        usedNewBkNum= FILE_USED_BK_NUM(sb, inode);
+    }
 
-    if (usedNewBkNum <= A_BK_NUM(sp_ino)) {
-        //一级大小
-        for (uint32_t i = 0; i < A_BK_NUM(sp_ino); i++) {
-            if (sp_ino->p_ino[i] != 0) {
-                continue;
-            }
+    if (usedNewBkNum < A_BK_NUM(sp_ino)) {
+
             if(alloc_bk(sb,newBkNum)<0){
                 return -1;
             }
-            sp_ino->p_ino[i] = *newBkNum;
+            sp_ino->p_ino[usedNewBkNum] = *newBkNum;
             inode->i_dirt=1;
-            break;
-        }
+
     }
-    else if (usedNewBkNum <= A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino)) {
+    else if (usedNewBkNum < A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino)) {
         //超过A部分的大小
-        uint32_t overANum = usedNewBkNum - A_BK_NUM(sp_ino)-1;
+        uint32_t overANum = usedNewBkNum - A_BK_NUM(sp_ino);
         //二级大小
         uint32_t pFileBksInx = overANum / BK_INC_X_NUM(sb);
         uint32_t pFileBksi = overANum % BK_INC_X_NUM(sb);
+        struct bk_cache* tmp;
+
         uint32_t a;
         if (sp_ino->pp_ino[pFileBksInx] == 0) {
             if(alloc_bk(sb,&a)<0){
                 return -1;
             }
+            //全部设置为0
+            tmp=bk_read(sb->s_dev_no,a,1);
+            memset(tmp->cache,0,sb->s_bk_size);
+            bk_release(tmp);
             sp_ino->pp_ino[pFileBksInx] = a;
             inode->i_dirt=1;
         }
         uint32_t b;
         if(alloc_bk(sb,&b)<0){
-//            free_bk(sb,a);
             return -1;
         }
-        //这里还有点问题
-        //填充二级
-        if (wbk(sb->s_dev_no, sp_ino->pp_ino[pFileBksInx], (uint8_t*)&b,pFileBksi * 4,  sizeof(b)) != 0) {
-//            free_bk(sb,a);
-            free_bk(sb,b);
-            return -1;
-        }
+        tmp=bk_read(sb->s_dev_no,sp_ino->pp_ino[pFileBksInx],1);
+        memcpy(tmp->cache+pFileBksi * 4, (uint8_t*)&b,sizeof(b));
+        bk_release(tmp);
         *newBkNum = b;
     }
     else if (usedNewBkNum <= A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino) + C_BK_NUM(sb, sp_ino)) {
@@ -252,11 +260,13 @@ int32_t inode_alloc_new_bk(struct inode* inode, uint32_t* newBkNum){
 //            return FsWriteBkErr;
 //        }
 //        *newBkNum = c;
+        trace("没有新的块\r\n");
         return -1;
     }
     else {
        return -1;
     }
+
     return 0;
 }
 int sp_file_write(struct inode * inode, struct file * filp, char * buf, int count){
@@ -268,19 +278,23 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
     //写入的偏移位置
     uint32_t wOffset = 0;
     struct super_block *sb;
-
-    if(!IS_FILE(inode->i_type_mode)){
+    struct bk_cache* tmp=NULL;
+    if(!S_ISREG(inode->i_type_mode)){
         return -EISDIR;
     }
 
     if (count == 0) {
         return 0;
     }
+    if(filp->f_flags&O_APPEND){
+        filp->f_ofs=inode->i_file_size;
+    }
     wOffset = filp->f_ofs;
     //写入的偏移超过了文件大小
     if(wOffset > inode->i_file_size){
         return -1;
     }
+
     sb=inode->i_sb;
     //文件占用多少块
     usedBkNum = ROUND_UP(wOffset, sb->s_bk_size);
@@ -291,10 +305,7 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
     while (wLen < count) {
 
         if (flag == 0) {//先写最后一块
-            if (upSize > wOffset
-                //不能相等，相等说明刚好写到了一块
-                && upSize != wOffset
-                    ) {
+            if (upSize > wOffset && upSize != wOffset) {//不能相等，相等说明刚好写到了一块
                 //写入最后一块剩余的空间
                 uint32_t last_bk_no;
                 if (get_ofs_bk_no(inode,wOffset, &last_bk_no) < 0) {
@@ -302,27 +313,32 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
                 }
                 wSize = count > (sb->s_bk_size - (wOffset % sb->s_bk_size))
                         ? (sb->s_bk_size - (wOffset % sb->s_bk_size)) : count;
-                //写入文件
-                if (wbk(sb->s_dev_no, last_bk_no,buf+wLen, wOffset % sb->s_bk_size, wSize) < 0) {
-                    return -1;
-                }
+
+                tmp=bk_read(sb->s_dev_no,last_bk_no,1);
+                memcpy(tmp->cache+wOffset % sb->s_bk_size,buf+wLen,wSize);
+
                 wLen += wSize;
                 wOffset += wSize;
+
+                if(wOffset > inode->i_file_size){
+                    //更新文件大小
+                    inode->i_file_size = wOffset;
+                    filp->f_ofs=wOffset;
+                    inode->i_dirt = 1;
+                }
+                bk_release(tmp);
             }
             flag = 1;
         }
         else {
             //剩余的大小
             uint32_t remainSize;
-
             //分配的新的块
             uint32_t needWBk;
-
-            remainSize = count - wLen;
             if(wOffset >= inode->i_file_size){
                 //如果写入偏移大于或者等于文件大小，申请一块新的
                 if (inode_alloc_new_bk(inode, &needWBk) < 0) {
-                    return -1;
+                    return -ENOSPC;
                 }
             }else{
                 //否则获取当前偏移的块号
@@ -330,20 +346,22 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
                     return -1;
                 }
             }
+            tmp=bk_read(sb->s_dev_no,needWBk,1);
+            remainSize = count - wLen;
             //计算还需要写入多少
             wSize = remainSize > sb->s_bk_size ?  sb->s_bk_size : remainSize;
-            if (wbk(sb->s_dev_no, needWBk, buf + wLen,0 , wSize) < 0) {
-//                return -1;
-            }
+            memcpy(tmp->cache,buf+wLen,wSize);
             wLen += wSize;
             wOffset += wSize;
-        }
-
-        if(wOffset > inode->i_file_size){
-            //更新文件大小
-            inode->i_file_size = wOffset;
-            inode->i_dirt = 1;
+            if(wOffset > inode->i_file_size){
+                //更新文件大小
+                inode->i_file_size = wOffset;
+                filp->f_ofs=wOffset;
+                inode->i_dirt = 1;
+            }
+            bk_release(tmp);
         }
     }
+    trace("file size %d\r\n",inode->i_file_size);
     return wLen;
 }

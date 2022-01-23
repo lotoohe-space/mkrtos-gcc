@@ -63,7 +63,7 @@ include_directories(
         arch/bsp/lib
         arch/bsp/lib/STM32F10x_FWLib
         /
-)
+ )
 
 file(GLOB_RECURSE SOURCES
         "main/*.*"

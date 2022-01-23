@@ -1,5 +1,6 @@
 #include <mkrtos/fs.h>
 #include <mkrtos/task.h>
+#include <mkrtos/stat.h>
 #define SB_MAX_NUM 6
 
 //系统最大支持的sb
@@ -68,9 +69,51 @@ struct super_block* read_sb(dev_t dev_no,const char * fs_name,int32_t req_dev_no
     sb->s_dev_no=dev_no;
     return sb;
 }
-int32_t sys_mount(void){
+int do_mount(dev_t dev, const char * dir, char * type, int flags, void * data)
+{
+    struct inode * dir_i;
+    struct super_block * sb;
+    int error;
 
+    error = namei(dir,&dir_i);
+    if (error) {
+        return error;
+    }
+    if (atomic_read(&dir_i->i_used_count) != 1 || dir_i->i_mount) {
+        puti(dir_i);
+        return -EBUSY;
+    }
+    if (!S_ISDIR(dir_i->i_type_mode)) {
+        puti(dir_i);
+        return -EPERM;
+    }
+    sb = read_sb(dev,type,0);
+    if (!sb || sb->s_covered) {
+        puti(dir_i);
+        return -EBUSY;
+    }
+    /* 设置被覆盖的挂载点 */
+    sb->s_covered = dir_i;
+    dir_i->i_mount = sb->root_inode;
     return 0;
+}
+int32_t sys_mount(char * dev_name, char * dir_name, char * type,
+                  unsigned long new_flags, void * data){
+    struct inode *inode ;
+    int32_t  res;
+    res = namei(dev_name,&inode);
+    if(res<0){
+        return res;
+    }
+    if(!S_ISBLK(inode->i_type_mode)){
+        puti(inode);
+        return -1;
+    }
+
+    res= do_mount(inode->i_sb->s_dev_no, dir_name, type, new_flags, data);
+
+    puti(inode);
+    return res;
 }
 /**
  * 挂载当前进程的根文件系统，每个进程应该都需要挂载一个
@@ -80,7 +123,7 @@ void root_mount(struct task* task){
     uint32_t i=0;
     struct super_block* sb;
     for(i=0;i<fs_type_len;i++){
-
+        //一个一个尝试挂载
         sb = read_sb(root_dev_no,fs_type_list[i].f_name,fs_type_list[i].req_dev_no);
         if(!sb){
             continue;

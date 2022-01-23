@@ -18,7 +18,7 @@ int sp_readdir(struct inode * inode, struct file * filp,
     struct dir_item di;
 
     again:
-    if(sp_file_read(inode, filp,&di, sizeof( struct dir_item))<=0){
+    if(sp_file_read(inode, filp,(uint8_t*)(&di), sizeof( struct dir_item))<=0){
         return 0;
     }
     if(di.used==0){
@@ -43,7 +43,7 @@ static struct file_operations sp_dir_operations = {
         NULL,			/* mmap */
         NULL,			/* no special open code */
         NULL,			/* no special release code */
-        NULL		/* default fsync */
+        file_fsync		/* default fsync */
 };
 
 /*
@@ -53,16 +53,16 @@ struct inode_operations sp_dir_inode_operations = {
         &sp_dir_operations,	/* default directory file-ops */
         sp_create,		/* create */
         sp_lookup,		/* lookup */
-        NULL,		/* link */
-        NULL,		/* unlink */
-        NULL,		/* symlink */
+        sp_link,		/* link */
+        sp_unlink,		/* unlink */
+        sp_symlink,		/* symlink */
         sp_mkdir,		/* mkdir */
         sp_rmdir,		/* rmdir */
         sp_mknod,		/* mknod */
-        NULL,		/* rename */
+        sp_rename,		/* rename */
         NULL,			/* readlink */
         NULL,			/* follow_link */
         NULL,			/* bmap */
-        NULL,		/* truncate */
+        sp_truncate,		/* truncate */
         NULL			/* permission */
 };

@@ -8,8 +8,20 @@
 #include <errno.h>
 #include <mkrtos/sp.h>
 #include <mkrtos/task.h>
+#include "mkrtos/stat.h"
+
 #define DIR_TYPE 1
 
+
+int32_t match(register char* str1,register const char *str2,int32_t len){
+    uint32_t i;
+    for(i=0;str2[i] && i<len;i++){
+        if(str1[i]!=str2[i]){
+            return str1[i]-str2[i];
+        }
+    }
+    return 0;
+}
 
 /**
  * 查找某个目录下的文件，并返回inode
@@ -53,7 +65,7 @@ int sp_dir_find(struct inode* dir,const char* file_name,int len,ino_t* res_inode
 //                    return -ENOENT;
 //                }
                 pdi=bk_tmp->cache+sizeof(struct dir_item)*j;
-                if (strcmp(pdi->name, file_name) == 0 && pdi->used == TRUE) {
+                if (match(pdi->name, file_name,len) == 0 && pdi->used == TRUE) {
                     *res_inode = pdi->inode_no;
                     bk_release(bk_tmp);
                     return tempi;
@@ -86,7 +98,7 @@ int sp_dir_find(struct inode* dir,const char* file_name,int len,ino_t* res_inode
                 if (rbk(sb->s_dev_no, readBkInx,  (uint8_t*)(&pdi), j*sizeof(struct dir_item), sizeof(struct dir_item)) < 0) {
                     return -ENOENT;
                 }
-                if (strcmp(pdi.name, file_name) == 0 && pdi.used == TRUE) {
+                if (match(pdi.name, file_name,len)  == 0 && pdi.used == TRUE) {
                     *res_inode = pdi.inode_no;
                     return tempi;
                 }
@@ -128,7 +140,9 @@ int sp_lookup(struct inode* p_inode,const char* file_name,int len,struct inode**
     }
     puti(p_inode);
 
-    *res_inode=r_inode;
+    if(res_inode) {
+        *res_inode = r_inode;
+    }
     return 0;
 }
 /**
@@ -173,11 +187,6 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
         printk("%s %d new bk %d\r\n",__FUNCTION__ ,__LINE__,new_bk);
 
         memcpy(tmp_bk_ch->cache,&pdi,sizeof(pdi));
-//        //写文件信息
-//        if (wbk(sb->s_dev_no, new_bk, (uint8_t*)&pdi,0,  sizeof(pdi)) < 0) {
-//            free_bk(sb,new_bk);
-//            return -1;
-//        }
         dir->i_file_size += sizeof(struct dir_item);
         bk_release(tmp_bk_ch);
     }
@@ -186,7 +195,7 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
         uint32_t ofs_no;
         //获取文件最后一块的块号
         uint32_t bk_num = 0;
-        struct dir_item pdi;
+        struct dir_item *pdi;
         uint32_t bk_num_tmp;
 
         if (get_bk_no_ofs(dir,dir->i_file_size, &bk_num) < 0) {
@@ -209,22 +218,31 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
             }
             file_cn = dir->i_file_size / sizeof(struct dir_item);
         }
+        trace("创建文件%s\r\n",name);
 
         ofs_no= (file_cn % (sb->s_bk_size / sizeof(struct dir_item)));
-        strcpy(pdi.name, name);
-        pdi.inode_no =  p_inode->i_no;
-        pdi.used = TRUE;
+
+        //检查文件是否存在了
+        for(uint32_t i=0;i<ofs_no;i++){
+            pdi=(struct dir_item*)(tmp_bk_ch->cache+i * sizeof(struct dir_item));
+            if(strncmp(pdi->name,name,sizeof(struct dir_item))==0&&pdi->used==TRUE){
+                bk_release(tmp_bk_ch);
+                return -EEXIST;
+            }
+        }
+        pdi=(struct dir_item*)(tmp_bk_ch->cache+ofs_no * sizeof(struct dir_item));
+        strcpy(pdi->name, name);
+        pdi->inode_no =  p_inode->i_no;
+        pdi->used = TRUE;
 #if 1
 #include <mkrtos/task.h>
         trace("进程%d,写块%d,偏移%d,旧文件大小%d,新文件大小%d\r\n",CUR_TASK->PID ,bk_num,ofs_no*sizeof(struct dir_item),file_size,dir->i_file_size);
 #endif
-        //复制到缓存的指定偏移处
-        memcpy(tmp_bk_ch->cache+ofs_no * sizeof(struct dir_item),(uint8_t*)(&pdi),sizeof(struct dir_item));
-
         dir->i_file_size += sizeof(struct dir_item);
         bk_release(tmp_bk_ch);
     }
     dir->i_dirt=1;
+    dir->i_hlink++;
     return 0;
 }
 /**
@@ -239,32 +257,79 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
 int sp_create(struct inode *dir,const char *name,int len,int mode,struct inode ** result){
     int32_t ret = 0;
     struct super_block *p_sb;
-    struct inode* new_inode=get_empty_inode();
+    struct inode* new_inode=sp_new_inode(dir);
     if (new_inode == NULL) {
         puti(dir);
-        ret = ENOMEM;
+        ret = -ENOMEM;
         goto end;
     }
-    new_inode->i_type_mode = mode;
+    new_inode->i_type_mode = mode&0xffff;
     new_inode->i_dirt=1;
+    new_inode->i_ops=&sp_file_inode_operations;
 
     //添加到目录中
-    if(add_file_to_entry(dir,name,new_inode)<0) {
-        ret = ERROR;
+    if((ret=add_file_to_entry(dir,name,new_inode))<0) {
+        new_inode->i_hlink--;
         puti(dir);
         puti(new_inode);
         //释放申请的内存
         goto end;
     }
     puti(dir);
-    puti(new_inode);
     *result = new_inode;
     end:
     return ret;
 }
 int sp_mknod(struct inode * dir, const char * name, int len, int mode, int rdev)
 {
-
+    int error;
+    struct inode * inode;
+    int res;
+    ino_t res_ino;
+    if (!dir)
+        return -ENOENT;
+    res = sp_dir_find(dir,name,len,&res_ino);
+    if (res>=0) {
+        puti(dir);
+        return -EEXIST;
+    }
+    inode = sp_new_inode(dir);
+    if (!inode) {
+        puti(dir);
+        return -ENOSPC;
+    }
+//    inode->i_uid = current->euid;
+    inode->i_type_mode = mode;
+    inode->i_ops = NULL;
+    if (IS_FILE(inode->i_type_mode))
+        inode->i_ops = &sp_file_inode_operations;
+    else if (IS_DIR_FILE(inode->i_type_mode)) {
+        inode->i_ops = &sp_dir_inode_operations;
+//        if (dir->i_type_mode & S_ISGID)
+//            inode->i_mode |= S_ISGID;
+    }
+//    else if (S_ISLNK(inode->i_mode))
+//        inode->i_op = &minix_symlink_inode_operations;
+    else if (IS_CHAR_FILE(inode->i_type_mode))
+        inode->i_ops = &chrdev_inode_operations;
+    else if (IS_BK_FILE(inode->i_type_mode))
+        inode->i_ops = &blkdev_inode_operations;
+//    else if (S_ISFIFO(inode->i_mode))
+//        init_fifo(inode);
+    if (IS_CHAR_FILE(inode->i_type_mode) || IS_CHAR_FILE(inode->i_type_mode))
+        inode->i_rdev_no = rdev;
+    inode->i_dirt = 1;
+    error = add_file_to_entry(dir, name, inode);
+    if (error) {
+        inode->i_hlink--;
+        inode->i_dirt = 1;
+        puti(inode);
+        puti(dir);
+        return error;
+    }
+    puti(dir);
+    puti(inode);
+    return 0;
 }
 int sp_mkdir(struct inode * dir, const char * name, int len, int mode)
 {
@@ -293,7 +358,7 @@ int sp_mkdir(struct inode * dir, const char * name, int len, int mode)
     }
     inode->i_ops = &sp_dir_inode_operations;
     inode->i_file_size = 2 * sizeof (struct dir_item);
-
+    inode->i_type_mode=1<<16;
     //得到一个新的块
     if(alloc_bk(sb,&new_bk)<0){
         puti(dir);
@@ -539,4 +604,135 @@ int sp_rmdir(struct inode * dir, const char * name, int len)
     puti(dir);
     puti(inode);
     return res;
+}
+//断开一次硬链接
+int sp_unlink(struct inode * dir, const char * name, int len){
+    int retval;
+    struct inode * inode;
+    ino_t de;
+
+    repeat:
+    retval = -ENOENT;
+    inode = NULL;
+    retval = sp_dir_find(dir,name,len,&de);
+    if (retval<0)
+        goto end_unlink;
+    if (!(inode = geti(dir->i_sb, de)))
+        goto end_unlink;
+    retval = -EPERM;
+    if (IS_DIR_FILE(inode->i_type_mode))
+        goto end_unlink;
+    if (de != inode->i_no) {
+        puti(inode);
+        task_sche();
+        goto repeat;
+    }
+//    if ((dir->i_mode & S_ISVTX) && !suser() &&
+//        current->euid != inode->i_uid &&
+//        current->euid != dir->i_uid)
+//        goto end_unlink;
+    if (de != inode->i_no) {
+        retval = -ENOENT;
+        goto end_unlink;
+    }
+    if (!inode->i_hlink) {
+        printk("删除不存在的文件 (%04x:%lu), %d\n", inode->i_sb->s_dev_no,inode->i_no,inode->i_hlink);
+        inode->i_hlink=1;
+    }
+//    dir->i_ctime = dir->i_mtime = CURRENT_TIME;
+    dir->i_dirt = 1;
+    inode->i_hlink--;
+//    inode->i_ctime = dir->i_ctime;
+    inode->i_dirt = 1;
+    retval = 0;
+    end_unlink:
+    puti(inode);
+    puti(dir);
+    return retval;
+}
+int sp_symlink(struct inode * dir, const char * name, int len, const char * symname)
+{
+    ino_t ino;
+    struct inode * inode = NULL;
+    int i;
+    char c;
+    int res;
+    struct bk_cache *tmp;
+
+    if (!(inode = sp_new_inode(dir))) {
+        puti(dir);
+        return -ENOSPC;
+    }
+    inode->i_type_mode = S_IFLNK | 0777;
+    inode->i_ops = &sp_symlink_inode_operations;
+
+    bk_no_t no_t;
+    if(alloc_bk(dir->i_sb,&no_t)<0){
+        free_inode_no(dir->i_sb,inode->i_no);
+        puti(inode);
+        return -ENOSPC;
+    }
+    ((struct sp_inode*)inode->i_fs_priv_info)->p_ino[0]=no_t;
+    tmp=bk_read(dir->i_sb->s_dev_no,no_t,1);
+    i = 0;
+    while (i < dir->i_sb->s_bk_size && (c=*(symname++)))
+        tmp->cache[i++] = c;
+    tmp->cache[i] = 0;
+    bk_release(tmp);
+
+    inode->i_file_size = i;
+    inode->i_dirt = 1;
+    res = sp_dir_find(dir,name,len,&ino);
+    if (res>=0) {
+        //目录下已经有文件了
+        inode->i_hlink--;
+        inode->i_dirt = 1;
+        puti(inode);
+        puti(dir);
+        return -EEXIST;
+    }
+    i = add_file_to_entry(dir, name, inode);
+    if (i<0) {
+        inode->i_hlink--;
+        inode->i_dirt = 1;
+        puti(inode);
+        puti(dir);
+        return i;
+    }
+    puti(dir);
+    puti(inode);
+    return 0;
+}
+int sp_link(struct inode * oldinode, struct inode * dir, const char * name, int len)
+{
+    int error;
+    ino_t ino;
+    if (IS_DIR_FILE(oldinode->i_type_mode)) {
+        puti(oldinode);
+        puti(dir);
+        return -EPERM;
+    }
+
+    error = sp_dir_find(dir,name,len,&ino);
+    if (error>=0) {
+        puti(dir);
+        puti(oldinode);
+        return -EEXIST;
+    }
+    error = add_file_to_entry(dir, name, oldinode);
+    if (error<0) {
+        puti(dir);
+        puti(oldinode);
+        return error;
+    }
+    puti(dir);
+    oldinode->i_hlink++;
+    oldinode->i_dirt = 1;
+    puti(oldinode);
+    return 0;
+}
+int sp_rename(struct inode * old_dir, const char * old_name, int old_len,
+                 struct inode * new_dir, const char * new_name, int new_len){
+
+    return -ENOSYS;
 }

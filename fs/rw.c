@@ -6,8 +6,6 @@
 #include <errno.h>
 #include <mkrtos/task.h>
 
-
-
 //¶ÁÄ¿Â¼
 int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count){
     int32_t err;
@@ -115,6 +113,7 @@ int sys_write (int fd,uint8_t *buf,uint32_t len){
     if(_file->f_op
        &&_file->f_op->write
             ){
+        trace("file inode %d\r\n",_file->f_inode->i_no);
         int32_t err=_file->f_op->write(_file->f_inode,_file,buf,len);
         return err;
     }else{

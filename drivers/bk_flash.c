@@ -69,6 +69,7 @@ static struct bk_operations bk_flash={
     .erase_bk=erase_bk
 };
 dev_t used_dev_no=FLASH_DEV_NO;
+#define DEV_NAME "flash"
 /**
  * 注册设备驱动，注册成功返回设备驱动号
  * @return
@@ -76,12 +77,14 @@ dev_t used_dev_no=FLASH_DEV_NO;
 int32_t bk_flash_init(void){
 
     if(request_bk_no(FLASH_DEV_NO)<0){
-        if((used_dev_no=alloc_bk_no())<0){
-            return -1;
-        }
+//        if((used_dev_no=alloc_bk_no())<0){
+//            return -1;
+//        }
+        sys_mknod("/dev/flash",0777|(3<<16),FLASH_DEV_NO);
+        return -1;
     }
 
-    if(reg_bk_dev(FLASH_DEV_NO,"flash",
+    if(reg_bk_dev(FLASH_DEV_NO,DEV_NAME,
                   &bk_flash,
                   BK_COUNT,
                   FLASH_BK_CACHE_LEN,BK_SIZE
@@ -93,7 +96,7 @@ int32_t bk_flash_init(void){
 }
 int32_t bk_flash_exit(void){
 
-    unreg_bk_dev(used_dev_no,"flash");
+    unreg_bk_dev(used_dev_no,DEV_NAME);
 
 }
 DEV_BK_EXPORT(bk_flash_init,bk_flash_exit,flash);

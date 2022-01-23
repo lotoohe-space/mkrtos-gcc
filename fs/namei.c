@@ -9,172 +9,268 @@
 #include <fcntl.h>
 #include <string.h>
 #include <mkrtos/mem.h>
-//获取目录的名字，并返回截断的位置
-uint32_t get_path_name(const char* file_path, char* path, uint32_t cache_len) {
-    uint32_t len;
-    uint32_t end_inx;
-    if (file_path == NULL) {
+#include "mkrtos/stat.h"
+
+
+int follow_link(struct inode * dir, struct inode * inode,
+                int flag, int mode, struct inode ** res_inode)
+{
+    if (!dir || !inode) {
+        puti(dir);
+        puti(inode);
+        *res_inode = NULL;
+        return -ENOENT;
+    }
+    /* 如果follow_link为空，则释放dir，
+     * 同时将res_inode指向inode,有一种情况可能就是目录的符号连接
+     * 当读取到目录符号连接时，则回继续转到真正的目录下面
+     */
+    if (!inode->i_ops || !inode->i_ops->follow_link) {
+        puti(dir);
+        *res_inode = inode;
         return 0;
     }
-    len = strlen(file_path);
-    end_inx= len;
-    for (int32_t i = len - 1; i >= 0; i--) {
-        if (file_path[i] == '\\' || file_path[i] == '/') {
-            end_inx = i;
+    return inode->i_ops->follow_link(dir,inode,flag,mode,res_inode);
+}
+
+/* 在dir对应的目录当中查找文件名为name,且长度为len的文件或目录的inode
+ */
+int lookup(struct inode * dir,const char * name, int len,
+           struct inode ** result)
+{
+    struct super_block * sb;
+    int perm;
+
+    *result = NULL;
+    if (!dir)
+        return -ENOENT;
+//    perm = permission(dir,MAY_EXEC);
+    if (len==2 && name[0] == '.' && name[1] == '.') {
+        if (dir == ROOT_INODE) {
+            *result = dir;
+            return 0;
+        }
+        else if ((sb = dir->i_sb) && (dir == sb->root_inode)) {
+            sb = dir->i_sb;
+            puti(dir);
+            dir = sb->s_covered;
+            if (!dir) {
+                return -ENOENT;
+            }
+            atomic_inc(&dir->i_used_count);
+        }
+    }
+    /* 判断不是一个目录，目录也是一种特殊的文件
+     */
+    if (!dir->i_ops || !dir->i_ops->lookup) {
+        puti(dir);
+        return -ENOTDIR;
+    }
+//    if (!perm) {
+//        puti(dir);
+//        return -EACCES;
+//    }
+    if (!len) {
+        *result = dir;
+        return 0;
+    }
+    return dir->i_ops->lookup(dir,name,len,result);
+}
+static int _namei(const char * pathname, struct inode * base,
+                  int follow_links, struct inode ** res_inode)
+{
+    const char * basename;
+    int namelen,error;
+    struct inode * inode;
+
+    *res_inode = NULL;
+    error = dir_namei(pathname,&namelen,&basename,base,&base);
+    if (error)
+        return error;
+    atomic_inc(&(base->i_used_count));
+    error = lookup(base,basename,namelen,&inode);
+    if (error) {
+        puti(base);
+        return error;
+    }
+    /* 如果跟踪连接 */
+    if (follow_links) {
+        error = follow_link(base,inode,0,0,&inode);
+        if (error) {
+            return error;
+        }
+    } else {
+        puti(base);
+    }
+    *res_inode = inode;
+    return 0;
+}
+
+/* 不跟踪连接 */
+int lnamei(const char * pathname, struct inode ** res_inode)
+{
+    int error;
+    char * tmp;
+
+    error = getname(pathname,&tmp);
+    if (!error) {
+        error = _namei(tmp,NULL,0,res_inode);
+        putname(tmp);
+    }
+    return error;
+}
+int namei(const char * pathname, struct inode ** res_inode)
+{
+    int error;
+//    char * tmp;
+
+//    error = getname(pathname,&tmp);
+//    if (!error) {
+        error = _namei(pathname,NULL,1,res_inode);
+//        putname(tmp);
+//    }
+    return error;
+}
+
+/**
+ * 获取路径所在的inode
+ * @param file_path 路径
+ * @param p_inode 文件的inode
+ * @param dir 目录的inode
+ * @param file_name 文件名字
+ * @return
+ */
+int32_t dir_namei(const char * pathname, int32_t * namelen, const char ** name,
+                  struct inode * base, struct inode ** res_inode){
+    char c;
+    const char * thisname;
+    int len,error;
+    struct inode * inode;
+
+    *res_inode = NULL;
+    if (!base) {
+        base = PWD_INODE;
+        atomic_inc(&base->i_used_count);
+    }
+    if ((c = *pathname) == '/') {
+        puti(base);
+        base = ROOT_INODE;
+        pathname++;
+        atomic_inc(&base->i_used_count);
+    }
+    while (1) {
+        thisname = pathname;
+        for(len=0;(c = *(pathname++))&&(c != '/');len++);
+        if (!c) {
             break;
         }
-    }
-    if (path != NULL) {
-        uint32_t i = 0;
-        for (i = 0; i < end_inx && i < (cache_len - 1); i++) {
-            path[i] = file_path[i];
+        /*增加引用计数，如果不增加，则可能在当前进程被切换出去之后，把该inode给释放掉了*/
+        atomic_inc(&base->i_used_count);
+        error = lookup(base,thisname,len,&inode);
+        if (error) {
+            puti(base);
+            return error;
         }
-        path[i] = '\0';
-    }
-    return end_inx;
-}
-
-int32_t dir_namei(const char*file_path,struct inode** p_inode){
-    int32_t res=0;
-    //目录深度
-    uint32_t dir_deep = 0;
-    uint32_t word_st_inx = 0;
-    uint32_t word_end_inx = 0;
-    if (file_path == NULL) {
-        return -EINVAL;
-    }
-    struct inode* res_inode = NULL;
-
-    if (file_path[0] == '\0') {
-        //目录长度为0，则标志为当前工作目录
-        res_inode = PWD_INODE;
-        atomic_inc(&res_inode->i_used_count);
-        goto end;
-    }
-    for (uint32_t i = 0; file_path[i]; i++) {
-        if (file_path[i] == '\\' || file_path[i] == '/' || file_path[i + 1] == '\0') {
-            word_end_inx = i;
-            if (dir_deep == 0 && (word_end_inx - word_st_inx == 0)) {
-                //设置根节点
-                res_inode = ROOT_INODE;
-                atomic_inc(&res_inode->i_used_count);
-            }
-            else {
-                char *fnTemp;
-                if (res_inode == NULL) {
-                    //等于NULL说明没有,则设置为当前工作目录
-                    res_inode=PWD_INODE;
-                    atomic_inc(&res_inode->i_used_count);
-                }
-                fnTemp=OSMalloc(512);
-                if(fnTemp==NULL){
-//                    while(1);
-                }
-                uint32_t j = 0;
-                for (j = word_st_inx; j <= word_end_inx; j++) {
-                    fnTemp[j - word_st_inx] = file_path[j];
-                }
-                if (file_path[i] == '\\' || file_path[i] == '/') {
-                    fnTemp[j - word_st_inx - 1] = '\0';
-                }
-                else {
-                    fnTemp[j - word_st_inx] = '\0';
-                }
-                atomic_inc(&res_inode->i_used_count);
-                if((res=res_inode->i_ops->lookup(res_inode,fnTemp,sizeof(struct inode),&res_inode))<0){
-                    OSFree(fnTemp);
-                    goto end;
-                }
-                OSFree(fnTemp);
-            }
-            word_st_inx = i + 1;
-            dir_deep++;
+        //目标可能是一个符号文件，所以要找到符号文件对应的inode
+        error = follow_link(base,inode,0,0,&base);
+        if (error) {
+            return error;
         }
     }
-    end:
-    *p_inode=res_inode;
-    puti(res_inode);
-    return res;
+    if (!base->i_ops || !base->i_ops->lookup) {
+        puti(base);
+        return -ENOTDIR;
+    }
+    *name = thisname;
+    *namelen = len;
+    *res_inode = base;
+    return 0;
 }
 
-struct inode* open_namei(const char* file_path,int32_t flags,int32_t mode){
+int32_t open_namei(const char* file_path,int32_t flags,int32_t mode,struct inode **res_inode,struct inode *base_dir){
     struct inode* ino;
-    int32_t res;
-    res= dir_namei(file_path,&ino);
+    struct inode* dir;
+    int32_t res=0;
+    int32_t f_len;
+    char *file_name ;
+    again:
+    res= dir_namei(file_path,&f_len,&file_name,base_dir,&dir);
     if(res<0){
-        if(res==-ENOENT) {
-            if ( (flags & O_CREAT)&& (flags & O_WRONLY) ) {//是否需要创建文件
-                char cache[128];
-                struct inode *path_inode;
-                uint32_t c_ofs = get_path_name(file_path, cache, sizeof(cache));
-                //获得所在路径的inode
-                if ((dir_namei(cache,&path_inode)<0)) {
-                    errno = ENOENT;
-                    return NULL;
-                }
-                atomic_inc(&path_inode->i_used_count);
-                //创建失败
-                if ((res = ino->i_ops->create(path_inode, file_path + c_ofs + 1, mode, sizeof(struct inode), &ino)) <
-                    0) {
-                    errno = res;
-                    return NULL;
-                }
-                goto next;
-            }
+        return res;
+    }
+    //打开一个目录
+    if( f_len == 0 ){
+        if (flags & O_WRONLY) {
+            //目录不能写
+            puti(dir);
+            return -EISDIR;
         }
-        return NULL;
-    }else{
-        if(//是否需要截断文件
-            (flags & O_TRUNC)
-            &&(flags& O_WRONLY)
-            ){
-            if(ino->i_ops->truncate) {
-                atomic_inc(&ino->i_used_count);
-                ino->i_ops->truncate(ino);
-            }else{
+        *res_inode = dir;
+        return 0;
+    }
+    atomic_inc(&dir->i_used_count);
+    if(flags & O_CREAT){
+        res=lookup(dir,file_name,f_len,&ino);
+        if(res>=0) {
+            if (flags & O_EXCL) {
                 puti(ino);
-                errno=-ENOSYS;
-                return NULL;
+                res = -EEXIST;
             }
+        }else if(!dir->i_ops || !dir->i_ops->create){
+            res=-EACCES;
+        }else {
+            atomic_inc(&dir->i_used_count);
+            res=dir->i_ops->create(dir, file_name, mode, sizeof(struct inode), &ino);
+            *res_inode = ino;
+            puti(dir);
+            return res;
+        }
+    }else {
+        res = lookup(dir, file_name, f_len, &ino);
+        if(res<0){
+            puti(dir);
+            return -ENOENT;
         }
     }
-    next:
-    atomic_inc(&ino->i_used_count);
-    return ino;
+    if (flags & O_TRUNC) {
+        if (ino->i_ops && ino->i_ops->truncate) {
+            ino->i_ops->truncate(ino,0);
+        }
+//        if ((error = notify_change(NOTIFY_SIZE, inode))) {
+//            iput(inode);
+//            return error;
+//        }
+        ino->i_dirt = 1;
+    }
+    *res_inode = ino;
+
+    return res;
 }
 
 //新建目录
 int sys_mkdir(const char * pathname, int mode){
-    char cache[128];
     struct  inode* path_inode;
-    uint32_t c_ofs;
+    struct inode* dir;
+    const char *file_name;
+    int32_t f_len;
     int32_t res;
-    c_ofs = get_path_name(pathname,cache,sizeof(cache));
     //获得所在路径的inode
-    if((dir_namei(cache,&path_inode))<0){
-        return -ENOENT;
-    }
-    if(!IS_DIR_FILE(path_inode->i_type_mode)){
-        puti(path_inode);
+    if((dir_namei(pathname,&f_len,&file_name,NULL,&path_inode))<0){
+        //目录存在
         return -ENOENT;
     }
 
     //这里需要检查权限
-
     if(path_inode->i_ops
     &&path_inode->i_ops->mkdir
     ) {
         atomic_inc(&path_inode->i_used_count);
-        res = path_inode->i_ops->mkdir(path_inode, pathname+c_ofs+1, strlen(pathname) - c_ofs-1, mode);
-        if (res < 0) {
-            puti(path_inode);
-            return res;
-        }
-    }else{
+        res = path_inode->i_ops->mkdir(path_inode,file_name, strlen(file_name), mode);
         puti(path_inode);
-        return -ENOSYS;
+        return res;
     }
-    return 0;
+    puti(path_inode);
+    return -ENOSYS;
 }
 /**
  * 删除目录
@@ -184,13 +280,14 @@ int sys_mkdir(const char * pathname, int mode){
  * @return
  */
 int sys_rmdir (const char *pathname){
-    char cache[128];
     struct  inode* path_inode;
-    uint32_t c_ofs;
+    struct inode* dir;
+    char *file_name;
+    int32_t f_len;
     int32_t res;
-    c_ofs = get_path_name(pathname,cache,sizeof(cache));
     //获得所在路径的inode
-    if((dir_namei(cache,&path_inode))<0){
+    if((dir_namei(pathname,&f_len,&file_name,NULL,&path_inode))<0){
+        //目录存在
         return -ENOENT;
     }
     if(!IS_DIR_FILE(path_inode->i_type_mode)){
@@ -198,34 +295,83 @@ int sys_rmdir (const char *pathname){
         return -ENOENT;
     }
 
+    //这里需要检查权限
     if(path_inode->i_ops
        &&path_inode->i_ops->rmdir
             ) {
         atomic_inc(&path_inode->i_used_count);
-        res = path_inode->i_ops->rmdir(path_inode, cache, strlen(pathname) - c_ofs);
+        res = path_inode->i_ops->rmdir(path_inode,file_name, strlen(file_name));
         if (res < 0) {
             puti(path_inode);
             return res;
         }
-    }else{
-        puti(path_inode);
-        return -ENOSYS;
     }
-
-    return 0;
-}
-int sys_link(const char * oldname, const char * newname){
+    puti(path_inode);
     return -ENOSYS;
+}
+int do_link(struct inode * oldinode, const char * newname)
+{
+    struct inode * dir;
+    struct inode * p_dir;
+    const char * basename;
+    int error;
+    int32_t f_len;
+    error = dir_namei(newname,&f_len,&basename,NULL,&dir);
+    if (error<0) {
+        //文件已经存在了
+        puti(oldinode);
+        return error;
+    }
+    if (!strlen(newname)) {
+        puti(oldinode);
+        puti(dir);
+        return -EPERM;
+    }
+//    if (IS_RDONLY(dir)) {
+//        iput(oldinode);
+//        iput(dir);
+//        return -EROFS;
+//    }
+    if (dir->i_sb->s_dev_no != oldinode->i_sb->s_dev_no) {
+        puti(dir);
+        puti(oldinode);
+        return -EXDEV;
+    }
+//    if (!permission(dir,MAY_WRITE | MAY_EXEC)) {
+//        iput(dir);
+//        iput(oldinode);
+//        return -EACCES;
+//    }
+    if (!dir->i_ops || !dir->i_ops->link) {
+        puti(dir);
+        puti(oldinode);
+        return -EPERM;
+    }
+//    down(&dir->i_sem);
+    error = dir->i_ops->link(oldinode, dir, basename, strlen(basename));
+//    up(&dir->i_sem);
+    return error;
+}
+
+int sys_link(const char * oldname, const char * newname){
+    int error;
+    struct inode * oldinode;
+    error = namei(oldname,&oldinode);
+    if (error<0) {
+        return error;
+    }
+    error = do_link(oldinode,newname);
+    return error;
 }
 //删除文件
 int sys_unlink(const char * pathname){
-    char cache[128];
     struct  inode* path_inode;
-    uint32_t c_ofs;
     int32_t res;
-    c_ofs = get_path_name(pathname,cache,sizeof(cache));
+    int32_t f_len;
+    char *file_name;
+
     //获得所在路径的inode
-    if((dir_namei(cache,&path_inode))<0){
+    if((dir_namei(pathname,&f_len,&file_name,NULL,&path_inode))<0){
         return -ENOENT;
     }
     if(!IS_DIR_FILE(path_inode->i_type_mode)){
@@ -237,24 +383,62 @@ int sys_unlink(const char * pathname){
        &&path_inode->i_ops->unlink
             ) {
         atomic_inc(&path_inode->i_used_count);
-        res = path_inode->i_ops->unlink(path_inode, cache, strlen(pathname) - c_ofs);
-        if (res < 0) {
-            puti(path_inode);
-            return res;
-        }
-    }else{
+        res = path_inode->i_ops->unlink(path_inode, file_name, strlen(file_name));
         puti(path_inode);
-        return -ENOSYS;
+        return res;
     }
+    puti(path_inode);
 
-    return 0;
-}
-int sys_symlink(const char * oldname, const char * newname){
     return -ENOSYS;
 }
-//int sys_link(const char * oldname, const char * newname){
-//    return -ENOSYS;
-//}
+static int do_symlink(const char * oldname, const char * newname)
+{
+    struct inode * dir;
+    struct inode * p_dir;
+    char * basename;
+    int32_t f_len;
+    int error;
+
+    error = dir_namei(newname,&f_len,&basename,NULL,&dir);
+    if (error<0) {
+        return error;
+    }
+    if (!strlen(basename)) {
+        puti(dir);
+        return -ENOENT;
+    }
+//    if (IS_RDONLY(dir)) {
+//        puti(dir);
+//        return -EROFS;
+//    }
+//    if (!permission(dir,MAY_WRITE | MAY_EXEC)) {
+//        iput(dir);
+//        return -EACCES;
+//    }
+    if (!dir->i_ops || !dir->i_ops->symlink) {
+        puti(dir);
+        return -EPERM;
+    }
+//    down(&dir->i_sem);
+    error = dir->i_ops->symlink(dir,basename,strlen(basename),oldname);
+//    up(&dir->i_sem);
+    return error;
+}
+int sys_symlink(const char * oldname, const char * newname){
+    int error;
+    char * from, * to;
+
+    error = getname(oldname,&from);
+    if (!error) {
+        error = getname(newname,&to);
+        if (!error) {
+            error = do_symlink(from,to);
+            putname(to);
+        }
+        putname(from);
+    }
+    return error;
+}
 int sys_rename(const char * oldname, const char * newname){
     return -ENOSYS;
 }
@@ -266,17 +450,13 @@ int sys_rename(const char * oldname, const char * newname){
  * @return
  */
 int sys_mknod(const char * filename, int mode, dev_t dev){
-    char cache[128];
     struct  inode* path_inode;
-    uint32_t c_ofs;
+    struct  inode* dir;
+    char * base_name;
     int32_t res;
-    c_ofs = get_path_name(filename,cache,sizeof(cache));
+    int32_t f_len;
     //获得所在路径的inode
-    if((dir_namei(cache,&path_inode))<0){
-        return -ENOENT;
-    }
-    if(!IS_DIR_FILE(path_inode->i_type_mode)){
-        puti(path_inode);
+    if((dir_namei(filename,&f_len,&base_name,NULL,&path_inode))<0){
         return -ENOENT;
     }
     //调用文件系统的新建驱动文件函数
@@ -284,14 +464,11 @@ int sys_mknod(const char * filename, int mode, dev_t dev){
     &&path_inode->i_ops->mknod
     ) {
         atomic_inc(&path_inode->i_used_count);
-        int32_t res=path_inode->i_ops->mknod(path_inode, cache + c_ofs + 1, strlen(filename) - c_ofs, mode, dev);
-        if(res<0){
-            return res;
-        }
-    }else{
-        return -ENOSYS;
+        int32_t res=path_inode->i_ops->mknod(path_inode, base_name, strlen(base_name), mode, dev);
+        return res;
     }
-    return 0;
+    puti(path_inode);
+    return -ENOSYS;
 }
 
 

@@ -36,7 +36,7 @@ struct inode_operations sp_file_inode_operations = {
         NULL,			/* readlink */
         NULL,			/* follow_link */
         NULL,			/* bmap */
-        NULL,		/* truncate */
+        sp_truncate,		/* truncate */
         NULL			/* permission */
 };
 

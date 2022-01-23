@@ -129,7 +129,7 @@ struct bk_cache* get_bk_dev_cache(dev_t major_no,uint32_t *res_cache_len){
  */
 uint32_t get_bk_size(dev_t major_no) {
     if(major_no>=BK_DEV_MAX_NUM){
-        return NULL;
+        return 0;
     }
     return devs_bk[major_no].bk_size;
 }

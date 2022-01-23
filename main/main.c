@@ -6,7 +6,6 @@
 static inline _syscall0(int,setup);
 int main(void)
 {
-
     setup();
 	while(1);
 }

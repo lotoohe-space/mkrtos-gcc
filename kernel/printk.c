@@ -6,10 +6,11 @@
 #include <stdarg.h>
 #include <type.h>
 #include <mkrtos/fs.h>
-
+#define DEBUG 0
 static uint32_t flag=0;
 static uint8_t printk_cache[512];
 void trace(const char* fmt, ...){
+#if DEBUG
     va_list args;
     while(flag);
     flag=1;
@@ -19,6 +20,7 @@ void trace(const char* fmt, ...){
 
     console_write(printk_cache);
     flag=0;
+#endif
 }
 void printk(const char *fmt, ...)
 {

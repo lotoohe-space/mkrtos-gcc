@@ -15,6 +15,7 @@
 #define GET_BIT(a,b) (((a)>>(b))&0x1)
 #define ABS(a) ((a)<0?-(a):(a))
 
+static int32_t sync_all_bk(dev_t dev_no);
 /**
  * 块缓存初始化
  * @param p_bk_ch_ls
@@ -56,13 +57,21 @@ int32_t bk_cache_destory(struct bk_cache* p_bk_ch_ls,uint32_t cache_len){
     OSFree(p_bk_ch_ls);
     return 0;
 }
+
+
+int file_fsync (struct inode *inode, struct file *filp)
+{
+    struct super_block *sb;
+    sb=inode->i_sb;
+    return sync_all_bk(sb->s_dev_no);
+}
 /**
  * 随机同步一个块
  * @param dev_no
  * @param bk_ch
  * @return
  */
-static struct bk_cache* sync_bk(dev_t dev_no,uint32_t new_bk) {
+struct bk_cache* sync_rand_bk(dev_t dev_no,uint32_t new_bk) {
     struct bk_operations *bk_ops;
     struct bk_cache *sync_cache;
     uint32_t cache_len;
@@ -75,8 +84,14 @@ static struct bk_cache* sync_bk(dev_t dev_no,uint32_t new_bk) {
     bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
 
     lock_bk_ls(dev_no);
+    again:
     //随机进行同步，不行，两个进程如果要操作同一个bk，但是随机出来的不一样，那么要等待的也不一样，两个则释放了不同的bk块
     sync_cache=&bk_cache_ls[ABS(rand()) % cache_len];
+    if(atomic_read(&sync_cache->b_lock)){
+        //遇到已经被锁定的，则重新随机一个
+        task_sche();
+        goto again;
+    }
     lock_bk(sync_cache);
     if (GET_BIT(sync_cache->flag, 1)) {
         //先擦除
@@ -109,7 +124,7 @@ static int32_t sync_all_bk(dev_t dev_no){
     if(bk_cache_ls==NULL){
         return -1;
     }
-
+    lock_bk_ls(dev_no);
     for(i=0;i<cache_len;i++){
         if(GET_BIT(bk_cache_ls[i].flag,7)){
             continue;
@@ -117,19 +132,18 @@ static int32_t sync_all_bk(dev_t dev_no){
         lock_bk(bk_cache_ls+i);
         if (GET_BIT(bk_cache_ls[i].flag,0)) {
             if(bk_ops->erase_bk(bk_cache_ls[i].bk_no)<0){
-//                bk_cache_ls[i].flag=0;
-//                while(1);
+                fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
         }
         if (GET_BIT(bk_cache_ls[i].flag, 1)) {
             if(bk_ops->read_bk(bk_cache_ls[i].bk_no,bk_cache_ls[i].cache)<0){
-//                bk_cache_ls[i].flag=0;
-//                while(1);
+                fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
         }
         bk_cache_ls[i].flag=0;
         unlock_bk(bk_cache_ls+i);
     }
+    unlock_bk_ls(dev_no);
     return 0;
 }
 /**
@@ -176,6 +190,52 @@ static struct bk_cache* find_bk_cache(dev_t dev_no,uint32_t bk_no){
 
     return NULL;
 }
+struct bk_cache* sync_bk(dev_t dev_no,uint32_t bk_no){
+    uint32_t i;
+    int32_t prev_i=-1;
+    uint32_t cache_len;
+    struct bk_cache* bk_cache_ls;
+    struct bk_operations *bk_ops;
+
+    bk_ops=get_bk_ops(dev_no);
+    if(bk_ops==NULL){
+        return NULL;
+    }
+    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
+
+    lock_bk_ls(dev_no);
+
+    //这里用hash时最快的，后面优化
+    for(i=0;i<cache_len;i++){
+        if(!GET_BIT(bk_cache_ls[i].flag,7)){
+            prev_i=i;
+            continue;
+        }
+        if(bk_cache_ls[i].bk_no!=bk_no){
+            continue;
+        }
+        struct bk_cache *sync_cache;
+        sync_cache=&(bk_cache_ls[i]);
+        lock_bk(sync_cache);
+        if (GET_BIT(sync_cache->flag, 1)) {
+            //先擦除
+            if(bk_ops->erase_bk(sync_cache->bk_no)<0){
+                sync_cache->flag=0;
+                fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+            }
+            if(bk_ops->write_bk(sync_cache->bk_no,sync_cache->cache)<0){
+                sync_cache->flag=0;
+                fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+            }
+        }
+        sync_cache->flag=0x0;
+        unlock_bk(sync_cache);
+    }
+
+    unlock_bk_ls(dev_no);
+
+    return NULL;
+}
 /**
  * 写块
  * @param dev
@@ -202,7 +262,7 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_bk(dev_no,bk_no);
+        bk_tmp=sync_rand_bk(dev_no,bk_no);
         goto again;
     }
     lock_bk(bk_tmp);
@@ -265,7 +325,7 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_bk(dev_no,bk_no);
+        bk_tmp=sync_rand_bk(dev_no,bk_no);
         goto again;
 
     }
@@ -314,7 +374,7 @@ struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
     bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_bk(dev_no,bk_no);
+        bk_tmp=sync_rand_bk(dev_no,bk_no);
         goto again;
 
     }
@@ -339,6 +399,9 @@ struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
  * @param bk_tmp
  */
 void bk_release(struct bk_cache* bk_tmp){
+    if(bk_tmp==NULL){
+        return ;
+    }
     unlock_bk(bk_tmp);
 }
 

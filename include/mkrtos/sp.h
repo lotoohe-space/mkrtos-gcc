@@ -114,7 +114,7 @@ int32_t free_bk(struct super_block* sb,bk_no_t bk_no);
 int32_t alloc_inode_no(struct super_block* sb,ino_t *res_ino);
 int32_t free_inode_no(struct super_block*sb,ino_t ino);
 int32_t check_inode_no(struct super_block*sb,ino_t ino);
-
+int sp_sync_inode(struct inode * inode);
 int32_t get_bk_no_ofs(struct inode* p_inode, uint32_t offset,uint32_t* bk_no) ;
 
 //sp_namei.c
@@ -123,8 +123,12 @@ int sp_create(struct inode *dir,const char *name,int len,int mode,struct inode *
 int sp_mknod(struct inode * dir, const char * name, int len, int mode, int rdev);
 int sp_mkdir(struct inode * dir, const char * name, int len, int mode);
 int sp_rmdir(struct inode * dir, const char * name, int len);
-
-
+int sp_link(struct inode * oldinode, struct inode * dir, const char * name, int len);
+int sys_unlink(const char * pathname);
+int sp_symlink(struct inode * dir, const char * name, int len, const char * symname);
+int sp_rename(struct inode * old_dir, const char * old_name, int old_len,
+              struct inode * new_dir, const char * new_name, int new_len);
+int sp_unlink(struct inode * dir, const char * name, int len);
 //sp_super.c
 int32_t sp_mkfs(dev_t dev_no,int32_t inode_count);
 
@@ -145,4 +149,11 @@ extern struct inode_operations sp_file_inode_operations;
 extern struct inode_operations sp_dir_inode_operations;
 //sp_rw.c
 int32_t inode_alloc_new_bk(struct inode* inode, uint32_t* newBkNum);
+int32_t get_ofs_bk_no(struct inode* inode, uint32_t offset,uint32_t* fpBkNum);
+
+//sp_truncate.c
+void sp_truncate(struct inode* inode,int32_t len);
+
+//sp_link.c
+extern struct inode_operations sp_symlink_inode_operations;
 #endif //UNTITLED1_SP_H

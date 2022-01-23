@@ -121,12 +121,16 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
         pTaskBlock->files[i].used=0;
     }
     root_mount(pTaskBlock);
-//    sys_open("/",O_RDONLY,0777);
+    //打开三个串口输出
+    extern int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode);
+    do_open(pTaskBlock->files,"/dev/tty0",O_RDWR,0777);
+    do_open(pTaskBlock->files,"/dev/tty0",O_RDWR,0777);
+    do_open(pTaskBlock->files,"/dev/tty0",O_RDWR,0777);
 #endif
 
     atomic_inc(&sysTasks.pidTemp);
 
-    //最后设置为运行模式，之前都是挂起的
+    //最后设置为运行模式，之前都是挂起的9
     uint32_t t=DisCpuInter();
     pTaskBlock->status=TASK_RUNNING;
     RestoreCpuInter(t);

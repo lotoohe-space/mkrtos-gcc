@@ -3,6 +3,7 @@
 //
 #include <type.h>
 #include <errno.h>
+#include <mkrtos/stat.h>
 #include <mkrtos/fs.h>
 #include <mkrtos/task.h>
 #include <fcntl.h>
@@ -12,7 +13,7 @@ int sys_ustat(int dev, struct ustat * ubuf){
 int sys_statfs(const char * path, struct statfs * buf){
     struct inode * inode;
     int32_t res;
-    res=dir_namei(path,&inode);
+    res=namei(path,&inode);
     if(res<0){
         return -1;
     }
@@ -42,7 +43,31 @@ int sys_fstatfs(unsigned int fd, struct statfs * buf){
     return 0;
 }
 int sys_truncate(const char * path, unsigned int length){
-    return -ENOSYS;
+    struct inode * inode;
+    int error;
+
+    error = namei(path,&inode);
+    if (error) {
+        return error;
+    }
+    if (!S_ISREG(inode->i_type_mode)
+  //  || !permission(inode,MAY_WRITE)
+    ) {
+        puti(inode);
+        return -EACCES;
+    }
+//    if (IS_RDONLY(inode)) {
+//        iput(inode);
+//        return -EROFS;
+//    }
+    if (inode->i_ops && inode->i_ops->truncate) {
+        inode->i_ops->truncate(inode,length);
+    }
+//    inode->i_ctime = inode->i_mtime = CURRENT_TIME;
+    inode->i_dirt = 1;
+//    error = notify_change(NOTIFY_SIZE, inode);
+    puti(inode);
+    return error;
 }
 int sys_ftruncate(unsigned int fd, unsigned int length){
     return -ENOSYS;
@@ -56,8 +81,10 @@ int sys_access(const char * filename,int mode){
 //进入某个目录
 int sys_chdir(const char * filename){
     struct inode *o_inode;
+    const char* file_name;
+    int32_t f_len;
     int32_t res;
-    res=dir_namei(filename,&o_inode);
+    res=dir_namei(filename,&f_len,&file_name,NULL,&o_inode);
     if(res<0){
         return -ENOENT;
     }
@@ -69,6 +96,8 @@ int sys_chdir(const char * filename){
     puti(CUR_TASK->pwd_inode);
     //设置新的
     CUR_TASK->pwd_inode=o_inode;
+    puti(o_inode);
+
     return 0;
 }
 //感觉这个没有必要存在，根据fd进入某个目录
@@ -98,8 +127,10 @@ int sys_fchdir(unsigned int fd){
 //更改根目录
 int sys_chroot(const char * filename){
     struct inode *o_inode;
+    char* file_name;
+    int32_t f_len;
     int32_t res;
-    res=dir_namei(filename,&o_inode);
+    res=dir_namei(filename,&f_len,&file_name,NULL,&o_inode);
     if(res<0){
         return -ENOENT;
     }
@@ -112,6 +143,8 @@ int sys_chroot(const char * filename){
     puti(CUR_TASK->root_inode);
     //设置新的
     CUR_TASK->root_inode=o_inode;
+    puti(o_inode);
+
     return 0;
 }
 //更改文件的权限
@@ -141,17 +174,17 @@ int sys_fchmod(unsigned int fd, mode_t mode){
 int sys_chmod(const char * filename, mode_t mode){
     struct inode *o_inode;
     int32_t res;
-    res=dir_namei(filename,&o_inode);
+    res=namei(filename,&o_inode);
     if(res<0){
         return -ENOENT;
     }
 
     //检查权限
     //特别是检查当前用户有没有权限编辑这个文件
-
     o_inode->i_type_mode&=0xffff0000;
     o_inode->i_type_mode|=mode;
     o_inode->i_dirt=1;
+    puti(o_inode);
     return 0;
 }
 int sys_fchown(unsigned int fd, int user, int group){
@@ -159,6 +192,57 @@ int sys_fchown(unsigned int fd, int user, int group){
 }
 int sys_chown(const char * filename, int user, int group){
     return -ENOSYS;
+}
+int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
+    uint32_t i;
+    char *_path;
+    int32_t res;
+    struct inode *o_inode;
+    for(i=0;i<NR_FILE;i++){
+        if(files[i].used==0){
+            files[i].used=1;
+            break;
+        }
+    }
+    if(i>=NR_FILE){
+        errno = EMFILE;
+        return -1;
+    }
+//    getname(path,&_path);
+    //打开文件
+    res= open_namei(path,flags,mode,&o_inode,NULL);
+    if(res<0){
+        files[i].used=0;
+//        putname(_path);
+        return -1;
+    }
+    files[i].f_flags=flags;
+    //设置文件操作符号
+    if((!files[i].f_op)
+       &&  o_inode->i_ops->default_file_ops
+            ) {
+        files[i].f_op = o_inode->i_ops->default_file_ops;
+    }
+
+    //调用打开函数
+    if(
+            files[i].f_op
+            &&files[i].f_op->open
+            ) {
+        if (files[i].f_op->open(o_inode, &(files[i])) < 0) {
+            files[i].used = 0;
+            puti(o_inode);
+//            putname(_path);
+
+            return -1;
+        }
+
+    }
+    files[i].f_inode=o_inode;
+    files[i].f_mode= o_inode->i_type_mode;
+//    putname(_path);
+
+    return i;
 }
 /**NR_FILE
  * 打开文件
@@ -168,48 +252,7 @@ int sys_chown(const char * filename, int user, int group){
  * @return
  */
 int32_t sys_open(const char* path,int32_t flags,int32_t mode){
-    uint32_t i;
-    struct inode *o_inode;
-    for(i=0;i<NR_FILE;i++){
-        if(CUR_TASK->files[i].used==0){
-            CUR_TASK->files[i].used=1;
-            break;
-        }
-    }
-    if(i>=NR_FILE){
-        errno = EMFILE;
-        return -1;
-    }
-    //打开文件
-    o_inode = open_namei(path,flags,mode);
-    if(o_inode==NULL){
-        CUR_TASK->files[i].used=0;
-        return -1;
-    }
-    CUR_TASK->files[i].f_flags=flags;
-    //设置文件操作符号
-    if((!CUR_TASK->files[i].f_op)
-        &&  o_inode->i_ops->default_file_ops
-    ) {
-        CUR_TASK->files[i].f_op = o_inode->i_ops->default_file_ops;
-    }
-
-    //调用打开函数
-    if(
-        CUR_TASK->files[i].f_op
-        &&CUR_TASK->files[i].f_op->open
-        ) {
-        if (CUR_TASK->files[i].f_op->open(o_inode, &(CUR_TASK->files[i])) < 0) {
-            CUR_TASK->files[i].used = 0;
-            puti(o_inode);
-            return -1;
-        }
-
-    }
-    CUR_TASK->files[i].f_inode=o_inode;
-    CUR_TASK->files[i].f_mode= FILE_MODE((o_inode->i_type_mode));
-
-    return i;
+    return do_open(CUR_TASK->files,path,flags,mode);
 }
 
 //创建文件
