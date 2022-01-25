@@ -63,7 +63,7 @@ build cmake_object_order_depends_target_untitled1.elf: phony || CMakeFiles/untit
 build CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj: ASM_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/arm/PendSV_Handler.s || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\arm\PendSV_Handler.s.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -x assembler-with-cpp -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\arm
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -72,7 +72,7 @@ build CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj: ASM_COMPILER__
 build CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/arm/arch.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\arm\arch.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\arm
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -81,7 +81,7 @@ build CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj: C_COMPILER__untitled1.2e
 build CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj: ASM_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/arm/atomic.s || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\arm\atomic.s.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -x assembler-with-cpp -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\arm
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -90,7 +90,7 @@ build CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj: ASM_COMPILER__untitled
 build CMakeFiles/untitled1.elf.dir/arch/arm/call_sigreturn.s.obj: ASM_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/arm/call_sigreturn.s || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\arm\call_sigreturn.s.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -x assembler-with-cpp -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\arm
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -99,7 +99,7 @@ build CMakeFiles/untitled1.elf.dir/arch/arm/call_sigreturn.s.obj: ASM_COMPILER__
 build CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj: ASM_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/arm/init.s || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\arm\init.s.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -x assembler-with-cpp -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\arm
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -108,7 +108,7 @@ build CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj: ASM_COMPILER__untitled1.
 build CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/arm/isr.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\arm\isr.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\arm
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -117,7 +117,7 @@ build CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj: C_COMPILER__untitled1.2ee
 build CMakeFiles/untitled1.elf.dir/arch/arm/isr_handler.s.obj: ASM_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/arm/isr_handler.s || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\arm\isr_handler.s.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -x assembler-with-cpp -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\arm
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -126,7 +126,7 @@ build CMakeFiles/untitled1.elf.dir/arch/arm/isr_handler.s.obj: ASM_COMPILER__unt
 build CMakeFiles/untitled1.elf.dir/arch/arm/pre_syscall.s.obj: ASM_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/arm/pre_syscall.s || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\arm\pre_syscall.s.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -x assembler-with-cpp -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\arm
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -135,7 +135,7 @@ build CMakeFiles/untitled1.elf.dir/arch/arm/pre_syscall.s.obj: ASM_COMPILER__unt
 build CMakeFiles/untitled1.elf.dir/arch/bsp/CH432T.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/CH432T.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\CH432T.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -144,7 +144,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/CH432T.c.obj: C_COMPILER__untitled1.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/SPI2.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/SPI2.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\SPI2.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -153,7 +153,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/SPI2.c.obj: C_COMPILER__untitled1.2e
 build CMakeFiles/untitled1.elf.dir/arch/bsp/delay.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/delay.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\delay.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -162,7 +162,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/delay.c.obj: C_COMPILER__untitled1.2
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/misc.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/misc.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\misc.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -171,7 +171,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/misc.c.obj: C_CO
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_adc.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_adc.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_adc.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -180,7 +180,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_adc.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_bkp.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_bkp.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_bkp.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -189,7 +189,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_bkp.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_can.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_can.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_can.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -198,7 +198,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_can.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_cec.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_cec.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_cec.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -207,7 +207,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_cec.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_crc.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_crc.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_crc.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -216,7 +216,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_crc.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dac.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dac.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_dac.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -225,7 +225,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dac.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dbgmcu.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dbgmcu.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_dbgmcu.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -234,7 +234,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dbgmcu
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dma.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dma.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_dma.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -243,7 +243,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dma.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_exti.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_exti.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_exti.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -252,7 +252,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_exti.c
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_flash.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -261,7 +261,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_fsmc.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_fsmc.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_fsmc.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -270,7 +270,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_fsmc.c
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_gpio.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_gpio.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_gpio.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -279,7 +279,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_gpio.c
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_i2c.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_i2c.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_i2c.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -288,7 +288,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_i2c.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_iwdg.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_iwdg.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_iwdg.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -297,7 +297,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_iwdg.c
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_pwr.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_pwr.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_pwr.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -306,7 +306,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_pwr.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rcc.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rcc.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_rcc.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -315,7 +315,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rcc.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rtc.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rtc.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_rtc.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -324,7 +324,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rtc.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_sdio.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_sdio.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_sdio.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -333,7 +333,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_sdio.c
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_spi.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_spi.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_spi.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -342,7 +342,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_spi.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_tim.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_tim.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_tim.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -351,7 +351,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_tim.c.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_usart.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_usart.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_usart.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -360,7 +360,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_usart.
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_wwdg.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_wwdg.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib\stm32f10x_wwdg.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\STM32F10x_FWLib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -369,7 +369,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_wwdg.c
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/core_cm3.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/core_cm3.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\core_cm3.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -378,7 +378,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/core_cm3.c.obj: C_COMPILER__unti
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/stm32f10x_it.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\stm32f10x_it.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -387,7 +387,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj: C_COMPILER__
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/sys.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/sys.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\sys.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -396,7 +396,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/sys.c.obj: C_COMPILER__untitled1
 build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/system_stm32f10x.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\bsp\lib\system_stm32f10x.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\bsp\lib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -405,7 +405,7 @@ build CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj: C_COMPIL
 build CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj: ASM_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/arch/cpu/startup_stm32f103xe.s || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\arch\cpu\startup_stm32f103xe.s.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -x assembler-with-cpp -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\arch\cpu
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -414,7 +414,7 @@ build CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj: ASM_COMPI
 build CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/drivers/bk_flash.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\drivers\bk_flash.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\drivers
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -423,7 +423,7 @@ build CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj: C_COMPILER__untitled1
 build CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/drivers/uart.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\drivers\uart.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\drivers
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -432,7 +432,7 @@ build CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj: C_COMPILER__untitled1.2ee
 build CMakeFiles/untitled1.elf.dir/fs/bk.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/bk.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\bk.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -441,7 +441,7 @@ build CMakeFiles/untitled1.elf.dir/fs/bk.c.obj: C_COMPILER__untitled1.2eelf_Debu
 build CMakeFiles/untitled1.elf.dir/fs/dev.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/dev.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\dev.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -450,7 +450,7 @@ build CMakeFiles/untitled1.elf.dir/fs/dev.c.obj: C_COMPILER__untitled1.2eelf_Deb
 build CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/fcntl.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\fcntl.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -459,7 +459,7 @@ build CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj: C_COMPILER__untitled1.2eelf_D
 build CMakeFiles/untitled1.elf.dir/fs/file_name.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/file_name.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\file_name.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -468,7 +468,7 @@ build CMakeFiles/untitled1.elf.dir/fs/file_name.c.obj: C_COMPILER__untitled1.2ee
 build CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/fs_type.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\fs_type.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -477,7 +477,7 @@ build CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj: C_COMPILER__untitled1.2eelf
 build CMakeFiles/untitled1.elf.dir/fs/inode.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/inode.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\inode.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -486,7 +486,7 @@ build CMakeFiles/untitled1.elf.dir/fs/inode.c.obj: C_COMPILER__untitled1.2eelf_D
 build CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/ioctl.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\ioctl.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -495,7 +495,7 @@ build CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj: C_COMPILER__untitled1.2eelf_D
 build CMakeFiles/untitled1.elf.dir/fs/namei.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/namei.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\namei.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -504,7 +504,7 @@ build CMakeFiles/untitled1.elf.dir/fs/namei.c.obj: C_COMPILER__untitled1.2eelf_D
 build CMakeFiles/untitled1.elf.dir/fs/open.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/open.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\open.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -513,7 +513,7 @@ build CMakeFiles/untitled1.elf.dir/fs/open.c.obj: C_COMPILER__untitled1.2eelf_De
 build CMakeFiles/untitled1.elf.dir/fs/rw.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/rw.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\rw.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -522,7 +522,7 @@ build CMakeFiles/untitled1.elf.dir/fs/rw.c.obj: C_COMPILER__untitled1.2eelf_Debu
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_bmap.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_bmap.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -531,7 +531,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj: C_COMPILER__untitl
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_dir.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_dir.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -540,7 +540,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj: C_COMPILER__untitle
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_file.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_file.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -549,7 +549,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj: C_COMPILER__untitl
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_inode.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_inode.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -558,7 +558,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj: C_COMPILER__untit
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_link.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_link.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_link.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -567,7 +567,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_link.c.obj: C_COMPILER__untitl
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_namei.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_namei.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -576,7 +576,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj: C_COMPILER__untit
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_rw.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_rw.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -585,7 +585,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj: C_COMPILER__untitled
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_super.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_super.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -594,7 +594,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj: C_COMPILER__untit
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_sync.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_sync.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -603,7 +603,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj: C_COMPILER__untitl
 build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_truncate.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/sampleFS/sp_truncate.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\sampleFS\sp_truncate.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs\sampleFS
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -612,7 +612,7 @@ build CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_truncate.c.obj: C_COMPILER__un
 build CMakeFiles/untitled1.elf.dir/fs/stat.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/stat.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\stat.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -621,16 +621,34 @@ build CMakeFiles/untitled1.elf.dir/fs/stat.c.obj: C_COMPILER__untitled1.2eelf_De
 build CMakeFiles/untitled1.elf.dir/fs/super.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/fs/super.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\fs\super.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\fs
+  TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
+  TARGET_PDB = untitled1.elf.pdb
+
+build CMakeFiles/untitled1.elf.dir/ipc/fifo.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/ipc/fifo.c || cmake_object_order_depends_target_untitled1.elf
+  DEP_FILE = CMakeFiles\untitled1.elf.dir\ipc\fifo.c.obj.d
+  FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
+  OBJECT_DIR = CMakeFiles\untitled1.elf.dir
+  OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\ipc
+  TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
+  TARGET_PDB = untitled1.elf.pdb
+
+build CMakeFiles/untitled1.elf.dir/ipc/mutex.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/ipc/mutex.c || cmake_object_order_depends_target_untitled1.elf
+  DEP_FILE = CMakeFiles\untitled1.elf.dir\ipc\mutex.c.obj.d
+  FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
+  OBJECT_DIR = CMakeFiles\untitled1.elf.dir
+  OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\ipc
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
   TARGET_PDB = untitled1.elf.pdb
 
 build CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/ipc/sem.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\ipc\sem.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\ipc
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -639,7 +657,7 @@ build CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj: C_COMPILER__untitled1.2eelf_De
 build CMakeFiles/untitled1.elf.dir/ipc/spin_lock.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/ipc/spin_lock.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\ipc\spin_lock.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\ipc
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -648,7 +666,7 @@ build CMakeFiles/untitled1.elf.dir/ipc/spin_lock.c.obj: C_COMPILER__untitled1.2e
 build CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/exit.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\exit.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -657,7 +675,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj: C_COMPILER__untitled1.2eel
 build CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/fork.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\fork.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -666,7 +684,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj: C_COMPILER__untitled1.2eel
 build CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/printk.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\printk.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -675,7 +693,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj: C_COMPILER__untitled1.2e
 build CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/sched.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\sched.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -684,7 +702,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj: C_COMPILER__untitled1.2ee
 build CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/setup.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\setup.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -693,7 +711,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj: C_COMPILER__untitled1.2ee
 build CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/signal.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\signal.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -702,7 +720,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj: C_COMPILER__untitled1.2e
 build CMakeFiles/untitled1.elf.dir/kernel/smem_knl.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/smem_knl.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\smem_knl.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -711,7 +729,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/smem_knl.c.obj: C_COMPILER__untitled1.
 build CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/sys.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\sys.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -720,7 +738,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj: C_COMPILER__untitled1.2eelf
 build CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/syscall.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\syscall.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -729,7 +747,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj: C_COMPILER__untitled1.2
 build CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/kernel/task_create.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\kernel\task_create.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\kernel
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -738,7 +756,7 @@ build CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj: C_COMPILER__untitle
 build CMakeFiles/untitled1.elf.dir/lib/errno.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/lib/errno.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\lib\errno.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\lib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -747,7 +765,7 @@ build CMakeFiles/untitled1.elf.dir/lib/errno.c.obj: C_COMPILER__untitled1.2eelf_
 build CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/lib/stdlib.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\lib\stdlib.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\lib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -756,7 +774,7 @@ build CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj: C_COMPILER__untitled1.2eelf
 build CMakeFiles/untitled1.elf.dir/lib/string.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/lib/string.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\lib\string.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\lib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -765,7 +783,7 @@ build CMakeFiles/untitled1.elf.dir/lib/string.c.obj: C_COMPILER__untitled1.2eelf
 build CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/lib/xprintf.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\lib\xprintf.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\lib
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -774,7 +792,7 @@ build CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj: C_COMPILER__untitled1.2eel
 build CMakeFiles/untitled1.elf.dir/main/main.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/main/main.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\main\main.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\main
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -783,7 +801,7 @@ build CMakeFiles/untitled1.elf.dir/main/main.c.obj: C_COMPILER__untitled1.2eelf_
 build CMakeFiles/untitled1.elf.dir/main/task_main.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/main/task_main.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\main\task_main.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\main
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -792,7 +810,7 @@ build CMakeFiles/untitled1.elf.dir/main/task_main.c.obj: C_COMPILER__untitled1.2
 build CMakeFiles/untitled1.elf.dir/mem/mem.c.obj: C_COMPILER__untitled1.2eelf_Debug D$:/Project/MyProject1/mkrtos-gcc/mem/mem.c || cmake_object_order_depends_target_untitled1.elf
   DEP_FILE = CMakeFiles\untitled1.elf.dir\mem\mem.c.obj.d
   FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -fno-builtin -nostdinc -std=gnu11
-  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib -ID:/Project/MyProject1/mkrtos-gcc
+  INCLUDES = -ID:/Project/MyProject1/mkrtos-gcc/main -ID:/Project/MyProject1/mkrtos-gcc/kernel -ID:/Project/MyProject1/mkrtos-gcc/arch -ID:/Project/MyProject1/mkrtos-gcc/include -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib -ID:/Project/MyProject1/mkrtos-gcc/arch/bsp/lib/STM32F10x_FWLib
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.elf.dir\mem
   TARGET_COMPILE_PDB = CMakeFiles\untitled1.elf.dir\
@@ -806,7 +824,7 @@ build CMakeFiles/untitled1.elf.dir/mem/mem.c.obj: C_COMPILER__untitled1.2eelf_De
 #############################################
 # Link the executable untitled1.elf
 
-build untitled1.elf: C_EXECUTABLE_LINKER__untitled1.2eelf_Debug CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/call_sigreturn.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj CMakeFiles/untitled1.elf.dir/arch/arm/isr_handler.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/pre_syscall.s.obj CMakeFiles/untitled1.elf.dir/arch/bsp/CH432T.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/SPI2.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/delay.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/misc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_adc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_bkp.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_can.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_cec.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_crc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dac.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dbgmcu.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dma.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_exti.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_fsmc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_gpio.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_i2c.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_iwdg.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_pwr.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rcc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rtc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_sdio.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_spi.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_tim.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_usart.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_wwdg.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/core_cm3.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/sys.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj CMakeFiles/untitled1.elf.dir/fs/bk.c.obj CMakeFiles/untitled1.elf.dir/fs/dev.c.obj CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj CMakeFiles/untitled1.elf.dir/fs/file_name.c.obj CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj CMakeFiles/untitled1.elf.dir/fs/inode.c.obj CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj CMakeFiles/untitled1.elf.dir/fs/namei.c.obj CMakeFiles/untitled1.elf.dir/fs/open.c.obj CMakeFiles/untitled1.elf.dir/fs/rw.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_link.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_truncate.c.obj CMakeFiles/untitled1.elf.dir/fs/stat.c.obj CMakeFiles/untitled1.elf.dir/fs/super.c.obj CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj CMakeFiles/untitled1.elf.dir/ipc/spin_lock.c.obj CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj CMakeFiles/untitled1.elf.dir/kernel/smem_knl.c.obj CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj CMakeFiles/untitled1.elf.dir/lib/errno.c.obj CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj CMakeFiles/untitled1.elf.dir/lib/string.c.obj CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj CMakeFiles/untitled1.elf.dir/main/main.c.obj CMakeFiles/untitled1.elf.dir/main/task_main.c.obj CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+build untitled1.elf: C_EXECUTABLE_LINKER__untitled1.2eelf_Debug CMakeFiles/untitled1.elf.dir/arch/arm/PendSV_Handler.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/arch.c.obj CMakeFiles/untitled1.elf.dir/arch/arm/atomic.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/call_sigreturn.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/init.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/isr.c.obj CMakeFiles/untitled1.elf.dir/arch/arm/isr_handler.s.obj CMakeFiles/untitled1.elf.dir/arch/arm/pre_syscall.s.obj CMakeFiles/untitled1.elf.dir/arch/bsp/CH432T.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/SPI2.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/delay.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/misc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_adc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_bkp.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_can.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_cec.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_crc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dac.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dbgmcu.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_dma.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_exti.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_flash.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_fsmc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_gpio.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_i2c.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_iwdg.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_pwr.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rcc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_rtc.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_sdio.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_spi.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_tim.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_usart.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/STM32F10x_FWLib/stm32f10x_wwdg.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/core_cm3.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/stm32f10x_it.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/sys.c.obj CMakeFiles/untitled1.elf.dir/arch/bsp/lib/system_stm32f10x.c.obj CMakeFiles/untitled1.elf.dir/arch/cpu/startup_stm32f103xe.s.obj CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj CMakeFiles/untitled1.elf.dir/drivers/uart.c.obj CMakeFiles/untitled1.elf.dir/fs/bk.c.obj CMakeFiles/untitled1.elf.dir/fs/dev.c.obj CMakeFiles/untitled1.elf.dir/fs/fcntl.c.obj CMakeFiles/untitled1.elf.dir/fs/file_name.c.obj CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj CMakeFiles/untitled1.elf.dir/fs/inode.c.obj CMakeFiles/untitled1.elf.dir/fs/ioctl.c.obj CMakeFiles/untitled1.elf.dir/fs/namei.c.obj CMakeFiles/untitled1.elf.dir/fs/open.c.obj CMakeFiles/untitled1.elf.dir/fs/rw.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_dir.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_file.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_inode.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_link.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_sync.c.obj CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_truncate.c.obj CMakeFiles/untitled1.elf.dir/fs/stat.c.obj CMakeFiles/untitled1.elf.dir/fs/super.c.obj CMakeFiles/untitled1.elf.dir/ipc/fifo.c.obj CMakeFiles/untitled1.elf.dir/ipc/mutex.c.obj CMakeFiles/untitled1.elf.dir/ipc/sem.c.obj CMakeFiles/untitled1.elf.dir/ipc/spin_lock.c.obj CMakeFiles/untitled1.elf.dir/kernel/exit.c.obj CMakeFiles/untitled1.elf.dir/kernel/fork.c.obj CMakeFiles/untitled1.elf.dir/kernel/printk.c.obj CMakeFiles/untitled1.elf.dir/kernel/sched.c.obj CMakeFiles/untitled1.elf.dir/kernel/setup.c.obj CMakeFiles/untitled1.elf.dir/kernel/signal.c.obj CMakeFiles/untitled1.elf.dir/kernel/smem_knl.c.obj CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj CMakeFiles/untitled1.elf.dir/lib/errno.c.obj CMakeFiles/untitled1.elf.dir/lib/stdlib.c.obj CMakeFiles/untitled1.elf.dir/lib/string.c.obj CMakeFiles/untitled1.elf.dir/lib/xprintf.c.obj CMakeFiles/untitled1.elf.dir/main/main.c.obj CMakeFiles/untitled1.elf.dir/main/task_main.c.obj CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
   FLAGS = -g
   LINK_FLAGS = -Wl,-gc-sections,--print-memory-usage,-Map=D:/Project/MyProject1/mkrtos-gcc/cmake-build-debug/untitled1.map -mcpu=cortex-m3 -mthumb -mthumb-interwork -T D:/Project/MyProject1/mkrtos-gcc/STM32F103RCTx_FLASH.ld -nostdlib -nodefaultlibs -fno-builtin -nostdinc
   OBJECT_DIR = CMakeFiles\untitled1.elf.dir

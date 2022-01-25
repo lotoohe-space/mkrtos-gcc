@@ -55,10 +55,10 @@ TrySet:
 
 	bx lr
 
-.global AtomicRetSet
-.section .text.AtomicRetSet
-.type AtomicRetSet, %function
-AtomicRetSet:
+.global atomic_ret_set
+.section .text.atomic_ret_set
+.type atomic_ret_set, %function
+atomic_ret_set:
 	push {r4}
 TryRetSet:
 	LDREX r2, [R0]
@@ -78,10 +78,10 @@ atomic_read:
 	LDR R0, [R0]
 	BX LR
 
-.global AtomicAdd
-.section .text.AtomicAdd
-.type AtomicAdd, %function
-AtomicAdd:
+.global atomic_add
+.section .text.atomic_add
+.type atomic_add, %function
+atomic_add:
 	MOV R3,R1
 TryAdd:
 	LDREX r2, [R0]
@@ -91,10 +91,10 @@ TryAdd:
 	BEQ TryAdd	//ÖØÐÂ³¢ÊÔ
 	BX LR
 
-.global AtomicSub
-.section .text.AtomicSub
-.type AtomicSub, %function
-AtomicSub:
+.global atomic_sub
+.section .text.atomic_sub
+.type atomic_sub, %function
+atomic_sub:
 	MOV R3,R1
 TrySub:
 	LDREX r2, [R0]
@@ -242,4 +242,46 @@ FZETestDecNq:
 	MOV R0,R4
 	pop {r4}
 	bx lr
+
+//b<=a a+=1
+.global atomic_cmp_hi_inc
+.section .text.atomic_cmp_hi_inc
+.type atomic_cmp_hi_inc, %function
+atomic_cmp_hi_add:
+    push {r4}
+atomic_cmp_hi_add_:
+    LDREX r2, [r0]
+    cmp r1,r2 //b,a
+    bls atomic_cmp_hi_add_nx_
+    MOV r4,#0
+atomic_cmp_hi_add_nx_:
+    ADD r2,r2,#1
+    MOV r4,#1
+    STREX r3,r2,[r0]
+    CMP R3, #1
+    BEQ atomic_cmp_hi_add_
+    MOV R0,R4
+    pop {r4}
+    bx lr
+
+//a<=b a+=1
+.global atomic_cmp_hi_inc1
+.section .text.atomic_cmp_hi_inc1
+.type atomic_cmp_hi_inc1, %function
+atomic_cmp_hi_add1:
+    push {r4}
+atomic_cmp_hi_add1_:
+    ldrex r2,[r0]
+    cmp r2,r1
+    bls atomic_cmp_hi_add1_nx_
+    MOV r4,#0
+atomic_cmp_hi_add1_nx_:
+    ADD r2,r2,#1
+    MOV r4,#1
+    STREX r3,r2,[r0]
+    CMP R3, #1
+    BEQ atomic_cmp_hi_add1_
+    MOV R0,R4
+    pop {r4}
+    bx lr
 

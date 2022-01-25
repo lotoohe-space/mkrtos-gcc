@@ -298,20 +298,10 @@ typedef struct{
 
 extern SysTasks sysTasks;
 
-void task_sche(void);
-/**
-* @brief 通过优先级添加任务，如果这个优先级不存在，则创建该优先级的任务节点
-* @param pSysTasks 任务管理对象
-* @return 添加是否成功
-*/
-int32_t add_task(PTaskBlock pTaskBlock);
 
-/**
- * @brief 创建任务
- * @param tcp 任务创建操作
- * @param progInfo 任务的代码信息
- * @return
- */
+void task_sche(void);
+int32_t add_task(struct task *add);
+void del_task(struct task* del);
 int32_t task_create(PTaskCreatePar tcp,void* progInfo);
 
 //等待链表
@@ -322,6 +312,7 @@ struct wait_queue{
 //sched.c
 void wake_up(struct wait_queue *queue);
 void add_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
+struct wait_queue * find_wait_queue(struct wait_queue ** queue, struct task* tk,uint32_t *max_prio);
 void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
 
 

@@ -7,30 +7,43 @@
 #include <type.h>
 #include <arch/atomic.h>
 
-//等待队列头
-struct wait_queue_head{
-    struct task* tb;
-    struct wait_queue_head *next;
-};
 
+//sem.c
 struct sem{
-    //原子变量
-    Atomic_t lock;
-    //是否使用
-    Atomic_t used;
-    //等待数量
-    uint32_t wait_num;
-    //等待获取锁的队列
-    struct wait_queue_head wait_list;
+    //使用次数
+    Atomic_t s_used_count;
+    //等待的任务数量
+    Atomic_t s_wait_num;
+    //最大计数
+    uint32_t s_max_count;
+    //信号计数
+    Atomic_t s_sem_count;
+    //等待链表
+    struct wait_queue *s_wait;
 };
-
-//从等待链表中删除，返回-1，说明压根没找到
-//这个函数给exit函数用
-int32_t del_into_wait_queue(struct sem *mt,struct task *tb);
 
 int32_t sem_get(sem_t mid);
-int32_t sem_alloc(void);
+int32_t sem_put(sem_t mid) ;
 int32_t sem_take(sem_t mid);
 int32_t sem_release(sem_t mid);
+
+//mutex.c
+struct mutex{
+    //使用次数
+    Atomic_t s_used_count;
+    //锁住
+    Atomic_t m_lock;
+    //谁锁的smutx
+    struct task* m_who_lock;
+    //任务之前的优先级
+    uint32_t m_tk_prev_prio;
+    //任务可能的等待队列
+    struct wait_queue *m_wait;
+};
+
+int32_t mutex_get(sem_t mid);
+int32_t mutex_put(sem_t mid) ;
+int32_t lock_mutex(int32_t mt_l);
+int32_t unlock_mutex(int32_t mt_l);
 
 #endif //UNTITLED1_IPC_H

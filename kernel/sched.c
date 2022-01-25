@@ -33,6 +33,7 @@ PTaskBlock find_task(int32_t PID){
   //  RestoreCpuInter(t);
     return NULL;
 }
+
 /**
 * @brief 任务调度，如果任务调度关闭，则调用无效
 */
@@ -122,6 +123,32 @@ static PSysTaskBaseLinks AddLinks(uint8_t prio){
     return pSysTaskBaseLinks;
 }
 /**
+ * 删除任务
+ * @param del
+ */
+void del_task(struct task* del){
+    PSysTaskBaseLinks taskLinks;
+    taskLinks = FindTaskLinks(del->prio);
+    if(taskLinks==NULL){
+        return ;
+    }
+    PTaskBlock pTemp=taskLinks->pSysTaskLinks;
+    PTaskBlock lastP=NULL;
+    while(pTemp){
+        if(del==pTemp){
+            if(lastP==NULL){
+                taskLinks->pSysTaskLinks=pTemp->next;
+                break;
+            }else{
+                lastP->next=pTemp->next;
+                break;
+            }
+        }
+        lastP=pTemp;
+        pTemp=pTemp->next;
+    }
+}
+/**
 * @brief 通过优先级添加任务，如果这个优先级不存在，则创建该优先级的任务节点
 * @param pSysTasks 任务管理对象
 * @return 添加是否成功
@@ -147,9 +174,8 @@ int32_t add_task(PTaskBlock pTaskBlock){
             RestoreCpuInter(t);
 //			TaskSetIsSchedule(TRUE);
 //			SpinUnlock(&sysTasks.slh);
-            errno=ENOMEM;
             /*没有内存*/
-            return -1;
+            return -ENOMEM;
         }
     }
     taskLinks->taskCount++;
@@ -325,10 +351,39 @@ void add_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
     }
     RestoreCpuInter(t);
 }
+//找到一个queue，并获取最大优先级
+struct wait_queue * find_wait_queue(struct wait_queue ** queue, struct task* tk,uint32_t *max_prio){
+    struct wait_queue *temp=*queue;
+    struct wait_queue *res=NULL;
+    uint32_t t;
+    t=DisCpuInter();
+    if(max_prio) {
+        *max_prio = 0;
+    }
+    while(temp){
+        if (temp->task->status != TASK_CLOSING
+            || temp->task->status != TASK_CLOSED
+                ) {
+            if(temp->task==tk){
+                res=temp;
+            }
+            if (max_prio) {
+                if (temp->task->prio > *max_prio) {
+                    *max_prio = temp->task->prio;
+                }
+            }
+        }
+        temp=temp->next;
+    }
+    RestoreCpuInter(t);
+    return res;
+}
 //移除一个等待的
 void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
     struct wait_queue *temp=*queue;
     struct wait_queue *prev=NULL;
+    uint32_t t;
+    t=DisCpuInter();
     while(temp){
         if(temp==add_queue) {
             if (prev==NULL) {
@@ -343,7 +398,9 @@ void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
         prev=temp;
         temp=temp->next;
     }
+    RestoreCpuInter(t);
 }
+
 
 
 // 取当前进程号pid。

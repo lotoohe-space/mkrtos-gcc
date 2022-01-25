@@ -25,7 +25,7 @@ typedef struct {
 /**
 * 设置值，并返回之前的值
 */
- uint32_t AtomicRetSet(volatile Atomic_t* val,uint32_t i);
+ uint32_t atomic_ret_set(volatile Atomic_t* val,uint32_t i);
 /**
 * @breif 读取原子变量的值
 */
@@ -33,7 +33,7 @@ typedef struct {
 /**
 * @breif 加上一个数
 */ 
- void AtomicAdd(volatile Atomic_t* a,uint32_t val);
+ void atomic_add(volatile Atomic_t* a,uint32_t val);
 /**
 * @breif 减去一个数
 */
@@ -67,12 +67,24 @@ uint32_t atomic_test_inc(volatile Atomic_t* a);
 * @return 1：等于0 ，0：不等于0
 */
  uint32_t atomic_test_dec_nq(volatile Atomic_t* a);
-///**
-// * @brief 比较a，b的大小
-// *
-// * @param a
-// * @param b
-// * @return uint32_t
-// */
-//uint32_t AtomicCmp(volatile Atomic_t* a,volatile Atomic_t* b);
+/**
+ * @brief 比较a，b的大小,如果b<=a a+=1，并且b<=a返回1，否则0
+ *
+ * @param a
+ * @param b
+ * @return uint32_t
+ */
+uint32_t atomic_cmp_hi_inc(volatile Atomic_t* a,volatile uint32_t b);
+
+/**
+ * @brief 比较a，b的大小,如果a<=b a+=1，并且a<=b返回1，否则0
+ *
+ * @param a
+ * @param b
+ * @return uint32_t
+ */
+uint32_t atomic_cmp_hi_inc1(volatile Atomic_t* a,volatile uint32_t b);
+
+
+
 #endif
