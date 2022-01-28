@@ -63,9 +63,9 @@ int32_t sem_put(sem_t mid) {
     //只有自己才能干掉自己
     wq=find_wait_queue(&sem_list[mid].s_wait,CUR_TASK,NULL);
     if(wq!=NULL) {
+        atomic_dec(&sem_list[mid].s_used_count);
         remove_wait_queue(&sem_list[mid].s_wait, wq);
         OSFree(wq);
-        atomic_dec(&sem_list[mid].s_used_count);
     }else{
         return -EACCES;
     }

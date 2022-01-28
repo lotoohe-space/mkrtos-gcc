@@ -7,11 +7,10 @@
 #include <arch/arch.h>
 
 
-//支持的信号量数量
+//互斥锁数量
 #define MUTEX_NUM 16
-
+//互斥锁表
 static struct mutex mutex_list[MUTEX_NUM]={0};
-
 
 int32_t mutex_get(sem_t mid){
     struct sem* temp;
@@ -46,9 +45,9 @@ int32_t mutex_put(sem_t mid) {
     //只有自己才能干掉自己
     wq=find_wait_queue(&mutex_list[mid].m_wait,CUR_TASK,NULL);
     if(wq!=NULL) {
+        atomic_dec(&mutex_list[mid].s_used_count);
         remove_wait_queue(&mutex_list[mid].m_wait, wq);
         OSFree(wq);
-        atomic_dec(&mutex_list[mid].s_used_count);
     }else{
         return -EACCES;
     }

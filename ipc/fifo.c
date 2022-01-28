@@ -5,6 +5,8 @@
 #include <type.h>
 #include <errno.h>
 #include <arch/atomic.h>
+
+//fifo µœ÷
 struct fifo{
     uint32_t fifo_len;
     uint32_t data_size;
