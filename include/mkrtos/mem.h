@@ -28,7 +28,7 @@
 /**
 * @breif 内存大小
 */
-#define MALLOC_MEM0_SIZE (52*1024)
+#define MALLOC_MEM0_SIZE (20*1024)
 /**
 * @breif 内存块大小
 */

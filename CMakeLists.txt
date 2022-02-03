@@ -51,10 +51,12 @@ endif ()
 
 add_compile_options(-DSTM32F10X_HD)
 add_compile_options(-D__ARMEB__)
-#add_compile_options(-D__ASSEMBLER__)
+add_compile_options(-D__arm__)
+add_compile_options(-D__dietlibc__)
 add_compile_options(-DUSE_STDPERIPH_DRIVER)
 add_compile_options(-fno-builtin)
 add_compile_options(-nostdinc)
+add_compile_options(-Wa,-mimplicit-it=thumb)
 
 
 include_directories(
@@ -66,6 +68,7 @@ include_directories(
         arch/bsp/lib/STM32F10x_FWLib
         lib/dietlibc/include
         lib/dietlibc
+        /
  )
 
 file(GLOB_RECURSE SOURCES
@@ -82,11 +85,13 @@ file(GLOB_RECURSE SOURCES
         "arch/cpu/*.*"
         "arch/lib/STM32F10x_FWLib/*.*"
         "lib/dietlibc/arm/*.*"
+        "lib/dietlibc/contrib/*.*"
+        "lib/dietlibc/dynlinker/*.*"
         "lib/dietlibc/lib/*.*"
         "lib/dietlibc/libcompat/*.*"
         "lib/dietlibc/libcruft/*.*"
         "lib/dietlibc/libcrypt/*.*"
-        "lib/dietlibc/libdl/*.*"
+#        "lib/dietlibc/libdl/*.*"
         "lib/dietlibc/liblatin1/*.*"
         "lib/dietlibc/libm/*.*"
         "lib/dietlibc/libpthread/*.*"

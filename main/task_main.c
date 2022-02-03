@@ -153,14 +153,14 @@ void KernelTask1(void*arg0, void*arg1){
 
 //调用call_sigreturn，这里面会调用系统调用sigreturn完成用户栈恢复
 extern void call_sigreturn(void);
-_syscall3(int,signal,int32_t,signum, int32_t,handler, int32_t,restorer);
-
-_syscall1(int,alarm,uint32_t,secs);
+//_syscall3(int,signal,int32_t,signum, int32_t,handler, int32_t,restorer);
+//
+//_syscall1(int,alarm,uint32_t,secs);
 void SignalFunc(int signer){
     switch(signer){
         case SIGALRM:
-            alarm(1);
-            signal(SIGALRM,SignalFunc,call_sigreturn);
+//            alarm(1);
+//            signal(SIGALRM,SignalFunc,call_sigreturn);
             break;
     }
 }

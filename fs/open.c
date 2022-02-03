@@ -233,7 +233,6 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
             files[i].used = 0;
             puti(o_inode);
 //            putname(_path);
-
             return -1;
         }
 
