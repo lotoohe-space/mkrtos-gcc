@@ -50,6 +50,8 @@ else ()
 endif ()
 
 add_compile_options(-DSTM32F10X_HD)
+add_compile_options(-D__ARMEB__)
+#add_compile_options(-D__ASSEMBLER__)
 add_compile_options(-DUSE_STDPERIPH_DRIVER)
 add_compile_options(-fno-builtin)
 add_compile_options(-nostdinc)
@@ -62,7 +64,8 @@ include_directories(
         include
         arch/bsp/lib
         arch/bsp/lib/STM32F10x_FWLib
-        /
+        lib/dietlibc/include
+        lib/dietlibc
  )
 
 file(GLOB_RECURSE SOURCES
@@ -78,6 +81,22 @@ file(GLOB_RECURSE SOURCES
         "arch/bsp/*.*"
         "arch/cpu/*.*"
         "arch/lib/STM32F10x_FWLib/*.*"
+        "lib/dietlibc/arm/*.*"
+        "lib/dietlibc/lib/*.*"
+        "lib/dietlibc/libcompat/*.*"
+        "lib/dietlibc/libcruft/*.*"
+        "lib/dietlibc/libcrypt/*.*"
+        "lib/dietlibc/libdl/*.*"
+        "lib/dietlibc/liblatin1/*.*"
+        "lib/dietlibc/libm/*.*"
+        "lib/dietlibc/libpthread/*.*"
+        "lib/dietlibc/libregex/*.*"
+        "lib/dietlibc/librpc/*.*"
+        "lib/dietlibc/libshell/*.*"
+        "lib/dietlibc/libstdio/*.*"
+        "lib/dietlibc/libugly/*.*"
+        "lib/dietlibc/libutf8/*.*"
+        "lib/dietlibc/syscalls.s/*.*"
         )
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld)

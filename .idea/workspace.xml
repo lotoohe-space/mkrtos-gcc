@@ -12,10 +12,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="增加了信号量和mutex，mutex支持优先级继承">
+      <change afterPath="$PROJECT_DIR$/kernel/user.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/fifo.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/fifo.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/mutex.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/mutex.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/sem.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/sem.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cache-v2-f5360760f7401a613636.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-1554d49f4a01d7aceb45.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-c8eca18435d5b14b74c1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-01-24T09-40-30-0410.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-untitled1.elf-Debug-04d96222f66c268f7b7c.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.elf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/namei.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/rw.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/errno.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/fcntl.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ipc/ipc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ipc/ipc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/stdarg.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/stdint.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/stdlib.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/string.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/type.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/type.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/unistd.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,9 +110,9 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/arch/bsp" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/dietlibc" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.cidr.embedded.config" />
     <property name="structure.view.defaults.are.configured" value="true" />
   </component>
   <component name="ReaderModeSettings">
@@ -91,18 +120,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib\dietlibc" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\arch\bsp" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\lib" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\ipc" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\kernel" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\include\old" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include\mkrtos" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include\ipc" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\arch\arm" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\include\arch" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -161,6 +190,10 @@
       <workItem from="1642401823493" duration="4321000" />
       <workItem from="1642406527294" duration="141361000" />
       <workItem from="1642857507566" duration="21884000" />
+      <workItem from="1643441689325" duration="637000" />
+      <workItem from="1643507797455" duration="436000" />
+      <workItem from="1643508249494" duration="5339000" />
+      <workItem from="1643844515347" duration="13900000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -263,13 +296,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/fs/namei.c</url>
-          <line>362</line>
+          <line>358</line>
           <option name="timeStamp" value="390" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main/task_main.c</url>
           <line>53</line>
           <option name="timeStamp" value="393" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/lib/dietlibc/arm/syscalls.h</url>
+          <line>614</line>
+          <option name="timeStamp" value="394" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/lib/dietlibc/libcompat/syscall.S</url>
+          <line>81</line>
+          <option name="timeStamp" value="399" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -85,8 +85,9 @@ static int _namei(const char * pathname, struct inode * base,
 
     *res_inode = NULL;
     error = dir_namei(pathname,&namelen,&basename,base,&base);
-    if (error)
+    if (error) {
         return error;
+    }
     atomic_inc(&(base->i_used_count));
     error = lookup(base,basename,namelen,&inode);
     if (error) {
@@ -122,13 +123,7 @@ int lnamei(const char * pathname, struct inode ** res_inode)
 int namei(const char * pathname, struct inode ** res_inode)
 {
     int error;
-//    char * tmp;
-
-//    error = getname(pathname,&tmp);
-//    if (!error) {
-        error = _namei(pathname,NULL,1,res_inode);
-//        putname(tmp);
-//    }
+    error = _namei(pathname,NULL,1,res_inode);
     return error;
 }
 
@@ -152,7 +147,7 @@ int32_t dir_namei(const char * pathname, int32_t * namelen, const char ** name,
         base = PWD_INODE;
         atomic_inc(&base->i_used_count);
     }
-    if ((c = *pathname) == '/') {
+    if ((c = *pathname) == '/' || (c = *pathname) == '\\') {
         puti(base);
         base = ROOT_INODE;
         pathname++;
@@ -160,11 +155,12 @@ int32_t dir_namei(const char * pathname, int32_t * namelen, const char ** name,
     }
     while (1) {
         thisname = pathname;
-        for(len=0;(c = *(pathname++))&&(c != '/');len++);
+        for(len=0;(c = *(pathname++))&&(c != '/') && c!='\0';len++);
         if (!c) {
+            //到最后直接退出
             break;
         }
-        /*增加引用计数，如果不增加，则可能在当前进程被切换出去之后，把该inode给释放掉了*/
+        //增加引用计数，如果不增加，则可能在当前进程被切换出去之后，把该inode给释放掉了
         atomic_inc(&base->i_used_count);
         error = lookup(base,thisname,len,&inode);
         if (error) {

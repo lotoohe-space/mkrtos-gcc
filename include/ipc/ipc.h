@@ -6,8 +6,6 @@
 #define UNTITLED1_IPC_H
 #include <type.h>
 #include <arch/atomic.h>
-
-
 //sem.c
 struct sem{
     //使用次数

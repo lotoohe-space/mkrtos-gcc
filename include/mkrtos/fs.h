@@ -23,11 +23,6 @@ struct super_block;
 //取得文件模式
 #define FILE_MODE(a) ((a)&0xffff)
 
-
-
-
-
-
 typedef struct {
     long    val[2];
 } fsid_t;
@@ -65,14 +60,13 @@ typedef struct inode {
     struct inode *i_mount;
     //设备号码
     struct wait_queue *i_wait_q;
+    //用来锁这个inode
+    Atomic_t i_lock;
+
     //打开计数
 //    Atomic_t i_open_count;
     //使用计数
     Atomic_t i_used_count;
-
-    //用来锁这个inode
-    Atomic_t i_lock;
-
     //是否被修改过
     uint8_t i_dirt;
     struct super_block *i_sb;

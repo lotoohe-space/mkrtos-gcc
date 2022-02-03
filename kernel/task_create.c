@@ -37,7 +37,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     taskName=tcp->taskName;
 
     if(taskFun == NULL){
-        errno=ERROR;
+        errno=EINVAL;
         return -1;
     }
     void *memStack = NULL;
@@ -134,7 +134,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     uint32_t t=DisCpuInter();
     pTaskBlock->status=TASK_RUNNING;
     RestoreCpuInter(t);
-    err= ERROR;
+    err= 0;
 
     return pTaskBlock->PID;
 }

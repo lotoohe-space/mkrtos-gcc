@@ -116,9 +116,7 @@ int sys_write (int fd,uint8_t *buf,uint32_t len){
         trace("file inode %d\r\n",_file->f_inode->i_no);
         int32_t err=_file->f_op->write(_file->f_inode,_file,buf,len);
         return err;
-    }else{
-        return -EINVAL;
     }
-    return -ENOSYS;
+    return -EINVAL;
 }
 
