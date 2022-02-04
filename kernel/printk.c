@@ -2,7 +2,7 @@
 // Created by Administrator on 2022/1/19.
 //
 
-#include <xprintf.h>
+#include <stdio.h>
 #include <stdarg.h>
 #include <type.h>
 #include <mkrtos/fs.h>

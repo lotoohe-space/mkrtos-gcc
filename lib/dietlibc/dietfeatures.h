@@ -12,6 +12,7 @@
 #define WANT_LONGLONG_PRINTF
 #define WANT_LONGLONG_SCANF
 
+#define __NO_STAT64
 /* 128 or 2048 bytes buffer size? */
 /* #define WANT_SMALL_STDIO_BUFS */
 

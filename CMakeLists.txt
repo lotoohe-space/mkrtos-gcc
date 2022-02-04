@@ -51,8 +51,11 @@ endif ()
 
 add_compile_options(-DSTM32F10X_HD)
 add_compile_options(-D__ARMEB__)
+add_compile_options(-D__ARM_ARCH_8M_BASE__)
 add_compile_options(-D__arm__)
+add_compile_options(-E)
 add_compile_options(-D__dietlibc__)
+add_compile_options(-mfloat-abi=softfp)
 add_compile_options(-DUSE_STDPERIPH_DRIVER)
 add_compile_options(-fno-builtin)
 add_compile_options(-nostdinc)
@@ -68,13 +71,17 @@ include_directories(
         arch/bsp/lib/STM32F10x_FWLib
         lib/dietlibc/include
         lib/dietlibc
+#        lib/mpfr-master/src/arm
+#        lib/mpfr-master/src/
+        lib/config/arm
+        lib/soft-fp
         /
  )
 
 file(GLOB_RECURSE SOURCES
         "main/*.*"
         "kernel/*.*"
-        "lib/*.*"
+        "lib/xprintf.c"
         "mem/*.*"
         "ipc/*.*"
         "fs/*.*"
@@ -85,7 +92,7 @@ file(GLOB_RECURSE SOURCES
         "arch/cpu/*.*"
         "arch/lib/STM32F10x_FWLib/*.*"
         "lib/dietlibc/arm/*.*"
-        "lib/dietlibc/contrib/*.*"
+#        "lib/dietlibc/contrib/*.*"
         "lib/dietlibc/dynlinker/*.*"
         "lib/dietlibc/lib/*.*"
         "lib/dietlibc/libcompat/*.*"
@@ -101,7 +108,8 @@ file(GLOB_RECURSE SOURCES
         "lib/dietlibc/libstdio/*.*"
         "lib/dietlibc/libugly/*.*"
         "lib/dietlibc/libutf8/*.*"
-        "lib/dietlibc/syscalls.s/*.*"
+        "lib/config/arm/*.*"
+        "lib/soft-fp/*.*"
         )
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld)
