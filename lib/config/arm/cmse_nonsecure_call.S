@@ -125,7 +125,7 @@ mov	    r10, r4
 mov	    r11, r4
 mov	    ip, r4
 msr	    APSR_nzcvq, r4
-blxns	    r4
+blx	    r4
 pop	    {r5}
 mov	    r11, r5
 pop	    {r5-r7}

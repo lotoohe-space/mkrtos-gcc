@@ -3,7 +3,9 @@
 #define _FP_WS_TYPE		signed long
 #define _FP_I_TYPE		long
 
-
+typedef long long TItype;// __attribute__ ((mode (TI)));
+typedef long long UTItype;//__attribute__ ((mode (TI)));
+#define TI_BITS (__CHAR_BIT__ * (int)sizeof(TItype))
 /* The type of the result of a floating point comparison.  This must
    match `__libgcc_cmp_return__' in GCC for the target.  */
 typedef int __gcc_CMPtype __attribute__ ((mode (__libgcc_cmp_return__)));

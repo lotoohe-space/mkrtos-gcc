@@ -4,7 +4,7 @@
 #include <type.h>
 #include <errno.h>
 #include <string.h>
-#include <arch/arch.h>
+#include "arch/arch.h"
 #include <mkrtos/mem.h>
 #include <mkrtos/task.h>
 #include "fcntl.h"

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <mkrtos/mem.h>
 #include <ipc/ipc.h>
-#include <arch/arch.h>
+#include "arch/arch.h"
 //…Ë÷√BIT
 #define SET_BIT(a,b) ((a)|=1<<(b))
 //«Â≥˛BIT

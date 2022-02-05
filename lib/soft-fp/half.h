@@ -59,7 +59,7 @@
 /* The implementation of _FP_MUL_MEAT_H and _FP_DIV_MEAT_H should be
    chosen by the target machine.  */
 
-typedef float HFtype __attribute__ ((mode (HF)));
+typedef float HFtype;//zhangzheng __attribute__ ((mode (HF)));
 
 union _FP_UNION_H
 {

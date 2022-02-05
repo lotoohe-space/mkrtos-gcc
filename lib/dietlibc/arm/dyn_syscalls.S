@@ -2,8 +2,8 @@
  * dynamic unified-syscalls
  * Olaf Dreesen
  */
-#ifndef _DYN_SYSCALLS_H__
-#define _DYN_SYSCALLS_H__
+//#ifndef _DYN_SYSCALLS_H__
+//#define _DYN_SYSCALLS_H__
 #include "../syscalls.s/environ.S"
 #include "../syscalls.s/errno.S"
 
@@ -296,4 +296,4 @@ __exit:
 #include "__longjmp.S"
 #include "setjmp.S"
 
-#endif
+//#endif

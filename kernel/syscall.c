@@ -5,6 +5,10 @@
 #include <mkrtos/sys.h>
 #include <mkrtos/task.h>
 
+//svc调用传值说明
+//第一个参数为调用号
+//第二-四个参数为系统的参数
+//更多的参数放到栈中传递
 uint32_t svcHandler(uint32_t* pwdSF) {
     static uint8_t flag = 0;
     uint8_t svc_number;

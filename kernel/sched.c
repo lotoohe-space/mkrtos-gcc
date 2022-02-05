@@ -3,7 +3,7 @@
 //
 
 #include <type.h>
-#include <arch/arch.h>
+#include "arch/arch.h"
 #include <mkrtos/task.h>
 #include <mkrtos/mem.h>
 #include <errno.h>

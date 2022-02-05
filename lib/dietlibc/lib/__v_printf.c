@@ -341,7 +341,7 @@ num_printf:
 	  s=buf+1;
 	  if (width==0) width=1;
 	  if (!flag_dot) preci=6;
-	  if (flag_sign || d < +0.0) flag_in_sign=1;
+	  if (flag_sign || d < +0.0f) flag_in_sign=1;
 
 	  sz=__dtostr(d,s,sizeof(buf)-1,width,preci,g);
 

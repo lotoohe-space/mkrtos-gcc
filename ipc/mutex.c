@@ -4,7 +4,7 @@
 #include <ipc/ipc.h>
 #include <mkrtos/task.h>
 #include <mkrtos/mem.h>
-#include <arch/arch.h>
+#include "arch/arch.h"
 
 
 //»¥³âËøÊıÁ¿

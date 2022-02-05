@@ -69,7 +69,7 @@
 #define _FP_HIGHBIT_DW_Q	\
   ((_FP_W_TYPE) 1 << (_FP_WFRACBITS_DW_Q - 1) % _FP_W_TYPE_SIZE)
 
-typedef float TFtype __attribute__ ((mode (TF)));
+typedef float TFtype;//zhangzheng __attribute__ ((mode (TF)));
 
 #if _FP_W_TYPE_SIZE < 64
 

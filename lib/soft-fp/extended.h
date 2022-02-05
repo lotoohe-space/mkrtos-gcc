@@ -66,7 +66,7 @@
 #define _FP_HIGHBIT_DW_E	\
   ((_FP_W_TYPE) 1 << (_FP_WFRACBITS_DW_E - 1) % _FP_W_TYPE_SIZE)
 
-typedef float XFtype __attribute__ ((mode (XF)));
+typedef float XFtype;// __attribute__ ((mode (XF)));
 
 #if _FP_W_TYPE_SIZE < 64
 
