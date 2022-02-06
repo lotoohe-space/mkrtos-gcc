@@ -11,29 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="基本移植完成，但是还没有办法调用，cortex-m3处理器没有swi指令，只有svc指令，svc指令最大的系统调用只有256个，不够用。">
-      <change afterPath="$PROJECT_DIR$/lib/dietlibc/syscalls.s/setup.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/asm/init.S" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/init.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/asm/pre_syscall.S" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/pre_syscall.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/uart.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/uart.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/syscall.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/syscall.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/config/arm/lib1funcs.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/config/arm/lib1funcs.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/clone.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/clone.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/dyn_syscalls.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/dyn_syscalls.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/mmap.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/mmap.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/start.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/start.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/syscalls.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/syscalls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/dietstdio.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/dietstdio.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
-    </list>
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="基本支持了libc，但是還有很多功能沒有完成，下一步先完成tty支持" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -184,7 +162,7 @@
       <workItem from="1643975574351" duration="13004000" />
       <workItem from="1644074317319" duration="4237000" />
       <workItem from="1644119158299" duration="4301000" />
-      <workItem from="1644128085305" duration="5000" />
+      <workItem from="1644128085305" duration="165000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -263,7 +241,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644076235536</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="基本支持了libc，但是還有很多功能沒有完成，下一步先完成tty支持">
+      <created>1644128145177</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1644128145177</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -291,7 +276,8 @@
     <MESSAGE value="增加了信号量和mutex，mutex支持优先级继承" />
     <MESSAGE value="编译有问题" />
     <MESSAGE value="基本移植完成，但是还没有办法调用，cortex-m3处理器没有swi指令，只有svc指令，svc指令最大的系统调用只有256个，不够用。" />
-    <option name="LAST_COMMIT_MESSAGE" value="基本移植完成，但是还没有办法调用，cortex-m3处理器没有swi指令，只有svc指令，svc指令最大的系统调用只有256个，不够用。" />
+    <MESSAGE value="基本支持了libc，但是還有很多功能沒有完成，下一步先完成tty支持" />
+    <option name="LAST_COMMIT_MESSAGE" value="基本支持了libc，但是還有很多功能沒有完成，下一步先完成tty支持" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -330,6 +316,11 @@
           <url>file://$PROJECT_DIR$/fs/ioctl.c</url>
           <line>13</line>
           <option name="timeStamp" value="417" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/drivers/uart.c</url>
+          <line>271</line>
+          <option name="timeStamp" value="418" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
