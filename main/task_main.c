@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 extern int32_t sys_open(const char* path,int32_t flags,int32_t mode);
 extern int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count);
 extern void sys_close(int fp);
@@ -46,11 +47,15 @@ void KernelTask(void*arg0, void*arg1){
 //        printk("%s\r\n",dir.d_name);
 //    }
 //    sys_close(fd);
+    printf("这是printf的测试\r\n");
+    int a;
+    int b;
+    //scanf还有问题
+    scanf("%d,%d",&a,&b);
     sys_write(0,"kernel run..\r\n",strlen("kernel run..\r\n"));
 
     sys_mkdir("/test",0777);
     sys_mkdir("/mnt",0777);
-
     sys_mount("/dev/flash","/mnt","spFS",0,0);
 
 

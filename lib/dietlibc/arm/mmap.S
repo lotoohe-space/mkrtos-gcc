@@ -19,8 +19,11 @@
 
 mmap:
 	stmdb	sp!, {r0, r1, r2, r3}
+    push {r7};
+    mov r7,__NR_mmap
 	mov	r0, sp
-	svc	__NR_mmap
+	svc	128
+    pop {r7};
 	add	sp, sp, #16
 	b	__unified_syscall
 

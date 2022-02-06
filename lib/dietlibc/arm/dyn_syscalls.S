@@ -155,6 +155,7 @@ __unified_syscall:
 #include "../syscalls.s/setsid.S"
 #include "../syscalls.s/setuid.S"
 #include "../syscalls.s/sigaltstack.S"
+#include "../syscalls.s/setup.S"
 //#include "../syscalls.s/signal.S"
 #include "../syscalls.s/socketcall.S"
 #include "../syscalls.s/stat.S"

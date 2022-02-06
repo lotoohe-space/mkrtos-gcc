@@ -1,5 +1,6 @@
 #define __NR_SYSCALL_BASE	0
 
+#define __NR_setup          (__NR_SYSCALL_BASE+  0)
 #define __NR_exit			(__NR_SYSCALL_BASE+  1)
 #define __NR_fork			(__NR_SYSCALL_BASE+  2)
 #define __NR_read			(__NR_SYSCALL_BASE+  3)
@@ -313,6 +314,7 @@
  * Since the majority of the syscalls need <=4 arguments this saves a lot
  * of byte (12 per syscall) and cycles (~16)
  */
+#define __ARGS_setup			    0
 #define __ARGS_exit			    0
 #define __ARGS_fork			    0
 #define __ARGS_read			    0
@@ -627,12 +629,15 @@
 .type \sym,function
 .global \sym
 \sym:
+push {r7}
+mov r7,\name
 .ifgt \typ
 	mov	ip, sp
 	stmfd	sp!,{r4, r5, r6}
 	ldmia	ip, {r4, r5, r6}
 .endif
-	//zhangzheng svc	\name
+	svc	128
+    pop {r7}
 .ifgt \typ
 	b	__unified_syscall4
 .else
@@ -649,12 +654,15 @@
 .type \sym,function
 .global \sym
 \sym:
+push {r7}
+mov r7,\name
 .ifgt \typ
 	mov	ip, sp
 	stmfd	sp!,{r4, r5, r6}
 	ldmia	ip, {r4, r5, r6}
 .endif
-//zhangzheng	svc	\name
+	svc	128
+pop {r7}
 .ifgt \typ
 	b	__unified_syscall4
 .else

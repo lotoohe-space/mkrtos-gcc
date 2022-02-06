@@ -1551,7 +1551,7 @@ LSYM(Lover12):
 	adr	r0, . + 4
 	adds	r1, r0, #1
 	movs	r2, #0
-	svc	0
+	svc	128
 	pop	{r7}
 #else
 	do_push	{r7}
@@ -1565,7 +1565,7 @@ LSYM(Lover12):
 	add	r0, pc, #0	/* ADR.  */
 	add	r1, r0, #1
 	mov	r2, #0
-	svc	0
+	svc	128
 	do_pop	{r7}
 #endif /* Thumb1 only */
 #else

@@ -7,15 +7,11 @@
 .section .text.SysCall
 .type SysCall, %function
 SysCall:
-    push {r4,r5,lr}
-    ldr r4,=sys_call_table
-    add r4,r0
-    ldr r5,[r4]
-    mov r0,r1
-    mov r1,r2
-    mov r2,r3
-    blx r5
-    pop {r4,r5,pc}
+    push {r7,lr}
+    ldr r7,=sys_call_table
+    ldr r7,[r7]
+    blx r7
+    pop {r7,pc}
 
 
 .global _syscall

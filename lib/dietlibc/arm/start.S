@@ -56,8 +56,10 @@ _exit:
 	bl	_stop_monitor
 	mov	r0, r4
 #endif
-	svc	$__NR_exit		@ never returns.
-
+push {r7}
+mov r7,$__NR_exit
+	svc	128		@ never returns.
+pop {r7};
 
 #ifdef __DYN_LIB
 .L3:	.word 	environ(GOT)

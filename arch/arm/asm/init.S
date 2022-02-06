@@ -48,4 +48,5 @@ SVC_Handler:
 	MRSNE R0, PSP
 	SUB R0, R0, #0x20
 	STM R0, {R4-R11}
+    MOV R1, R7
 	B svcHandler

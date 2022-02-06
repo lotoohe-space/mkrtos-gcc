@@ -7,8 +7,9 @@
 //static inline _syscall0(int,setup);
 int main(void)
 {
-//    setup();
-    fopen("/dev","r");
+    setup();
+//    fopen("/dev","r");
+//    printf("test");
 	while(1);
 }
 //MODE COM2 115200,0,8,1

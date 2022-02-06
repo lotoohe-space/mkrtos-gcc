@@ -23,7 +23,10 @@ __clone:
 					@ into what will become the childs stack.
 
 	mov	r0, r2			@ move flags argument to r0
-	svc	__NR_clone		@ call the syscall
+    push {r7}
+    mov r7,__NR_clone
+	svc	128		@ call the syscall
+    pop {r7};
 	movs	r0, r0			@ set condition codes
 	blt	__unified_syscall	@ (return code < 0): handle as an error
 	movne	pc, lr			@ (return code > 0): return to parent

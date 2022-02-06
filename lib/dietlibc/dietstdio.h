@@ -11,7 +11,7 @@
 #ifdef WANT_SMALL_STDIO_BUFS
 #define BUFSIZE 128
 #else
-#define BUFSIZE 2048
+#define BUFSIZE 512
 #endif
 
 struct __stdio_file {
