@@ -105,6 +105,7 @@ typedef struct super_block {
 struct file {
     uint8_t f_mode;		    /* 文件不存在时，创建文件的权限 */
     int32_t f_ofs;            /* 文件读写偏移量 */
+    dev_t  f_rdev;             /* 这是tty设备所对于的字符设备驱动号 */
 //    uint32_t f_count;           /*这个file被使用了多少次,暂时用不上*/
     unsigned short f_flags; /* 以什么样的方式打开文件，如只读，只写等等 */
     struct inode * f_inode;		/* 文件对应的inode */
