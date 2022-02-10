@@ -14,17 +14,41 @@
 #include <termios.h>
 #include <sys/arm-ioctl.h>
 #include <string.h>
+
+//读buf长度
+#define TTY_READ_BUF_LEN 256
+struct tty_line;
 struct tty_struct{
-    struct termio termio;    //当前使用的终端信息
-    dev_t dev_no;//所使用的字符设备的设备号
-    //字符设备的读写控制函数
-    struct file_operations* f_ops;
-    uint8_t is_used;//是否使用了
+    struct termio termio;                   //当前使用的终端信息
+    dev_t dev_no;                           //所使用的字符设备的设备号
+    //这里是底层的处理函数
+    int32_t (*open)(struct tty_struct * tty, struct file * filp);
+    void (*close)(struct tty_struct * tty, struct file * filp);
+    int32_t (*write)(struct tty_struct * tty,uint8_t *buf,int len);
+    /////
+
+    //读取缓存利用环形队列
+    uint8_t read_buf[TTY_READ_BUF_LEN];     //读buf长度
+    int32_t rear;
+    int32_t front;
+
+    int32_t  (*ioctl)(struct tty_struct *tty, struct file * file,uint32_t cmd, uint32_t arg);
+    uint8_t is_used;                        //是否使用了
 };
+
+//line处理结构体
+struct tty_line{
+    int32_t (*read)(struct tty_struct * tty,uint8_t * buf,int32_t count);
+    int32_t (*write)(struct tty_struct * tty,uint8_t * buf,int32_t count);
+};
+
+int32_t tty_def_line_read(struct tty_struct * tty,uint8_t *buf,int32_t count);
+int32_t tty_def_line_write(struct tty_struct * tty,uint8_t *buf,int32_t count);
 
 
 #define TTY_MAX_NUM 6
 struct tty_struct ttys[TTY_MAX_NUM]={0};
+struct tty_line tty_lines[TTY_MAX_NUM]={0};
 //当前的终端号码，默认-1
 int cur_tty_no=-1;
 
@@ -41,23 +65,12 @@ static struct termio * get_tty(dev_t dev_no){
     }
     return &ttys[i];
 }
-//初始化tty，绑定指定的tty与设备
-int tty_connect(dev_t dev_no,struct file_operations* f_ops){
-    if(!f_ops){
-        return -1;
-    }
 
-    int i;
-    for(i=0;i<TTY_MAX_NUM;i++){
-        if(ttys[i].is_used==0){
-            ttys[i].is_used=1;
-            ttys[i].dev_no=dev_no;
-            ttys[i].f_ops=f_ops;
-        }
-    }
 
-    return 0;
-}
+#define TTY_MAJOR 4
+//主次设备号码获取
+#define MAJOR(a) (a>>16)
+#define MINOR(a) (a&0xffff)
 
 
 static int tty_open(struct inode * inode, struct file * fp){
@@ -65,11 +78,37 @@ static int tty_open(struct inode * inode, struct file * fp){
 
     return 0;
 }
+//这里是给vfs的读函数，读取流程是：vfs_read->tty_read->line_read（从buf里面读取）
 static int tty_read(struct inode *ino, struct file *fp, char * buf, int count){
+
     return 0;
 }
+
+//写入流程vfs_write->tty_write->line_write->dirver_write
 static int tty_write(struct inode *ino, struct file * fp, char * buf, int count){
-    return 0;
+    int tty_dev_no;
+    int ret;
+    struct tty_struct *cur_tty;
+    struct tty_line *cur_line;
+    //检查设备是否打开啊
+    if(MAJOR(ino->i_rdev_no)!=TTY_MAJOR){
+        return -ENODEV;
+    }
+    tty_dev_no=MINOR(ino->i_rdev_no);
+    if(tty_dev_no>=TTY_MAX_NUM){
+        return -ENODEV;
+    }
+    cur_tty=&ttys[tty_dev_no];
+    if(!cur_tty->is_used){
+        return -ENODEV;
+    }
+
+    cur_line=&tty_lines[tty_dev_no];
+    if(cur_line->write){
+        ret = cur_line->write(cur_tty,buf,count);
+    }
+
+    return ret;
 }
 static int tty_ioctl(struct inode * inode, struct file * file, unsigned int cmd, unsigned long arg){
     void *res_term;
@@ -103,6 +142,37 @@ static int tty_ioctl(struct inode * inode, struct file * file, unsigned int cmd,
 static void tty_release(struct inode * ino, struct file * f){
 
 }
+/**
+ * tty默认的read处理函数
+ * @param tty
+ * @param bug
+ * @param count
+ * @return
+ */
+int32_t tty_def_line_read(struct tty_struct * tty,uint8_t *buf,int32_t count){
+
+
+
+
+
+    return 0;
+}
+/**
+ * tty默认的read处理函数
+ * @param tty
+ * @param bug
+ * @param count
+ * @return
+ */
+int32_t tty_def_line_write(struct tty_struct * tty,uint8_t *buf,int32_t count){
+    int32_t ret;
+    ret=tty->write(tty,buf, count);
+    return ret;
+}
+
+
+
+
 static struct file_operations tty_ops={
 	.open=tty_open,
 	.read=tty_read,
