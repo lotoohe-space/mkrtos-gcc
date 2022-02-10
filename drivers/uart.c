@@ -7,6 +7,8 @@ static uint8_t initFlag=0;
 
 uint8_t fifo[128]={0};
 
+
+//只要设备的主设备号一样，那么设备的驱动就一样，可以使用同样的驱动去驱动设备，但是子设备号就区分了不同的设备
 //这里是中断的回调
 static void CH432TRecvCB(uint8_t port,uint8_t * data,uint16_t len){
     if(port==1){
