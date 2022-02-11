@@ -11,30 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="emmm">
-      <change afterPath="$PROJECT_DIR$/drivers/serial.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/drivers/tty_queue.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/mkrtos/dev.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/mkrtos/tty.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/fs_init.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/tty.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/uart.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/uart.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/dev.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/dev.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/stat.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/stat.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
-    </list>
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="tty能够写了，默认/dev/tty就是/dev/tty0" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -207,7 +184,7 @@
       <workItem from="1644419216177" duration="635000" />
       <workItem from="1644460479759" duration="383000" />
       <workItem from="1644501542872" duration="4176000" />
-      <workItem from="1644541618037" duration="19252000" />
+      <workItem from="1644541618037" duration="20062000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -314,7 +291,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644508102464</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="tty能够写了，默认/dev/tty就是/dev/tty0">
+      <created>1644590419853</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1644590419853</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -345,30 +329,16 @@
     <MESSAGE value="基本支持了libc，但是還有很多功能沒有完成，下一步先完成tty支持" />
     <MESSAGE value="需要重写设备号的驱动，区分主设备与次设备，所有主设备" />
     <MESSAGE value="emmm" />
-    <option name="LAST_COMMIT_MESSAGE" value="emmm" />
+    <MESSAGE value="tty能够写了，默认/dev/tty就是/dev/tty0" />
+    <option name="LAST_COMMIT_MESSAGE" value="tty能够写了，默认/dev/tty就是/dev/tty0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/lib/dietlibc/libstdio/fflush.c</url>
-          <line>35</line>
-          <option name="timeStamp" value="437" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/drivers/tty.c</url>
-          <line>72</line>
-          <option name="timeStamp" value="449" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>49</line>
-          <option name="timeStamp" value="450" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/kernel/syscall.c</url>
-          <line>38</line>
-          <option name="timeStamp" value="451" />
+          <url>file://$PROJECT_DIR$/lib/dietlibc/libstdio/fgetc_unlocked.c</url>
+          <line>12</line>
+          <option name="timeStamp" value="455" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
