@@ -18,6 +18,7 @@ struct file_operations;
 struct inode_operations;
 struct super_block;
 
+#define MK_MODE(a,b) (((a))|(b))
 //取得文件类型
 #define FILE_TYPE(a) (((a)>>16)&0xffff)
 //取得文件模式
@@ -45,6 +46,7 @@ struct wait_queue;
 //INode节点
 typedef struct inode {
     //文件类型与权限
+    //
     uint32_t i_type_mode;
     //文件大小
     uint32_t i_file_size;

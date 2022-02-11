@@ -12,14 +12,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="emmm">
-      <change afterPath="$PROJECT_DIR$/drivers/tty_line.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/drivers/serial.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/drivers/tty_queue.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/mkrtos/dev.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/mkrtos/tty.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/fs_init.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drivers/tty.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/uart.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/uart.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/dev.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/dev.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/stat.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/stat.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,9 +136,9 @@
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -192,7 +206,8 @@
       <workItem from="1644244703188" duration="3445000" />
       <workItem from="1644419216177" duration="635000" />
       <workItem from="1644460479759" duration="383000" />
-      <workItem from="1644501542872" duration="3671000" />
+      <workItem from="1644501542872" duration="4176000" />
+      <workItem from="1644541618037" duration="19252000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -292,7 +307,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644460496302</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="emmm">
+      <created>1644508102464</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1644508102464</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -329,45 +351,31 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/lib/dietlibc/libcompat/syscall.S</url>
-          <line>81</line>
-          <option name="timeStamp" value="399" />
+          <url>file://$PROJECT_DIR$/lib/dietlibc/libstdio/fflush.c</url>
+          <line>35</line>
+          <option name="timeStamp" value="437" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/lib/uClibc-0.9.33/include/unistd.h</url>
-          <line>1088</line>
-          <option name="timeStamp" value="400" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/lib/config/arm/cmse_nonsecure_call.S</url>
-          <line>27</line>
-          <option name="timeStamp" value="401" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/lib/dietlibc/libstdio/fopen.c</url>
-          <line>14</line>
-          <option name="timeStamp" value="404" />
+          <url>file://$PROJECT_DIR$/drivers/tty.c</url>
+          <line>72</line>
+          <option name="timeStamp" value="449" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>185</line>
-          <option name="timeStamp" value="409" />
+          <line>49</line>
+          <option name="timeStamp" value="450" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>53</line>
-          <option name="timeStamp" value="415" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/fs/ioctl.c</url>
-          <line>13</line>
-          <option name="timeStamp" value="417" />
+          <url>file://$PROJECT_DIR$/kernel/syscall.c</url>
+          <line>38</line>
+          <option name="timeStamp" value="451" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="pdi-&gt;name" language="ObjectiveC" />
+        <watch expression="CUR_TASK-&gt;files[fd]" language="ObjectiveC" />
         <watch expression="inode_ls[i]" language="ObjectiveC" />
       </configuration>
     </watches-manager>

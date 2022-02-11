@@ -180,7 +180,7 @@ static int32_t uart_exit(void) {
     unreg_ch_dev(used_dev_no,"tty0");
     return 0;
 }
-DEV_BK_EXPORT(uart_init,uart_exit,tty0);
+//DEV_BK_EXPORT(uart_init,uart_exit,tty0);
 
 
 

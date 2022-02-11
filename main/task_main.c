@@ -182,10 +182,12 @@ void TestTask(void*arg0, void*arg1){
 }
 //启动进程
 void start_task(void* arg0,void*arg1){
+    extern void fs_init(void);
+    fs_init();
     //创建设备文件
-    if(sys_mkdir("/dev",0777)<0){
-        fatalk("创建dev目录失败！\r\n");
-    }
+//    if(sys_mkdir("/dev",0777)<0){
+//        fatalk("创建dev目录失败！\r\n");
+//    }
     devs_init();
 //    int fd;
 //    int res;
@@ -219,10 +221,13 @@ void start_task(void* arg0,void*arg1){
 void KernelTaskInit(void){
     extern int32_t sp_mkfs(dev_t dev_no,int32_t inode_count);
     extern int32_t bk_flash_init(void);
+    //初始化默认的磁盘设备
     bk_flash_init();
+    //在这里格式化文件系统
     if(sp_mkfs(root_dev_no,30)<0){
         fatalk("根文件系统创建失败！\r\n");
     }
+    //下面创建内核线程
     static TaskCreatePar tcp;
     int32_t pid;
     tcp.taskFun=start_task;
@@ -237,40 +242,5 @@ void KernelTaskInit(void){
     if(pid<0){
         while(1);
     }
-//    devs_init();
-//    extern int32_t sp_mkfs(dev_t dev_no,int32_t inode_count);
-//    sp_mkfs(root_dev_no,30);
-//    static TaskCreatePar tcp;
-//    int32_t pid;
-//    tcp.taskFun=KernelTask;
-//    tcp.arg0=(void*)0;
-//    tcp.arg1=0;
-//    tcp.prio=6;
-//    tcp.userStackSize=0;
-//    tcp.kernelStackSize=512;
-//    tcp.taskName="KernelTask";
-//
-//    pid=task_create(&tcp,NULL);
-//    if(pid<0){
-//        while(1);
-//    }
-//    tcp.taskFun=KernelTask1;
-//    tcp.taskName="KernelTask1";
-//    pid=task_create(&tcp,NULL);
-//    if(pid<0){
-//        while(1);
-//    }
-//
-//    tcp.taskFun=TestTask;
-//    tcp.arg0=(void*)0;
-//    tcp.arg1=0;
-//    tcp.prio=6;
-//    tcp.userStackSize=256;
-//    tcp.kernelStackSize=512;
-//    tcp.taskName="test";
-//
-//    pid=task_create(&tcp,NULL);
-//    if(pid<0){
-//        while(1);
-//    }
+
 }
