@@ -280,7 +280,11 @@ void *OSRealloc(void *mem,uint32_t size){
 * @param mem 释放的内存的首地址
 */
 void OSFree(void* mem) {
-	int32_t st=DisCpuInter();
+	int32_t st;
+    if(!mem){
+        return ;
+    }
+    st=DisCpuInter();
 	_Free(OS_USE_MEM_AREA_INX, mem);
 	RestoreCpuInter(st);
 }

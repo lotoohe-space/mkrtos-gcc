@@ -14,8 +14,8 @@
     <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="增加了信号量和mutex，mutex支持优先级继承">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ipc/fifo.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/fifo.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/mutex.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/mutex.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/sem.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/sem.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,11 +111,6 @@
     </option>
   </component>
   <component name="RunManager" selected="OpenOCD Download &amp; Run.OCD untitled1">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -160,7 +155,8 @@
       <workItem from="1642337307740" duration="14935000" />
       <workItem from="1642401823493" duration="4321000" />
       <workItem from="1642406527294" duration="141361000" />
-      <workItem from="1642857507566" duration="21884000" />
+      <workItem from="1642857507566" duration="26874000" />
+      <workItem from="1644300229218" duration="798000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -225,7 +221,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643121215650</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="增加了信号量和mutex，mutex支持优先级继承">
+      <created>1643348728327</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1643348728327</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

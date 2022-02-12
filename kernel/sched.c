@@ -383,6 +383,9 @@ void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
     struct wait_queue *temp=*queue;
     struct wait_queue *prev=NULL;
     uint32_t t;
+    if(!add_queue){
+        return ;
+    }
     t=DisCpuInter();
     while(temp){
         if(temp==add_queue) {
