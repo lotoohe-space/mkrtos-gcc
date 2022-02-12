@@ -75,7 +75,6 @@ include_directories(
 #        lib/mpfr-master/src/
 #        lib/config/arm
 #        lib/soft-fp
-        /
  )
 
 file(GLOB_RECURSE SOURCES

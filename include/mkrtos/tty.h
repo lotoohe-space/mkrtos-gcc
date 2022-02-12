@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <termios.h>
 #include <mkrtos/fs.h>
+#include "mkrtos/task.h"
 //buf长度
 #define TTY_READ_BUF_LEN 256
 
@@ -27,7 +28,8 @@ struct tty_struct{
     int32_t (*write)(struct tty_struct * tty);
     int32_t  (*ioctl)(struct tty_struct *tty, struct file * file,uint32_t cmd, uint32_t arg);
     /////
-
+    //读等待
+    struct wait_queue *r_wait;
     //最底层的数据首先读取到这里
     struct tty_queue r_queue;
     //写数据的缓存
@@ -144,6 +146,9 @@ struct tty_line{
 #define L_IEXTEN(tty)	_L_FLAG((tty),IEXTEN)
 
 void q_clear(struct tty_queue *t_queue);
+inline int32_t q_length(struct tty_queue* t_queue){
+    return (t_queue->rear-t_queue->front+TTY_READ_BUF_LEN)%TTY_READ_BUF_LEN;
+}
 int32_t q_add(struct tty_queue *t_queue,uint8_t d);
 int32_t q_get(struct  tty_queue *t_queue,uint8_t *d);
 

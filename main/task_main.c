@@ -47,11 +47,12 @@ void KernelTask(void*arg0, void*arg1){
 //        printk("%s\r\n",dir.d_name);
 //    }
 //    sys_close(fd);
-    printf("这是printf的测试\r\n");
+    printf("请输入数据:\r\n");
     int a;
     int b;
     //scanf还有问题
     scanf("%d,%d",&a,&b);
+    printf("\r\n输入的数据是:%d,%d\r\n",a,b);
     sys_write(0,"kernel run..\r\n",strlen("kernel run..\r\n"));
 
     sys_mkdir("/test",0777);

@@ -128,8 +128,31 @@ static int tty_open(struct inode * ino, struct file * fp){
 }
 //这里是给vfs的读函数，读取流程是：vfs_read->tty_read->line_read（从buf里面读取）
 static int tty_read(struct inode *ino, struct file *fp, char * buf, int count){
+    int tty_dev_no;
+    int ret;
+    struct tty_struct *cur_tty;
+    struct tty_line *cur_line;
+    //检查设备是否打开啊
+    if(MAJOR(ino->i_rdev_no)!=TTY_MAJOR){
+        return -ENODEV;
+    }
+    tty_dev_no=MINOR(ino->i_rdev_no);
+    if(tty_dev_no>=TTY_MAX_NUM){
+        return -ENODEV;
+    }
+    cur_tty=&ttys[tty_dev_no];
+    if(!cur_tty->used_cn){
+        return -ENODEV;
+    }
 
-    return 0;
+    cur_line=&tty_lines[tty_dev_no];
+    if(cur_line->read){
+        ret = cur_line->read(cur_tty,fp,buf,count);
+    }else{
+        return -ENODEV;
+    }
+
+    return ret;
 }
 
 //写入流程vfs_write->tty_write->line_write->dirver_write
@@ -139,7 +162,7 @@ static int tty_write(struct inode *ino, struct file * fp, char * buf, int count)
     struct tty_struct *cur_tty;
     struct tty_line *cur_line;
     //检查设备是否打开啊
-    if(MAJOR(ino->i_rdev_no)!=TTY_MAJOR&&MAJOR(ino->i_rdev_no)!=TTYMAUX_MAJOR){
+    if(MAJOR(ino->i_rdev_no)!=TTY_MAJOR){
         return -ENODEV;
     }
     tty_dev_no=MINOR(ino->i_rdev_no);
@@ -240,12 +263,24 @@ int32_t tty_def_line_read(struct tty_struct * tty,struct file* fp,uint8_t *buf,i
     uint8_t r;
     int i;
 
+    again:
+    if(!q_length(&tty->r_queue)){//读取数据的长度为零，则休眠等待
+        struct wait_queue wait = {CUR_TASK , NULL };
+        add_wait_queue(&tty->r_wait, &wait);
+        CUR_TASK->status = TASK_SUSPEND;
+        task_sche();
+        remove_wait_queue(&tty->r_wait, &wait);
+        CUR_TASK->status = TASK_RUNNING;
+        goto again;
+    }
     if(tty_lines[tty->line_no].handler){
         tty_lines[tty->line_no].handler(tty);
     }
     for(i=0;i<count && q_get(&tty->pre_queue,&r)>=0; i++){
         buf[i]=r;
     }
+    //如果有回显的字符，直接在这里写
+    ttys[tty->line_no].write(tty);
     return i;
 }
 /**
@@ -290,7 +325,7 @@ int32_t tty_def_line_write(struct tty_struct * tty,struct file* fp,uint8_t *buf,
 
     //调用写函数
     ret=tty->write(tty);
-    return ret;
+    return i;
 }
 /**
  * 对读取的数据进行处理
@@ -364,12 +399,12 @@ void tty_def_line_handler(struct tty_struct *tty){
                     }
                 }
                 //回显
-                q_add(&tty->w_queue,&r);
+                q_add(&tty->w_queue,r);
             }else{
                 if(L_ECHONL(tty) && L_ICANON(tty)){
                     //如果在标准模式下设置了该标志，即使没有设置ECHO标志，换行符还是会被显示出来。
                     if(r=='\n'){
-                        q_add(&tty->w_queue,&r);
+                        q_add(&tty->w_queue,r);
                     }
                 }
             }
@@ -407,11 +442,13 @@ void tty_def_line_handler(struct tty_struct *tty){
 
 
             if(q_add(&tty->pre_queue,r)<0){
-                //读取失败了
+                //添加失败了
                 //这里应该加上等待机制
             }
         }
     }
+    //唤醒所有等待的
+  //  wake_up(tty->r_wait);
     return ;
 }
 

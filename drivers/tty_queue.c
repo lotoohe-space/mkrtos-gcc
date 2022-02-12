@@ -12,6 +12,7 @@ void q_clear(struct tty_queue *t_queue){
     t_queue->front=t_queue->rear=0;
     RestoreCpuInter(t);
 }
+
 int32_t q_add(struct tty_queue *t_queue,uint8_t d){
     uint32_t t;
     t=DisCpuInter();
