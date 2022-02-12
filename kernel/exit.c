@@ -4,7 +4,7 @@
 #define __LIBRARY__
 #include <unistd.h>
 #include <mkrtos/task.h>
-#include <arch/arch.h>
+#include "arch/arch.h"
 #include <mkrtos/mem.h>
 
 extern PTaskBlock find_task(int32_t PID);
@@ -44,13 +44,14 @@ void DoExit(int16_t pid,int32_t exitCode){
     /*立刻进行任务调度*/
     task_sche();
 }
-static inline _syscall1(int,exit,int32_t,exitCode);
+//static inline _syscall1(int,exit,int32_t,exitCode);
 /**
 * @brief 任务结束时会调用该函数，任务执行结束，在这里销毁这个任务
 */
 void TaskToEnd(int32_t exitCode){
     /*这里需要通过系统调用，这个函数是用户层调用的*/
-    exit(exitCode);
+    while(1);
+    //exit(exitCode);
     /*for(;;);*/
 }
 

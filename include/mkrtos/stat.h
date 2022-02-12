@@ -54,13 +54,13 @@ struct new_stat {
 #define IS_FILE(a) (((a)>>16)==0)
 
 #define S_IFMT  0xffff0000
-#define S_IFSOCK (6<<16)
-#define S_IFLNK	 (4<<16)
-#define S_IFREG  (0<<16)
-#define S_IFBLK  (3<<16)
-#define S_IFDIR  (1<<16)
-#define S_IFCHR  (2<<16)
-#define S_IFIFO  (5<<16)            /* 有名管道文件 */
+#define S_IFSOCK (6<<16) //套接字文件
+#define S_IFLNK	 (4<<16) //链接文件
+#define S_IFREG  (0<<16) //正常文件
+#define S_IFBLK  (3<<16) //块文件
+#define S_IFDIR  (1<<16) //目录文件
+#define S_IFCHR  (2<<16) //字符文件
+#define S_IFIFO  (5<<16) //有名管道文件
 #define S_ISUID  0004000		        /* u+s可以让用户在执行这个二进制程序的时候，
 								  * effective id变为这个文件的owner user
 								  */

@@ -4,7 +4,7 @@
 #include <type.h>
 #include <errno.h>
 #include <string.h>
-#include <arch/arch.h>
+#include "arch/arch.h"
 #include <mkrtos/mem.h>
 #include <mkrtos/task.h>
 #include "fcntl.h"
@@ -37,7 +37,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     taskName=tcp->taskName;
 
     if(taskFun == NULL){
-        errno=ERROR;
+        errno=EINVAL;
         return -1;
     }
     void *memStack = NULL;
@@ -123,9 +123,9 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     root_mount(pTaskBlock);
     //打开三个串口输出
     extern int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode);
-    do_open(pTaskBlock->files,"/dev/tty0",O_RDWR,0777);
-    do_open(pTaskBlock->files,"/dev/tty0",O_RDWR,0777);
-    do_open(pTaskBlock->files,"/dev/tty0",O_RDWR,0777);
+    do_open(pTaskBlock->files,"/dev/tty",O_RDWR,0777);
+    do_open(pTaskBlock->files,"/dev/tty",O_RDWR,0777);
+    do_open(pTaskBlock->files,"/dev/tty",O_RDWR,0777);
 #endif
 
     atomic_inc(&sysTasks.pidTemp);
@@ -134,7 +134,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     uint32_t t=DisCpuInter();
     pTaskBlock->status=TASK_RUNNING;
     RestoreCpuInter(t);
-    err= ERROR;
+    err= 0;
 
     return pTaskBlock->PID;
 }

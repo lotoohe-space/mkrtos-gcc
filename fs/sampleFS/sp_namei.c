@@ -20,6 +20,9 @@ int32_t match(register char* str1,register const char *str2,int32_t len){
             return str1[i]-str2[i];
         }
     }
+    if(str1[i]!='\0'){
+        return str1[i];
+    }
     return 0;
 }
 

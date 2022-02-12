@@ -4,9 +4,10 @@
 #include <string.h>
 #include <mkrtos/bk.h>
 #include <mkrtos/task.h>
+#include <mkrtos/dev.h>
 
-#define CH_DEV_MAX_NUM 4
-#define BK_DEV_MAX_NUM 4
+#define CH_DEV_MAX_NUM 10
+#define BK_DEV_MAX_NUM 10
 
 //默认的目录所使用的设备
 dev_t root_dev_no=0;
@@ -318,10 +319,11 @@ void devs_init(void){
 /* 打开字符设备 */
 int chrdev_open(struct inode * inode, struct file * filp)
 {
-    if(inode->i_rdev_no >=BK_DEV_MAX_NUM){
+    if(MAJOR(inode->i_rdev_no) >=BK_DEV_MAX_NUM){
         return -ENODEV;
     }
-    filp->f_op = devs_char[inode->i_rdev_no ].d_fops;
+
+    filp->f_op = devs_char[MAJOR(inode->i_rdev_no) ].d_fops;
     if (filp->f_op->open)
         return filp->f_op->open(inode,filp);
     return 0;
@@ -359,10 +361,10 @@ struct inode_operations chrdev_inode_operations = {
 
 int blkdev_open(struct inode * inode, struct file * filp)
 {
-    if(inode->i_rdev_no >=BK_DEV_MAX_NUM){
+    if(MAJOR(inode->i_rdev_no) >=BK_DEV_MAX_NUM){
         return -ENODEV;
     }
-    filp->f_op = devs_bk[inode->i_rdev_no ].d_fops;
+    filp->f_op = devs_bk[MAJOR(inode->i_rdev_no) ].d_fops;
     if (filp->f_op->open)
         return filp->f_op->open(inode,filp);
     return 0;

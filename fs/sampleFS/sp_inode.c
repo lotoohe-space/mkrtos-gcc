@@ -101,7 +101,7 @@ int32_t sp_read_inode(struct inode * inode){
     inode-> i_no= temp->i_no;
     //硬连接数
     inode-> i_hlink=temp->i_hlink;
-
+    inode->i_rdev_no=temp->i_rdev_no;
     switch(FILE_TYPE(inode->i_type_mode)){
         case 0:
             //普通文件

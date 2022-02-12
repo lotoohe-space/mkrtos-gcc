@@ -11,11 +11,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="增加了信号量和mutex，mutex支持优先级继承">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="tty能够写了，默认/dev/tty就是/dev/tty0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/fifo.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/fifo.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +65,9 @@
     <option name="minorVersion" value="3.2" />
   </component>
   <component name="ProjectId" id="23Gwc88bcoD6p2rwgpQwtZHT2X8" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -81,9 +80,9 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/arch/bsp" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/dietlibc/syscalls.s" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
     <property name="structure.view.defaults.are.configured" value="true" />
   </component>
   <component name="ReaderModeSettings">
@@ -91,18 +90,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\arch\bsp" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\include" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\lib" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\ipc" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\kernel" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib\dietlibc\syscalls.s" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib\soft-fp" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib\config\arm" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib\dietlibc" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\arch\arm\asm" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\include\old" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include\mkrtos" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\include\ipc" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\arch\arm" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\include\arch" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -111,6 +110,11 @@
     </option>
   </component>
   <component name="RunManager" selected="OpenOCD Download &amp; Run.OCD untitled1">
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -155,8 +159,30 @@
       <workItem from="1642337307740" duration="14935000" />
       <workItem from="1642401823493" duration="4321000" />
       <workItem from="1642406527294" duration="141361000" />
-      <workItem from="1642857507566" duration="26874000" />
-      <workItem from="1644300229218" duration="798000" />
+      <workItem from="1642857507566" duration="21884000" />
+      <workItem from="1643441689325" duration="637000" />
+      <workItem from="1643507797455" duration="436000" />
+      <workItem from="1643508249494" duration="5339000" />
+      <workItem from="1643844515347" duration="13900000" />
+      <workItem from="1643893536383" duration="10193000" />
+      <workItem from="1643934201253" duration="1000" />
+      <workItem from="1643975574351" duration="13004000" />
+      <workItem from="1644074317319" duration="4237000" />
+      <workItem from="1644119158299" duration="4301000" />
+      <workItem from="1644128085305" duration="165000" />
+      <workItem from="1644156731811" duration="4498000" />
+      <workItem from="1644210360899" duration="373000" />
+      <workItem from="1644211033695" duration="486000" />
+      <workItem from="1644218765983" duration="168000" />
+      <workItem from="1644219063861" duration="286000" />
+      <workItem from="1644219384958" duration="462000" />
+      <workItem from="1644220695189" duration="1329000" />
+      <workItem from="1644244703188" duration="3445000" />
+      <workItem from="1644419216177" duration="635000" />
+      <workItem from="1644460479759" duration="383000" />
+      <workItem from="1644501542872" duration="4176000" />
+      <workItem from="1644541618037" duration="20287000" />
+      <workItem from="1644649567815" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -221,14 +247,63 @@
       <option name="project" value="LOCAL" />
       <updated>1643121215650</updated>
     </task>
-    <task id="LOCAL-00010" summary="增加了信号量和mutex，mutex支持优先级继承">
-      <created>1643348728327</created>
+    <task id="LOCAL-00010" summary="编译有问题">
+      <created>1643984791332</created>
       <option name="number" value="00010" />
       <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
-      <updated>1643348728327</updated>
+      <updated>1643984791333</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="基本移植完成，但是还没有办法调用，cortex-m3处理器没有swi指令，只有svc指令，svc指令最大的系统调用只有256个，不够用。">
+      <created>1644076235536</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1644076235536</updated>
+    </task>
+    <task id="LOCAL-00012" summary="基本支持了libc，但是還有很多功能沒有完成，下一步先完成tty支持">
+      <created>1644128145177</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1644128145177</updated>
+    </task>
+    <task id="LOCAL-00013" summary="需要重写设备号的驱动，区分主设备与次设备，所有主设备">
+      <created>1644248236736</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1644248236736</updated>
+    </task>
+    <task id="LOCAL-00014" summary="emmm">
+      <created>1644460496302</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1644460496302</updated>
+    </task>
+    <task id="LOCAL-00015" summary="emmm">
+      <created>1644508102464</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1644508102464</updated>
+    </task>
+    <task id="LOCAL-00016" summary="tty能够写了，默认/dev/tty就是/dev/tty0">
+      <created>1644590419853</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1644590419853</updated>
+    </task>
+    <task id="LOCAL-00017" summary="tty能够写了，默认/dev/tty就是/dev/tty0">
+      <created>1644593164808</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1644593164808</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,31 +329,28 @@
     <MESSAGE value="解决了mkdir多进程创建写混乱问题，但是可能回创建一样的文件，这个问题咋解决啊。" />
     <MESSAGE value="完成了大部分的vfs支持的函数，但是没有详细的测试" />
     <MESSAGE value="增加了信号量和mutex，mutex支持优先级继承" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加了信号量和mutex，mutex支持优先级继承" />
+    <MESSAGE value="编译有问题" />
+    <MESSAGE value="基本移植完成，但是还没有办法调用，cortex-m3处理器没有swi指令，只有svc指令，svc指令最大的系统调用只有256个，不够用。" />
+    <MESSAGE value="基本支持了libc，但是還有很多功能沒有完成，下一步先完成tty支持" />
+    <MESSAGE value="需要重写设备号的驱动，区分主设备与次设备，所有主设备" />
+    <MESSAGE value="emmm" />
+    <MESSAGE value="tty能够写了，默认/dev/tty就是/dev/tty0" />
+    <option name="LAST_COMMIT_MESSAGE" value="tty能够写了，默认/dev/tty就是/dev/tty0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>56</line>
-          <option name="timeStamp" value="385" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/fs/namei.c</url>
-          <line>362</line>
-          <option name="timeStamp" value="390" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>53</line>
-          <option name="timeStamp" value="393" />
+          <url>file://$PROJECT_DIR$/lib/dietlibc/libstdio/fgetc_unlocked.c</url>
+          <line>12</line>
+          <option name="timeStamp" value="455" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="pdi-&gt;name" language="ObjectiveC" />
+        <watch expression="CUR_TASK-&gt;files[fd]" language="ObjectiveC" />
         <watch expression="inode_ls[i]" language="ObjectiveC" />
       </configuration>
     </watches-manager>

@@ -3,7 +3,7 @@
 * @author 1358745329@qq.com
 */
 
-#include <arch/arch.h>
+#include "arch/arch.h"
 #include <string.h>
 #include <mkrtos/mem.h>
 

@@ -18,15 +18,11 @@ struct file_operations;
 struct inode_operations;
 struct super_block;
 
+#define MK_MODE(a,b) (((a))|(b))
 //取得文件类型
 #define FILE_TYPE(a) (((a)>>16)&0xffff)
 //取得文件模式
 #define FILE_MODE(a) ((a)&0xffff)
-
-
-
-
-
 
 typedef struct {
     long    val[2];
@@ -50,6 +46,7 @@ struct wait_queue;
 //INode节点
 typedef struct inode {
     //文件类型与权限
+    //
     uint32_t i_type_mode;
     //文件大小
     uint32_t i_file_size;
@@ -65,14 +62,13 @@ typedef struct inode {
     struct inode *i_mount;
     //设备号码
     struct wait_queue *i_wait_q;
+    //用来锁这个inode
+    Atomic_t i_lock;
+
     //打开计数
 //    Atomic_t i_open_count;
     //使用计数
     Atomic_t i_used_count;
-
-    //用来锁这个inode
-    Atomic_t i_lock;
-
     //是否被修改过
     uint8_t i_dirt;
     struct super_block *i_sb;
@@ -111,6 +107,7 @@ typedef struct super_block {
 struct file {
     uint8_t f_mode;		    /* 文件不存在时，创建文件的权限 */
     int32_t f_ofs;            /* 文件读写偏移量 */
+    dev_t  f_rdev;             /* 这是tty设备所对于的字符设备驱动号 */
 //    uint32_t f_count;           /*这个file被使用了多少次,暂时用不上*/
     unsigned short f_flags; /* 以什么样的方式打开文件，如只读，只写等等 */
     struct inode * f_inode;		/* 文件对应的inode */

@@ -7,6 +7,8 @@ static uint8_t initFlag=0;
 
 uint8_t fifo[128]={0};
 
+
+//只要设备的主设备号一样，那么设备的驱动就一样，可以使用同样的驱动去驱动设备，但是子设备号就区分了不同的设备
 //这里是中断的回调
 static void CH432TRecvCB(uint8_t port,uint8_t * data,uint16_t len){
     if(port==1){
@@ -44,7 +46,86 @@ static int write(struct inode *ino, struct file * fp, char * buf, int count){
 static void release (struct inode * ino, struct file * f){
     //printf("设备关闭 INodeNum:%d \r\n", pInode->iNodeNum);
 }
+#include "sys/arm-ioctl.h"
+//ioctl
+static  int ioctl(struct inode * inode, struct file * file, unsigned int cmd, unsigned long arg){
+    switch (cmd) {
+        case TCGETS:
 
+            return 0;
+        case TCSETSF:
+        case TCSETSW:
+        case TCSETS:
+
+        case TCGETA:
+
+        case TCSETAF:
+        case TCSETAW:
+        case TCSETA:
+
+        case TCFLSH:
+
+        case TIOCEXCL:
+
+            return 0;
+        case TIOCNXCL:
+
+            return 0;
+        case TIOCSCTTY:
+
+            return 0;
+        case TIOCGPGRP:
+
+            return 0;
+        case TIOCSPGRP:
+
+            return 0;
+        case TIOCOUTQ:
+
+            return 0;
+        case TIOCINQ:
+
+            return 0;
+        case TIOCSTI:
+
+            return 0;
+        case TIOCGWINSZ:
+
+            return 0;
+        case TIOCSWINSZ:
+
+        case TIOCLINUX:
+
+        case TIOCCONS:
+
+            return 0;
+        case FIONBIO:
+
+            return 0;
+        case TIOCNOTTY:
+
+            return 0;
+        case TIOCGETD:
+
+            return 0;
+        case TIOCSETD:
+
+        case TIOCGLCKTRMIOS:
+
+            return 0;
+        case TIOCSLCKTRMIOS:
+
+            return 0;
+        case TIOCPKT:
+
+            return 0;
+        case TCSBRK: case TCSBRKP:
+
+            return -EINVAL;
+    }
+
+    return 0;
+}
 void console_write(const char* str){
     if(initFlag==0){
         extern void EXTI9_5_IRQHandler(void);
@@ -61,7 +142,8 @@ void console_write(const char* str){
 static struct file_operations uart_fops={
         .write=write,
         .open=open,
-        .release=release
+        .release=release,
+        .ioctl=ioctl
 };
 #define TTY_DEV_NO 0
 static int32_t used_dev_no=-1;
@@ -80,14 +162,14 @@ static int32_t uart_init(void) {
     RegIsrFunc(EXTI9_5_IRQHandler,23,0);
 
     if(reg_ch_dev(TTY_DEV_NO,
-                  "tty0",
+                  "ttyS0",
                   &uart_fops
     )<0){
         return -1;
     }
 
     extern int sys_mknod(const char * filename, int mode, dev_t dev);
-    if(sys_mknod("/dev/tty0",0777|(2<<16),used_dev_no)<0){
+    if(sys_mknod("/dev/ttyS0",0777|(2<<16),used_dev_no)<0){
 
     }
 
@@ -98,7 +180,7 @@ static int32_t uart_exit(void) {
     unreg_ch_dev(used_dev_no,"tty0");
     return 0;
 }
-DEV_BK_EXPORT(uart_init,uart_exit,tty0);
+//DEV_BK_EXPORT(uart_init,uart_exit,tty0);
 
 
 
