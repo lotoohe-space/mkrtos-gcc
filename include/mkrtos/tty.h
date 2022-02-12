@@ -19,19 +19,27 @@ struct tty_queue{
 
 struct tty_struct{
     struct termios termios;                   //当前使用的终端信息
-    dev_t dev_no;                           //所使用的字符设备的设备号
+    int line_no;                           //所使用的tty
 
     //这里是底层的处理函数
     int32_t (*open)(struct tty_struct * tty, struct file * filp);
     void (*close)(struct tty_struct * tty, struct file * filp);
-    int32_t (*write)(struct tty_struct * tty,uint8_t *buf,int len);
+    int32_t (*write)(struct tty_struct * tty);
     int32_t  (*ioctl)(struct tty_struct *tty, struct file * file,uint32_t cmd, uint32_t arg);
     /////
 
     //最底层的数据首先读取到这里
     struct tty_queue r_queue;
+    //写数据的缓存
+    struct tty_queue w_queue;
     //然后通过handler处理机制存放到per_queue中，pre_queue中的数据直接可以给用户，或者进行回显
     struct tty_queue pre_queue;
+
+    int col;
+    //字符错误
+    uint8_t is_error;
+    //
+    uint8_t print_ctl;
 
     uint8_t used_cn;                        //是否使用了
 };
@@ -47,30 +55,30 @@ struct tty_struct{
 //line处理结构体
 struct tty_line{
     //读取函数
-    int32_t (*read)(struct tty_struct * tty,uint8_t * buf,int32_t count);
+    int32_t (*read)(struct tty_struct * tty,struct file* fp,uint8_t * buf,int32_t count);
     //写函数
-    int32_t (*write)(struct tty_struct * tty,uint8_t * buf,int32_t count);
+    int32_t (*write)(struct tty_struct * tty,struct file* fp,uint8_t * buf,int32_t count);
     //数据处理函数
     void (*handler)(struct tty_struct *tty);
 };
 
 #define INTR_C(tty) ((tty)->termios.c_cc[VINTR])
 #define QUIT_C(tty) ((tty)->termios.c_cc[VQUIT])
-#define ERASE_C(tty) ((tty)->termios->c_cc[VERASE])
-#define KILL_C(tty) ((tty)->termios->c_cc[VKILL])
-#define EOF_C(tty) ((tty)->termios->c_cc[VEOF])
-#define TIME_C(tty) ((tty)->termios->c_cc[VTIME])
-#define MIN_C(tty) ((tty)->termios->c_cc[VMIN])
-#define SWTC_C(tty) ((tty)->termios->c_cc[VSWTC])
-#define START_C(tty) ((tty)->termios->c_cc[VSTART])
-#define STOP_C(tty) ((tty)->termios->c_cc[VSTOP])
-#define SUSP_C(tty) ((tty)->termios->c_cc[VSUSP])
-#define EOL_C(tty) ((tty)->termios->c_cc[VEOL])
-#define REPRINT_C(tty) ((tty)->termios->c_cc[VREPRINT])
-#define DISCARD_C(tty) ((tty)->termios->c_cc[VDISCARD])
-#define WERASE_C(tty) ((tty)->termios->c_cc[VWERASE])
-#define LNEXT_C(tty)	((tty)->termios->c_cc[VLNEXT])
-#define EOL2_C(tty) ((tty)->termios->c_cc[VEOL2])
+#define ERASE_C(tty) ((tty)->termios.c_cc[VERASE])
+#define KILL_C(tty) ((tty)->termios.c_cc[VKILL])
+#define EOF_C(tty) ((tty)->termios.c_cc[VEOF])
+#define TIME_C(tty) ((tty)->termios.c_cc[VTIME])
+#define MIN_C(tty) ((tty)->termios.c_cc[VMIN])
+#define SWTC_C(tty) ((tty)->termios.c_cc[VSWTC])
+#define START_C(tty) ((tty)->termios.c_cc[VSTART])
+#define STOP_C(tty) ((tty)->termios.c_cc[VSTOP])
+#define SUSP_C(tty) ((tty)->termios.c_cc[VSUSP])
+#define EOL_C(tty) ((tty)->termios.c_cc[VEOL])
+#define REPRINT_C(tty) ((tty)->termios.c_cc[VREPRINT])
+#define DISCARD_C(tty) ((tty)->termios.c_cc[VDISCARD])
+#define WERASE_C(tty) ((tty)->termios.c_cc[VWERASE])
+#define LNEXT_C(tty)	((tty)->termios.c_cc[VLNEXT])
+#define EOL2_C(tty) ((tty)->termios.c_cc[VEOL2])
 
 #define _I_FLAG(tty,f)	((tty)->termios.c_iflag & (f))
 #define _O_FLAG(tty,f)	((tty)->termios.c_oflag & (f))
@@ -106,6 +114,7 @@ struct tty_line{
 #define O_BSDLY(tty)	_O_FLAG((tty),BSDLY)
 #define O_VTDLY(tty)	_O_FLAG((tty),VTDLY)
 #define O_FFDLY(tty)	_O_FLAG((tty),FFDLY)
+#define O_XTABS(tty)    _O_FLAG((tty),XTABS)
 
 #define C_BAUD(tty)	_C_FLAG((tty),CBAUD)
 #define C_CSIZE(tty)	_C_FLAG((tty),CSIZE)
@@ -134,7 +143,7 @@ struct tty_line{
 #define L_PENDIN(tty)	_L_FLAG((tty),PENDIN)
 #define L_IEXTEN(tty)	_L_FLAG((tty),IEXTEN)
 
-
+void q_clear(struct tty_queue *t_queue);
 int32_t q_add(struct tty_queue *t_queue,uint8_t d);
 int32_t q_get(struct  tty_queue *t_queue,uint8_t *d);
 

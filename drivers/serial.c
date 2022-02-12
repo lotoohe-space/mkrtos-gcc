@@ -22,12 +22,18 @@ static void ch432t_read_cb(uint8_t port,uint8_t * data,uint16_t len){
 
 
 static void uart_close(struct tty_struct * tty, struct file * filp){
-    my_tty[0]=0;
+    my_tty[MINOR(filp->f_rdev)]=0;
     initFlag=0;
 }
-static int32_t uart_write(struct tty_struct * tty,uint8_t *buf,int len){
-    CH432Seril1Send((uint8_t*)buf,len);
-    return len;
+static int32_t uart_write(struct tty_struct * tty){
+    int res;
+    uint8_t r;
+    int w_len=0;
+    while((res=q_get(&tty->w_queue,&r))>=0){
+        CH432Seril1Send((uint8_t*)r, tty->line_no);
+        w_len++;
+    }
+    return w_len;
 }
 
 static int32_t  uart_ioctl(struct tty_struct *tty, struct file * file,uint32_t cmd, uint32_t arg){
@@ -40,7 +46,7 @@ int32_t uart_open(struct tty_struct * tty, struct file * filp){
     initFlag = 1;
     Ch432_SPI_Init();
     CH432T_recv_1_data_fun = ch432t_read_cb;
-    my_tty[0]=tty;
+    my_tty[tty->line_no]=tty;
     tty->write=uart_write;
     tty->close=uart_close;
     tty->ioctl=uart_ioctl;
