@@ -5,7 +5,7 @@
 #include <mkrtos/task.h>
 #include <arch/arch.h>
 #include "mkrtos/mem.h"
-
+#include <sys/wait.h>
 /**
  * 清除队列
  * @param wake_tasks
@@ -89,7 +89,7 @@ static void wait_task(struct wait_queue **wait_c){
  * @param options
  * @return
  */
-pid_t waitpid(pid_t pid,int32_t statloc,int32_t options){
+pid_t waitpid(pid_t pid,int32_t *statloc,int32_t options){
     uint32_t t;
     struct task *ls;
     struct task *close_task=0;
@@ -132,8 +132,13 @@ pid_t waitpid(pid_t pid,int32_t statloc,int32_t options){
                         RestoreCpuInter(t);
                         return res_pid;
                     } else {
-                        wait_task(&ls->close_wait);
-                        goto again;
+                        if(options&WNOHANG ){
+                            //非阻塞
+                            return 0;
+                        }else {
+                            wait_task(&ls->close_wait);
+                            goto again;
+                        }
                     }
                 }
             } else if (pid == 0) {
@@ -152,6 +157,11 @@ pid_t waitpid(pid_t pid,int32_t statloc,int32_t options){
         }else {
             //子进程数量等于未关闭的进程数量那么应该等待
             if (child_all_cn == child_run_cn) {
+                if(options&WNOHANG ){
+                    //非阻塞
+                    clear_task_q(&close_task);
+                    return 0;
+                }
                 pid_t pid=-1;
                 //等待进程
                 struct wait_queue wait_c={CUR_TASK,NULL};

@@ -11,32 +11,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="emmm">
-      <change afterPath="$PROJECT_DIR$/kernel/wait_pid.c" afterDir="false" />
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="正在搞waitpid">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/CH432T.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/CH432T.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/CH432T.h" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/CH432T.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/serial.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/serial.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/tty.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/uart.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/uart.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/tty.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/tty.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/mutex.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/mutex.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sys.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sys.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/include/termios.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/include/termios.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/wait_pid.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/wait_pid.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +191,7 @@
       <workItem from="1644649567815" duration="613000" />
       <workItem from="1644651934912" duration="9392000" />
       <workItem from="1644725048913" duration="715000" />
-      <workItem from="1644727079431" duration="17252000" />
+      <workItem from="1644727079431" duration="17561000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -342,7 +319,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644649579130</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="正在搞waitpid">
+      <created>1644760575946</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1644760575946</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -374,7 +358,8 @@
     <MESSAGE value="需要重写设备号的驱动，区分主设备与次设备，所有主设备" />
     <MESSAGE value="emmm" />
     <MESSAGE value="tty能够写了，默认/dev/tty就是/dev/tty0" />
-    <option name="LAST_COMMIT_MESSAGE" value="tty能够写了，默认/dev/tty就是/dev/tty0" />
+    <MESSAGE value="正在搞waitpid" />
+    <option name="LAST_COMMIT_MESSAGE" value="正在搞waitpid" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
