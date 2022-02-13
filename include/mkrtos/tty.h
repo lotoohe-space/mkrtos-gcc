@@ -118,7 +118,10 @@ struct tty_line{
 #define O_FFDLY(tty)	_O_FLAG((tty),FFDLY)
 #define O_XTABS(tty)    _O_FLAG((tty),XTABS)
 
-#define C_BAUD(tty)	_C_FLAG((tty),CBAUD)
+
+#define __C_FLAG(flag,f)	((flag) & (f))
+
+#define C_BAUD(tty)	    _C_FLAG((tty),CBAUD)
 #define C_CSIZE(tty)	_C_FLAG((tty),CSIZE)
 #define C_CSTOPB(tty)	_C_FLAG((tty),CSTOPB)
 #define C_CREAD(tty)	_C_FLAG((tty),CREAD)
@@ -128,6 +131,19 @@ struct tty_line{
 #define C_CLOCAL(tty)	_C_FLAG((tty),CLOCAL)
 #define C_CIBAUD(tty)	_C_FLAG((tty),CIBAUD)
 #define C_CRTSCTS(tty)	_C_FLAG((tty),CRTSCTS)
+#define C_BAUDEX(tty)   _C_FLAG((tty),CBAUDEX)
+
+#define F_C_BAUD(tty)	    __C_FLAG((tty),CBAUD)
+#define F_C_CSIZE(tty)	__C_FLAG((tty),CSIZE)
+#define F_C_CSTOPB(tty)	__C_FLAG((tty),CSTOPB)
+#define F_C_CREAD(tty)	__C_FLAG((tty),CREAD)
+#define F_C_PARENB(tty)	__C_FLAG((tty),PARENB)
+#define F_C_PARODD(tty)	__C_FLAG((tty),PARODD)
+#define F_C_HUPCL(tty)	__C_FLAG((tty),HUPCL)
+#define F_C_CLOCAL(tty)	__C_FLAG((tty),CLOCAL)
+#define F_C_CIBAUD(tty)	__C_FLAG((tty),CIBAUD)
+#define F_C_CRTSCTS(tty)	__C_FLAG((tty),CRTSCTS)
+#define F_C_BAUDEX(tty)   __C_FLAG((tty),CBAUDEX)
 
 #define L_ISIG(tty)	    _L_FLAG((tty),ISIG)
 #define L_ICANON(tty)	_L_FLAG((tty),ICANON)
@@ -153,5 +169,13 @@ int32_t q_add(struct tty_queue *t_queue,uint8_t d);
 int32_t q_get(struct  tty_queue *t_queue,uint8_t *d);
 
 int32_t uart_open(struct tty_struct * tty, struct file * filp);
+
+//serail.c
+#define TTY_IO_SET 0x0001
+#define TTY_IO_GET 0x0002
+struct serial_struct{
+    //串口的控制，与c_cflag一致
+    uint32_t c_cflag;
+};
 
 #endif //UNTITLED1_TTY_H

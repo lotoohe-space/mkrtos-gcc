@@ -2,6 +2,7 @@
 #include "CH432T.h"
 #include "delay.h"
 #include "arch/arch.h"
+#include <termios.h>
 #define CH432T_EN_PIN PBout(12)
 #define CH432_BPS   9600    /* 定义CH432串口0通讯波特率 */
 #define CH432_BPS1  115200    /* 定义CH432串口1通讯波特率 */
@@ -89,7 +90,92 @@ void Ch432_hw_init(void){
 	SPI2_Init();
 	
 }
-
+void ch432t_flow_ctrl(int32_t inx,int32_t status){
+    switch(inx){
+        case 0:
+            if(status) {
+                WriteCH432Data(CH432_MCR_PORT, BIT_MCR_RTS|BIT_MCR_DTR|BIT_MCR_OUT2);    /* 允许中断输出，DTR,RTS为1 */
+            }else{
+                WriteCH432Data(CH432_MCR_PORT, BIT_MCR_OUT2);    /* 允许中断输出，DTR,RTS为1 */
+            }
+            break;
+        case 1:
+            if(status) {
+                WriteCH432Data(CH432_MCR1_PORT, BIT_MCR_RTS|BIT_MCR_DTR|BIT_MCR_OUT2);    /* 允许中断输出，DTR,RTS为1 */
+            }else{
+                WriteCH432Data(CH432_MCR1_PORT, BIT_MCR_OUT2);    /* 允许中断输出，DTR,RTS为1 */
+            }
+            break;
+    }
+}
+void ch432t_set_baud(int32_t inx,int32_t baud){
+    uint8_t DLM,DLL;
+    uint32_t div;
+    div = ( Fpclk >> 4 ) / baud;
+    DLM = div >> 8;
+    DLL = div & 0xff;
+    switch(inx){
+        case 0:
+            WriteCH432Data( CH432_LCR_PORT, BIT_LCR_DLAB );    /* 设置DLAB为1 */
+            WriteCH432Data( CH432_DLL_PORT, DLL );    /* 设置波特率 */
+            WriteCH432Data( CH432_DLM_PORT, DLM );
+            break;
+        case 1:
+            WriteCH432Data( CH432_LCR1_PORT, BIT_LCR_DLAB );    /* 设置DLAB为1 */
+            WriteCH432Data( CH432_DLL1_PORT, DLL );    /* 设置波特率 */
+            WriteCH432Data( CH432_DLM1_PORT, DLM );
+            break;
+    }
+}
+void ch4324_set_par(int32_t inx,int32_t csize,int32_t cstopb,int32_t par){
+    uint32_t w_tmp=0;
+    switch (csize) {
+        case CS5:
+            w_tmp&=~BIT_LCR_WORDSZ0;
+            w_tmp&=~BIT_LCR_WORDSZ1;
+            break;
+        case CS6:
+            w_tmp|=BIT_LCR_WORDSZ0;
+            break;
+        case CS7:
+            w_tmp|=BIT_LCR_WORDSZ1;
+            break;
+        case CS8:
+            w_tmp|=BIT_LCR_WORDSZ0|BIT_LCR_WORDSZ1;
+            break;
+    }
+    switch(cstopb){
+        case 0:
+            w_tmp&=~BIT_LCR_STOPBIT;
+            break;
+        case 1:
+            w_tmp|=BIT_LCR_STOPBIT;
+            break;
+    }
+    switch(par){
+        case 0:
+            w_tmp&=~BIT_LCR_PAREN;
+            break;
+        case 1:
+            w_tmp|=BIT_LCR_PAREN;
+            w_tmp&=~BIT_LCR_PARMODE0;
+            w_tmp&=~BIT_LCR_PARMODE1;
+            break;
+        case 2:
+            w_tmp|=BIT_LCR_PAREN;
+            w_tmp|=BIT_LCR_PARMODE0;
+            w_tmp&=~BIT_LCR_PARMODE1;
+            break;
+    }
+    switch(inx) {
+        case 0:
+            WriteCH432Data(CH432_LCR1_PORT, w_tmp);    /* 字长8位，1位停止位、无校验 */
+            break;
+        case 1:
+            WriteCH432Data(CH432_LCR_PORT, w_tmp);    /* 字长8位，1位停止位、无校验 */
+            break;
+    }
+}
 //SPI硬件层初始化
 int Ch432_SPI_Init(void)
 {

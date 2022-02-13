@@ -3,7 +3,8 @@
 //
 
 #include <errno.h>
-
+#include <mkrtos/task.h>
+#include <arch/arch.h>
 // 返回日期和时间。
 int
 sys_ftime ()
@@ -128,8 +129,19 @@ sys_brk (unsigned long end_data_seg)
 {
     return -ENOSYS;
 }
-int
-sys_setpgid (int pid, int pgid){
+/**
+ * 设置组ID
+ * @param pid
+ * @param pgid
+ * @return
+ */
+int32_t sys_setpgid (int32_t pid, int32_t pgid){
+    uint32_t t;
+    struct task* md_task;
+    t=DisCpuInter();
+    md_task = find_task(pid);
+    md_task->PGID=pgid;
+    RestoreCpuInter(t);
     return -ENOSYS;
 }
 int

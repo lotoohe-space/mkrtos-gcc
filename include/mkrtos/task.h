@@ -122,17 +122,19 @@ typedef struct task{
     * @brief 同优先级链表
     */
     struct task *next;
-
-//    /**
-//    * @brief 信号量链表
-//    */
-//    struct _TaskBlock *nextBk;
-
     /**
     * @brief 所有任务的链表
     */
     struct task *nextAll;
 
+    /**
+     * @brief 删除等待队列
+     */
+    struct task *del_wait;
+    /**
+     * 关闭等待队列
+     */
+    struct wait_queue *close_wait;
     /**
     * @brief 堆栈的栈低指针，当任务终结时用于内存释放
     */
@@ -155,13 +157,13 @@ typedef struct task{
     */
     uint32_t runCount;
     /**
-    * @brief 延时计数
-    */
-    uint32_t delayCount;
-    /**
     * @brief 进程id
     */
     int32_t PID;
+    /**
+     * @brief 组ID
+     */
+    int32_t PGID;
     /**
     * @brief 当前状态
     */
@@ -204,16 +206,17 @@ typedef struct task{
      * @brief 退出码
      */
     int32_t exitCode;
+
+
     /**
-    * @brief 用户信息
-    */
-    //struct _TaskInfo taskInfo;
-    //打开的文件
+     * 文件句柄
+     */
     struct file files[NR_FILE];
     //根inode
     void* root_inode;
     //当前目录
     void* pwd_inode;
+
 }*PTaskBlock,TaskBlock;
 
 /**
@@ -257,10 +260,6 @@ typedef struct{
     */
     PTaskBlock pBlockedLinks;
     /**
-    * @brief 任务链表自旋锁，修改或读取链表都需要加锁
-    */
-    //SpinLockHandler slh;
-    /**
     * @brief 运行时间
     */
     uint32_t sysRunCount;
@@ -298,10 +297,10 @@ typedef struct{
 
 extern SysTasks sysTasks;
 
-
-void task_sche(void);
+struct task* find_task(int32_t PID);
+void    task_sche(void);
 int32_t add_task(struct task *add);
-void del_task(struct task* del);
+void    del_task(struct task** task_ls, struct task* del);
 int32_t task_create(PTaskCreatePar tcp,void* progInfo);
 
 //等待链表

@@ -22,6 +22,7 @@
 
 int32_t tty_def_line_read(struct tty_struct * tty,struct file* fp,uint8_t *buf,int32_t count);
 int32_t tty_def_line_write(struct tty_struct * tty,struct file* fp,uint8_t *buf,int32_t count);
+
 const char ctl_str[][2]={
         {'^','@'},
         {'^','A'},
@@ -58,9 +59,11 @@ const char ctl_str[][2]={
         {'^',' '},
         [127]={'^','?'},
 };
+
 #define TTY_MAX_NUM 6
 struct tty_struct ttys[TTY_MAX_NUM]={0};
 struct tty_line tty_lines[TTY_MAX_NUM]={0};
+
 //当前的终端号码，默认-1
 static struct tty_struct * get_tty(dev_t dev_no){
     struct tty_struct *cur_tty;
@@ -73,9 +76,8 @@ static struct tty_struct * get_tty(dev_t dev_no){
     cur_tty=&ttys[tty_dev_no];
     return cur_tty;
 }
-
-static void init_termios(int line, struct termios * tp)
-{
+//初始化termios
+static void init_termios(int line, struct termios * tp){
     memset(tp, 0, sizeof(struct termios));
     memcpy(tp->c_cc, C_CC_INIT, NCCS);
 //    if (IS_A_CONSOLE(line) || IS_A_PTY_SLAVE(line)) {
@@ -93,9 +95,7 @@ static void init_termios(int line, struct termios * tp)
 //    } else if (IS_A_PTY_MASTER(line))
 //        tp->c_cflag = B9600 | CS8 | CREAD;
 }
-
-
-
+//tty打开
 static int tty_open(struct inode * ino, struct file * fp){
 	//打开
     int tty_dev_no;
@@ -119,7 +119,7 @@ static int tty_open(struct inode * ino, struct file * fp){
     init_termios(0,&cur_tty->termios);
     cur_tty->used_cn++;
     cur_tty->open(cur_tty,fp);
-
+    //参数
     cur_tty->line_no=tty_dev_no;
     cur_tty->termios.c_line=tty_dev_no;
 
@@ -187,7 +187,7 @@ static int tty_ioctl(struct inode * inode, struct file * file, unsigned int cmd,
     void *res_term;
     dev_t  dev_no;
     struct tty_struct *cur_tty;
-    int i;
+    struct serial_struct seri;
     dev_no=file->f_rdev;
     res_term=(void*)arg;
     if(!res_term){
@@ -202,12 +202,24 @@ static int tty_ioctl(struct inode * inode, struct file * file, unsigned int cmd,
 
     switch(cmd){
         case TCGETS:
+            if(cur_tty->ioctl){
+                if(cur_tty->ioctl(cur_tty,file,TTY_IO_GET,&seri)>=0){
+                    cur_tty->termios.c_cflag=seri.c_cflag;
+                }
+            }
             //获取参数
             memcpy(res_term,&cur_tty->termios,sizeof(struct termio));
             break;
         case TCSETS:
             //设置参数
             memcpy(&cur_tty->termios,res_term,sizeof(struct termio));
+            seri.c_cflag=cur_tty->termios.c_cflag;
+            if(cur_tty->ioctl){
+                cur_tty->ioctl(cur_tty,file,TTY_IO_SET,&seri);
+            }
+            break;
+        default:
+            //暂时不支持的CMD
             break;
     }
     return 0;

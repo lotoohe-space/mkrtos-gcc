@@ -302,12 +302,12 @@ struct termios {
 #define   CS6	0000020
 #define   CS7	0000040
 #define   CS8	0000060
-#define CSTOPB	0000100 //设置两个停止位
-#define CREAD	0000200 //使用接收器
+#define CSTOPB	0000100 //设置两个停止位，否则一个
+#define CREAD	0000200 //使用接收器，未使用
 #define PARENB	0000400 //使用奇偶校验
-#define PARODD	0001000 //对输入使用奇偶校验，对输出使用偶校验
-#define HUPCL	0002000 //关闭设备时挂起
-#define CLOCAL	0004000 //忽略调制解调器线路状态
+#define PARODD	0001000 //对输入使用奇偶校验，对输出使用偶校验，未使用
+#define HUPCL	0002000 //关闭设备时挂起，未使用
+#define CLOCAL	0004000 //忽略调制解调器线路状态，未使用
 #define CBAUDEX 0010000 // 附加波特率（1位）（非POSIX）
 #define    B57600 0010001
 #define   B115200 0010002
@@ -324,7 +324,7 @@ struct termios {
 #define  B3000000 0010015
 #define  B3500000 0010016
 #define  B4000000 0010017
-#define CIBAUD	  002003600000	/* input baud rate (not used) */
+#define CIBAUD	  002003600000	/* input baud rate (not used) ，未使用*/
 #define CMSPAR	  010000000000		/* mark or space (stick) parity */
 #define CRTSCTS	  020000000000		/* 使用RTS/CTS流控制 */
 

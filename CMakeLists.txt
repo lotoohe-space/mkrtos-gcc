@@ -74,7 +74,7 @@ include_directories(
 #        lib/mpfr-master/src/arm
 #        lib/mpfr-master/src/
 #        lib/config/arm
-#        lib/soft-fp
+#        lib/soft-
  )
 
 file(GLOB_RECURSE SOURCES
@@ -112,7 +112,7 @@ file(GLOB_RECURSE SOURCES
 #        "lib/soft-fp/*.*"
         )
 
-set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld)
+set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld kernel/wait_pid.c)
 
 add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)
 add_link_options(-mcpu=cortex-m3 -mthumb -mthumb-interwork)

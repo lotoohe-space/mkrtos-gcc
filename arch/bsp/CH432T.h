@@ -175,6 +175,8 @@ uint8_t UART1_RcvByte(void) ;
 void  CH432Seril0Send( u8 *Data, u8 Num );    /* 禁用FIFO,CH432串口0发送多字节子程序 */
 void  CH432Seril1Send( u8 *Data, u8 Num );    /* 禁用FIFO,CH432串口1发送多字节子程序 */
 
-
+void ch432t_set_baud(int32_t inx,int32_t baud);
+void ch4324_set_par(int32_t inx,int32_t csize,int32_t cstopb,int32_t par);
+void ch432t_flow_ctrl(int32_t inx,int32_t status);
 
 #endif

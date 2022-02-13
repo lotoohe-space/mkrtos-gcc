@@ -16,9 +16,9 @@ SysTasks sysTasks={0};
 /**
 * @brief 通过PID找到任务对象
 */
-PTaskBlock find_task(int32_t PID){
-    PTaskBlock pstl;
-    if(PID<0){
+struct task* find_task(int32_t PID){
+    struct task* pstl;
+    if(PID<0||PID==0){
         return sysTasks.currentTask;
     }
   //  uint32_t t=DisCpuInter();
@@ -126,18 +126,21 @@ static PSysTaskBaseLinks AddLinks(uint8_t prio){
  * 删除任务
  * @param del
  */
-void del_task(struct task* del){
+void del_task(struct task** task_ls, struct task* del){
     PSysTaskBaseLinks taskLinks;
-    taskLinks = FindTaskLinks(del->prio);
-    if(taskLinks==NULL){
-        return ;
+    if(!task_ls){
+        taskLinks = FindTaskLinks(del->prio);
+        if(taskLinks==NULL){
+            return ;
+        }
+        task_ls=&(taskLinks->pSysTaskLinks);
     }
-    PTaskBlock pTemp=taskLinks->pSysTaskLinks;
+    PTaskBlock pTemp=*task_ls;//taskLinks->pSysTaskLinks;
     PTaskBlock lastP=NULL;
     while(pTemp){
         if(del==pTemp){
             if(lastP==NULL){
-                taskLinks->pSysTaskLinks=pTemp->next;
+                *task_ls=pTemp->next;
                 break;
             }else{
                 lastP->next=pTemp->next;
@@ -153,7 +156,7 @@ void del_task(struct task* del){
 * @param pSysTasks 任务管理对象
 * @return 添加是否成功
 */
-int32_t add_task(PTaskBlock pTaskBlock){
+int32_t add_task(struct task* pTaskBlock){
 
     if(pTaskBlock==NULL){
         return -1;
@@ -312,8 +315,7 @@ struct _stackInfo* sys_task_sche(void* psp,void* msp,uint32_t spType){
 
 // 系统调用功能 - 设置报警定时时间值(秒)。
 // 如果已经设置过alarm 值，则返回旧值，否则返回0。
-int32_t
-sys_alarm (uint32_t seconds){
+int32_t sys_alarm (uint32_t seconds){
     uint32_t old = 0;
     if(sysTasks.currentTask->alarm){
         old=sysTasks.currentTask->alarm;
@@ -321,8 +323,6 @@ sys_alarm (uint32_t seconds){
     sysTasks.currentTask->alarm = sysTasks.sysRunCount+(seconds*1000)/(1000/OS_WORK_HZ);
     return old;
 }
-
-
 
 //唤醒队列中所有的任务
 void wake_up(struct wait_queue *queue){
@@ -417,7 +417,11 @@ sys_getpid (void)
 int32_t
 sys_getppid (void)
 {
-    return -ENOSYS;
+    if(CUR_TASK->parentTask){
+        return CUR_TASK->parentTask->PID;
+    }else{
+        return -1;
+    }
 }
 
 // 取用户号uid。
@@ -438,7 +442,7 @@ sys_geteuid (void)
 int32_t
 sys_getgid (void)
 {
-    return -ENOSYS;
+    return CUR_TASK->PGID;
 }
 
 // 取egid。

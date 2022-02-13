@@ -1,3 +1,3 @@
-C:/Users/Administrator/CLionProjects/mkrtos-gcc/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Administrator/CLionProjects/mkrtos-gcc/cmake-build-debug/CMakeFiles/untitled1.elf.dir
-C:/Users/Administrator/CLionProjects/mkrtos-gcc/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/zz/CLionProjects/mkrtos-gcc/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/zz/CLionProjects/mkrtos-gcc/cmake-build-debug/CMakeFiles/untitled1.elf.dir
+C:/Users/zz/CLionProjects/mkrtos-gcc/cmake-build-debug/CMakeFiles/rebuild_cache.dir
