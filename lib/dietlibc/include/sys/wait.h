@@ -3,6 +3,7 @@
 
 #include <sys/cdefs.h>
 #include <sys/resource.h>
+#include <sys/signal.h>
 
 __BEGIN_DECLS
 
@@ -54,7 +55,7 @@ typedef enum {
   P_PGID		/* Wait for members of process group.  */
 } idtype_t;
 
-int waitid(idtype_t idtype, id_t id, siginfo_t *infop, int options);
+//int waitid(idtype_t idtype, id_t id, siginfo_t *infop, int options); zhangzheng
 
 __END_DECLS
 

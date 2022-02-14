@@ -91,6 +91,8 @@ file(GLOB_RECURSE SOURCES
         "arch/cpu/*.*"
         "arch/lib/STM32F10x_FWLib/*.*"
         "lib/dietlibc/arm/dyn_syscalls.S"
+        "lib/dietlibc/arm/start.S"
+        "lib/dietlibc/arm/__guard.S"
 #        "lib/dietlibc/arm/*.*"
 #        "lib/dietlibc/contrib/*.*"
         "lib/dietlibc/dynlinker/*.*"
@@ -112,7 +114,7 @@ file(GLOB_RECURSE SOURCES
 #        "lib/soft-fp/*.*"
         )
 
-set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld kernel/wait_pid.c)
+set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld kernel/kill.c)
 
 add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)
 add_link_options(-mcpu=cortex-m3 -mthumb -mthumb-interwork)

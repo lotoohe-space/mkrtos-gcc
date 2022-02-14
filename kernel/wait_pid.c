@@ -82,6 +82,14 @@ static void wait_task(struct wait_queue **wait_c){
     remove_wait_queue(wait_c,&wait);
     CUR_TASK->status=TASK_RUNNING;
 }
+static pid_t shutdown_task(struct task* ls){
+    int32_t res_pid;
+    del_task(NULL, ls);
+    del_task(&sysTasks.allTaskList, ls);
+    res_pid = ls->PID;
+    OSFree(ls);
+    return res_pid;
+}
 /**
  * 等待pid
  * @param pid
@@ -89,7 +97,7 @@ static void wait_task(struct wait_queue **wait_c){
  * @param options
  * @return
  */
-pid_t waitpid(pid_t pid,int32_t *statloc,int32_t options){
+pid_t sys_waitpid(pid_t pid,int32_t *statloc,int32_t options){
     uint32_t t;
     struct task *ls;
     struct task *close_task=0;
@@ -101,15 +109,11 @@ pid_t waitpid(pid_t pid,int32_t *statloc,int32_t options){
     t=DisCpuInter();
     ls=sysTasks.allTaskList;
     while(ls){
-        if(ls->parentTask== CUR_TASK) {
-
-            if (pid == -1) {
+        if(ls->parentTask== CUR_TASK) {//保证必须是其子进程
+            if (pid == -1) {//等待任一子进程
                 if (ls->status == TASK_CLOSED) {
                     int32_t res_pid;
-                    del_task(NULL, ls);
-                    del_task(&sysTasks.allTaskList, ls);
-                    res_pid = ls->PID;
-                    OSFree(ls);
+                    res_pid=shutdown_task(ls);
                     RestoreCpuInter(t);
                     return res_pid;
                 } else {
@@ -121,14 +125,11 @@ pid_t waitpid(pid_t pid,int32_t *statloc,int32_t options){
                 //所有的子进程熟练
                 child_all_cn++;
 
-            } else if (pid > 0) {
+            } else if (pid > 0) {//等待其进程ID与pid相等的子进程
                 if (ls->PID == pid) {
                     if (ls->status == TASK_CLOSED) {
                         int32_t res_pid;
-                        del_task(NULL, ls);
-                        del_task(&sysTasks.allTaskList, ls);
-                        res_pid = ls->PID;
-                        OSFree(res_pid);
+                        res_pid=shutdown_task(ls);
                         RestoreCpuInter(t);
                         return res_pid;
                     } else {
@@ -141,24 +142,43 @@ pid_t waitpid(pid_t pid,int32_t *statloc,int32_t options){
                         }
                     }
                 }
-            } else if (pid == 0) {
-
-            } else if (pid < -1) {
-
+            } else if (pid == 0 ||pid < -1) {
+                int wait_pid;
+                if(pid==0){//等待其组ID等于调用进程组ID的任一子进程
+                    wait_pid=CUR_TASK->PGID;
+                }else{//等待其组ID等于pid绝对值的任一子进程
+                    wait_pid=-pid;
+                }
+                if (ls->PGID==wait_pid) {
+                    if(ls->status == TASK_CLOSED) {
+                        int32_t res_pid;
+                        res_pid = shutdown_task(ls);
+                        RestoreCpuInter(t);
+                        return res_pid;
+                    }else{
+                        //先添加到一个链表中，然后在结尾处进行判断
+                        add_wait_task_q(&close_task, ls);
+                        //运行中的子进程数量
+                        child_run_cn++;
+                    }
+                }else{
+                    //所有的子进程熟练
+                    child_all_cn++;
+                }
             }
         }
         ls=ls->nextAll;
     }
     RestoreCpuInter(t);
-    if(pid==-1){
+    if(pid==-1 || pid<-1){
         if(child_all_cn==0){
-            //没有子进程
+            //没有子进程，返回-1
             return -1;
         }else {
-            //子进程数量等于未关闭的进程数量那么应该等待
+            //没有子进程被关闭
             if (child_all_cn == child_run_cn) {
-                if(options&WNOHANG ){
-                    //非阻塞
+                if(options & WNOHANG ){
+                    //非阻塞，清楚后，直接返回
                     clear_task_q(&close_task);
                     return 0;
                 }
@@ -175,6 +195,7 @@ pid_t waitpid(pid_t pid,int32_t *statloc,int32_t options){
 
                 //开始等待
                 CUR_TASK->status=TASK_SUSPEND;
+                //当前线程挂起
                 task_sche();
                 tmp=close_task;
                 while(tmp){//移除所有的等待任务

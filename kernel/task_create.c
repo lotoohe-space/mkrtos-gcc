@@ -60,7 +60,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
 
     /*初始化任务控制表*/
     pTaskBlock->runCount=0;
-    pTaskBlock->delayCount=0;
+//    pTaskBlock->delayCount=0;
     pTaskBlock->PID = (int16_t)atomic_read(&sysTasks.pidTemp);
     pTaskBlock->memLowStack=memStack;
     if(userStackSize!=0){

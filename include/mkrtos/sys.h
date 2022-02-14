@@ -103,8 +103,7 @@ fn_ptr sys_call_table[] = {sys_setup,//实现
                            sys_write,//实现
                            sys_open,//实现
                            sys_close,//实现
-
-                           NULL,//sys_waitpid,
+                           sys_waitpid,
 
                             sys_creat,
                             sys_link,
@@ -117,7 +116,7 @@ fn_ptr sys_call_table[] = {sys_setup,//实现
                            NULL,
 
                            sys_break,
-                           NULL,//sys_stat,
+                           sys_stat,
 
                            sys_lseek,
                            sys_getpid,

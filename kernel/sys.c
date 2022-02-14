@@ -92,16 +92,14 @@ sys_ulimit ()
 }
 // 返回从1970 年1 月1 日00:00:00 GMT 开始计时的时间值（秒）。如果tloc 不为null，则时间值
 // 也存储在那里。
-int
-sys_time (long *tloc)
+int sys_time (long *tloc)
 {
     int i=0;
 
 
     return i;
 }
-int
-sys_setreuid (int ruid, int euid){
+int sys_setreuid (int ruid, int euid){
     return -ENOSYS;
 }
 int
