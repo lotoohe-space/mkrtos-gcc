@@ -26,7 +26,7 @@ typedef unsigned int sigset_t;	/* 32 bits */// 定义信号集类型。
 #define SIGPIPE 13		// Pipe -- 管道写出错，无读者。
 #define SIGALRM 14		// Alarm -- 实时定时器报警。
 #define SIGTERM 15		// Terminate -- 进程终止。
-#define SIGSTKFLT 16		// Stack Fault -- 栈出错（协处理器）。
+#define SIGSTKFLT 16	// Stack Fault -- 栈出错（协处理器）。
 #define SIGCHLD 17		// Child -- 子进程停止或被终止。
 #define SIGCONT 18		// Continue -- 恢复进程继续执行。
 #define SIGSTOP 19		// Stop -- 停止进程的执行。

@@ -11,8 +11,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="正在搞waitpid">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="正在搞sys_kill">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/signal.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/signal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,11 +117,6 @@
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -190,7 +187,9 @@
       <workItem from="1644649567815" duration="613000" />
       <workItem from="1644651934912" duration="9392000" />
       <workItem from="1644725048913" duration="715000" />
-      <workItem from="1644727079431" duration="22202000" />
+      <workItem from="1644727079431" duration="24188000" />
+      <workItem from="1644936869480" duration="364000" />
+      <workItem from="1644995215671" duration="3000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -339,7 +338,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644808874598</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="正在搞sys_kill">
+      <created>1644831530269</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1644831530270</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,7 +378,8 @@
     <MESSAGE value="emmm" />
     <MESSAGE value="tty能够写了，默认/dev/tty就是/dev/tty0" />
     <MESSAGE value="正在搞waitpid" />
-    <option name="LAST_COMMIT_MESSAGE" value="正在搞waitpid" />
+    <MESSAGE value="正在搞sys_kill" />
+    <option name="LAST_COMMIT_MESSAGE" value="正在搞sys_kill" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
