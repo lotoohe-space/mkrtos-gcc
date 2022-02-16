@@ -144,14 +144,21 @@ int32_t dir_namei(const char * pathname, int32_t * namelen, const char ** name,
 
     *res_inode = NULL;
     if (!base) {
-        base = PWD_INODE;
-        atomic_inc(&base->i_used_count);
+//        if(!PWD_INODE){
+//            return -1;
+//        }
+        base=PWD_INODE;
+        if(base) {
+            atomic_inc(&base->i_used_count);
+        }
     }
     if ((c = *pathname) == '/' || (c = *pathname) == '\\') {
         puti(base);
         base = ROOT_INODE;
         pathname++;
-        atomic_inc(&base->i_used_count);
+        if(base) {
+            atomic_inc(&base->i_used_count);
+        }
     }
     while (1) {
         thisname = pathname;

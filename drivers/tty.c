@@ -89,7 +89,7 @@ static void init_termios(int line, struct termios * tp){
 //    } else if (IS_A_SERIAL(line)) {
         tp->c_iflag = ICRNL | IXOFF;
         tp->c_oflag = OPOST | ONLCR | XTABS;
-        tp->c_cflag = B1152000 | CS8 | CREAD | HUPCL | CLOCAL;
+        tp->c_cflag = B115200 | CS8 | CREAD | HUPCL | CLOCAL;
         tp->c_lflag = ISIG | ICANON | ECHO | ECHOE | ECHOK |
                       ECHOCTL | ECHOKE | IEXTEN;
 //    } else if (IS_A_PTY_MASTER(line))

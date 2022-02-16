@@ -43,7 +43,14 @@
 #define MALLOC_EX_BLOCK_SIZE (64)
 #define MALLOC_EX_MANAGER_TABLE (MALLOC_EX_MEM_SIZE/MALLOC_EX_BLOCK_SIZE)
 #endif
-
+/**
+ * 内存申请管理链表
+ */
+struct mem_struct {
+    struct mem_struct* next;
+    void *mem_start;
+    int32_t length;
+};
 /**
 * @breif 内存类型
 */
@@ -94,7 +101,7 @@ void OSFreeEx(void* mem) ;
 * @param mem 释放的内存的首地址
 */
 void OSFree(void* mem) ;
-
+void mem_clear(void);
 //#define malloc OSMalloc
 //#define free OSFree
 #ifdef __cplusplus

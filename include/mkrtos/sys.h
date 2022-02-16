@@ -87,6 +87,10 @@ extern int sys_symlink();      // 83 - 建立符号链接。             (fs/namei.c，7
 extern int sys_lstat();        // 84 - 取符号链接文件状态。       (fs/stat.c，47)
 extern int sys_readlink();     // 85 - 读取符号链接文件信息。     (fs/stat.c，69)
 extern int sys_uselib();       // 86 - 选择共享库。
+extern int sys_mmap();       // 90 - 选择共享库。
+extern int sys_munmap();    //91
+extern int sys_wait4();     //114-wait4
+
 
 extern int sys_readdir();
 int sys_fchmod(unsigned int fd, mode_t mode);
@@ -178,9 +182,12 @@ fn_ptr sys_call_table[] = {sys_setup,//实现
 //                           sys_lstat, sys_readlink, sys_uselib,
 
     [89]=sys_readdir,
+    [90]=sys_mmap,
+    [91]=sys_munmap,
     [94]=sys_fchmod,
     [99]=sys_statfs,
     [100]=sys_fstatfs,
+    [114]=sys_wait4,
     [119]=sys_sigreturn,
     [133]=sys_fchdir,
     [182]=sys_chown,

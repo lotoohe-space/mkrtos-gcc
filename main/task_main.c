@@ -4,6 +4,7 @@
 #define __LIBRARY__
 #include <mkrtos/fs.h>
 #include "mkrtos/task.h"
+#include "bsp/delay.h"
 #include <mkrtos/stat.h>
 //#include "mkrtos/signal.h"
 #include <xprintf.h>
@@ -29,24 +30,6 @@ uint8_t r_data[512]={0};
 void KernelTask(void*arg0, void*arg1){
     int fd,fd1;
     int res;
-//    uint8_t data[32];
-//    printk("kernel task start..\r\n");
-//    if((fd=sys_open("/",O_RDONLY,0777))<0){
-//        while(1);
-//    }
-//    int i=10;
-//    while(i){
-//        sprintf(data,"/mkrtos%d",i);
-//        sys_mkdir(data,0777);
-//        i--;
-//    }
-//    while(res>0) {
-//        if ((res=sys_readdir(fd, &dir, sizeof(dir)))<= 0) {
-//            break;
-//        }
-//        printk("%s\r\n",dir.d_name);
-//    }
-//    sys_close(fd);
     printf("请输入数据:\r\n");
     int a;
     int b;
@@ -184,12 +167,22 @@ void TestTask(void*arg0, void*arg1){
 //启动进程
 void start_task(void* arg0,void*arg1){
     extern void fs_init(void);
+    root_mount(CUR_TASK);
     fs_init();
+    devs_init();
+    if(CUR_TASK) {
+        //打开三个串口输出
+//        extern int32_t do_open(struct file *files, const char *path, int32_t flags, int32_t mode);
+        open("/dev/tty", O_RDWR, 0777);
+        open( "/dev/tty", O_RDWR, 0777);
+        open("/dev/tty", O_RDWR, 0777);
+    }
+
     //创建设备文件
 //    if(sys_mkdir("/dev",0777)<0){
 //        fatalk("创建dev目录失败！\r\n");
 //    }
-    devs_init();
+
 //    int fd;
 //    int res;
 //    if((fd=sys_open("/dev/tty0",O_RDONLY|O_WRONLY,0777))<0){
@@ -199,23 +192,44 @@ void start_task(void* arg0,void*arg1){
 //    printk("write %d bytes.\r\n",res);
 //    sys_close(fd);
 
-    static TaskCreatePar tcp;
-    int32_t pid;
-    tcp.taskFun=KernelTask;
-    tcp.arg0=(void*)0;
-    tcp.arg1=0;
-    tcp.prio=6;
-    tcp.userStackSize=0;
-    tcp.kernelStackSize=512;
-    tcp.taskName="KernelTask";
-
-    pid=task_create(&tcp,NULL);
-    if(pid<0){
-        while(1);
+//    static TaskCreatePar tcp;
+//    int32_t pid;
+//    tcp.taskFun=KernelTask;
+//    tcp.arg0=(void*)0;
+//    tcp.arg1=0;
+//    tcp.prio=6;
+//    tcp.userStackSize=0;
+//    tcp.kernelStackSize=512;
+//    tcp.taskName="KernelTask";
+//
+//    pid=task_create(&tcp,NULL);
+//    if(pid<0){
+//        while(1);
+//    }
+    printf("to init task.\r\n");
+    int ret=fork();
+    if(ret<0){
+        fatalk("init create error.\r\n");
+    }else if(ret==0){
+        printf("我是新进程\r\n");
+        delay_ms(2000);
+        void *mem=malloc(100);
+        printf("0x%x\r\n",mem);
+//        free(mem);
+//        int a;
+//        scanf("%d",&a);
+//        printf("输入的数是%d\r\n",a);
+        return ;
+    }else {
+#include <sys/wait.h>
+        printf("我的init进程\r\n");
+        printf("等待子进程退出\r\n");
+        wait(0);
+        printf("子进程退出\r\n");
     }
-
-    //
-
+    while(1);
+}
+void idle_task(void){
     while(1);
 }
 /**
@@ -237,13 +251,12 @@ void KernelTaskInit(void){
     tcp.arg0=(void*)0;
     tcp.arg1=0;
     tcp.prio=6;
-    tcp.userStackSize=0;
+    tcp.userStackSize=256;
     tcp.kernelStackSize=512;
-    tcp.taskName="start_task";
+    tcp.taskName="init";
 
     pid=task_create(&tcp,NULL);
     if(pid<0){
         while(1);
     }
-
 }

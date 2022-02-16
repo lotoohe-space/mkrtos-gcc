@@ -22,7 +22,7 @@ void add_wait_task_q(struct task** queue,struct task* add_queue){
     uint32_t t;
     t=DisCpuInter();
     if(*queue==NULL){
-        *queue=add_task;
+        *queue=add_queue;
     }else{
         add_queue->del_wait = (*queue);
         *queue=add_queue;
@@ -90,14 +90,7 @@ static pid_t shutdown_task(struct task* ls){
     OSFree(ls);
     return res_pid;
 }
-/**
- * µÈ´ýpid
- * @param pid
- * @param statloc
- * @param options
- * @return
- */
-pid_t sys_waitpid(pid_t pid,int32_t *statloc,int32_t options){
+pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusage ){
     uint32_t t;
     struct task *ls;
     struct task *close_task=0;
@@ -214,4 +207,17 @@ pid_t sys_waitpid(pid_t pid,int32_t *statloc,int32_t options){
     }
 
     return -1;
+}
+pid_t sys_wait4(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusage ) {
+    return do_sys_wait(pid,statloc,options,rusage);
+}
+/**
+ * µÈ´ýpid
+ * @param pid
+ * @param statloc
+ * @param options
+ * @return
+ */
+pid_t sys_waitpid(pid_t pid,int32_t *statloc,int32_t options){
+    return do_sys_wait(pid,statloc,options,NULL);
 }

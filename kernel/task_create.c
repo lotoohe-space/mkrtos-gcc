@@ -120,12 +120,17 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     for(int32_t i=0;i<NR_FILE;i++){
         pTaskBlock->files[i].used=0;
     }
+#if 0
+
     root_mount(pTaskBlock);
-    //打开三个串口输出
-    extern int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode);
-    do_open(pTaskBlock->files,"/dev/tty",O_RDWR,0777);
-    do_open(pTaskBlock->files,"/dev/tty",O_RDWR,0777);
-    do_open(pTaskBlock->files,"/dev/tty",O_RDWR,0777);
+    if(CUR_TASK) {
+        //打开三个串口输出
+        extern int32_t do_open(struct file *files, const char *path, int32_t flags, int32_t mode);
+        do_open(pTaskBlock->files, "/dev/tty", O_RDWR, 0777);
+        do_open(pTaskBlock->files, "/dev/tty", O_RDWR, 0777);
+        do_open(pTaskBlock->files, "/dev/tty", O_RDWR, 0777);
+    }
+#endif
 #endif
 
     atomic_inc(&sysTasks.pidTemp);

@@ -168,7 +168,8 @@ void WriteCH432Data( uint8_t mAddr, uint8_t mData );
 uint8_t ReadCH432Data( uint8_t mAddr );
 int Ch432_SPI_Init(void);
 void UART0_SendByte( uint8_t dat );
-
+void ch432t_reset(int inx);
+void ch432t_init_intr(int inx);
 void UART1_SendByte( uint8_t dat ) ;
 uint8_t UART1_RcvByte(void) ;
 

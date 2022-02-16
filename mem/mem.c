@@ -4,8 +4,10 @@
 */
 
 #include "arch/arch.h"
+#include "errno.h"
 #include <string.h>
 #include <mkrtos/mem.h>
+#include <mkrtos/task.h>
 
 /**
 * @breif 内存池
@@ -287,4 +289,82 @@ void OSFree(void* mem) {
     st=DisCpuInter();
 	_Free(OS_USE_MEM_AREA_INX, mem);
 	RestoreCpuInter(st);
+}
+
+static int32_t mem_add(void *mem,int32_t lenght){
+    struct mem_struct* tmp;
+    tmp= OSMalloc(sizeof(struct mem_struct));
+    if(tmp==NULL){
+        return -1;
+    }
+    tmp->length=lenght;
+    tmp->mem_start=mem;
+    tmp->next=NULL;
+    uint32_t  t;
+    t=DisCpuInter();
+    if(!CUR_TASK->mems){
+        CUR_TASK->mems=tmp;
+    }else{
+        tmp->next=CUR_TASK->mems;
+        CUR_TASK->mems=tmp;
+    }
+    RestoreCpuInter(t);
+    return 0;
+}
+static void mem_remove(void *mem){
+    struct mem_struct *tmp;
+    tmp=CUR_TASK->mems;
+    struct mem_struct *prev=NULL;
+    uint32_t t;
+    t=DisCpuInter();
+    while(tmp){
+        if(tmp->mem_start ==mem) {
+            if (prev==NULL) {
+                //删除的第一个
+                CUR_TASK->mems=tmp->next;
+                OSFree(tmp);
+                break;
+            }else{
+                prev->next=tmp->next;
+                break;
+            }
+        }
+        prev=tmp;
+        tmp=tmp->next;
+    }
+    RestoreCpuInter(t);
+}
+/**
+ * 清楚进程占用的内存
+ */
+void mem_clear(void){
+    struct mem_struct *tmp;
+    tmp=CUR_TASK->mems;
+    while(tmp){
+        struct mem_struct *next;
+        next=tmp->next;
+        OSFree(tmp->mem_start);
+        OSFree(tmp);
+        tmp=next;
+    }
+}
+
+
+void* sys_mmap(void *start, size_t length, int prot, int flags,int fd, off_t offset){
+//    if(fd!=-1){
+//        return -ENOSYS;
+//    }
+    void* res_mem = OSMalloc(length);
+    if(!res_mem){
+        return -ENOMEM;
+    }
+    if(mem_add(res_mem,length)<0){
+        OSFree(res_mem);
+        return -ENOMEM;
+    }
+    return res_mem;
+}
+void sys_munmap(void *start, size_t length){
+    mem_remove(start);
+    return OSFree(start);
 }

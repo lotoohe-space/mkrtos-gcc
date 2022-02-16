@@ -104,8 +104,12 @@ struct _stackInfo{
     */
     uint16_t svcStatus;
 };
+
+
+
 struct _SysTaskBaseLinks;
 struct sigaction;
+struct mem_struct;
 /**
 * @brief	任务控制块
 */
@@ -207,6 +211,10 @@ typedef struct task{
      */
     int32_t exitCode;
 
+    /**
+     * 管理进程内存申请的链表
+     */
+    struct mem_struct *mems;
 
     /**
      * 文件句柄
@@ -218,6 +226,9 @@ typedef struct task{
     void* pwd_inode;
 
 }*PTaskBlock,TaskBlock;
+
+
+
 
 /**
 * @brief 系统任务基础链表，存储不同优先级的链表头

@@ -13,7 +13,7 @@ extern int32_t add_task(PTaskBlock pTaskBlock);
 int32_t sys_fork(uint32_t *psp){
     TaskStatus oldStatus;
     uint32_t t=DisCpuInter();
-    PTaskBlock ptb=find_task(-1);
+    PTaskBlock ptb=CUR_TASK;
     PTaskBlock newPtb=OSMalloc(sizeof(TaskBlock));
     if(newPtb==NULL){
         RestoreCpuInter(t);
@@ -21,6 +21,7 @@ int32_t sys_fork(uint32_t *psp){
     }
     memcpy(newPtb,ptb,sizeof(TaskBlock));
     newPtb->status=TASK_SUSPEND;
+    newPtb->runCount=0;
     newPtb->next=NULL;
     newPtb->nextAll=NULL;
     newPtb->memLowStack=(void *)OSMalloc(sizeof(uint32_t)*(newPtb->userStackSize+newPtb->kernelStackSize));
@@ -76,14 +77,16 @@ int32_t sys_fork(uint32_t *psp){
     memcpy(newPtb->memLowStack,ptb->memLowStack,sizeof(uint32_t)*(newPtb->userStackSize+newPtb->kernelStackSize));
 
     //设置栈位置
-    newPtb->skInfo.mspStack=(void*)((uint32_t)(newPtb->memLowStack)+((uint32_t)(ptb->skInfo.mspStack )- (uint32_t)(ptb->memLowStack)));
+    newPtb->skInfo.mspStack=(void*)(&(((uint32_t*)newPtb->memLowStack)[ptb->kernelStackSize-1]));
     if(newPtb->userStackSize!=0){
         newPtb->skInfo.pspStack=(void*)((uint32_t)(newPtb->memLowStack)+((uint32_t)(psp)- (uint32_t)(ptb->memLowStack)));
         ((uint32_t*)(newPtb->skInfo.pspStack))[8]=0;
     }else{
         newPtb->skInfo.pspStack=(void*)(~(0L));
     }
-
+    //设置为用户模式
+    newPtb->skInfo.svcStatus=0;
+    newPtb->skInfo.stackType=1;
     newPtb->status=TASK_RUNNING;
     RestoreCpuInter(t);
 

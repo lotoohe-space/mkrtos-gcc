@@ -169,12 +169,42 @@ void ch4324_set_par(int32_t inx,int32_t csize,int32_t cstopb,int32_t par){
     }
     switch(inx) {
         case 0:
-            WriteCH432Data(CH432_LCR1_PORT, w_tmp);    /* 字长8位，1位停止位、无校验 */
-            break;
-        case 1:
             WriteCH432Data(CH432_LCR_PORT, w_tmp);    /* 字长8位，1位停止位、无校验 */
             break;
+        case 1:
+            WriteCH432Data(CH432_LCR1_PORT, w_tmp);    /* 字长8位，1位停止位、无校验 */
+            break;
     }
+}
+void ch432t_reset(int inx){
+    switch(inx){
+        case 0:
+            WriteCH432Data( CH432_IER_PORT, BIT_IER_RESET );    /* 设置DLAB为1 */
+            break;
+        case 1:
+            WriteCH432Data( CH432_IER1_PORT, BIT_IER_RESET );    /* 设置DLAB为1 */
+         break;
+    }
+    delay_ms(20);
+}
+void ch432t_init_intr(int inx){
+    switch(inx){
+        case 0:
+            WriteCH432Data( CH432_FCR_PORT,BIT_FCR_FIFOEN );    /* 设置FIFO模式，触发点为8 */
+            WriteCH432Data( CH432_IER_PORT,BIT_IER_IERECV );    /* 使能中断 */
+            WriteCH432Data( CH432_MCR_PORT, BIT_MCR_OUT2  );    /* 允许中断输出，DTR,RTS为1 */
+            delay_ms(20);
+            ReadCH432Data(CH432_IIR_PORT );	/* 正常情况下返回为01H */
+            break;
+        case 1:
+            WriteCH432Data( CH432_FCR1_PORT,BIT_FCR_FIFOEN );    /* 设置FIFO模式，触发点为8 */
+            WriteCH432Data( CH432_IER1_PORT,BIT_IER_IERECV );    /* 使能中断 */
+            WriteCH432Data( CH432_MCR1_PORT, BIT_MCR_OUT2  );    /* 允许中断输出，DTR,RTS为1 */
+            delay_ms(20);
+            ReadCH432Data( CH432_IIR1_PORT );	/* 正常情况下返回为01H */
+            break;
+    }
+
 }
 //SPI硬件层初始化
 int Ch432_SPI_Init(void)
@@ -182,15 +212,14 @@ int Ch432_SPI_Init(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 	EXTI_InitTypeDef EXTI_InitStructure;
 	GPIO_InitTypeDef  GPIO_InitStructure;
-//	uint16_t Status[7]; 
 	uint16_t div;
 	uint8_t DLL, DLM;
 	delay_ms(20);
 	Ch432_hw_init();
 	
 	WriteCH432Data( CH432_IER_PORT, BIT_IER_RESET );    /* 设置DLAB为1 */
-	WriteCH432Data( CH432_IER1_PORT, BIT_IER_RESET );    /* 设置DLAB为1 */
 	delay_ms(20);
+
 /**************************************************************************
           设置CH432串口0的寄存器
 **************************************************************************/
@@ -201,51 +230,28 @@ int Ch432_SPI_Init(void)
     WriteCH432Data( CH432_LCR_PORT, BIT_LCR_DLAB );    /* 设置DLAB为1 */
     WriteCH432Data( CH432_DLL_PORT, DLL );    /* 设置波特率 */
     WriteCH432Data( CH432_DLM_PORT, DLM );
-    WriteCH432Data( CH432_FCR_PORT, //BIT_FCR_RECVTG1 
-		//| BIT_FCR_RECVTG0 | 
-		BIT_FCR_FIFOEN );    /* 设置FIFO模式，触发点为8 */
-    WriteCH432Data( CH432_LCR_PORT, BIT_LCR_WORDSZ1
-                                  | BIT_LCR_WORDSZ0 );    /* 字长8位，1位停止位、无校验 */
-    WriteCH432Data( CH432_IER_PORT, //BIT_IER_IEMODEM | BIT_IER_IELINES | BIT_IER_IETHRE | 
-		BIT_IER_IERECV );    /* 使能中断 */
+    WriteCH432Data( CH432_FCR_PORT, BIT_FCR_FIFOEN );    /* 设置FIFO模式，触发点为8 */
+    WriteCH432Data( CH432_LCR_PORT, BIT_LCR_WORDSZ1| BIT_LCR_WORDSZ0 );    /* 字长8位，1位停止位、无校验 */
+    WriteCH432Data( CH432_IER_PORT,BIT_IER_IERECV );    /* 使能中断 */
     WriteCH432Data( CH432_MCR_PORT, BIT_MCR_OUT2 );    /* 允许中断输出,DTR,RTS为1 */
 
 /**************************************************************************
           设置CH432串口1的寄存器
 **************************************************************************/
+    WriteCH432Data( CH432_IER1_PORT, BIT_IER_RESET );    /* 设置DLAB为1 */
+    delay_ms(20);
     div = ( Fpclk >> 4 ) / CH432_BPS1;
     DLM = div >> 8;
     DLL = div & 0xff;
     WriteCH432Data( CH432_LCR1_PORT, BIT_LCR_DLAB );    /* 设置DLAB为1 */
     WriteCH432Data( CH432_DLL1_PORT, DLL );    /* 设置波特率 */
     WriteCH432Data( CH432_DLM1_PORT, DLM );
-    WriteCH432Data( CH432_FCR1_PORT,// BIT_FCR_RECVTG1 
-		//| BIT_FCR_RECVTG0 | 
-		BIT_FCR_FIFOEN );    /* 设置FIFO模式，触发点为8 */
-    WriteCH432Data( CH432_LCR1_PORT, //BIT_LCR_PAREN|
-                                    BIT_LCR_WORDSZ1
-                                   | BIT_LCR_WORDSZ0 );    /* 字长8位，1位停止位 */
-    WriteCH432Data( CH432_IER1_PORT, 
-		//BIT_IER_IEMODEM
-		//| BIT_IER_IELINES
-		//| BIT_IER_IETHRE |
-		BIT_IER_IERECV );    /* 使能中断 */
+    WriteCH432Data( CH432_FCR1_PORT,BIT_FCR_FIFOEN );    /* 设置FIFO模式，触发点为8 */
+    WriteCH432Data( CH432_LCR1_PORT,BIT_LCR_WORDSZ1| BIT_LCR_WORDSZ0 );    /* 字长8位，1位停止位 */
+    WriteCH432Data( CH432_IER1_PORT,BIT_IER_IERECV );    /* 使能中断 */
     WriteCH432Data( CH432_MCR1_PORT, BIT_MCR_OUT2  );    /* 允许中断输出，DTR,RTS为1 */
-		delay_ms(20);
-	
-//	ReadCH432Data( CH432_IER_PORT );	/* 正常情况下返回为00H */ 
-//	ReadCH432Data(CH432_IIR_PORT );	/* 正常情况下返回为01H */ 
-//	ReadCH432Data( CH432_LCR_PORT );	/* 正常情况下返回为00H */ 
-//	ReadCH432Data( CH432_LSR_PORT );	/* 正常情况下返回为60H */ 
-//	ReadCH432Data( CH432_MCR_PORT );	/* 正常情况下返回为00H */ 
-//	ReadCH432Data( CH432_MSR_PORT );	/* 正常情况下返回为00H */
-//	ReadCH432Data( CH432_IER1_PORT );	/* 正常情况下返回为00H */ 
-//	ReadCH432Data( CH432_IIR1_PORT );	/* 正常情况下返回为01H */ 
-//	ReadCH432Data( CH432_LCR1_PORT );	/* 正常情况下返回为00H */ 
-//	ReadCH432Data( CH432_LSR1_PORT );	/* 正常情况下返回为60H */ 
-//	ReadCH432Data( CH432_MCR1_PORT );	/* 正常情况下返回为00H */ 
-//	ReadCH432Data( CH432_MSR1_PORT );	/* 正常情况下返回为00H */
-	
+    delay_ms(20);
+
 	ReadCH432Data(CH432_IIR_PORT );	/* 正常情况下返回为01H */ 
 	ReadCH432Data( CH432_IIR1_PORT );	/* 正常情况下返回为01H */ 
 	
@@ -412,93 +418,6 @@ u16 ch432_uart1_recv_len=0;
 
 void CH432Interrupt(void)/* 中断方式处理 */
 {
-//    uint8_t InterruptStatus;
-//    uint8_t RcvNum = 0, s;
-//    uint8_t ModemStatus;
-//    InterruptStatus = ReadCH432Data( CH432_IIR_PORT ) & ( ~ CH432_IIR_FIFOS_ENABLED );
-//    if( ( InterruptStatus & 0x01 ) )    /* 没有中断转到串口1 */
-//    {
-//        InterruptStatus = ReadCH432Data( CH432_IIR1_PORT ) & ( ~ CH432_IIR_FIFOS_ENABLED );    /* 读串口1的中断状态 */
-//        if( ( InterruptStatus & 0x01 ) ) return;    /* 没有中断退出 */
-//        else
-//        {
-//						//ReadCH432Data( CH432_LSR1_PORT );
-//            switch( InterruptStatus )
-//            {
-//                case INT_NOINT:    /* 没有中断 */
-//                    break;
-//                case INT_THR_EMPTY:    /* 发送保持寄存器空中断 */
-//                    //UART1_SendStr( SEND_STRING1 );
-//                    break;
-//                case INT_RCV_SUCCESS:    /* 串口接收可用数据中断 */
-//                    RcvNum = CH432Seril1Rcv( ch432_uart1_recv_buf );
-//                    CH432UART1Send( ch432_uart1_recv_buf, RcvNum );
-//					if(CH432T_recv_1_data_fun!=0x00){
-//						CH432T_recv_1_data_fun(1,ch432_uart1_recv_buf,RcvNum);
-//					}
-//                    break;
-//                case INT_RCV_LINES:    /* 接收线路状态中断 */
-//                    ReadCH432Data( CH432_LSR1_PORT);
-//                    break;
-//                case INT_RCV_OVERTIME:    /* 接收数据超时中断 */
-//                    RcvNum = CH432Seril1Rcv( ch432_uart1_recv_buf );
-//                    CH432Seril1Send( ch432_uart1_recv_buf, RcvNum );		
-//					if(CH432T_recv_1_data_fun!=0x00){
-//						CH432T_recv_1_data_fun(1,ch432_uart1_recv_buf,RcvNum);
-//					}
-//                    break;
-//                default:    /* 不可能发生的中断 */
-//                    break;
-//            }
-//        }
-//    }
-//    else
-//    {
-//        switch( InterruptStatus )
-//        {
-//            case INT_MODEM_CHANGE:
-//                ModemStatus = ReadCH432Data( CH432_MSR_PORT );
-//                WriteCH432Data( CH432_THR_PORT, ModemStatus );
-//               // UART0_SendStr( SEND_STRING1 );
-//                if ( ModemStatus == 0x30 )    /* Modem信号发送数据变化 */
-//                {
-//                   // UART0_SendStr( SEND_STRING1 );
-//                }
-//                else if ( ModemStatus == 0x11 )    /* Modem 信号接收数据变化 */
-//                {
-//                    WriteCH432Data( CH432_THR_PORT, 0xAA );
-//                }
-//                else if ( ModemStatus == 0x22 )    /* Modem 信号接收数据变化 */
-//                {
-//                   // s = ReadCH432Data( CH432_RBR_PORT );
-//                   // WriteCH432Data( CH432_THR_PORT, s );
-//                }
-//                break;
-//            case INT_NOINT:    /* 没有中断 */
-//                    break;
-//            case INT_THR_EMPTY:    /* 发送保持寄存器空中断 */
-//                    //UART0_SendStr( SEND_STRING );
-//                    break;
-//            case INT_RCV_SUCCESS:    /* 串口接收可用数据中断 */
-//                    RcvNum = CH432Seril0Rcv( ch432_uart0_recv_buf);
-//				
-//					if(CH432T_recv_0_data_fun!=0x00){
-//						CH432T_recv_0_data_fun(0,ch432_uart0_recv_buf,RcvNum);
-//					}
-//                    break;
-//            case INT_RCV_LINES:    /* 接收线路状态中断 */
-//                    ReadCH432Data( CH432_LSR_PORT);
-//                    break;
-//            case INT_RCV_OVERTIME:    /* 接收数据超时中断 */
-//                    RcvNum = CH432Seril0Rcv( ch432_uart0_recv_buf );			
-//					if(CH432T_recv_0_data_fun != 0x00){
-//						CH432T_recv_0_data_fun(0,ch432_uart0_recv_buf,RcvNum);
-//					}
-//                    break;
-//            default:    /* 不可能发生的中断 */
-//                    break;
-//        }
-//    }
 	uint8_t InterruptStatus;
 	uint8_t RcvNum = 0, s;
 	uint8_t ModemStatus;

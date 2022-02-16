@@ -40,6 +40,8 @@ uint32_t svcHandler(uint32_t* pwdSF,uint32_t call_num) {
                                                                                                   (int) svc_r1,
                                                                                                   (int) svc_r2,
                                                                                                   (int) svc_r3);
+        }else {//没有实现的直接返回-1
+            psF[1]=-1;
         }
     }
     extern void do_signal_isr(void* sp);
