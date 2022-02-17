@@ -75,6 +75,16 @@ include_directories(
 #        lib/mpfr-master/src/
 #        lib/config/arm
 #        lib/soft-
+
+        app/bash-2.0/
+        app/bash-2.0/lib/
+        app/bash-2.0/builtins
+        app/bash-2.0/lib/glob
+#        app/bash-2.0/lib/malloc
+        app/bash-2.0/lib/posixheaders
+        app/bash-2.0/lib/readline
+        app/bash-2.0/lib/termcap
+        app/bash-2.0/lib/tilde
  )
 
 file(GLOB_RECURSE SOURCES
@@ -112,6 +122,15 @@ file(GLOB_RECURSE SOURCES
         "lib/dietlibc/libutf8/*.*"
 #        "lib/config/arm/*.*"
 #        "lib/soft-fp/*.*"
+
+        "app/bash-2.0/lib/glob/*.c"
+        "app/bash-2.0/lib/readline/*.c"
+        "app/bash-2.0/lib/termcap/*.c"
+        "app/bash-2.0/lib/tilde/*.c"
+        "app/bash-2.0/*.c"
+        "app/bash-2.0/builtins/*.*"
+        "app/bash-2.0/builtins/alias.def"
+        "app/bash-2.0/builtins/eval.def"
         )
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld)

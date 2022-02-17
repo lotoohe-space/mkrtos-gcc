@@ -338,18 +338,16 @@ static void mem_remove(void *mem){
  * 清楚进程占用的内存
  */
 void mem_clear(void){
-    struct mem_struct *tmp;
-    tmp=CUR_TASK->mems;
-    while(tmp){
+    struct mem_struct **tmp;
+    tmp=&CUR_TASK->mems;
+    while(*tmp){
         struct mem_struct *next;
-        next=tmp->next;
-        OSFree(tmp->mem_start);
-        OSFree(tmp);
-        tmp=next;
+        next=(*tmp)->next;
+        OSFree((*tmp)->mem_start);
+        OSFree((*tmp));
+        *tmp=next;
     }
 }
-
-
 void* sys_mmap(void *start, size_t length, int prot, int flags,int fd, off_t offset){
 //    if(fd!=-1){
 //        return -ENOSYS;

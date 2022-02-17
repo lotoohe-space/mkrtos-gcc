@@ -13,7 +13,8 @@
 @ On entry, the compiler will have already placed the fifth and sixth
 @ parameters on the stack - all we need do here is push the first four and
 @ call the syscall.
-@
+@ 这个系统调用用6个参数，md，还没有处理
+//TODO:
 
 .global mmap
 

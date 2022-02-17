@@ -11835,7 +11835,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x08000000                g_pfnVectors
                 0x080001e4                . = ALIGN (0x4)
 
-.text           0x080001e4     0x7c9c
+.text           0x080001e4     0x7ca0
                 0x080001e4                . = ALIGN (0x4)
  *(.text)
  .text          0x080001e4      0xc3c CMakeFiles/untitled1.elf.dir/lib/dietlibc/arm/dyn_syscalls.S.obj
@@ -13147,156 +13147,156 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
  .text.mem_remove
                 0x08007dc0       0x48 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
  .text.mem_clear
-                0x08007e08       0x28 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08007e08       0x2c CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x08007e08                mem_clear
  .text.sys_mmap
-                0x08007e30       0x2e CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x08007e30                sys_mmap
+                0x08007e34       0x2e CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08007e34                sys_mmap
  .text.sys_munmap
-                0x08007e5e       0x10 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x08007e5e                sys_munmap
+                0x08007e62       0x10 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08007e62                sys_munmap
  *(.glue_7)
- .glue_7        0x08007e6e        0x0 linker stubs
+ .glue_7        0x08007e72        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x08007e6e        0x0 linker stubs
+ .glue_7t       0x08007e72        0x0 linker stubs
  *(.eh_frame)
  *(.init)
  *(.fini)
-                0x08007e70                . = ALIGN (0x4)
- *fill*         0x08007e6e        0x2 
-                0x08007e70                _etext = .
-                0x08007e70                . = ALIGN (0x4)
-                0x08007e70                _dev_reg_item_start = .
+                0x08007e74                . = ALIGN (0x4)
+ *fill*         0x08007e72        0x2 
+                0x08007e74                _etext = .
+                0x08007e74                . = ALIGN (0x4)
+                0x08007e74                _dev_reg_item_start = .
  *(DevRegList)
- DevRegList     0x08007e70        0x8 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x08007e70                dev_reg_flash
- DevRegList     0x08007e78        0x8 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
-                0x08007e78                dev_reg_tty
-                0x08007e80                _dev_reg_item_end = .
+ DevRegList     0x08007e74        0x8 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x08007e74                dev_reg_flash
+ DevRegList     0x08007e7c        0x8 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
+                0x08007e7c                dev_reg_tty
+                0x08007e84                _dev_reg_item_end = .
 
-.vfp11_veneer   0x08007e80        0x0
- .vfp11_veneer  0x08007e80        0x0 linker stubs
+.vfp11_veneer   0x08007e84        0x0
+ .vfp11_veneer  0x08007e84        0x0 linker stubs
 
-.v4_bx          0x08007e80        0x0
- .v4_bx         0x08007e80        0x0 linker stubs
+.v4_bx          0x08007e84        0x0
+ .v4_bx         0x08007e84        0x0 linker stubs
 
-.iplt           0x08007e80        0x0
- .iplt          0x08007e80        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
+.iplt           0x08007e84        0x0
+ .iplt          0x08007e84        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
 
-.rodata         0x08007e80      0x3a8
-                0x08007e80                . = ALIGN (0x4)
+.rodata         0x08007e84      0x3a8
+                0x08007e84                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x08007e80       0x12 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
+ .rodata        0x08007e84       0x12 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
  *(.rodata*)
- *fill*         0x08007e92        0x2 
+ *fill*         0x08007e96        0x2 
  .rodata.bk_flash_init.str1.4
-                0x08007e94       0x12 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- *fill*         0x08007ea6        0x2 
+                0x08007e98       0x12 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+ *fill*         0x08007eaa        0x2 
  .rodata.tty_init.str1.4
-                0x08007ea8        0x4 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
+                0x08007eac        0x4 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
  .rodata.ctl_str
-                0x08007eac      0x100 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
-                0x08007eac                ctl_str
+                0x08007eb0      0x100 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
+                0x08007eb0                ctl_str
  .rodata.sync_all_bk.str1.4
-                0x08007fac        0xf CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- *fill*         0x08007fbb        0x1 
+                0x08007fb0        0xf CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ *fill*         0x08007fbf        0x1 
  .rodata.__FUNCTION__.0
-                0x08007fbc        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08007fc0        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.1
-                0x08007fc4        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- .rodata.__FUNCTION__.2
                 0x08007fc8        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ .rodata.__FUNCTION__.2
+                0x08007fcc        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.3
-                0x08007fcc        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08007fd0        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.4
-                0x08007fd4        0xd CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- *fill*         0x08007fe1        0x3 
+                0x08007fd8        0xd CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ *fill*         0x08007fe5        0x3 
  .rodata.__FUNCTION__.5
-                0x08007fe4        0xc CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08007fe8        0xc CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.str1.4
-                0x08007ff0        0x3 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- *fill*         0x08007ff3        0x1 
+                0x08007ff4        0x3 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ *fill*         0x08007ff7        0x1 
  .rodata.sys_write.str1.4
-                0x08007ff4       0x10 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+                0x08007ff8       0x10 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
  .rodata.alloc_bk.str1.4
-                0x08008004        0xe CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- *fill*         0x08008012        0x2 
+                0x08008008        0xe CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ *fill*         0x08008016        0x2 
  .rodata.alloc_inode_no.str1.4
-                0x08008014       0x11 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- *fill*         0x08008025        0x3 
+                0x08008018       0x11 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ *fill*         0x08008029        0x3 
  .rodata.add_file_to_entry.str1.4
-                0x08008028       0x81 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x080080a9        0x3 
+                0x0800802c       0x81 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x080080ad        0x3 
  .rodata.sp_mkdir.str1.4
-                0x080080ac       0x27 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x080080d3        0x1 
+                0x080080b0       0x27 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x080080d7        0x1 
  .rodata.sp_unlink.str1.4
-                0x080080d4       0x21 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x080080f5        0x3 
+                0x080080d8       0x21 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x080080f9        0x3 
  .rodata.__FUNCTION__.0
-                0x080080f8        0x9 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x08008101        0x3 
+                0x080080fc        0x9 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x08008105        0x3 
  .rodata.__FUNCTION__.1
-                0x08008104       0x12 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x08008116        0x2 
+                0x08008108       0x12 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x0800811a        0x2 
  .rodata.inode_alloc_new_bk.str1.4
-                0x08008118        0xd CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
- *fill*         0x08008125        0x3 
+                0x0800811c        0xd CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+ *fill*         0x08008129        0x3 
  .rodata.sp_file_write.str1.4
-                0x08008128        0xf CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+                0x0800812c        0xf CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
  .rodata.sp_mkfs.str1.4
-                0x08008137        0x7 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
- *fill*         0x08008137        0x1 
+                0x0800813b        0x7 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+ *fill*         0x0800813b        0x1 
  .rodata.__v_printf.str1.4
-                0x08008138        0x7 CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/__v_printf.c.obj
- *fill*         0x0800813f        0x1 
+                0x0800813c        0x7 CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/__v_printf.c.obj
+ *fill*         0x08008143        0x1 
  .rodata.pad_line
-                0x08008140       0x20 CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/__v_printf.c.obj
+                0x08008144       0x20 CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/__v_printf.c.obj
  .rodata.stackgap.str1.4
-                0x08008160        0xd CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/stackgap.c.obj
- *fill*         0x0800816d        0x3 
+                0x08008164        0xd CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/stackgap.c.obj
+ *fill*         0x08008171        0x3 
  .rodata.fs_init.str1.4
-                0x08008170       0x31 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
- *fill*         0x080081a1        0x3 
+                0x08008174       0x31 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
+ *fill*         0x080081a5        0x3 
  .rodata.start_task.str1.4
-                0x080081a4       0x61 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x080081a8       0x61 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
                                  0x7d (size before relaxing)
- *fill*         0x08008205        0x3 
+ *fill*         0x08008209        0x3 
  .rodata.KernelTaskInit.str1.4
-                0x08008208       0x1d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
-                0x08008228                . = ALIGN (0x4)
- *fill*         0x08008225        0x3 
+                0x0800820c       0x1d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x0800822c                . = ALIGN (0x4)
+ *fill*         0x08008229        0x3 
 
-.rel.dyn        0x08008228        0x0
- .rel.iplt      0x08008228        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
+.rel.dyn        0x0800822c        0x0
+ .rel.iplt      0x0800822c        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x08008228        0x0
-                0x08008228                __exidx_start = .
+.ARM            0x0800822c        0x0
+                0x0800822c                __exidx_start = .
  *(.ARM.exidx*)
-                0x08008228                __exidx_end = .
+                0x0800822c                __exidx_end = .
 
-.preinit_array  0x08008228        0x0
+.preinit_array  0x0800822c        0x0
                 [!provide]                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
                 [!provide]                PROVIDE (__preinit_array_end = .)
 
-.init_array     0x08008228        0x0
+.init_array     0x0800822c        0x0
                 [!provide]                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
                 [!provide]                PROVIDE (__init_array_end = .)
 
-.fini_array     0x08008228        0x0
+.fini_array     0x0800822c        0x0
                 [!provide]                PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
                 [!provide]                PROVIDE (__fini_array_end = .)
-                0x08008228                _sidata = LOADADDR (.data)
+                0x0800822c                _sidata = LOADADDR (.data)
 
-.data           0x20000000      0x610 load address 0x08008228
+.data           0x20000000      0x610 load address 0x0800822c
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -13366,11 +13366,11 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x20000610                . = ALIGN (0x4)
                 0x20000610                _edata = .
 
-.igot.plt       0x20000610        0x0 load address 0x08008838
+.igot.plt       0x20000610        0x0 load address 0x0800883c
  .igot.plt      0x20000610        0x0 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
                 0x20000610                . = ALIGN (0x4)
 
-.bss            0x20000700     0x7d00 load address 0x08008838
+.bss            0x20000700     0x7d00 load address 0x0800883c
                 0x20000700                _sbss = .
                 0x20000700                __bss_start__ = _sbss
  *(.bss)
@@ -13468,7 +13468,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x20008400                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20008400      0x600 load address 0x08008838
+                0x20008400      0x600 load address 0x0800883c
                 0x20008400                . = ALIGN (0x8)
                 [!provide]                PROVIDE (end = .)
                 [!provide]                PROVIDE (_end = .)
@@ -13477,7 +13477,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
  *fill*         0x20008400      0x600 
                 0x20008a00                . = ALIGN (0x8)
 
-.ext_sram       0x68000000    0xff000 load address 0x08008838
+.ext_sram       0x68000000    0xff000 load address 0x0800883c
                 0x68000000                . = ALIGN (0x4)
                 0x68000000                _sext_sram = .
  *(.ext_sram)
@@ -13700,7 +13700,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 OUTPUT(untitled1.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000    0x31e27
+.debug_info     0x00000000    0x31e26
  .debug_info    0x00000000      0x811 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
  .debug_info    0x00000811       0x22 CMakeFiles/untitled1.elf.dir/arch/arm/asm/atomic.S.obj
  .debug_info    0x00000833       0x22 CMakeFiles/untitled1.elf.dir/arch/arm/asm/init.S.obj
@@ -13802,7 +13802,7 @@ LOAD linker stubs
  .debug_info    0x0002e301      0x148 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
  .debug_info    0x0002e449       0xb5 CMakeFiles/untitled1.elf.dir/main/main.c.obj
  .debug_info    0x0002e4fe     0x208b CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_info    0x00030589     0x189e CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_info    0x00030589     0x189d CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
 .debug_abbrev   0x00000000     0x942b
  .debug_abbrev  0x00000000      0x2c2 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
@@ -13908,7 +13908,7 @@ LOAD linker stubs
  .debug_abbrev  0x00008d86      0x336 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
  .debug_abbrev  0x000090bc      0x36f CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_loc      0x00000000    0x107ab
+.debug_loc      0x00000000    0x10794
  .debug_loc     0x00000000      0x292 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
  .debug_loc     0x00000292      0x141 CMakeFiles/untitled1.elf.dir/arch/arm/asm/isr.c.obj
  .debug_loc     0x000003d3      0xb2c CMakeFiles/untitled1.elf.dir/arch/bsp/CH432T.c.obj
@@ -13992,7 +13992,7 @@ LOAD linker stubs
  .debug_loc     0x0000f897       0x15 CMakeFiles/untitled1.elf.dir/lib/dietlibc/libstdio/printf.c.obj
  .debug_loc     0x0000f8ac       0xa8 CMakeFiles/untitled1.elf.dir/lib/dietlibc/libstdio/vprintf.c.obj
  .debug_loc     0x0000f954      0x2bb CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_loc     0x0000fc0f      0xb9c CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_loc     0x0000fc0f      0xb85 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
 .debug_aranges  0x00000000     0x19e0
  .debug_aranges
@@ -14298,7 +14298,7 @@ LOAD linker stubs
  .debug_ranges  0x000016c8       0x58 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
  .debug_ranges  0x00001720       0xa8 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_line     0x00000000    0x14fce
+.debug_line     0x00000000    0x14fd1
  .debug_line    0x00000000      0x393 CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
  .debug_line    0x00000393      0x1e5 CMakeFiles/untitled1.elf.dir/arch/arm/asm/atomic.S.obj
  .debug_line    0x00000578       0x9b CMakeFiles/untitled1.elf.dir/arch/arm/asm/init.S.obj
@@ -14400,7 +14400,7 @@ LOAD linker stubs
  .debug_line    0x000140c8       0x7b CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
  .debug_line    0x00014143       0x83 CMakeFiles/untitled1.elf.dir/main/main.c.obj
  .debug_line    0x000141c6      0x60f CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_line    0x000147d5      0x7f9 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_line    0x000147d5      0x7fc CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
 .debug_str      0x00000000     0x6069
  .debug_str     0x00000000      0x73c CMakeFiles/untitled1.elf.dir/arch/arm/asm/_arch.c.obj
