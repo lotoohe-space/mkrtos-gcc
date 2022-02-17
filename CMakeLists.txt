@@ -75,16 +75,9 @@ include_directories(
 #        lib/mpfr-master/src/
 #        lib/config/arm
 #        lib/soft-
-
-        app/bash-2.0/
-        app/bash-2.0/lib/
-        app/bash-2.0/builtins
-        app/bash-2.0/lib/glob
-#        app/bash-2.0/lib/malloc
-        app/bash-2.0/lib/posixheaders
-        app/bash-2.0/lib/readline
-        app/bash-2.0/lib/termcap
-        app/bash-2.0/lib/tilde
+        app/dash/src
+        app/dash/src/bltin
+/
  )
 
 file(GLOB_RECURSE SOURCES
@@ -122,15 +115,33 @@ file(GLOB_RECURSE SOURCES
         "lib/dietlibc/libutf8/*.*"
 #        "lib/config/arm/*.*"
 #        "lib/soft-fp/*.*"
-
-        "app/bash-2.0/lib/glob/*.c"
-        "app/bash-2.0/lib/readline/*.c"
-        "app/bash-2.0/lib/termcap/*.c"
-        "app/bash-2.0/lib/tilde/*.c"
-        "app/bash-2.0/*.c"
-        "app/bash-2.0/builtins/*.*"
-        "app/bash-2.0/builtins/alias.def"
-        "app/bash-2.0/builtins/eval.def"
+        "app/dash/src/alias.c"
+        "app/dash/src/arith_yacc.c"
+        "app/dash/src/arith_yylex.c"
+        "app/dash/src/cd.c"
+        "app/dash/src/error.c"
+        "app/dash/src/eval.c"
+        "app/dash/src/exec.c"
+        "app/dash/src/expand.c"
+        "app/dash/src/histedit.c"
+        "app/dash/src/input.c"
+        "app/dash/src/jobs.c"
+        "app/dash/src/mail.c"
+        "app/dash/src/main.c"
+        "app/dash/src/memalloc.c"
+        "app/dash/src/miscbltin.c"
+        "app/dash/src/mystring.c"
+        "app/dash/src/options.c"
+        "app/dash/src/parser.c"
+        "app/dash/src/redir.c"
+        "app/dash/src/show.c"
+        "app/dash/src/trap.c"
+        "app/dash/src/output.c"
+        "app/dash/src/bltin/printf.c"
+        "app/dash/src/system.c"
+       # "app/dash/src/bltin/test.c"
+        "app/dash/src/bltin/times.c"
+        "app/dash/src/bltin/var.c"
         )
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld)
