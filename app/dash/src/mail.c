@@ -77,12 +77,9 @@ chkmail(void)
 	setstackmark(&smark);
 	mpath = mpathset() ? mpathval() : mailval();
 	for (mtp = mailtime; mtp < mailtime + MAXMBOXES; mtp++) {
-		int len;
-
-		len = padvance_magic(&mpath, nullstr, 2);
-		if (!len)
+		p = padvance(&mpath, nullstr);
+		if (p == NULL)
 			break;
-		p = stackblock();
 		if (*p == '\0')
 			continue;
 		for (q = p ; *q ; q++);

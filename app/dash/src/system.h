@@ -36,17 +36,8 @@
 
 static inline void sigclearmask(void)
 {
-#if defined(HAVE_SIGSETMASK) && \
-    (!defined(__GLIBC__) || \
-     (defined(__GNUC__) && (__GNUC__ * 1000 + __GNUC_MINOR__) >= 4006))
-#ifdef __GLIBC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
+#ifdef HAVE_SIGSETMASK
 	sigsetmask(0);
-#ifdef __GLIBC__
-#pragma GCC diagnostic pop
-#endif
 #else
 	sigset_t set;
 	sigemptyset(&set);
@@ -71,7 +62,7 @@ char *strsignal(int);
 #endif
 
 #ifndef HAVE_STRTOD
-static inline double strtod(const char *nptr, char **endptr)
+inline double strtod(const char *nptr, char **endptr)
 {
 	*endptr = (char *)nptr;
 	return 0;
@@ -92,7 +83,7 @@ void *bsearch(const void *, const void *, size_t, size_t,
 #endif
 
 #ifndef HAVE_KILLPG
-static inline int killpg(pid_t pid, int signal)
+ inline int killpg(pid_t pid, int signal)
 {
 #ifdef DEBUG
 	if (pid < 0)

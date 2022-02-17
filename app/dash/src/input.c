@@ -58,91 +58,72 @@
 #include "myhistedit.h"
 #endif
 
+#ifdef HETIO
+#include "hetio.h"
+#endif
+
 #define EOF_NLEFT -99		/* value of parsenleft when EOF pushed back */
 #define IBUFSIZ (BUFSIZ + 1)
 
+MKINIT
+struct strpush {
+	struct strpush *prev;	/* preceding string on stack */
+	char *prevstring;
+	int prevnleft;
+	struct alias *ap;	/* if push was associated with an alias */
+	char *string;		/* remember the string since it may change */
+};
 
+/*
+ * The parsefile structure pointed to by the global variable parsefile
+ * contains information about the current file being read.
+ */
+
+MKINIT
+struct parsefile {
+	struct parsefile *prev;	/* preceding file on stack */
+	int linno;		/* current line */
+	int fd;			/* file descriptor (or -1 if string) */
+	int nleft;		/* number of chars left in this line */
+	int lleft;		/* number of chars left in this buffer */
+	char *nextc;		/* next char in buffer */
+	char *buf;		/* input buffer */
+	struct strpush *strpush; /* for pushing strings at this level */
+	struct strpush basestrpush; /* so pushing one is fast */
+};
+
+
+int plinno = 1;			/* input line number */
+int parsenleft;			/* copy of parsefile->nleft */
+MKINIT int parselleft;		/* copy of parsefile->lleft */
+char *parsenextc;		/* copy of parsefile->nextc */
 MKINIT struct parsefile basepf;	/* top level input file */
 MKINIT char basebuf[IBUFSIZ];	/* buffer for top level input file */
 struct parsefile *parsefile = &basepf;	/* current input file */
 int whichprompt;		/* 1 == PS1, 2 == PS2 */
 
+#ifndef SMALL
+EditLine *el;			/* cookie for editline package */
+#endif
+
 STATIC void pushfile(void);
-static void popstring(void);
 static int preadfd(void);
 static void setinputfd(int fd, int push);
-static int preadbuffer(void);
 
 #ifdef mkinit
 INCLUDE <stdio.h>
-INCLUDE <unistd.h>
 INCLUDE "input.h"
 INCLUDE "error.h"
 
 INIT {
 	basepf.nextc = basepf.buf = basebuf;
-	basepf.linno = 1;
 }
 
 RESET {
-	/* clear input buffer */
-	basepf.lleft = basepf.nleft = 0;
-	basepf.unget = 0;
+	parselleft = parsenleft = 0;	/* clear input buffer */
 	popallfiles();
-}
-
-FORKRESET {
-	popallfiles();
-	if (parsefile->fd > 0) {
-		close(parsefile->fd);
-		parsefile->fd = 0;
-	}
 }
 #endif
-
-
-static void freestrings(struct strpush *sp)
-{
-	INTOFF;
-	do {
-		struct strpush *psp;
-
-		if (sp->ap) {
-			sp->ap->flag &= ~ALIASINUSE;
-			if (sp->ap->flag & ALIASDEAD) {
-				unalias(sp->ap->name);
-			}
-		}
-
-		psp = sp;
-		sp = sp->spfree;
-
-		if (psp != &(parsefile->basestrpush))
-			ckfree(psp);
-	} while (sp);
-
-	parsefile->spfree = NULL;
-	INTON;
-}
-
-
-static int __pgetc(void)
-{
-	int c;
-
-	if (parsefile->unget)
-		return parsefile->lastc[--parsefile->unget];
-
-	if (--parsefile->nleft >= 0)
-		c = (signed char)*parsefile->nextc++;
-	else
-		c = preadbuffer();
-
-	parsefile->lastc[1] = parsefile->lastc[0];
-	parsefile->lastc[0] = c;
-
-	return c;
-}
 
 
 /*
@@ -150,14 +131,25 @@ static int __pgetc(void)
  * Nul characters in the input are silently discarded.
  */
 
-int pgetc(void)
+int
+pgetc(void)
 {
-	struct strpush *sp = parsefile->spfree;
+	return pgetc_macro();
+}
 
-	if (unlikely(sp))
-		freestrings(sp);
 
-	return __pgetc();
+/*
+ * Same as pgetc(), but ignores PEOA.
+ */
+
+int
+pgetc2()
+{
+	int c;
+	do {
+		c = pgetc_macro();
+	} while (c == PEOA);
+	return c;
 }
 
 
@@ -166,7 +158,7 @@ preadfd(void)
 {
 	int nr;
 	char *buf =  parsefile->buf;
-	parsefile->nextc = buf;
+	parsenextc = buf;
 
 retry:
 #ifndef SMALL
@@ -174,12 +166,8 @@ retry:
 		static const char *rl_cp;
 		static int el_len;
 
-		if (rl_cp == NULL) {
-			struct stackmark smark;
-			pushstackmark(&smark, stackblocksize());
+		if (rl_cp == NULL)
 			rl_cp = el_gets(el, &el_len);
-			popstackmark(&smark);
-		}
 		if (rl_cp == NULL)
 			nr = 0;
 		else {
@@ -195,6 +183,11 @@ retry:
 		}
 
 	} else
+#endif
+
+#ifdef HETIO
+		nr = hetio_read_input(parsefile->fd);
+		if (nr == -255)
 #endif
 		nr = read(parsefile->fd, buf, IBUFSIZ - 1);
 
@@ -226,7 +219,8 @@ retry:
  * 4) Process input up to the next newline, deleting nul characters.
  */
 
-static int preadbuffer(void)
+int
+preadbuffer(void)
 {
 	char *q;
 	int more;
@@ -235,25 +229,34 @@ static int preadbuffer(void)
 #endif
 	char savec;
 
-	if (unlikely(parsefile->strpush)) {
+	while (unlikely(parsefile->strpush)) {
+		if (
+			parsenleft == -1 && parsefile->strpush->ap &&
+			parsenextc[-1] != ' ' && parsenextc[-1] != '\t'
+		) {
+			return PEOA;
+		}
 		popstring();
-		return __pgetc();
+		if (--parsenleft >= 0)
+			return (signed char)*parsenextc++;
 	}
-	if (unlikely(parsefile->nleft == EOF_NLEFT ||
-		     parsefile->buf == NULL))
+	if (unlikely(parsenleft == EOF_NLEFT || parsefile->buf == NULL))
 		return PEOF;
-	flushall();
+	flushout(&output);
+#ifdef FLUSHERR
+	flushout(&errout);
+#endif
 
-	more = parsefile->lleft;
+	more = parselleft;
 	if (more <= 0) {
 again:
 		if ((more = preadfd()) <= 0) {
-			parsefile->lleft = parsefile->nleft = EOF_NLEFT;
+			parselleft = parsenleft = EOF_NLEFT;
 			return PEOF;
 		}
 	}
 
-	q = parsefile->nextc;
+	q = parsenextc;
 
 	/* delete nul characters */
 #ifndef SMALL
@@ -271,7 +274,7 @@ again:
 			q++;
 
 			if (c == '\n') {
-				parsefile->nleft = q - parsefile->nextc - 1;
+				parsenleft = q - parsenextc - 1;
 				break;
 			}
 
@@ -288,13 +291,13 @@ again:
 		}
 
 		if (more <= 0) {
-			parsefile->nleft = q - parsefile->nextc - 1;
-			if (parsefile->nleft < 0)
+			parsenleft = q - parsenextc - 1;
+			if (parsenleft < 0)
 				goto again;
 			break;
 		}
 	}
-	parsefile->lleft = more;
+	parselleft = more;
 
 	savec = *q;
 	*q = '\0';
@@ -304,13 +307,13 @@ again:
 		HistEvent he;
 		INTOFF;
 		history(hist, &he, whichprompt == 1? H_ENTER : H_APPEND,
-			parsefile->nextc);
+		    parsenextc);
 		INTON;
 	}
 #endif
 
 	if (vflag) {
-		out2str(parsefile->nextc);
+		out2str(parsenextc);
 #ifdef FLUSHERR
 		flushout(out2);
 #endif
@@ -318,18 +321,19 @@ again:
 
 	*q = savec;
 
-	return (signed char)*parsefile->nextc++;
+	return (signed char)*parsenextc++;
 }
 
 /*
- * Undo a call to pgetc.  Only two characters may be pushed back.
+ * Undo the last call to pgetc.  Only one character may be pushed back.
  * PEOF may be pushed back.
  */
 
 void
 pungetc(void)
 {
-	parsefile->unget++;
+	parsenleft++;
+	parsenextc--;
 }
 
 /*
@@ -345,51 +349,48 @@ pushstring(char *s, void *ap)
 	len = strlen(s);
 	INTOFF;
 /*dprintf("*** calling pushstring: %s, %d\n", s, len);*/
-	if ((unsigned long)parsefile->strpush |
-	    (unsigned long)parsefile->spfree) {
+	if (parsefile->strpush) {
 		sp = ckmalloc(sizeof (struct strpush));
 		sp->prev = parsefile->strpush;
 		parsefile->strpush = sp;
 	} else
 		sp = parsefile->strpush = &(parsefile->basestrpush);
-	sp->prevstring = parsefile->nextc;
-	sp->prevnleft = parsefile->nleft;
-	sp->unget = parsefile->unget;
-	sp->spfree = parsefile->spfree;
-	memcpy(sp->lastc, parsefile->lastc, sizeof(sp->lastc));
+	sp->prevstring = parsenextc;
+	sp->prevnleft = parsenleft;
 	sp->ap = (struct alias *)ap;
 	if (ap) {
 		((struct alias *)ap)->flag |= ALIASINUSE;
 		sp->string = s;
 	}
-	parsefile->nextc = s;
-	parsefile->nleft = len;
-	parsefile->unget = 0;
-	parsefile->spfree = NULL;
+	parsenextc = s;
+	parsenleft = len;
 	INTON;
 }
 
-static void popstring(void)
+void
+popstring(void)
 {
 	struct strpush *sp = parsefile->strpush;
 
 	INTOFF;
 	if (sp->ap) {
-		if (parsefile->nextc[-1] == ' ' ||
-		    parsefile->nextc[-1] == '\t') {
+		if (parsenextc[-1] == ' ' || parsenextc[-1] == '\t') {
 			checkkwd |= CHKALIAS;
 		}
 		if (sp->string != sp->ap->val) {
 			ckfree(sp->string);
 		}
+		sp->ap->flag &= ~ALIASINUSE;
+		if (sp->ap->flag & ALIASDEAD) {
+			unalias(sp->ap->name);
+		}
 	}
-	parsefile->nextc = sp->prevstring;
-	parsefile->nleft = sp->prevnleft;
-	parsefile->unget = sp->unget;
-	memcpy(parsefile->lastc, sp->lastc, sizeof(sp->lastc));
+	parsenextc = sp->prevstring;
+	parsenleft = sp->prevnleft;
 /*dprintf("*** calling popstring: restoring to '%s'\n", parsenextc);*/
 	parsefile->strpush = sp->prev;
-	parsefile->spfree = sp;
+	if (sp != &(parsefile->basestrpush))
+		ckfree(sp);
 	INTON;
 }
 
@@ -404,9 +405,12 @@ setinputfile(const char *fname, int flags)
 	int fd;
 
 	INTOFF;
-	fd = sh_open(fname, O_RDONLY, flags & INPUT_NOFILE_OK);
-	if (fd < 0)
-		goto out;
+	if ((fd = open(fname, O_RDONLY)) < 0) {
+		if (flags & INPUT_NOFILE_OK)
+			goto out;
+		exitstatus = 127;
+		exerror(EXERROR, "Can't open %s", fname);
+	}
 	if (fd < 10)
 		fd = savefd(fd, fd);
 	setinputfd(fd, flags & INPUT_PUSH_FILE);
@@ -431,7 +435,7 @@ setinputfd(int fd, int push)
 	parsefile->fd = fd;
 	if (parsefile->buf == NULL)
 		parsefile->buf = ckmalloc(IBUFSIZ);
-	parsefile->lleft = parsefile->nleft = 0;
+	parselleft = parsenleft = 0;
 	plinno = 1;
 }
 
@@ -445,8 +449,8 @@ setinputstring(char *string)
 {
 	INTOFF;
 	pushfile();
-	parsefile->nextc = string;
-	parsefile->nleft = strlen(string);
+	parsenextc = string;
+	parsenleft = strlen(string);
 	parsefile->buf = NULL;
 	plinno = 1;
 	INTON;
@@ -464,13 +468,15 @@ pushfile(void)
 {
 	struct parsefile *pf;
 
+	parsefile->nleft = parsenleft;
+	parsefile->lleft = parselleft;
+	parsefile->nextc = parsenextc;
+	parsefile->linno = plinno;
 	pf = (struct parsefile *)ckmalloc(sizeof (struct parsefile));
 	pf->prev = parsefile;
 	pf->fd = -1;
 	pf->strpush = NULL;
-	pf->spfree = NULL;
 	pf->basestrpush.prev = NULL;
-	pf->unget = 0;
 	parsefile = pf;
 }
 
@@ -485,22 +491,15 @@ popfile(void)
 		close(pf->fd);
 	if (pf->buf)
 		ckfree(pf->buf);
-	if (parsefile->spfree)
-		freestrings(parsefile->spfree);
-	while (pf->strpush) {
+	while (pf->strpush)
 		popstring();
-		freestrings(parsefile->spfree);
-	}
 	parsefile = pf->prev;
 	ckfree(pf);
+	parsenleft = parsefile->nleft;
+	parselleft = parsefile->lleft;
+	parsenextc = parsefile->nextc;
+	plinno = parsefile->linno;
 	INTON;
-}
-
-
-void unwindfiles(struct parsefile *stop)
-{
-	while (parsefile != stop)
-		popfile();
 }
 
 
@@ -511,5 +510,23 @@ void unwindfiles(struct parsefile *stop)
 void
 popallfiles(void)
 {
-	unwindfiles(&basepf);
+	while (parsefile != &basepf)
+		popfile();
+}
+
+
+
+/*
+ * Close the file(s) that the shell is reading commands from.  Called
+ * after a fork is done.
+ */
+
+void
+closescript(void)
+{
+	popallfiles();
+	if (parsefile->fd > 0) {
+		close(parsefile->fd);
+		parsefile->fd = 0;
+	}
 }

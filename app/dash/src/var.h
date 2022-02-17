@@ -88,22 +88,20 @@ extern struct var varinit[];
 #define vps2 (&vps1)[1]
 #define vps4 (&vps2)[1]
 #define voptind (&vps4)[1]
-#ifdef WITH_LINENO
 #define vlineno (&voptind)[1]
-#endif
 #ifndef SMALL
-#ifdef WITH_LINENO
 #define vterm (&vlineno)[1]
-#else
-#define vterm (&voptind)[1]
-#endif
 #define vhistsize (&vterm)[1]
 #endif
 
-extern char defifsvar[];
+#ifdef IFS_BROKEN
+extern const char defifsvar[];
 #define defifs (defifsvar + 4)
+#else
+extern const char defifs[];
+#endif
 extern const char defpathvar[];
-#define defpath (defpathvar + 36)
+#define defpath (defpathvar + 5)
 
 extern int lineno;
 extern char linenovar[];
@@ -139,6 +137,7 @@ struct var *setvar(const char *name, const char *val, int flags);
 intmax_t setvarint(const char *, intmax_t, int);
 struct var *setvareq(char *s, int flags);
 struct strlist;
+void listsetvar(struct strlist *, int);
 char *lookupvar(const char *);
 intmax_t lookupvarint(const char *);
 char **listvars(int, int, char ***);
@@ -146,8 +145,9 @@ char **listvars(int, int, char ***);
 int showvars(const char *, int, int);
 int exportcmd(int, char **);
 int localcmd(int, char **);
-void mklocal(char *name, int flags);
-struct localvar_list *pushlocalvars(int push);
+void mklocal(char *);
+struct localvar_list *pushlocalvars(void);
+void poplocalvars(int);
 void unwindlocalvars(struct localvar_list *stop);
 int unsetcmd(int, char **);
 void unsetvar(const char *);

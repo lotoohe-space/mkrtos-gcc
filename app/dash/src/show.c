@@ -378,11 +378,7 @@ opentrace(void)
 	scopy("./trace", s);
 #endif /* not_this_way */
 	if (tracefile) {
-#ifndef __KLIBC__
 		if (!freopen(s, "a", tracefile)) {
-#else
-		if (!(!fclose(tracefile) && (tracefile = fopen(s, "a")))) {
-#endif /* __KLIBC__ */
 			fprintf(stderr, "Can't re-open %s\n", s);
 			debug = 0;
 			return;
@@ -398,9 +394,7 @@ opentrace(void)
 	if ((flags = fcntl(fileno(tracefile), F_GETFL, 0)) >= 0)
 		fcntl(fileno(tracefile), F_SETFL, flags | O_APPEND);
 #endif
-#ifndef __KLIBC__
 	setlinebuf(tracefile);
-#endif /* __KLIBC__ */
 	fputs("\nTracing started.\n", tracefile);
 }
 #endif /* DEBUG */

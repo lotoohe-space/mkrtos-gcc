@@ -60,6 +60,10 @@
 #include "exec.h"
 #include "cd.h"
 
+#ifdef HETIO
+#include "hetio.h"
+#endif
+
 #define PROFILE 0
 
 int rootpid;
@@ -71,7 +75,6 @@ int *dash_errno;
 short profile_buf[16384];
 extern int etext();
 #endif
-MKINIT struct jmploc main_handler;
 
 STATIC void read_profile(const char *);
 STATIC char *find_dot_file(char *);
@@ -91,6 +94,7 @@ main(int argc, char **argv)
 {
 	char *shinit;
 	volatile int state;
+	struct jmploc jmploc;
 	struct stackmark smark;
 	int login;
 
@@ -102,19 +106,17 @@ main(int argc, char **argv)
 	monitor(4, etext, profile_buf, sizeof profile_buf, 50);
 #endif
 	state = 0;
-	if (unlikely(setjmp(main_handler.loc))) {
+	if (unlikely(setjmp(jmploc.loc))) {
 		int e;
 		int s;
 
-		exitreset();
+		reset();
 
 		e = exception;
 
 		s = state;
-		if (e == EXEND || e == EXEXIT || s == 0 || iflag == 0 || shlvl)
+		if (e == EXEXIT || s == 0 || iflag == 0 || shlvl)
 			exitshell();
-
-		reset();
 
 		if (e == EXINT
 #if ATTY
@@ -137,7 +139,7 @@ main(int argc, char **argv)
 		else
 			goto state4;
 	}
-	handler = &main_handler;
+	handler = &jmploc;
 #ifdef DEBUG
 	opentrace();
 	trputs("Shell args:  ");  trargs(argv);
@@ -204,6 +206,10 @@ cmdloop(int top)
 	int numeof = 0;
 
 	TRACE(("cmdloop(%d) called\n", top));
+#ifdef HETIO
+	if(iflag && top)
+		hetio_init();
+#endif
 	for (;;) {
 		int skip;
 
@@ -221,32 +227,22 @@ cmdloop(int top)
 			if (!top || numeof >= 50)
 				break;
 			if (!stoppedjobs()) {
-				if (!Iflag) {
-					if (iflag) {
-						out2c('\n');
-#ifdef FLUSHERR
-						flushout(out2);
-#endif
-					}
+				if (!Iflag)
 					break;
-				}
 				out2str("\nUse \"exit\" to leave shell.\n");
 			}
 			numeof++;
-		} else {
-			int i;
-
+		} else if (nflag == 0) {
 			job_warning = (job_warning == 2) ? 1 : 0;
 			numeof = 0;
-			i = evaltree(n, 0);
-			if (n)
-				status = i;
+			evaltree(n, 0);
+			status = exitstatus;
 		}
 		popstackmark(&smark);
 
 		skip = evalskip;
 		if (skip) {
-			evalskip &= ~(SKIPFUNC | SKIPFUNCDEF);
+			evalskip = 0;
 			break;
 		}
 	}
@@ -298,20 +294,21 @@ find_dot_file(char *basename)
 {
 	char *fullname;
 	const char *path = pathval();
-	struct stat64 statb;
-	int len;
+	struct stat statb;
 
 	/* don't try this for absolute or relative paths */
 	if (strchr(basename, '/'))
 		return basename;
 
-	while ((len = padvance(&path, basename)) >= 0) {
-		fullname = stackblock();
-		if ((!pathopt || *pathopt == 'f') &&
-		    !stat64(fullname, &statb) && S_ISREG(statb.st_mode)) {
-			/* This will be freed by the caller. */
-			return stalloc(len);
+	while ((fullname = padvance(&path, basename)) != NULL) {
+		if ((stat(fullname, &statb) == 0) && S_ISREG(statb.st_mode)) {
+			/*
+			 * Don't bother freeing here, since it will
+			 * be freed by the caller.
+			 */
+			return fullname;
 		}
+		stunalloc(fullname);
 	}
 
 	/* not found in the PATH */
@@ -324,19 +321,15 @@ dotcmd(int argc, char **argv)
 {
 	int status = 0;
 
-	nextopt(nullstr);
-	argv = argptr;
-
-	if (*argv) {
+	if (argc >= 2) {		/* That's what SVR2 does */
 		char *fullname;
 
-		fullname = find_dot_file(*argv);
+		fullname = find_dot_file(argv[1]);
 		setinputfile(fullname, INPUT_PUSH_FILE);
 		commandname = fullname;
 		status = cmdloop(0);
 		popfile();
 	}
-
 	return status;
 }
 
@@ -346,18 +339,8 @@ exitcmd(int argc, char **argv)
 {
 	if (stoppedjobs())
 		return 0;
-
 	if (argc > 1)
-		savestatus = number(argv[1]);
-
+		exitstatus = number(argv[1]);
 	exraise(EXEXIT);
 	/* NOTREACHED */
 }
-
-#ifdef mkinit
-INCLUDE "error.h"
-
-FORKRESET {
-	handler = &main_handler;
-}
-#endif

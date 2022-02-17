@@ -37,7 +37,6 @@
 extern char *commandname;	/* currently executing command */
 extern int exitstatus;		/* exit status of last command */
 extern int back_exitstatus;	/* exit status of backquoted command */
-extern int savestatus;		/* exit status of last command outside traps */
 
 
 struct backcmd {		/* result of evalbackcmd */
@@ -53,7 +52,7 @@ struct backcmd {		/* result of evalbackcmd */
 
 int evalstring(char *, int);
 union node;	/* BLETCH for ansi C */
-int evaltree(union node *, int);
+void evaltree(union node *, int);
 void evalbackcmd(union node *, struct backcmd *);
 
 extern int evalskip;
@@ -62,4 +61,4 @@ extern int evalskip;
 #define SKIPBREAK	(1 << 0)
 #define SKIPCONT	(1 << 1)
 #define SKIPFUNC	(1 << 2)
-#define SKIPFUNCDEF	(1 << 3)
+#define SKIPFILE	(1 << 3)

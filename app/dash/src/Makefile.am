@@ -2,10 +2,12 @@ AM_YFLAGS = -d
 
 COMMON_CFLAGS = -Wall
 COMMON_CPPFLAGS = \
-	-DBSD=1 -DSHELL
+	-include $(top_builddir)/config.h \
+	-DBSD=1 -DSHELL \
+	-DIFS_BROKEN
 
 AM_CFLAGS = $(COMMON_CFLAGS)
-AM_CPPFLAGS = -include $(top_builddir)/config.h $(COMMON_CPPFLAGS)
+AM_CPPFLAGS = $(COMMON_CPPFLAGS)
 AM_CFLAGS_FOR_BUILD = -g -O2 $(COMMON_CFLAGS) 
 AM_CPPFLAGS_FOR_BUILD = $(COMMON_CPPFLAGS)
 
@@ -24,7 +26,7 @@ dash_CFILES = \
 dash_SOURCES = \
 	$(dash_CFILES) \
 	alias.h arith_yacc.h bltin/bltin.h cd.h error.h eval.h exec.h \
-	expand.h \
+	expand.h hetio.h \
 	init.h input.h jobs.h machdep.h mail.h main.h memalloc.h miscbltin.h \
 	myhistedit.h mystring.h options.h output.h parser.h redir.h shell.h \
 	show.h system.h trap.h var.h
@@ -44,27 +46,27 @@ EXTRA_DIST = \
 	mknodes.c nodetypes nodes.c.pat mksyntax.c mksignames.c
 
 token.h token_vars.h: mktokens
-	$(AM_V_GEN)$(SHELL) $^
+	sh $^
 
 builtins.def: builtins.def.in $(top_builddir)/config.h
-	$(AM_V_CC)$(COMPILE) -E -x c -o $@ $<
+	$(COMPILE) -E -x c -o $@ $<
 
 builtins.c builtins.h: mkbuiltins builtins.def
-	$(AM_V_GEN)$(SHELL) $^
+	sh $^
 
 init.c: mkinit $(dash_CFILES)
-	$(AM_V_GEN)./$^
+	./$^
 
 nodes.c nodes.h: mknodes nodetypes nodes.c.pat
-	$(AM_V_GEN)./$^
+	./$^
 
 syntax.c syntax.h: mksyntax
-	$(AM_V_GEN)./$^
+	./$^
 
 signames.c: mksignames
-	$(AM_V_GEN)./$^
+	./$^
 
 mksyntax: token.h
 
 $(HELPERS): %: %.c
-	$(AM_V_CC)$(COMPILE_FOR_BUILD) -o $@ $<
+	$(COMPILE_FOR_BUILD) -o $@ $<

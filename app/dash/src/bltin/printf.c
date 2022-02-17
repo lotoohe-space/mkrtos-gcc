@@ -39,12 +39,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-static int	 conv_escape_str(char *, char **);
+#include <stddef.h>
+static int	 conv_escape_str(char *);
 static char	*conv_escape(char *, int *);
 static int	 getchr(void);
 static double	 getdouble(void);
-static uintmax_t getuintmax(int);
+static intmax_t	 getintmax(void);
+static uintmax_t getuintmax(void);
 static char	*getstr(void);
 static char	*mklong(const char *, const char *);
 static void      check_conversion(const char *, const char *);
@@ -72,60 +73,6 @@ static char  **gargv;
 	} \
 }
 
-#define ASPF(sp, f, func) ({ \
-	int ret; \
-	switch ((char *)param - (char *)array) { \
-	default: \
-		ret = xasprintf(sp, f, array[0], array[1], func); \
-		break; \
-	case sizeof(*param): \
-		ret = xasprintf(sp, f, array[0], func); \
-		break; \
-	case 0: \
-		ret = xasprintf(sp, f, func); \
-		break; \
-	} \
-	ret; \
-})
-
-
-static int print_escape_str(const char *f, int *param, int *array, char *s)
-{
-	struct stackmark smark;
-	char *p, *q;
-	int done;
-	int len;
-	int total;
-
-	setstackmark(&smark);
-	done = conv_escape_str(s, &q);
-	p = stackblock();
-	len = q - p;
-	total = len - 1;
-
-	q[-1] = (!!((f[1] - 's') | done) - 1) & f[2];
-	total += !!q[-1];
-	if (f[1] == 's')
-		goto easy;
-
-	p = makestrspace(len, q);
-	memset(p, 'X', total);
-	p[total] = 0;
-
-	q = stackblock();
-	total = ASPF(&p, f, p);
-
-	len = strchrnul(p, 'X') - p;
-	memcpy(p + len, q, strspn(p + len, "X"));
-
-easy:
-	out1mem(p, total);
-
-	popstackmark(&smark);
-	return done;
-}
-
-
 int printfcmd(int argc, char *argv[])
 {
 	char *fmt;
@@ -139,8 +86,10 @@ int printfcmd(int argc, char *argv[])
 	argv = argptr;
 	format = *argv;
 
-	if (!format)
-		error("usage: printf format [arg ...]");
+	if (!format) {
+		warnx("usage: printf format [arg ...]");
+		goto err;
+	}
 
 	gargv = ++argv;
 
@@ -182,42 +131,40 @@ pc:
 
 			/* skip to field width */
 			fmt += strspn(fmt, SKIP1);
-			if (*fmt == '*') {
-				++fmt;
-				*param++ = getuintmax(1);
-			} else {
-				/* skip to possible '.',
-				 * get following precision
-				 */
-				fmt += strspn(fmt, SKIP2);
-			}
+			if (*fmt == '*')
+				*param++ = getintmax();
 
-			if (*fmt == '.') {
+			/* skip to possible '.', get following precision */
+			fmt += strspn(fmt, SKIP2);
+			if (*fmt == '.')
 				++fmt;
-				if (*fmt == '*') {
-					++fmt;
-					*param++ = getuintmax(1);
-				} else
-					fmt += strspn(fmt, SKIP2);
-			}
+			if (*fmt == '*')
+				*param++ = getintmax();
+
+			fmt += strspn(fmt, SKIP2);
 
 			ch = *fmt;
-			if (!ch)
-				error("missing format character");
+			if (!ch) {
+				warnx("missing format character");
+				goto err;
+			}
 			/* null terminate format string to we can use it
 			   as an argument to printf. */
 			nextch = fmt[1];
 			fmt[1] = 0;
 			switch (ch) {
 
-			case 'b':
+			case 'b': {
+				int done = conv_escape_str(getstr());
+				char *p = stackblock();
 				*fmt = 's';
+				PF(start, p);
 				/* escape if a \c was encountered */
-				if (print_escape_str(start, param, array,
-						     getstr()))
+				if (done)
 					goto out;
 				*fmt = 'b';
 				break;
+			}
 			case 'c': {
 				int p = getchr();
 				PF(start, p);
@@ -230,26 +177,23 @@ pc:
 			}
 			case 'd':
 			case 'i': {
-				uintmax_t p = getuintmax(1);
-				start = mklong(start, fmt);
-				PF(start, p);
+				intmax_t p = getintmax();
+				char *f = mklong(start, fmt);
+				PF(f, p);
 				break;
 			}
 			case 'o':
 			case 'u':
 			case 'x':
 			case 'X': {
-				uintmax_t p = getuintmax(0);
-				start = mklong(start, fmt);
-				PF(start, p);
+				uintmax_t p = getuintmax();
+				char *f = mklong(start, fmt);
+				PF(f, p);
 				break;
 			}
-			case 'a':
-			case 'A':
 			case 'e':
 			case 'E':
 			case 'f':
-			case 'F':
 			case 'g':
 			case 'G': {
 				double p = getdouble();
@@ -257,7 +201,8 @@ pc:
 				break;
 			}
 			default:
-				error("%s: invalid directive", start);
+				warnx("%s: invalid directive", start);
+				goto err;
 			}
 			*++fmt = nextch;
 		}
@@ -265,6 +210,8 @@ pc:
 
 out:
 	return rval;
+err:
+	return 1;
 }
 
 
@@ -273,9 +220,8 @@ out:
  *	Halts processing string if a \c escape is encountered.
  */
 static int
-conv_escape_str(char *str, char **sp)
+conv_escape_str(char *str)
 {
-	int c;
 	int ch;
 	char *cp;
 
@@ -283,14 +229,16 @@ conv_escape_str(char *str, char **sp)
 	STARTSTACKSTR(cp);
 
 	do {
-		c = ch = *str++;
+		int c;
+
+		ch = *str++;
 		if (ch != '\\')
 			continue;
 
-		c = *str++;
-		if (c == 'c') {
+		ch = *str++;
+		if (ch == 'c') {
 			/* \c as in SYSV echo - abort all processing.... */
-			c = ch = 0x100;
+			ch = 0x100;
 			continue;
 		}
 
@@ -299,14 +247,25 @@ conv_escape_str(char *str, char **sp)
 		 * They start with a \0, and are followed by 0, 1, 2, 
 		 * or 3 octal digits. 
 		 */
-		if (c == '0' && isodigit(*str))
-			str++;
+		if (ch == '0') {
+			unsigned char i;
+			i = 3;
+			ch = 0;
+			do {
+				unsigned k = octtobin(*str);
+				if (k > 7)
+					break;
+				str++;
+				ch <<= 3;
+				ch += k;
+			} while (--i);
+			continue;
+		}
 
 		/* Finally test for sequences valid in the format string */
 		str = conv_escape(str - 1, &c);
-	} while (STPUTC(c, cp), (char)ch);
-
-	*sp = cp;
+		ch = c;
+	} while (STPUTC(ch, cp), (char)ch);
 
 	return ch;
 }
@@ -324,11 +283,12 @@ conv_escape(char *str, int *conv_ch)
 
 	switch (ch) {
 	default:
-		if (!isodigit(*str)) {
-			value = '\\';
-			goto out;
-		}
+	case 0:
+		value = '\\';
+		goto out;
 
+	case '0': case '1': case '2': case '3':
+	case '4': case '5': case '6': case '7':
 		ch = 3;
 		value = 0;
 		do {
@@ -356,24 +316,16 @@ out:
 static char *
 mklong(const char *str, const char *ch)
 {
-	/*
-	 * Replace a string like "%92.3u" with "%92.3"PRIuMAX.
-	 *
-	 * Although C99 does not guarantee it, we assume PRIiMAX,
-	 * PRIoMAX, PRIuMAX, PRIxMAX, and PRIXMAX are all the same
-	 * as PRIdMAX with the final 'd' replaced by the corresponding
-	 * character.
-	 */
-
 	char *copy;
 	size_t len;	
 
-	len = ch - str + sizeof(PRIdMAX);
+	len = ch - str + 3;
 	STARTSTACKSTR(copy);
 	copy = makestrspace(len, copy);
-	memcpy(copy, str, len - sizeof(PRIdMAX));
-	memcpy(copy + len - sizeof(PRIdMAX), PRIdMAX, sizeof(PRIdMAX));
+	memcpy(copy, str, len - 3);
+	copy[len - 3] = 'j';
 	copy[len - 2] = *ch;
+	copy[len - 1] = '\0';
 	return (copy);	
 }
 
@@ -397,8 +349,30 @@ getstr(void)
 	return val;
 }
 
+static intmax_t
+getintmax(void)
+{
+	intmax_t val = 0;
+	char *cp, *ep;
+
+	cp = *gargv;
+	if (cp == NULL)
+		goto out;
+	gargv++;
+
+	val = (unsigned char) cp[1];
+	if (*cp == '\"' || *cp == '\'')
+		goto out;
+
+	errno = 0;
+	val = strtoimax(cp, &ep, 0);
+	check_conversion(cp, ep);
+out:
+	return val;
+}
+
 static uintmax_t
-getuintmax(int sign)
+getuintmax(void)
 {
 	uintmax_t val = 0;
 	char *cp, *ep;
@@ -413,7 +387,7 @@ getuintmax(int sign)
 		goto out;
 
 	errno = 0;
-	val = sign ? strtoimax(cp, &ep, 0) : strtoumax(cp, &ep, 0);
+	val = strtoumax(cp, &ep, 0);
 	check_conversion(cp, ep);
 out:
 	return val;
@@ -457,22 +431,34 @@ check_conversion(const char *s, const char *ep)
 int
 echocmd(int argc, char **argv)
 {
-	const char *lastfmt = snlfmt;
-	int nonl;
+	int nonl = 0;
+	struct output *outs = out1;
 
-	if (*++argv && equal(*argv, "-n")) {
-		argv++;
-		lastfmt = "%s";
+	if (!*++argv)
+		goto end;
+	if (equal(*argv, "-n")) {
+		nonl = ~nonl;
+		if (!*++argv)
+			goto end;
 	}
 
 	do {
-		const char *fmt = "%s ";
-		char *s = *argv;
+		int c;
 
-		if (!s || !*++argv)
-			fmt = lastfmt;
+		nonl += conv_escape_str(*argv);
+		outstr(stackblock(), outs);
+		if (nonl > 0)
+			break;
 
-		nonl = print_escape_str(fmt, NULL, NULL, s ?: nullstr);
-	} while (!nonl && *argv);
+		c = ' ';
+		if (!*++argv) {
+end:
+			if (nonl) {
+				break;
+			}
+			c = '\n';
+		}
+		outc(c, outs);
+	} while (*argv);
 	return 0;
 }

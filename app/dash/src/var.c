@@ -75,8 +75,11 @@ MKINIT struct localvar_list *localvar_stack;
 
 const char defpathvar[] =
 	"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
-char defifsvar[] = "IFS= \t\n";
-MKINIT char defoptindvar[] = "OPTIND=1";
+#ifdef IFS_BROKEN
+const char defifsvar[] = "IFS= \t\n";
+#else
+const char defifs[] = " \t\n";
+#endif
 
 int lineno;
 char linenovar[sizeof("LINENO=")+sizeof(int)*CHAR_BIT/3+1] = "LINENO=";
@@ -86,17 +89,19 @@ struct var varinit[] = {
 #if ATTY
 	{ 0,	VSTRFIXED|VTEXTFIXED|VUNSET,	"ATTY\0",	0 },
 #endif
+#ifdef IFS_BROKEN
 	{ 0,	VSTRFIXED|VTEXTFIXED,		defifsvar,	0 },
+#else
+	{ 0,	VSTRFIXED|VTEXTFIXED|VUNSET,	"IFS\0",	0 },
+#endif
 	{ 0,	VSTRFIXED|VTEXTFIXED|VUNSET,	"MAIL\0",	changemail },
 	{ 0,	VSTRFIXED|VTEXTFIXED|VUNSET,	"MAILPATH\0",	changemail },
 	{ 0,	VSTRFIXED|VTEXTFIXED,		defpathvar,	changepath },
 	{ 0,	VSTRFIXED|VTEXTFIXED,		"PS1=$ ",	0 },
 	{ 0,	VSTRFIXED|VTEXTFIXED,		"PS2=> ",	0 },
 	{ 0,	VSTRFIXED|VTEXTFIXED,		"PS4=+ ",	0 },
-	{ 0,	VSTRFIXED|VTEXTFIXED,		defoptindvar,	getoptsreset },
-#ifdef WITH_LINENO
+	{ 0,	VSTRFIXED|VTEXTFIXED,		"OPTIND=1",	getoptsreset },
 	{ 0,	VSTRFIXED|VTEXTFIXED,		linenovar,	0 },
-#endif
 #ifndef SMALL
 	{ 0,	VSTRFIXED|VTEXTFIXED|VUNSET,	"TERM\0",	0 },
 	{ 0,	VSTRFIXED|VTEXTFIXED|VUNSET,	"HISTSIZE\0",	sethistsize },
@@ -125,25 +130,21 @@ INIT {
 	char **envp;
 	static char ppid[32] = "PPID=";
 	const char *p;
-	struct stat64 st1, st2;
+	struct stat st1, st2;
 
 	initvar();
 	for (envp = environ ; *envp ; envp++) {
-		p = endofname(*envp);
-		if (p != *envp && *p == '=') {
+		if (strchr(*envp, '=')) {
 			setvareq(*envp, VEXPORT|VTEXTFIXED);
 		}
 	}
-
-	setvareq(defifsvar, VTEXTFIXED);
-	setvareq(defoptindvar, VTEXTFIXED);
 
 	fmtstr(ppid + 5, sizeof(ppid) - 5, "%ld", (long) getppid());
 	setvareq(ppid, VTEXTFIXED);
 
 	p = lookupvar("PWD");
 	if (p)
-		if (*p != '/' || stat64(p, &st1) || stat64(".", &st2) ||
+		if (*p != '/' || stat(p, &st1) || stat(".", &st2) ||
 		    st1.st_dev != st2.st_dev || st1.st_ino != st2.st_ino)
 			p = 0;
 	setpwd(p, 0);
@@ -302,6 +303,28 @@ out:
 	return vp;
 }
 
+
+
+/*
+ * Process a linked list of variable assignments.
+ */
+
+void
+listsetvar(struct strlist *list, int flags)
+{
+	struct strlist *lp;
+
+	lp = list;
+	if (!lp)
+		return;
+	INTOFF;
+	do {
+		setvareq(lp->text, flags);
+	} while ((lp = lp->next));
+	INTON;
+}
+
+
 /*
  * Find the value of a variable.  Returns NULL if not set.
  */
@@ -312,11 +335,9 @@ lookupvar(const char *name)
 	struct var *v;
 
 	if ((v = *findvar(hashvar(name), name)) && !(v->flags & VUNSET)) {
-#ifdef WITH_LINENO
 		if (v == &vlineno && v->text == linenovar) {
 			fmtstr(linenovar+7, sizeof(linenovar)-7, "%d", lineno);
 		}
-#endif
 		return strchrnul(v->text, '=') + 1;
 	}
 	return NULL;
@@ -446,7 +467,7 @@ localcmd(int argc, char **argv)
 
 	argv = argptr;
 	while ((name = *argv++) != NULL) {
-		mklocal(name, 0);
+		mklocal(name);
 	}
 	return 0;
 }
@@ -459,7 +480,7 @@ localcmd(int argc, char **argv)
  * "-" as a special case.
  */
 
-void mklocal(char *name, int flags)
+void mklocal(char *name)
 {
 	struct localvar *lvp;
 	struct var **vpp;
@@ -480,16 +501,16 @@ void mklocal(char *name, int flags)
 		eq = strchr(name, '=');
 		if (vp == NULL) {
 			if (eq)
-				vp = setvareq(name, VSTRFIXED | flags);
+				vp = setvareq(name, VSTRFIXED);
 			else
-				vp = setvar(name, NULL, VSTRFIXED | flags);
+				vp = setvar(name, NULL, VSTRFIXED);
 			lvp->flags = VUNSET;
 		} else {
 			lvp->text = vp->text;
 			lvp->flags = vp->flags;
 			vp->flags |= VSTRFIXED|VTEXTFIXED;
 			if (eq)
-				setvareq(name, flags);
+				setvareq(name, 0);
 		}
 	}
 	lvp->vp = vp;
@@ -504,8 +525,8 @@ void mklocal(char *name, int flags)
  * Interrupts must be off.
  */
 
-static void
-poplocalvars(void)
+void
+poplocalvars(int keep)
 {
 	struct localvar_list *ll;
 	struct localvar *lvp, *next;
@@ -521,8 +542,24 @@ poplocalvars(void)
 	while ((lvp = next) != NULL) {
 		next = lvp->next;
 		vp = lvp->vp;
-		TRACE(("poplocalvar %s\n", vp ? vp->text : "-"));
-		if (vp == NULL) {	/* $- saved */
+		TRACE(("poplocalvar %s", vp ? vp->text : "-"));
+		if (keep) {
+			int bits = VSTRFIXED;
+
+			if (lvp->flags != VUNSET) {
+				if (vp->text == lvp->text)
+					bits |= VTEXTFIXED;
+				else if (!(lvp->flags & (VTEXTFIXED|VSTACK)))
+					ckfree(lvp->text);
+			}
+
+			vp->flags &= ~bits;
+			vp->flags |= (lvp->flags & bits);
+
+			if ((vp->flags &
+			     (VEXPORT|VREADONLY|VSTRFIXED|VUNSET)) == VUNSET)
+				unsetvar(vp->text);
+		} else if (vp == NULL) {	/* $- saved */
 			memcpy(optlist, lvp->text, sizeof(optlist));
 			ckfree(lvp->text);
 			optschanged();
@@ -546,31 +583,25 @@ poplocalvars(void)
 /*
  * Create a new localvar environment.
  */
-struct localvar_list *pushlocalvars(int push)
+struct localvar_list *pushlocalvars(void)
 {
 	struct localvar_list *ll;
-	struct localvar_list *top;
-
-	top = localvar_stack;
-	if (!push)
-		goto out;
 
 	INTOFF;
 	ll = ckmalloc(sizeof(*ll));
 	ll->lv = NULL;
-	ll->next = top;
+	ll->next = localvar_stack;
 	localvar_stack = ll;
 	INTON;
 
-out:
-	return top;
+	return ll->next;
 }
 
 
 void unwindlocalvars(struct localvar_list *stop)
 {
 	while (localvar_stack != stop)
-		poplocalvars();
+		poplocalvars(0);
 }
 
 

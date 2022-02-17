@@ -92,11 +92,11 @@ STATIC int builtinloc = -1;		/* index in path of %builtin, or -1 */
 
 STATIC void tryexec(char *, char **, char **);
 STATIC void printentry(struct tblentry *);
-STATIC void clearcmdentry(void);
+STATIC void clearcmdentry(int);
 STATIC struct tblentry *cmdlookup(const char *, int);
 STATIC void delete_cmd_entry(void);
 STATIC void addcmdentry(char *, struct cmdentry *);
-STATIC int describe_command(struct output *, char *, const char *, int);
+STATIC int describe_command(struct output *, char *, int);
 
 
 /*
@@ -118,32 +118,32 @@ shellexec(char **argv, const char *path, int idx)
 		e = errno;
 	} else {
 		e = ENOENT;
-		while (padvance(&path, argv[0]) >= 0) {
-			cmdname = stackblock();
+		while ((cmdname = padvance(&path, argv[0])) != NULL) {
 			if (--idx < 0 && pathopt == NULL) {
 				tryexec(cmdname, argv, envp);
 				if (errno != ENOENT && errno != ENOTDIR)
 					e = errno;
 			}
+			stunalloc(cmdname);
 		}
 	}
 
 	/* Map to POSIX errors */
 	switch (e) {
-	default:
+	case EACCES:
 		exerrno = 126;
 		break;
-	case ELOOP:
-	case ENAMETOOLONG:
 	case ENOENT:
-	case ENOTDIR:
 		exerrno = 127;
+		break;
+	default:
+		exerrno = 2;
 		break;
 	}
 	exitstatus = exerrno;
 	TRACE(("shellexec failed for %s, errno %d, suppressint %d\n",
 		argv[0], e, suppressint ));
-	exerror(EXEND, "%s: %s", argv[0], errmsg(e, E_EXEC));
+	exerror(EXEXIT, "%s: %s", argv[0], errmsg(e, E_EXEC));
 	/* NOTREACHED */
 }
 
@@ -168,27 +168,7 @@ repeat:
 	}
 }
 
-static const char *legal_pathopt(const char *opt, const char *term, int magic)
-{
-	switch (magic) {
-	case 0:
-		opt = NULL;
-		break;
 
-	case 1:
-		opt = prefix(opt, "builtin") ?: prefix(opt, "func");
-		break;
-
-	default:
-		opt += strcspn(opt, term);
-		break;
-	}
-
-	if (opt && *opt == '%')
-		opt++;
-
-	return opt;
-}
 
 /*
  * Do a path search.  The variable path (passed by reference) should be
@@ -198,64 +178,42 @@ static const char *legal_pathopt(const char *opt, const char *term, int magic)
  * a percent sign) appears in the path entry then the global variable
  * pathopt will be set to point to it; otherwise pathopt will be set to
  * NULL.
- *
- * If magic is 0 then pathopt recognition will be disabled.  If magic is
- * 1 we shall recognise %builtin/%func.  Otherwise we shall accept any
- * pathopt.
  */
 
 const char *pathopt;
 
-int padvance_magic(const char **path, const char *name, int magic)
+char *
+padvance(const char **path, const char *name)
 {
-	const char *term = "%:";
-	const char *lpathopt;
 	const char *p;
 	char *q;
 	const char *start;
-	size_t qlen;
 	size_t len;
 
 	if (*path == NULL)
-		return -1;
-
-	lpathopt = NULL;
+		return NULL;
 	start = *path;
-
-	if (*start == '%' && (p = legal_pathopt(start + 1, term, magic))) {
-		lpathopt = start + 1;
-		start = p;
-		term = ":";
-	}
-
-	len = strcspn(start, term);
-	p = start + len;
-
-	if (*p == '%') {
-		size_t extra = strchrnul(p, ':') - p;
-
-		if (legal_pathopt(p + 1, term, magic))
-			lpathopt = p + 1;
-		else
-			len += extra;
-
-		p += extra;
-	}
-
-	pathopt = lpathopt;
-	*path = *p == ':' ? p + 1 : NULL;
-
-	/* "2" is for '/' and '\0' */
-	qlen = len + strlen(name) + 2;
-	q = growstackto(qlen);
-
-	if (likely(len)) {
-		q = mempcpy(q, start, len);
+	for (p = start ; *p && *p != ':' && *p != '%' ; p++);
+	len = p - start + strlen(name) + 2;	/* "2" is for '/' and '\0' */
+	while (stackblocksize() < len)
+		growstackblock();
+	q = stackblock();
+	if (p != start) {
+		memcpy(q, start, p - start);
+		q += p - start;
 		*q++ = '/';
 	}
 	strcpy(q, name);
-
-	return qlen;
+	pathopt = NULL;
+	if (*p == '%') {
+		pathopt = ++p;
+		while (*p && *p != ':')  p++;
+	}
+	if (*p == ':')
+		*path = p + 1;
+	else
+		*path = NULL;
+	return stalloc(len);
 }
 
 
@@ -273,7 +231,7 @@ hashcmd(int argc, char **argv)
 	char *name;
 
 	while ((c = nextopt("r")) != '\0') {
-		clearcmdentry();
+		clearcmdentry(0);
 		return 0;
 	}
 	if (*argptr == NULL) {
@@ -287,11 +245,9 @@ hashcmd(int argc, char **argv)
 	}
 	c = 0;
 	while ((name = *argptr) != NULL) {
-		if ((cmdp = cmdlookup(name, 0)) &&
-		    (cmdp->cmdtype == CMDNORMAL ||
-		     (cmdp->cmdtype == CMDBUILTIN &&
-		      !(cmdp->param.cmd->flags & BUILTIN_REGULAR) &&
-		      builtinloc > 0)))
+		if ((cmdp = cmdlookup(name, 0)) != NULL
+		 && (cmdp->cmdtype == CMDNORMAL
+		     || (cmdp->cmdtype == CMDBUILTIN && builtinloc >= 0)))
 			delete_cmd_entry();
 		find_command(name, &entry, DO_ERR, pathval());
 		if (entry.cmdtype == CMDUNKNOWN)
@@ -312,9 +268,9 @@ printentry(struct tblentry *cmdp)
 	idx = cmdp->param.index;
 	path = pathval();
 	do {
-		padvance(&path, cmdp->cmdname);
+		name = padvance(&path, cmdp->cmdname);
+		stunalloc(name);
 	} while (--idx >= 0);
-	name = stackblock();
 	out1str(name);
 	out1fmt(snlfmt, cmdp->rehash ? "*" : nullstr);
 }
@@ -337,7 +293,6 @@ find_command(char *name, struct cmdentry *entry, int act, const char *path)
 	int e;
 	int updatetbl;
 	struct builtincmd *bcmd;
-	int len;
 
 	/* If name contains a slash, don't use PATH or hash table */
 	if (strchr(name, '/') != NULL) {
@@ -357,8 +312,11 @@ find_command(char *name, struct cmdentry *entry, int act, const char *path)
 	}
 
 	updatetbl = (path == pathval());
-	if (!updatetbl)
+	if (!updatetbl) {
 		act |= DO_ALTPATH;
+		if (strstr(path, "%builtin") != NULL)
+			act |= DO_ALTBLTIN;
+	}
 
 	/* If name is in the table, check answer will be ok */
 	if ((cmdp = cmdlookup(name, 0)) != NULL) {
@@ -370,20 +328,16 @@ find_command(char *name, struct cmdentry *entry, int act, const char *path)
 			abort();
 #endif
 		case CMDNORMAL:
-			bit = DO_ALTPATH | DO_REGBLTIN;
+			bit = DO_ALTPATH;
 			break;
 		case CMDFUNCTION:
 			bit = DO_NOFUNC;
 			break;
 		case CMDBUILTIN:
-			bit = cmdp->param.cmd->flags & BUILTIN_REGULAR ?
-			      0 : DO_REGBLTIN;
+			bit = DO_ALTBLTIN;
 			break;
 		}
 		if (act & bit) {
-			if (act & bit & DO_REGBLTIN)
-				goto fail;
-
 			updatetbl = 0;
 			cmdp = NULL;
 		} else if (cmdp->rehash == 0)
@@ -393,12 +347,10 @@ find_command(char *name, struct cmdentry *entry, int act, const char *path)
 
 	/* If %builtin not in path, check for builtin next */
 	bcmd = find_builtin(name);
-	if (bcmd && ((bcmd->flags & BUILTIN_REGULAR) | (act & DO_ALTPATH) |
-		     (builtinloc <= 0)))
+	if (bcmd && (bcmd->flags & BUILTIN_REGULAR || (
+		act & DO_ALTPATH ? !(act & DO_ALTBLTIN) : builtinloc <= 0
+	)))
 		goto builtin_success;
-
-	if (act & DO_REGBLTIN)
-		goto fail;
 
 	/* We have to search path. */
 	prev = -1;		/* where to start */
@@ -412,17 +364,16 @@ find_command(char *name, struct cmdentry *entry, int act, const char *path)
 	e = ENOENT;
 	idx = -1;
 loop:
-	while ((len = padvance(&path, name)) >= 0) {
-		const char *lpathopt = pathopt;
-
-		fullname = stackblock();
+	while ((fullname = padvance(&path, name)) != NULL) {
+		stunalloc(fullname);
 		idx++;
-		if (lpathopt) {
-			if (*lpathopt == 'b') {
+		if (pathopt) {
+			if (prefix(pathopt, "builtin")) {
 				if (bcmd)
 					goto builtin_success;
 				continue;
-			} else if (!(act & DO_NOFUNC)) {
+			} else if (!(act & DO_NOFUNC) &&
+				   prefix(pathopt, "func")) {
 				/* handled below */
 			} else {
 				/* ignore unimplemented options */
@@ -448,8 +399,8 @@ loop:
 		e = EACCES;	/* if we fail, this will be the error */
 		if (!S_ISREG(statb.st_mode))
 			continue;
-		if (lpathopt) {		/* this is a %func directory */
-			stalloc(len);
+		if (pathopt) {		/* this is a %func directory */
+			stalloc(strlen(fullname) + 1);
 			readcmdfile(fullname);
 			if ((cmdp = cmdlookup(name, 0)) == NULL ||
 			    cmdp->cmdtype != CMDFUNCTION)
@@ -491,7 +442,6 @@ loop:
 		delete_cmd_entry();
 	if (act & DO_ERR)
 		sh_warnx("%s: %s", name, errmsg(e, E_EXEC));
-fail:
 	entry->cmdtype = CMDUNKNOWN;
 	return;
 
@@ -567,26 +517,39 @@ hashcd(void)
 void
 changepath(const char *newval)
 {
-	const char *new;
+	const char *old, *new;
 	int idx;
+	int firstchange;
 	int bltin;
 
+	old = pathval();
 	new = newval;
+	firstchange = 9999;	/* assume no change */
 	idx = 0;
 	bltin = -1;
 	for (;;) {
-		if (*new == '%' && prefix(new + 1, "builtin")) {
-			bltin = idx;
-			break;
+		if (*old != *new) {
+			firstchange = idx;
+			if ((*old == '\0' && *new == ':')
+			 || (*old == ':' && *new == '\0'))
+				firstchange++;
+			old = new;	/* ignore subsequent differences */
 		}
-		new = strchr(new, ':');
-		if (!new)
+		if (*new == '\0')
 			break;
-		idx++;
-		new++;
+		if (*new == '%' && bltin < 0 && prefix(new + 1, "builtin"))
+			bltin = idx;
+		if (*new == ':') {
+			idx++;
+		}
+		new++, old++;
 	}
+	if (builtinloc < 0 && bltin >= 0)
+		builtinloc = bltin;		/* zap builtins */
+	if (builtinloc >= 0 && bltin < 0)
+		firstchange = 0;
+	clearcmdentry(firstchange);
 	builtinloc = bltin;
-	clearcmdentry();
 }
 
 
@@ -596,7 +559,7 @@ changepath(const char *newval)
  */
 
 STATIC void
-clearcmdentry(void)
+clearcmdentry(int firstchange)
 {
 	struct tblentry **tblp;
 	struct tblentry **pp;
@@ -606,10 +569,10 @@ clearcmdentry(void)
 	for (tblp = cmdtable ; tblp < &cmdtable[CMDTABLESIZE] ; tblp++) {
 		pp = tblp;
 		while ((cmdp = *pp) != NULL) {
-			if (cmdp->cmdtype == CMDNORMAL ||
-			    (cmdp->cmdtype == CMDBUILTIN &&
-			     !(cmdp->param.cmd->flags & BUILTIN_REGULAR) &&
-			     builtinloc > 0)) {
+			if ((cmdp->cmdtype == CMDNORMAL &&
+			     cmdp->param.index >= firstchange)
+			 || (cmdp->cmdtype == CMDBUILTIN &&
+			     builtinloc >= firstchange)) {
 				*pp = cmdp->next;
 				ckfree(cmdp);
 			} else {
@@ -764,21 +727,21 @@ typecmd(int argc, char **argv)
 	int err = 0;
 
 	for (i = 1; i < argc; i++) {
-		err |= describe_command(out1, argv[i], NULL, 1);
+		err |= describe_command(out1, argv[i], 1);
 	}
 	return err;
 }
 
 STATIC int
-describe_command(out, command, path, verbose)
+describe_command(out, command, verbose)
 	struct output *out;
 	char *command;
-	const char *path;
 	int verbose;
 {
 	struct cmdentry entry;
 	struct tblentry *cmdp;
 	const struct alias *ap;
+	const char *path = pathval();
 
 	if (verbose) {
 		outstr(command, out);
@@ -802,17 +765,8 @@ describe_command(out, command, path, verbose)
 		goto out;
 	}
 
-	/* Then if the standard search path is used, check if it is
-	 * a tracked alias.
-	 */
-	if (path == NULL) {
-		path = pathval();
-		cmdp = cmdlookup(command, 0);
-	} else {
-		cmdp = NULL;
-	}
-
-	if (cmdp != NULL) {
+	/* Then check if it is a tracked alias */
+	if ((cmdp = cmdlookup(command, 0)) != NULL) {
 		entry.cmdtype = cmdp->cmdtype;
 		entry.u = cmdp->param;
 	} else {
@@ -828,9 +782,9 @@ describe_command(out, command, path, verbose)
 			p = command;
 		} else {
 			do {
-				padvance(&path, command);
+				p = padvance(&path, command);
+				stunalloc(p);
 			} while (--j >= 0);
-			p = stackblock();
 		}
 		if (verbose) {
 			outfmt(
@@ -886,7 +840,6 @@ commandcmd(argc, argv)
 		VERIFY_BRIEF = 1,
 		VERIFY_VERBOSE = 2,
 	} verify = 0;
-	const char *path = NULL;
 
 	while ((c = nextopt("pvV")) != '\0')
 		if (c == 'V')
@@ -897,12 +850,10 @@ commandcmd(argc, argv)
 		else if (c != 'p')
 			abort();
 #endif
-		else
-			path = defpath;
 
 	cmd = *argptr;
 	if (verify && cmd)
-		return describe_command(out1, cmd, path, verify - VERIFY_BRIEF);
+		return describe_command(out1, cmd, verify - VERIFY_BRIEF);
 
 	return 0;
 }

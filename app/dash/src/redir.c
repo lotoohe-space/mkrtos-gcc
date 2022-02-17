@@ -55,9 +55,9 @@
 #include "output.h"
 #include "memalloc.h"
 #include "error.h"
-#include "trap.h"
 
 
+#define REALLY_CLOSED -3	/* fd that was closed and still is */
 #define EMPTY -2		/* marks an unused slot in redirtab */
 #define CLOSED -1		/* fd opened for redir needs to be closed */
 
@@ -77,9 +77,6 @@ struct redirtab {
 
 MKINIT struct redirtab *redirlist;
 
-/* Bit map of currently closed file descriptors. */
-static unsigned closed_redirs;
-
 STATIC int openredirect(union node *);
 #ifdef notyet
 STATIC void dupredirect(union node *, int, char[10]);
@@ -87,20 +84,6 @@ STATIC void dupredirect(union node *, int, char[10]);
 STATIC void dupredirect(union node *, int);
 #endif
 STATIC int openhere(union node *);
-
-
-static unsigned update_closed_redirs(int fd, int nfd)
-{
-	unsigned val = closed_redirs;
-	unsigned bit = 1 << fd;
-
-	if (nfd >= 0)
-		closed_redirs &= ~bit;
-	else
-		closed_redirs |= bit;
-
-	return val & bit;
-}
 
 
 /*
@@ -142,20 +125,20 @@ redirect(union node *redir, int flags)
 		fd = n->nfile.fd;
 
 		if (sv) {
-			int closed;
-
 			p = &sv->renamed[fd];
 			i = *p;
 
-			closed = update_closed_redirs(fd, newfd);
-
 			if (likely(i == EMPTY)) {
 				i = CLOSED;
-				if (fd != newfd && !closed) {
+				if (fd != newfd) {
 					i = savefd(fd, fd);
 					fd = -1;
 				}
 			}
+
+			if (i == newfd)
+				/* Can only happen if i == newfd == CLOSED */
+				i = REALLY_CLOSED;
 
 			*p = i;
 		}
@@ -181,83 +164,56 @@ redirect(union node *redir, int flags)
 }
 
 
-static int sh_open_fail(const char *, int, int) __attribute__((__noreturn__));
-static int sh_open_fail(const char *pathname, int flags, int e)
-{
-	const char *word;
-	int action;
-
-	word = "open";
-	action = E_OPEN;
-	if (flags & O_CREAT) {
-		word = "create";
-		action = E_CREAT;
-	}
-
-	sh_error("cannot %s %s: %s", word, pathname, errmsg(e, action));
-}
-
-
-int sh_open(const char *pathname, int flags, int mayfail)
-{
-	int fd;
-	int e;
-
-	do {
-		fd = open64(pathname, flags, 0666);
-		e = errno;
-	} while (fd < 0 && e == EINTR && !pending_sig);
-
-	if (mayfail || fd >= 0)
-		return fd;
-
-	sh_open_fail(pathname, flags, e);
-}
-
-
 STATIC int
 openredirect(union node *redir)
 {
 	struct stat64 sb;
 	char *fname;
-	int flags;
 	int f;
 
 	switch (redir->nfile.type) {
 	case NFROM:
-		flags = O_RDONLY;
-do_open:
-		f = sh_open(redir->nfile.expfname, flags, 0);
+		fname = redir->nfile.expfname;
+		if ((f = open64(fname, O_RDONLY)) < 0)
+			goto eopen;
 		break;
 	case NFROMTO:
-		flags = O_RDWR|O_CREAT;
-		goto do_open;
+		fname = redir->nfile.expfname;
+		if ((f = open64(fname, O_RDWR|O_CREAT, 0666)) < 0)
+			goto ecreate;
+		break;
 	case NTO:
 		/* Take care of noclobber mode. */
 		if (Cflag) {
 			fname = redir->nfile.expfname;
 			if (stat64(fname, &sb) < 0) {
-				flags = O_WRONLY|O_CREAT|O_EXCL;
-				goto do_open;
-			}
-
-			if (S_ISREG(sb.st_mode))
-				goto ecreate;
-
-			f = sh_open(fname, O_WRONLY, 0);
-			if (!fstat64(f, &sb) && S_ISREG(sb.st_mode)) {
-				close(f);
+				if ((f = open64(fname, O_WRONLY|O_CREAT|O_EXCL, 0666)) < 0)
+					goto ecreate;
+			} else if (!S_ISREG(sb.st_mode)) {
+				if ((f = open64(fname, O_WRONLY, 0666)) < 0)
+					goto ecreate;
+				if (fstat64(f, &sb) < 0 && S_ISREG(sb.st_mode)) {
+					close(f);
+					errno = EEXIST;
+					goto ecreate;
+				}
+			} else {
+				errno = EEXIST;
 				goto ecreate;
 			}
 			break;
 		}
 		/* FALLTHROUGH */
 	case NCLOBBER:
-		flags = O_WRONLY|O_CREAT|O_TRUNC;
-		goto do_open;
+		fname = redir->nfile.expfname;
+		if ((f = open64(fname, O_WRONLY|O_CREAT|O_TRUNC, 0666)) < 0)
+			goto ecreate;
+		break;
 	case NAPPEND:
-		flags = O_WRONLY|O_CREAT|O_APPEND;
-		goto do_open;
+		fname = redir->nfile.expfname;
+		if ((f = open64(fname, O_WRONLY|O_CREAT|O_APPEND, 0666)) < 0)
+			goto ecreate;
+		break;
 	case NTOFD:
 	case NFROMFD:
 		f = redir->ndup.dupfd;
@@ -277,7 +233,9 @@ do_open:
 
 	return f;
 ecreate:
-	sh_open_fail(fname, O_CREAT, EEXIST);
+	sh_error("cannot create %s: %s", fname, errmsg(errno, E_CREAT));
+eopen:
+	sh_error("cannot open %s: %s", fname, errmsg(errno, E_OPEN));
 }
 
 
@@ -388,17 +346,13 @@ popredir(int drop)
 	INTOFF;
 	rp = redirlist;
 	for (i = 0 ; i < 10 ; i++) {
-		int closed;
-
-		if (rp->renamed[i] == EMPTY)
-			continue;
-
-		closed = drop ? 1 : update_closed_redirs(i, rp->renamed[i]);
-
 		switch (rp->renamed[i]) {
 		case CLOSED:
-			if (!closed)
+			if (!drop)
 				close(i);
+			break;
+		case EMPTY:
+		case REALLY_CLOSED:
 			break;
 		default:
 			if (!drop)
@@ -420,15 +374,11 @@ popredir(int drop)
 
 INCLUDE "redir.h"
 
-EXITRESET {
+RESET {
 	/*
 	 * Discard all saved file descriptors.
 	 */
 	unwindredir(0);
-}
-
-FORKRESET {
-	redirlist = NULL;
 }
 
 #endif

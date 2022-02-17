@@ -39,7 +39,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <getopt.h>
 /*
  * Editline and history functions (and glue).
  */
@@ -373,7 +372,8 @@ histcmd(int argc, char **argv)
 					out2str(s);
 				}
 
-				evalstring(s, 0);
+				evalstring(strcpy(stalloc(strlen(s) + 1), s),
+					   0);
 				if (displayhist && hist) {
 					/*
 					 *  XXX what about recursive and

@@ -71,27 +71,27 @@
 
 #ifdef USE_GLIBC_STDIO
 struct output output = {
-	.stream = 0, .nextc = 0, .end = 0, .buf = 0, .bufsize = 0, .fd = 1, .flags = 0
+	stream: 0, nextc: 0, end: 0, buf: 0, bufsize: 0, fd: 1, flags: 0
 };
 struct output errout = {
-	.stream = 0, .nextc = 0, .end = 0, .buf = 0, .bufsize = 0, .fd = 2, .flags = 0
+	stream: 0, nextc: 0, end: 0, buf: 0, bufsize: 0, fd: 2, flags: 0
 }
 #ifdef notyet
 struct output memout = {
-	.stream = 0, .nextc = 0, .end = 0, .buf = 0, .bufsize = 0, .fd = MEM_OUT, .flags = 0
+	stream: 0, nextc: 0, end: 0, buf: 0, bufsize: 0, fd: MEM_OUT, flags: 0
 };
 #endif
 #else
 struct output output = {
-	.nextc = 0, .end = 0, .buf = 0, .bufsize = OUTBUFSIZ, .fd = 1, .flags = 0
+	nextc: 0, end: 0, buf: 0, bufsize: OUTBUFSIZ, fd: 1, flags: 0
 };
 struct output errout = {
-	.nextc = 0, .end = 0, .buf = 0, .bufsize = 0, .fd = 2, .flags = 0
+	nextc: 0, end: 0, buf: 0, bufsize: 0, fd: 2, flags: 0
 };
 struct output preverrout;
 #ifdef notyet
 struct output memout = {
-	.nextc = 0, .end = 0, .buf = 0, .bufsize = 0, .fd = MEM_OUT, .flags = 0
+	nextc: 0, end: 0, buf: 0, bufsize: 0, fd: MEM_OUT, flags: 0
 };
 #endif
 #endif
@@ -99,6 +99,9 @@ struct output *out1 = &output;
 struct output *out2 = &errout;
 
 
+#ifndef USE_GLIBC_STDIO
+static void __outstr(const char *, size_t, struct output *);
+#endif
 static int xvsnprintf(char *, size_t, const char *, va_list);
 
 
@@ -131,20 +134,16 @@ RESET {
 #endif
 
 
-void
-outmem(const char *p, size_t len, struct output *dest)
+#ifndef USE_GLIBC_STDIO
+static void
+__outstr(const char *p, size_t len, struct output *dest)
 {
-#ifdef USE_GLIBC_STDIO
-	INTOFF;
-	fwrite(p, 1, len, dest->stream);
-	INTON;
-#else
 	size_t bufsize;
 	size_t offset;
 	size_t nleft;
 
 	nleft = dest->end - dest->nextc;
-	if (likely(nleft >= len)) {
+	if (nleft >= len) {
 buffered:
 		dest->nextc = mempcpy(dest->nextc, p, len);
 		return;
@@ -154,13 +153,10 @@ buffered:
 	if (!bufsize) {
 		;
 	} else if (dest->buf == NULL) {
-#ifdef notyet
 		if (dest->fd == MEM_OUT && len > bufsize) {
 			bufsize = len;
 		}
-#endif
 		offset = 0;
-#ifdef notyet
 		goto alloc;
 	} else if (dest->fd == MEM_OUT) {
 		offset = bufsize;
@@ -172,7 +168,6 @@ buffered:
 		if (bufsize < offset)
 			goto err;
 alloc:
-#endif
 		INTOFF;
 		dest->buf = ckrealloc(dest->buf, bufsize);
 		dest->bufsize = bufsize;
@@ -188,13 +183,11 @@ alloc:
 		goto buffered;
 
 	if ((xwrite(dest->fd, p, len))) {
-#ifdef notyet
 err:
-#endif
 		dest->flags |= OUTPUT_ERR;
 	}
-#endif
 }
+#endif
 
 
 void
@@ -208,7 +201,7 @@ outstr(const char *p, struct output *file)
 	size_t len;
 
 	len = strlen(p);
-	outmem(p, len, file);
+	__outstr(p, len, file);
 #endif
 }
 
@@ -220,7 +213,7 @@ void
 outcslow(int c, struct output *dest)
 {
 	char buf = c;
-	outmem(&buf, 1, dest);
+	__outstr(&buf, 1, dest);
 }
 #endif
 
@@ -286,39 +279,6 @@ fmtstr(char *outbuf, size_t length, const char *fmt, ...)
 	va_start(ap, fmt);
 	ret = xvsnprintf(outbuf, length, fmt, ap);
 	va_end(ap);
-	return ret > (int)length ? length : ret;
-}
-
-
-static int xvasprintf(char **sp, size_t size, const char *f, va_list ap)
-{
-	char *s;
-	int len;
-	va_list ap2;
-
-	va_copy(ap2, ap);
-	len = xvsnprintf(*sp, size, f, ap2);
-	va_end(ap2);
-	if (len < 0)
-		sh_error("xvsnprintf failed");
-	if (len < size)
-		return len;
-
-	s = stalloc((len >= stackblocksize() ? len : stackblocksize()) + 1);
-	*sp = s;
-	len = xvsnprintf(s, len + 1, f, ap);
-	return len;
-}
-
-
-int xasprintf(char **sp, const char *f, ...)
-{
-	va_list ap;
-	int ret;
-
-	va_start(ap, f);
-	ret = xvasprintf(sp, 0, f, ap);
-	va_end(ap);
 	return ret;
 }
 
@@ -329,19 +289,29 @@ doformat(struct output *dest, const char *f, va_list ap)
 {
 	struct stackmark smark;
 	char *s;
-	int len;
-	int olen;
+	int len, ret;
+	size_t size;
+	va_list ap2;
 
-	setstackmark(&smark);
-	s = dest->nextc;
-	olen = dest->end - dest->nextc;
-	len = xvasprintf(&s, olen, f, ap);
-	if (likely(olen > len)) {
-		dest->nextc += len;
-		goto out;
+	va_copy(ap2, ap);
+	size = dest->end - dest->nextc;
+	len = xvsnprintf(dest->nextc, size, f, ap2);
+	va_end(ap2);
+	if (len < 0) {
+		dest->flags |= OUTPUT_ERR;
+		return;
 	}
-	outmem(s, len, dest);
-out:
+	if (len < size) {
+		dest->nextc += len;
+		return;
+	}
+	setstackmark(&smark);
+	s = stalloc((len >= stackblocksize() ? len : stackblocksize()) + 1);
+	ret = xvsnprintf(s, len + 1, f, ap);
+	if (ret == len)
+		__outstr(s, len, dest);
+	else
+		dest->flags |= OUTPUT_ERR;
 	popstackmark(&smark);
 }
 #endif

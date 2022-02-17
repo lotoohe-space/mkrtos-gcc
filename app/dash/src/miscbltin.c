@@ -67,21 +67,28 @@
  *  less fields than variables -> remaining variables unset.
  *
  *  @param line complete line of input
- *  @param ac argument count
  *  @param ap argument (variable) list
  *  @param len length of line including trailing '\0'
  */
 static void
-readcmd_handle_line(char *s, int ac, char **ap)
+readcmd_handle_line(char *s, char **ap)
 {
 	struct arglist arglist;
 	struct strlist *sl;
+	char *backup;
+	char *line;
 
+	/* ifsbreakup will fiddle with stack region... */
+	line = stackblock();
 	s = grabstackstr(s);
+
+	/* need a copy, so that delimiters aren't lost
+	 * in case there are more fields than variables */
+	backup = sstrdup(line);
 
 	arglist.lastp = &arglist.list;
 	
-	ifsbreakup(s, ac, &arglist);
+	ifsbreakup(s, &arglist);
 	*arglist.lastp = NULL;
 	ifsfree();
 
@@ -97,6 +104,21 @@ readcmd_handle_line(char *s, int ac, char **ap)
 			return;
 		}
 
+		/* remaining fields present, but no variables left. */
+		if (!ap[1] && sl->next) {
+			size_t offset;
+			char *remainder;
+
+			/* FIXME little bit hacky, assuming that ifsbreakup 
+			 * will not modify the length of the string */
+			offset = sl->text - s;
+			remainder = backup + offset;
+			rmescapes(remainder);
+			setvar(*ap, remainder, 0);
+
+			return;
+		}
+		
 		/* set variable to field */
 		rmescapes(sl->text);
 		setvar(*ap, sl->text, 0);
@@ -152,7 +174,7 @@ readcmd(int argc, char **argv)
 		case 1:
 			break;
 		default:
-			if (errno == EINTR && !pending_sig)
+			if (errno == EINTR && !pendingsigs)
 				continue;
 				/* fall through */
 		case 0:
@@ -189,7 +211,7 @@ start:
 out:
 	recordregion(startloc, p - (char *)stackblock(), 0);
 	STACKSTRNUL(p);
-	readcmd_handle_line(p + 1, argc - (ap - argv), ap);
+	readcmd_handle_line(p + 1, ap);
 	return status;
 }
 
@@ -369,9 +391,6 @@ static const struct limits limits[] = {
 #endif
 #ifdef RLIMIT_LOCKS
 	{ "locks",			RLIMIT_LOCKS,	   1, 'w' },
-#endif
-#ifdef RLIMIT_RTPRIO
-	{ "rtprio",			RLIMIT_RTPRIO,	   1, 'r' },
 #endif
 	{ (char *) 0,			0,		   0,  '\0' }
 };

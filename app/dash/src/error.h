@@ -66,8 +66,7 @@ extern int exception;
 /* exceptions */
 #define EXINT 0		/* SIGINT received */
 #define EXERROR 1	/* a generic error */
-#define EXEND 3		/* exit the shell */
-#define EXEXIT 4	/* exit the shell via exitcmd */
+#define EXEXIT 4	/* exit the shell */
 
 
 /*
@@ -116,7 +115,11 @@ void __inton(void);
 #define int_pending() intpending
 
 void exraise(int) __attribute__((__noreturn__));
+#ifdef USE_NORETURN
 void onint(void) __attribute__((__noreturn__));
+#else
+void onint(void);
+#endif
 extern int errlinno;
 void sh_error(const char *, ...) __attribute__((__noreturn__));
 void exerror(int, const char *, ...) __attribute__((__noreturn__));

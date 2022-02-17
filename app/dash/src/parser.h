@@ -62,7 +62,6 @@
 #define VSTRIMLEFT	0x8		/* ${var#pattern} */
 #define VSTRIMLEFTMAX	0x9		/* ${var##pattern} */
 #define VSLENGTH	0xa		/* ${#var} */
-/* VSLENGTH must come last. */
 
 /* values of checkkwd variable */
 #define CHKALIAS	0x1
@@ -83,7 +82,6 @@ extern int whichprompt;		/* 1 == PS1, 2 == PS2 */
 extern int checkkwd;
 
 
-int isassignment(const char *p);
 union node *parsecmd(int);
 void fixredir(union node *, const char *, int);
 const char *getprompt(void *);

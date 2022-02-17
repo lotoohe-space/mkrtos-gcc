@@ -159,6 +159,7 @@ procargs(int argc, char **argv)
 		setinputfile(*xargv, 0);
 setarg0:
 		arg0 = *xargv++;
+		commandname = arg0;
 	}
 
 	shellparam.p = xargv;
