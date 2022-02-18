@@ -7,5 +7,5 @@
 .section .text.call_sigreturn
 .type call_sigreturn, %function
 call_sigreturn:
-    mov r0,#87
+    mov r7,#87
     svc #0x80

@@ -5,6 +5,7 @@
 #ifndef UNTITLED1_DEV_H
 #define UNTITLED1_DEV_H
 
+#define NULL_MAJOR 6
 #define TTY_MAJOR 4
 #define TTYMAUX_MAJOR 5
 //主次设备号码获取

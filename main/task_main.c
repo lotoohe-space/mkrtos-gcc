@@ -164,80 +164,63 @@ void TestTask(void*arg0, void*arg1){
 
     }
 }
+#include <sys/wait.h>
+void rc_shell_exec(void){
+   int res= fork();
+   if(res<0){
+        printf("error exec rc shell.\r\n");
+   }else if(res==0){
+       extern int rc_main(int argc, char *argv[], char *envp[]) ;
+       static char * argv[]={
+               {"/rc.rc"}
+               ,NULL
+       };
+       static char *env[]={
+               {"mkrtos"}
+               ,NULL
+       };
+       rc_main(1,argv,env);
+   }else if(res>0){
+       wait(0);
+   }
+}
 //启动进程
 void start_task(void* arg0,void*arg1){
     extern void fs_init(void);
     root_mount(CUR_TASK);
     fs_init();
     devs_init();
-    if(CUR_TASK) {
-        //打开三个串口输出
-//        extern int32_t do_open(struct file *files, const char *path, int32_t flags, int32_t mode);
-        open("/dev/tty", O_RDWR, 0777);
-        open( "/dev/tty", O_RDWR, 0777);
-        open("/dev/tty", O_RDWR, 0777);
-    }
+    //打开三个串口输出
+    open("/dev/tty", O_RDWR, 0777);
+    open("/dev/tty", O_RDWR, 0777);
+    open("/dev/tty", O_RDWR, 0777);
 
-    //创建设备文件
-//    if(sys_mkdir("/dev",0777)<0){
-//        fatalk("创建dev目录失败！\r\n");
-//    }
-
-//    int fd;
-//    int res;
-//    if((fd=sys_open("/dev/tty0",O_RDONLY|O_WRONLY,0777))<0){
-//        while(1);
-//    }
-//    res=sys_write(fd,"test\r\n",strlen("test\r\n"));
-//    printk("write %d bytes.\r\n",res);
-//    sys_close(fd);
-
-//    static TaskCreatePar tcp;
-//    int32_t pid;
-//    tcp.taskFun=KernelTask;
-//    tcp.arg0=(void*)0;
-//    tcp.arg1=0;
-//    tcp.prio=6;
-//    tcp.userStackSize=0;
-//    tcp.kernelStackSize=512;
-//    tcp.taskName="KernelTask";
-//
-//    pid=task_create(&tcp,NULL);
-//    if(pid<0){
-//        while(1);
-//    }
     printf("to init task.\r\n");
     int ret=fork();
     if(ret<0){
-        fatalk("init create error.\r\n");
+        printf("init create error.\r\n");
     }else if(ret==0){
-        printf("我是新进程\r\n");
-        delay_ms(2000);
-        void *mem=malloc(100);
-        printf("0x%x\r\n",mem);
-//        free(mem);
-//        int a;
-//        scanf("%d",&a);
-//        printf("输入的数是%d\r\n",a);
-        return ;
+        while(1){
+            rc_shell_exec();
+        }
     }else {
-#include <sys/wait.h>
-        printf("我的init进程\r\n");
-        printf("等待子进程退出\r\n");
-        wait(0);
-        printf("子进程退出\r\n");
+       while(1);
     }
-    while(1);
 }
 void idle_task(void){
     while(1);
 }
+#include <setjmp.h>
 /**
  * @brief 系统空闲任务
  */
 void KernelTaskInit(void){
+    int res=0;
     extern int32_t sp_mkfs(dev_t dev_no,int32_t inode_count);
     extern int32_t bk_flash_init(void);
+//    sigjmp_buf buf;
+//    res=setjmp(buf);
+//    longjmp(buf,1);
     //初始化默认的磁盘设备
     bk_flash_init();
     //在这里格式化文件系统
@@ -251,7 +234,7 @@ void KernelTaskInit(void){
     tcp.arg0=(void*)0;
     tcp.arg1=0;
     tcp.prio=6;
-    tcp.userStackSize=256;
+    tcp.userStackSize=512;
     tcp.kernelStackSize=512;
     tcp.taskName="init";
 

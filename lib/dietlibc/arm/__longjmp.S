@@ -11,4 +11,7 @@ __longjmp:
 #ifndef	__SOFTFP__
 	lfm	f4, 4, [ip], #48
 #endif
-	//zhangzheng ldmia.w   ip, {r4-r11, sp, pc}
+	ldmia.w   ip!, {r4-r11}
+    ldmia.w   ip!, {r2}
+    mov sp,r2
+    ldmia.w   ip!, {pc};

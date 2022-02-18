@@ -1,0 +1,600 @@
+# trip.rc -- take a tour of rc
+# Invoke as "path-to-new-rc < trip.rc"
+
+rc=$0
+echo tripping $rc $version
+
+fn fail {
+	echo >[1=2] trip took a wrong turn: $*
+	rm -f $tmp
+	fn sigexit
+	exit 1
+}
+fn expect {
+	echo >[1=2] -n expect $^*^': '
+}
+fn submatch {
+	if (!~ $#* 3)
+		fail incorrect invocation of submatch
+	prompt=$nl if (!~ `` $nl {$rc -ic $1>[2=1]} $2)
+		fail $3
+}
+fn sigexit sigint sigquit sigsegv
+fn sigexit {
+	echo trip complete
+}
+tmp=/tmp/trip.$pid
+rm -f $tmp
+nl='
+'
+
+#
+# rc -c
+#
+
+if ($rc -c >[2]/dev/null) fail 'rc -c didn''t report a bad exit status'
+x=`{$rc -c 'echo $0 $2 $#*' a b c d e f}
+if (false) {					# WARNING: this differs from sh
+	if (!~ $x(1) a) fail rc -c reports '$0' incorrectly as $x(1)
+	if (!~ $x(2) c) fail rc -c reports '$2' incorrectly as $x(2)
+	if (!~ $x(3) 5) fail rc -c reports '$#' incorrectly as $x(3)
+} else {
+	if (!~ $x(1) $rc) fail rc -c reports '$0' incorrectly as $x(1)
+	if (!~ $x(2) b) fail rc -c reports '$2' incorrectly as $x(2)
+	if (!~ $x(3) 6) fail rc -c reports '$#' incorrectly as $x(3)
+}
+
+#
+# umask
+#
+
+umask 0
+> $tmp
+x=`{ls -l $tmp}
+if (!~ $x(1) '-rw-rw-rw-') fail umask 0 produced incorrect result: $x(1)
+rm -f $tmp
+umask 027
+> $tmp
+y=`{ls -l $tmp}
+if (!~ $y(1) '-rw-r-----') fail umask 027 produced incorrect file: $y(1)
+rm -f $tmp
+if (!~ `umask 027) fail umask reported bad value: `umask
+
+submatch 'umask bad' 'bad umask' 'bad umask'
+submatch 'umask -027' 'bad umask' 'bad umask'
+submatch 'umask 999999' 'bad umask' 'bad umask'
+submatch 'umask hi there' 'too many arguments to umask' 'umask arg count'
+
+if (!~ `umask 027) fail bad umask changed umask value to `umask
+
+#
+# redirections
+#
+
+fn bytes { for (i) x=`{wc -c $i} echo $x(1) }
+echo foo > foo > bar
+if (!~ `{bytes foo} 0) fail double redirection created non-empty empty file
+if (!~ `{bytes bar} 4) fail double redirection created wrong sized file: `{bytes bar}
+rm -f foo bar
+echo -n >1 >[2]2 >[1=2] foo
+x = `` '' {cat 1}
+if (!~ $#x 0) fail dup created non-empty empty file: `` '' {cat 1}
+if (!~ `` '' {cat 2} foo) fail dup put wrong contents in file : `` '' {cat 2}
+rm -f 1 2
+
+expect error from cat, closing stdin
+cat >[0=]
+
+submatch 'cat>(1 2 3)' 'multi-word filename in redirection' 'redirection error'
+submatch 'cat>()' 'null filename in redirection' 'redirection error'
+
+#
+# blow the input stack
+#
+
+if (!~ hi `{
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval eval eval \
+eval eval eval eval eval eval eval eval eval eval eval echo hi
+})
+	fail huge eval
+
+#
+# heredocs and herestrings
+#
+
+bigfile=/tmp/big.$pid
+od $rc | sed 5000q > $bigfile
+abc=(this is a)
+x=()
+result='this is a heredoc
+this is an heredoc
+'
+if (!~ `` '' {<<[5] EOF cat <[0=5]} $result) fail unquoted heredoc
+$abc heredoc$x
+$abc^n $x^here$x^doc
+EOF
+{if (!~ `` $nl cat '	') fail quoted heredoc} << ' '
+	
+ 
+
+<<<[9] ``''{cat $bigfile} \
+{
+ 	if(!~ ``''{cat <[0=9]}``'' cat)fail large herestrings
+} < \
+$bigfile
+
+rm -f $bigfile
+
+if (!~ `{cat<<eof
+$$
+eof
+} '$')
+	fail quoting '$' in heredoc
+
+submatch 'cat<<eof' 'heredoc incomplete' 'incomplete heredoc'
+submatch 'cat<<eof
+' 'heredoc incomplete' 'incomplete heredoc'
+
+submatch 'cat<<(eof eof)' 'eof-marker not a single literal word' 'bad heredoc marker'
+
+#
+# lexical analysis
+#
+
+expect warning
+./tripping 0 > $tmp
+$rc $tmp
+rm -f $tmp
+
+echo here_is_a_really_long_word.It_has_got_to_be_longer_than_1000_characters_for_the_lexical_analyzers_buffer_to_overflow_but_that_should_not_be_too_difficult_to_do.Let_me_start_writing_some_Lewis_Carroll.Twas_brillig_and_the_slithy_toves,Did_gyre_and_gimble_in_the_wabe.All_mimsy_were_the_borogoves,And_the_mome-raths_outgrabe.Beware_the_Jabberwock_my_son,The_jaws_that_bite,the_claws_that_catch.Beware_the_Jub-jub_bird,and_shun_The_frumious_Bandersnatch.He_took_his_vorpal_sword_in_hand,Long_time_the_manxome_foe_he_sought,So_rested_he_by_the_Tumtum_tree,And_stood_awhile_in_thought.And_as_in_uffish_thought_he_stood,The_Jabberwock,with_eyes_of_flame,Came_whiffling_through_the_tulgey_wood,And_burbled_as_it_came.One_two,one_two.And_through_and_through_The_vorpal_blade_went_snicker-snack.He_left_it_dead_and_with_its_head,He_went_galumphing_back.And_hast_thou_slain_the_Jabberwock?Come_to_my_arms,my_beamish_boy,Oh_frabjous_day.Callooh_callay.He_chortled_in_his_joy.Twas_brillig,and_the_slithy_toves,Did_gyre_and_gimble_in_the_wabe,All_mimsy_were_the_borogoves,And_the_mome-raths_outgrabe. > /tmp/$pid.lw
+
+echo 'here_is_a_really_long_word.It_has_got_to_be_longer_than_1000_characters_for_the_lexical_analyzers_buffer_to_overflow_but_that_should_not_be_too_difficult_to_do.Let_me_start_writing_some_Lewis_Carroll.Twas_brillig_and_the_slithy_toves,Did_gyre_and_gimble_in_the_wabe.All_mimsy_were_the_borogoves,And_the_mome-raths_outgrabe.Beware_the_Jabberwock_my_son,The_jaws_that_bite,the_claws_that_catch.Beware_the_Jub-jub_bird,and_shun_The_frumious_Bandersnatch.He_took_his_vorpal_sword_in_hand,Long_time_the_manxome_foe_he_sought,So_rested_he_by_the_Tumtum_tree,And_stood_awhile_in_thought.And_as_in_uffish_thought_he_stood,The_Jabberwock,with_eyes_of_flame,Came_whiffling_through_the_tulgey_wood,And_burbled_as_it_came.One_two,one_two.And_through_and_through_The_vorpal_blade_went_snicker-snack.He_left_it_dead_and_with_its_head,He_went_galumphing_back.And_hast_thou_slain_the_Jabberwock?Come_to_my_arms,my_beamish_boy,Oh_frabjous_day.Callooh_callay.He_chortled_in_his_joy.Twas_brillig,and_the_slithy_toves,Did_gyre_and_gimble_in_the_wabe,All_mimsy_were_the_borogoves,And_the_mome-raths_outgrabe.' > /tmp/$pid.lq
+
+if (!~ ``(){cat /tmp/$pid.lw} ``(){cat /tmp/$pid.lq})
+	fail expected long string and long word to be identical
+if (! x=`{wc -c /tmp/$pid.lw} ~ $x(1) 1088)
+	fail expected long word to be 1088 bytes
+if (! x=`{wc -c /tmp/$pid.lq} ~ $x(1) 1088)
+	fail expected long quote to be 1088 bytes
+
+rm /tmp/$pid.lw
+rm /tmp/$pid.lq
+
+submatch 'echo hi |[2' 'expected ''='' or '']'' after digit' 'scan error'
+submatch 'echo hi |[92=]' 'expected digit after ''=''' 'scan error'
+submatch 'echo hi |[a]' 'expected digit after ''[''' 'scan error'
+submatch 'echo hi |[2-' 'expected ''='' or '']'' after digit' 'scan error'
+submatch 'echo hi |[2=99a]' 'expected '']'' after digit' 'scan error'
+submatch 'echo hi |[2=a99]' 'expected digit or '']'' after ''=''' 'scan error'
+submatch 'echo ''hi' 'eof in quoted string' 'scan error'
+
+ifs='' {
+	if (!~ 'h i' `{echo -n h\
+i})
+		fail backslash-newline to space conversion
+	if (!~ $rc^\rc `{echo -n $rc\rc})
+		fail backslash after variable name did not terminate variable name scan
+	if (!~ $rc^' rc' `{echo -n $rc\
+rc})
+		fail backslash-newline after variable name space conversion
+	if (!~ 'h\i' `{echo -n h\i})
+		fail backslash in the middle of word
+	if (!~ 'h \ i' `{echo -n h \ i})
+		fail free-standing backslash
+}
+
+if (! $rc -c '# eof in comment')
+	fail eof in comment exited with nonzero status
+
+# test the syntax error printer
+
+prompt='' if (!~ `` $nl {$rc -cif>[2=1]} 'line 1: '*' error near if')
+	fail print syntax error
+
+prompt='' if (!~ `` $nl {$rc -icif>[2=1]} *' error')
+	fail print syntax error
+
+#
+# builtins
+#
+
+fn foo {
+	return sigfpe
+}
+
+foo
+if (!~ $status sigfpe)
+	fail return builtin did not return sigfpe
+
+fn foo # test deleting of function
+fn bar {
+	for (i in 1 2 3 4 5)
+		if (~ $i 3)
+			return
+}
+
+bar
+if (!~ $i 3)
+	fail return inside loop inside function failed
+
+submatch return 'return outside of function' 'return outside of function'
+submatch 'break 1' 'too many arguments to break' 'break arg count'
+submatch break 'break outside of loop' 'break outside of loop'
+
+for (i in 1 2 3 4 5)
+	if (~ $i 2)
+		break
+if (!~ $i 2)
+	fail break out of loop
+
+submatch 'wait foo' 'foo is a bad number' 'bogus argument to wait'
+
+if (~ `{echo -n} ?)
+	fail echo -n
+if (!~ `` '' {echo --} $nl)
+	fail echo --
+
+pwd=`/bin/pwd cdpath=/ { # some local assignments
+	home=/tmp cd
+	if (!~ `/bin/pwd `{sh -c 'cd /tmp; /bin/pwd'})
+		fail could not cd to '$home'
+
+	cdpath=/ cd tmp
+	if (!~ `/bin/pwd `{sh -c 'cd /tmp; /bin/pwd'})
+		fail could not cd to /tmp
+
+	cd $pwd
+	if (!~ `/bin/pwd `{sh -c 'cd $pwd; /bin/pwd'})
+		fail could not cd to current directory!
+}
+
+# Test that cd to a directory found via cdpath produces output
+# when interactive.
+submatch 'cdpath=/ cd tmp' /tmp 'cdpath produced wrong output'
+
+*=(1 2 3 4 5) {
+	expect bad number
+	shift foo
+	expect arg count
+	shift 1 2 3
+	expect shift overflow
+	shift 123
+	shift 3
+	if (!~ $#* 2)
+		fail shift 3 of '(1 2 3 4 5)' failed
+	shift
+	if (!~ $* 5)
+		fail shift failed to shift left-to-right
+}
+
+false
+eval && fail null eval reset '$status'
+
+if (!~ `{rm=(); fn rm; path=(. /bin); whatis rm} /bin/rm)
+	fail rm isn''''t in bin!?
+
+expect list of signal handlers
+whatis -s
+
+expect list of variables and functions
+whatis
+
+submatch 'whatis -x' 'whatis: bad option: -x' 'bad option to whatis'
+
+submatch 'whatis /frobnatz' '/frobnatz not found' 'search for /frobnatz'
+
+if (~ `{whatis limit >[2]/dev/null} builtin) {
+	limit coredumpsize 0
+	if (!~ `{limit coredumpsize} 0*)
+		fail failed to set coredumpsize to zero
+	if (!~ `` () {limit coredumpsize} `` () {limit|grep coredumpsize})
+		fail limit limit
+	submatch 'limit foo' 'no such limit' 'bad limit'
+}
+
+fn cd
+
+submatch 'cd a b c' 'too many arguments to cd' 'cd arg count'
+$rc -c 'cdpath=() cd /frobnatz' >[2]/dev/null && fail 'cd to /frobnatz succeeded!?'
+submatch 'cdpath='''' cd frobnatz' 'couldn''t cd to frobnatz' 'cd to frobnatz succeeded!?'
+
+'if'=keyword {
+	{whatis if | fgrep '''if''=keyword' >/dev/null} || fail whatis of keyword is not quoted
+}
+
+#
+# wait
+#
+
+submatch 'wait 1 2 3' 'too many arguments to wait' 'arg count'
+$rc -c 'wait 1' >[2]/dev/null && fail wait 1
+
+sleep 3&
+expect $apid
+echo $apids
+wait
+
+if (~ `` '' {wait} ?)
+	fail waiting for nothing
+
+#
+# matching
+#
+touch /tmp/abc.$pid /tmp/bbc.$pid
+mkdir /tmp/dir.$pid /tmp/dip.$pid
+touch /tmp/dir.$pid/^(a b c) /tmp/dip.$pid/^(a b c)
+
+if (!~ 123 [~x]?[0-9])
+	fail match
+if (!~ () *)
+	fail match of null list with '*'
+if (~ () *v*)
+	fail match of null list with '*v*' succeeded
+if (!~ (foo bar zar) *****z*****)
+	fail match of list by one pattern failed
+if (~ (foo bar zar) *c*)
+	fail bad match
+if (!~ [aaa [aaa)
+	fail bad rangematch
+if (!~ ']' []])
+	fail match right bracket
+if (~ x [y])
+	fail rangematch out of range
+if (~ x x?)
+	fail too many characters in pattern
+
+sh -c 'test -f /////tmp//////a?c.'^$pid || fail glob with many slashes
+if (!~ /////tmp//////a*.$pid /////tmp//////a?c.$pid)
+	fail glob with many slashes
+if (!~ ////tmp////di?.$pid////* ////tmp////dir.$pid////*b*)
+	fail glob with more slashes
+if (! @{cd /; ~ */a*.$pid tmp/a*})
+	fail glob in current directory
+if (!~ /tmp/?bc.$pid /tmp/bbc.$pid)
+	fail match of bbc.$pid against '('abc.$pid bbc.$pid')'
+
+rm /tmp/abc.$pid /tmp/bbc.$pid
+rm -rf /tmp/dir.$pid /tmp/dip.$pid
+
+#
+# signals
+#
+fn sigint {eval}
+kill -2 $pid
+fn sigint
+
+#
+# path searching
+#
+$rc -c /frobnatz >[2]/dev/null && fail 'search error'
+
+touch /tmp/noexec.$pid
+chmod a-x /tmp/noexec.$pid
+$rc -c /tmp/noexec.$pid >[2]/dev/null && fail /tmp/noexec.$pid is found!?
+rm /tmp/noexec.$pid
+
+submatch 'path='''' frobnatz' 'frobnatz not found' 'search error'
+
+{path=() /bin/sh -c 'exit 0'} || fail abs pathname with path set to null
+
+#
+# options
+#
+
+# this test is meaningless; not really a trip
+expect prompt, echo hi
+home=/frobnatz $rc -nolpeivdxc 'echo hi'
+if (!~ `` $nl {$rc -c>[2=1]} *': option requires an argument -- c')
+	fail getopt on -c
+if (!~ `` $nl {$rc -q>[2=1]} *': bad option: -q')
+	fail getopt on -q (bogus option)
+if (!~ `{echo '#echo' | $rc -v |[2] sed 's/#//'} echo)
+	fail rc -v
+
+#
+# dot
+#
+
+if (~ `` '' . ?*)
+	fail null dot
+if (~ `` '' {. -i} ?*)
+	fail null dot -i
+
+cat > /tmp/dot.$pid << eof
+echo hi
+eof
+
+prompt=';' if (!~ `` '' {. -i /tmp/dot.$pid>[2=1]} ';hi'^$nl';')
+	fail dot -i
+submatch .' '/tmp/dot.$pid hi dot
+
+rm /tmp/dot.$pid
+
+$rc -c '. /frobnatz' >[2]/dev/null && fail 'dot of a nonexistent file'
+
+#
+# stdin
+#
+if (!~ `{echo echo hi | $rc} hi)
+	fail piping stdin to rc
+
+#
+# functions, variables & environment
+#
+fn --- {for(i)a|[2=3]b>>c<<<e&f>[2=1]}
+
+if (whatis printenv >/dev/null>[2=1]) {
+	printenv=printenv
+} else if (whatis env >/dev/null>[2=1]) {
+	printenv=env
+} else
+	printenv=()
+
+if (~ $#printenv 1 && !~ `` $nl {$printenv | grep fn___2d__2d__2d} 'fn___2d__2d__2d={for(i in $*)a|[2=3]b >>c <<<e&f >[2=1]}')
+	fail protect_env
+
+fn --- {replace}
+~ `{whatis -- ---} *replace* || fail replace a function definition
+fn ---
+whatis -- --- >[2]/dev/null && fail function deletion
+foo=bar *=bar
+foo=nest *=nest {
+	~ $foo nest || fail local assignment
+	~ $* nest || fail local assignment to '$*'
+	foo=()
+	*=()
+	~ $foo () || fail local deletion
+	~ $* () || fail local deletion to '$*'
+}
+~ $foo bar || fail restore of global after local group
+~ $* bar || fail restore of '$*' after local group
+~ `{exec>[2=1];$rc -xc 'foo=()'} 'foo=()' || fail -x echo of variable deletion
+
+fn_ff='{' prompt='' if (!~ `` $nl {$rc -cff>[2=1]} 'line 1: '*' error near eof')
+	fail 'bogus function in environment'
+
+#
+# statuses
+#
+~ `{$rc -ec 'sleep 10&kill -9 $apid;wait'>[2=1]} killed ||
+	fail status diagnostic
+
+$rc -c 'exit 0 sigfpe' && fail exit of bad pipeline is true
+
+submatch 'exit foo' 'bad status' 'exit diagnostic'
+
+#
+# control structures
+#
+if (!~ `{false || echo hi} hi)
+	fail '||'
+if (!~ `{true && echo hi} hi)
+	fail '&&'
+if (~ `{true || echo hi} hi)
+	fail '||'
+if (~ `{false && echo hi} hi)
+	fail '&&'
+
+while (false)
+	fail false while
+while (true) {
+	break
+	fail break in while
+}
+
+switch (foo) {
+	case bar
+		fail matched bar in switch
+	case foo
+		eval
+	case *
+		fail match foo in switch
+}
+
+switch (nothing) {
+	case bar
+		fail matched bar in switch
+	case *
+		i=frobnatz
+}
+
+~ $i frobnatz || fail match '*' in switch
+
+submatch '()=()' 'null variable name' 'assignment diagnostic'
+submatch 'fn () {eval}' 'null function name' 'assigning null function name'
+
+#
+# prompt
+#
+fn prompt {echo hi}
+prompt=() if (!~ `{$rc -i /dev/null>[2]/dev/null} hi) fail fn prompt
+fn prompt
+
+#
+# history
+#
+history=/tmp/hist.$pid prompt='' echo 'history=()' | $rc -i
+
+if (!~ `{cat /tmp/hist.$pid} 'history=()')
+	fail output to history file
+
+history=/tmp/hist.$pid prompt='' echo 'history=()' | $rc -i
+
+if (!~ `` () {cat /tmp/hist.$pid} 'history=()
+history=()
+')
+	fail append to history file
+
+rm /tmp/hist.$pid
+
+if (!~ `{history=/frobnatz/foo prompt='' echo eval | $rc -i >[2=1]} ?*)
+	fail accessing bad history file
+
+#
+# regression
+#
+
+expect date
+{ date & wait } |cat
+
+# Making rc's input non-blocking should have no untoward side effects.
+x=`{ { sleep 1; echo echo foo } | { ./tripping n; $rc >[2=1] } }
+if (!~ foo $x)
+	fail input file descriptor nonblocking
+
+# `rc -s' reads from stdin, but should not imply `-i'
+expect foo bar qux
+$rc -s foo bar qux <<'eof'
+echo $*
+eof
+
+# Believe it or not, I broke root directory globbing in rc-1.6b1.
+x=/*
+~ '/*' $^x && fail root directory globbing
+
+# fn sigexit should be cleared in children
+
+x = ()
+expect nonesuch not found
+x = `{true | nonesuch}; if (~ $x trip) fail sigexit in children
+x = `{ < /dev/null wc |grep xxx }; if (~ $x trip) fail sigexit in children
+x = `{{ wc | wc } < /dev/null }; if (~ $x trip) fail sigexit in children
+
+# core dumps in glob.c
+~ () '*' && fail globber problem
+~ () '**' && fail globber problem
+
+# check for ctrl-a bug
+x=`{./tripping a}
+# ~ `{$rc -c 'echo $x'} $x || fail ctrl-a bug detected
+
+# check for hilarious quoting bug introduced while fixing ctrl-a
+x=('#' '#' '#')
+eval z^`{whatis -v x}
+~ $#zx 3 || fail hilarious quoting bug
+
+# parens bypass quote detector bug
+fn x {echo x.y $(x.y)}
+~ ``''{whatis -f x} 'fn x {echo x.y $''x.y''}
+' || fail sneaky parens bug
+
+# large file support
+
+# this is, by no means, an exhaustive test.  since particular file
+# systems do, or do not, support large files, we try it both in the
+# build directory and /tmp.
+
+if (./tripping l > big.$pid >[2] /dev/null ||
+	./tripping l > /tmp/big.$pid >[2] /dev/null) {
+		echo large file support seems to work
+} else echo large file support seems NOT to work - see INSTALL file
+rm -f big.$pid /tmp/big.$pid

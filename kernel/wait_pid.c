@@ -190,10 +190,12 @@ pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusa
                 CUR_TASK->status=TASK_SUSPEND;
                 //当前线程挂起
                 task_sche();
+                //说明某个进程被关闭了
                 tmp=close_task;
                 while(tmp){//移除所有的等待任务
                     if(tmp->status==TASK_CLOSED){
                         pid=tmp->PID;
+                        shutdown_task(tmp);
                     }
                     remove_wait_queue(&tmp->close_wait,&wait_c);
                     tmp=tmp->del_wait;

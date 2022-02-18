@@ -10,7 +10,7 @@
 /**
 * @breif 操作系统使用的内存块
 */
-#define OS_USE_MEM_AREA_INX 	0
+#define OS_USE_MEM_AREA_INX 	1
 
 #ifndef NOT_USE_EX_MEM
 #define OS_USE_MEM_AREA_INX1 	1
@@ -28,7 +28,7 @@
 /**
 * @breif 内存大小
 */
-#define MALLOC_MEM0_SIZE (20*1024)
+#define MALLOC_MEM0_SIZE (40*1024)
 /**
 * @breif 内存块大小
 */

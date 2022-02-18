@@ -14,6 +14,8 @@ void fs_init(void){
     //创建设备目录
     sys_mkdir("/dev",0777);
     sys_mkdir("/mnt",0777);
+    //null设备
+    sys_mknod("/dev/null",MK_MODE(S_IFCHR,0777),MKDEV(NULL_MAJOR,0));
     //创建两个终端设备
     sys_mknod("/dev/tty0",MK_MODE(S_IFCHR,0777),MKDEV(TTY_MAJOR,0));
     sys_mknod("/dev/tty1",MK_MODE(S_IFCHR,0777),MKDEV(TTY_MAJOR,1));

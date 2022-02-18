@@ -19,8 +19,8 @@ struct tty_queue{
 };
 
 struct tty_struct{
-    struct termios termios;                   //当前使用的终端信息
-    int line_no;                           //所使用的tty
+    struct termios termios;//当前使用的终端信息
+    int line_no;//所使用的line号码
 
     //这里是底层的处理函数
     int32_t (*open)(struct tty_struct * tty, struct file * filp);
@@ -37,13 +37,19 @@ struct tty_struct{
     //然后通过handler处理机制存放到per_queue中，pre_queue中的数据直接可以给用户，或者进行回显
     struct tty_queue pre_queue;
 
+    //有多少列
     int col;
+    //有多少行
+    int row;
     //字符错误
     uint8_t is_error;
-    //
-    uint8_t print_ctl;
 
-    uint8_t used_cn;                        //是否使用了
+    //是否成行了
+    uint8_t is_nl;
+    //
+//    uint8_t print_ctl;
+    //是否使用了
+    uint8_t used_cn;
 };
 
 /*	intr=^C		quit=^|		erase=del	kill=^U
@@ -167,7 +173,7 @@ inline int32_t q_length(struct tty_queue* t_queue){
 }
 int32_t q_add(struct tty_queue *t_queue,uint8_t d);
 int32_t q_get(struct  tty_queue *t_queue,uint8_t *d);
-
+int32_t q_get_f(struct tty_queue *t_queue,uint8_t *d);
 int32_t uart_open(struct tty_struct * tty, struct file * filp);
 
 //serail.c

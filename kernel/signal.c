@@ -54,8 +54,9 @@ int sys_sigaction(int signum, const struct sigaction * action,
 
     if (signum<1 || signum>32 || signum==SIGKILL || signum==SIGSTOP)
         return -EINVAL;
-
+extern void rt_sigreturn();
     sysTasks.currentTask->signals[signum-1]=*action;
+    sysTasks.currentTask->signals[signum-1].sa_restorer= (void (*)(void)) rt_sigreturn;
     if (oldaction)
         *oldaction = sysTasks.currentTask->signals[signum-1];
     // 如果允许信号在自己的信号句柄中收到，则令屏蔽码为0，否则设置屏蔽本信号。
@@ -65,6 +66,11 @@ int sys_sigaction(int signum, const struct sigaction * action,
         sysTasks.currentTask->signals[signum-1].sa_mask |= (1<<(signum-1));
     return 0;
 }
+int sys_rt_sigaction(int signum, const struct sigaction * action,
+                     struct sigaction * oldaction){
+    return sys_sigaction(signum,action,oldaction);
+}
+
 /**
  * 这里处理信号
  * @param psp
@@ -160,16 +166,25 @@ int32_t do_signal(void* psp,uint32_t signr){
  */
 int32_t sys_sigreturn(void* psp){
     uint32_t *_psp=psp;
-    if(_psp[-10]==1) {
-        sysTasks.currentTask->signalBlocked = _psp[-9];
+    if(_psp[10]==1) {
+        sysTasks.currentTask->signalBlocked = _psp[9];
     }
-    void* newPSP=((uint32_t)psp)+9*4;
+    void* newPSP=((uint32_t)psp)+10*4;
     SetPSP(newPSP);
     return 0;
 }
-
+int32_t sys_rt_sigreturn(void* psp){
+    return sys_sigreturn(psp);
+}
+//#define __NR_rt_sigreturn		(__NR_SYSCALL_BASE+173)
+//#define __NR_rt_sigaction		(__NR_SYSCALL_BASE+174)
+//#define __NR_rt_sigprocmask		(__NR_SYSCALL_BASE+175)
+//#define __NR_rt_sigpending		(__NR_SYSCALL_BASE+176)
+//#define __NR_rt_sigtimedwait		(__NR_SYSCALL_BASE+177)
+//#define __NR_rt_sigqueueinfo		(__NR_SYSCALL_BASE+178)
+//#define __NR_rt_sigsuspend		(__NR_SYSCALL_BASE+179)
 void do_signal_isr(void* sp){
-    if(sysTasks.currentTask->skInfo.stackType==1){
+//    if(sysTasks.currentTask->skInfo.stackType==1){
         //去掉阻塞的信号
         uint32_t bBmp=(~sysTasks.currentTask->signalBlocked) & sysTasks.currentTask->signalBMap;
         for(uint32_t i=0;i<_NSIG;i++) {
@@ -183,5 +198,5 @@ void do_signal_isr(void* sp){
             }
             return ;
         }
-    }
+//    }
 }

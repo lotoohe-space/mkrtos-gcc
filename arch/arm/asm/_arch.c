@@ -6,13 +6,21 @@
 #include "sys.h"
 #include "arch/isr.h"
 
-
 void SysTick_Handler(void);
+extern void FSMC_SRAM_Init(void);
+extern int sram_test(void);
+int32_t BSPInit(void){
+    FSMC_SRAM_Init();
+    sram_test();
+    return 0;
+}
 int32_t ArchInit(void){
+
     //×¢²áÖÐ¶Ïº¯Êý
     RegIsrFunc(SysTick_Handler,0,0);
     SysTick_Config(72000000 / OS_WORK_HZ);
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+
     return 0;
 }
 

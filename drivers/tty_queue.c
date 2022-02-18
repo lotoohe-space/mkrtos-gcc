@@ -25,6 +25,21 @@ int32_t q_add(struct tty_queue *t_queue,uint8_t d){
     RestoreCpuInter(t);
     return 0;
 }
+//尾部部出队
+int32_t q_get_f(struct tty_queue *t_queue,uint8_t *d){
+    uint32_t t;
+    t=DisCpuInter();
+    if(t_queue->rear==t_queue->front){//空的
+        RestoreCpuInter(t);
+        return -1;
+    }
+    t_queue->rear = (t_queue->rear - 1 + TTY_READ_BUF_LEN) % TTY_READ_BUF_LEN;
+    if(d) {
+        *d = t_queue->read_buf[t_queue->rear];
+    }
+    RestoreCpuInter(t);
+    return 0;
+}
 int32_t q_get(struct  tty_queue *t_queue,uint8_t *d){
     uint32_t t;
     t=DisCpuInter();

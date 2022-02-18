@@ -30,7 +30,7 @@ uint32_t svcHandler(uint32_t* pwdSF,uint32_t call_num) {
     }
 
     extern int SysCall(void *callNo,void*arg1,void *arg2,void*arg3);
-    if(call_num==119){//sys_sigreturn
+    if(call_num==119||call_num==173){//sys_sigreturn
         psF[0]=((int(*)(int arg0,int arg1,int arg2,int arg3))sys_call_table[call_num])((int)(pwdSF+8),(int)svc_r0,(int)svc_r1,(int)svc_r2);
     }else if(call_num==2) {//fork
         psF[0]=((int(*)(int arg0,int arg1,int arg2,int arg3))sys_call_table[call_num])((int)(pwdSF),(int)svc_r0,(int)svc_r1,(int)svc_r2);

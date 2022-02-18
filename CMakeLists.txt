@@ -75,9 +75,13 @@ include_directories(
 #        lib/mpfr-master/src/
 #        lib/config/arm
 #        lib/soft-
-        app/dash/src
-        app/dash/src/bltin
-/
+
+
+#        app/dash/src
+#        app/dash/src/bltin
+#        app/dash
+
+        app/rc-1.7
  )
 
 file(GLOB_RECURSE SOURCES
@@ -115,33 +119,39 @@ file(GLOB_RECURSE SOURCES
         "lib/dietlibc/libutf8/*.*"
 #        "lib/config/arm/*.*"
 #        "lib/soft-fp/*.*"
-        "app/dash/src/alias.c"
-        "app/dash/src/arith_yacc.c"
-        "app/dash/src/arith_yylex.c"
-        "app/dash/src/cd.c"
-        "app/dash/src/error.c"
-        "app/dash/src/eval.c"
-        "app/dash/src/exec.c"
-        "app/dash/src/expand.c"
-        "app/dash/src/histedit.c"
-        "app/dash/src/input.c"
-        "app/dash/src/jobs.c"
-        "app/dash/src/mail.c"
-        "app/dash/src/main.c"
-        "app/dash/src/memalloc.c"
-        "app/dash/src/miscbltin.c"
-        "app/dash/src/mystring.c"
-        "app/dash/src/options.c"
-        "app/dash/src/parser.c"
-        "app/dash/src/redir.c"
-        "app/dash/src/show.c"
-        "app/dash/src/trap.c"
-        "app/dash/src/output.c"
-        "app/dash/src/bltin/printf.c"
-        "app/dash/src/system.c"
-       # "app/dash/src/bltin/test.c"
-        "app/dash/src/bltin/times.c"
-        "app/dash/src/bltin/var.c"
+
+
+#        "app/dash/src/alias.c"
+#        "app/dash/src/arith_yacc.c"
+#        "app/dash/src/arith_yylex.c"
+#        "app/dash/src/cd.c"
+#        "app/dash/src/error.c"
+#        "app/dash/src/eval.c"
+#        "app/dash/src/exec.c"
+#        "app/dash/src/expand.c"
+#        "app/dash/src/histedit.c"
+#        "app/dash/src/input.c"
+#        "app/dash/src/jobs.c"
+#        "app/dash/src/mail.c"
+#        "app/dash/src/main.c"
+#        "app/dash/src/memalloc.c"
+#        "app/dash/src/miscbltin.c"
+#        "app/dash/src/mystring.c"
+#        "app/dash/src/options.c"
+#        "app/dash/src/parser.c"
+#        "app/dash/src/redir.c"
+#        "app/dash/src/show.c"
+#        "app/dash/src/trap.c"
+#        "app/dash/src/output.c"
+#        "app/dash/src/bltin/printf.c"
+#        "app/dash/src/system.c"
+#       # "app/dash/src/bltin/test.c"
+#        "app/dash/src/bltin/times.c"
+#        "app/dash/src/bltin/var.c"
+#        "app/dash/src/nodes.c"
+
+        "app/rc-1.7/*.c"
+
         )
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RCTx_FLASH.ld)

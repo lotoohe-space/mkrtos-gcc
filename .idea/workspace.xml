@@ -11,173 +11,274 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/dash/INSTALL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/Makefile.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/aclocal.m4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/config.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/config.h.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/config.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/config.status" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/configure" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/depcomp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/install-sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/missing" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/alias.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/arith_yacc.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/arith_yylex.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/builtins.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/cd.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/error.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/eval.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/exec.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/expand.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/histedit.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/init.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/input.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/jobs.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/mail.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/main.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/memalloc.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/miscbltin.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/mystring.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/nodes.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/options.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/output.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/parser.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/printf.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/redir.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/show.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/signames.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/syntax.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/system.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/test.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/times.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/trap.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/.deps/var.Po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/Makefile.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/alias.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/arith_yacc.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/arith_yylex.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/builtins.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/builtins.def" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/builtins.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/builtins.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/cd.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/dash" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/error.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/eval.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/exec.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/expand.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/hetio.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/histedit.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/init.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/init.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/input.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/jobs.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/mail.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/main.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/memalloc.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/miscbltin.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/mkinit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/mknodes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/mksignames" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/mksyntax" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/mystring.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/nodes.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/nodes.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/nodes.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/options.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/output.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/parser.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/printf.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/redir.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/show.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/signames.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/signames.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/syntax.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/syntax.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/syntax.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/system.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/test.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/times.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/token.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/token_vars.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/trap.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/src/var.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dash/stamp-h1" afterDir="false" />
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="cortex没有mmu，所以mmap和mumap直接调用malloc和free函数进行申请内存了">
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/AUTHORS" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/COPYING" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/ChangeLog" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/EXAMPLES" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/INSTALL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/Makefile.am" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/Makefile.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/NEWS" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/RELDATE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/acconfig.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/acinclude.m4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/aclocal.m4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/addon.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/addon.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/builtins.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/config.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/config.h.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/config.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/config.status" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/configure" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/configure.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/except.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/exec.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/fn.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/footobar.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/getgroups.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/getopt.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/glob.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/glom.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/hash.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/heredoc.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/history.1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/input.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/install-sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/jbwrap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/lex.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/list.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/main.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/match.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/missing" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/mkinstalldirs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/nalloc.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/open.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/parse.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/parse.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/parse.y" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/print.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/proto.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/rc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/rc.1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/rc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/redir.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/rlimit.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/sigmsgs.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/sigmsgs.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/signal.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/stamp-h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/stamp-h.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/status.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/statval.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/system.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/tree.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/trip.rc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/tripping" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/utils.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/var.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/wait.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/wait.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/walk.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/rc-1.7/which.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/arch/bsp/sram.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/arch/bsp/sram.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/drivers/null.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/ChangeLog" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/ChangeLog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/ChangeLog.O" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/autogen.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/configure.ac" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/configure.ac" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/Makefile.am" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/Makefile.am" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/TOUR" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/arith_yacc.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/arith_yacc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/echo.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/printf.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/printf.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/bltin/printf.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/test.1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/test.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/bltin/test.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/times.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/bltin/times.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/builtins.def.in" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/builtins.def.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/cd.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/cd.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/dash.1" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/dash.1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/error.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/error.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/error.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/error.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/eval.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/eval.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/eval.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/eval.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/exec.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/exec.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/exec.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/exec.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/expand.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/expand.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/expand.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/expand.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/funcs/cmv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/funcs/dirs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/funcs/kill" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/funcs/login" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/funcs/newgrp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/funcs/popd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/funcs/pushd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/funcs/suspend" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/histedit.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/histedit.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/init.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/init.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/input.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/input.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/input.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/input.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/jobs.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/jobs.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/jobs.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/jobs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/mail.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/mail.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/memalloc.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/memalloc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/memalloc.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/memalloc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/miscbltin.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/miscbltin.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/mkbuiltins" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/mkbuiltins" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/mkinit.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/mkinit.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/mksyntax.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/mksyntax.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/mktokens" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/mktokens" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/mystring.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/mystring.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/options.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/options.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/output.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/output.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/output.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/output.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/parser.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/parser.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/redir.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/redir.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/redir.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/redir.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/show.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/show.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/system.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/system.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/trap.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/trap.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/trap.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/trap.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/var.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/var.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dash/src/var.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/dash/src/var.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/COPYING" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/ChangeLog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/INSTALL" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/Makefile.am" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/Makefile.in" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/aclocal.m4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/config.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/config.h.in" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/config.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/config.status" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/configure" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/configure.ac" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/depcomp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/install-sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/missing" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/alias.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/arith_yacc.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/arith_yylex.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/builtins.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/cd.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/error.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/eval.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/exec.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/expand.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/histedit.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/init.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/input.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/jobs.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/mail.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/main.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/memalloc.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/miscbltin.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/mystring.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/nodes.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/options.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/output.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/parser.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/printf.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/redir.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/show.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/signames.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/syntax.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/system.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/test.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/times.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/trap.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/.deps/var.Po" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/Makefile.am" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/Makefile.in" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/alias.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/alias.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/alias.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/arith_yacc.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/arith_yacc.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/arith_yacc.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/arith_yylex.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/arith_yylex.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/bltin.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/printf.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/test.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/bltin/times.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/builtins.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/builtins.def" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/builtins.def.in" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/builtins.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/builtins.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/cd.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/cd.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/cd.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/dash" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/dash.1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/error.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/error.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/error.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/eval.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/eval.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/eval.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/exec.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/exec.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/exec.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/expand.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/expand.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/expand.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/hetio.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/histedit.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/histedit.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/init.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/init.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/init.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/input.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/input.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/input.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/jobs.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/jobs.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/jobs.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/machdep.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mail.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mail.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mail.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/main.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/main.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/main.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/memalloc.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/memalloc.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/memalloc.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/miscbltin.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/miscbltin.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/miscbltin.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mkbuiltins" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mkinit" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mkinit.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mknodes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mknodes.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mksignames" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mksignames.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mksyntax" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mksyntax.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mktokens" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/myhistedit.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mystring.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mystring.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/mystring.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/nodes.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/nodes.c.pat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/nodes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/nodes.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/nodetypes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/options.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/options.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/options.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/output.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/output.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/output.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/parser.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/parser.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/parser.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/printf.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/redir.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/redir.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/redir.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/shell.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/show.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/show.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/show.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/signames.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/signames.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/syntax.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/syntax.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/syntax.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/system.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/system.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/system.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/test.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/times.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/token.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/token_vars.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/trap.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/trap.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/trap.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/var.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/var.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/src/var.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dash/stamp-h1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arch/arm/asm/_arch.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/_arch.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arch/arm/asm/call_sigreturn.S" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/call_sigreturn.S" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/tty.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/tty_queue.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty_queue.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/dev.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/dev.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/mem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/mem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/signal.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/signal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/tty.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/tty.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/setup.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/setup.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/signal.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/signal.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/syscall.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/syscall.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/wait_pid.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/wait_pid.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/__longjmp.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/__longjmp.S" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/setjmp.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/setjmp.S" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/lib/strerror.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/lib/strerror.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/fs_init.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/fs_init.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -245,7 +346,7 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/arch/bsp" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
     <property name="structure.view.defaults.are.configured" value="true" />
@@ -255,11 +356,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\arch\bsp" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\rc-master" />
+      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\dash" />
       <recent name="C:\Users\zz\CLionProjects\mkrtos-gcc\app" />
-      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\bash-2.0" />
-      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib\dietlibc\syscalls.s" />
-      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\lib\soft-fp" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\bash-2.0" />
@@ -280,9 +381,9 @@
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -363,6 +464,9 @@
       <workItem from="1645109520406" duration="2000" />
       <workItem from="1645112235500" duration="345000" />
       <workItem from="1645113598794" duration="470000" />
+      <workItem from="1645151190995" duration="104000" />
+      <workItem from="1645152056103" duration="3844000" />
+      <workItem from="1645156605403" duration="25575000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -565,31 +669,21 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://D:/Administrator/Downloads/bash-2.0/bash-2.0/lib/malloc/malloc.c</url>
-          <line>410</line>
-          <option name="timeStamp" value="571" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/mem/mem.c</url>
-          <line>358</line>
-          <option name="timeStamp" value="576" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/mem/mem.c</url>
-          <line>365</line>
-          <option name="timeStamp" value="577" />
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/app/rc-1.7/builtins.c</url>
+          <line>108</line>
+          <option name="timeStamp" value="674" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
-        <watch expression="pdi-&gt;name" language="ObjectiveC" />
-        <watch expression="cflag" language="ObjectiveC" />
-        <watch expression="s_s" language="ObjectiveC" />
-        <watch expression="CUR_TASK-&gt;files[fd]" language="ObjectiveC" />
+        <watch expression="action" language="ObjectiveC" />
+        <watch expression="inbuf" language="ObjectiveC" />
+        <watch expression="_psp[0]" language="ObjectiveC" />
+        <watch expression="&amp;buf" language="ObjectiveC" />
         <watch expression="sysTasks.currentTask" language="ObjectiveC" />
-        <watch expression="inode_ls[i]" language="ObjectiveC" />
+        <watch expression="av" language="ObjectiveC" />
       </configuration>
     </watches-manager>
   </component>

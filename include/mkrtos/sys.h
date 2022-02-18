@@ -91,6 +91,8 @@ extern int sys_mmap();       // 90 - 选择共享库。
 extern int sys_munmap();    //91
 extern int sys_wait4();     //114-wait4
 
+extern int sys_rt_sigaction(); //174
+extern int sys_rt_sigreturn(void* psp);
 
 extern int sys_readdir();
 int sys_fchmod(unsigned int fd, mode_t mode);
@@ -101,20 +103,20 @@ extern int sys_sigreturn();
 typedef void* fn_ptr ;
 // 系统调用函数指针表。用于系统调用中断处理程序(int 0x80)，作为跳转表。
 fn_ptr sys_call_table[] = {sys_setup,//实现
-                           sys_exit,
-                           sys_fork,
+                           sys_exit,//实现
+                           sys_fork,//实现
                            sys_read,//实现
                            sys_write,//实现
                            sys_open,//实现
                            sys_close,//实现
-                           sys_waitpid,
+                           sys_waitpid,//实现
 
-                            sys_creat,
-                            sys_link,
-                           sys_unlink,
+                            sys_creat,//实现
+                            sys_link,//实现
+                           sys_unlink,//实现
                            NULL,//sys_execve,
-                            sys_chdir,
-                            sys_time,
+                            sys_chdir,//实现
+                            sys_time,//
                             sys_mknod,
                             sys_chmod,
                            NULL,
@@ -188,8 +190,10 @@ fn_ptr sys_call_table[] = {sys_setup,//实现
     [99]=sys_statfs,
     [100]=sys_fstatfs,
     [114]=sys_wait4,
+    [173]=sys_rt_sigreturn,
     [119]=sys_sigreturn,
     [133]=sys_fchdir,
+    [174]=sys_rt_sigaction,
     [182]=sys_chown,
 
 };

@@ -1,0 +1,188 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+/* Define to a suitable ssize_t. */
+#undef ssize_t
+
+/* Define to a suitable sig_atomic_t. */
+#undef sig_atomic_t
+
+/* Define if you want rc to hand off exec errors to (e.g.) /bin/sh. */
+#undef DEFAULTINTERP
+
+/* Define to the default path used if $PATH is empty when rc starts. */
+#undef DEFAULTPATH
+
+/* Define if your kernel has SysV special SIGCLD semantics. */
+#undef HAVE_SYSV_SIGCLD
+
+/* Define if your kernel supports `#!' magic numbers. */
+#undef HASH_BANG
+
+/* Define if you have /dev/fd. */
+#undef HAVE_DEV_FD
+
+/* Define if you have /proc/self/fd. */
+#undef HAVE_PROC_SELF_FD
+
+/* Define if you have named pipes. */
+#undef HAVE_FIFO
+
+/* Define if quad_t is a native type. */
+#undef HAVE_QUAD_T
+
+/* Define if you have rlim_t. */
+#undef HAVE_RLIM_T
+
+/* Define if you have sigsetjmp(). */
+#undef HAVE_SIGSETJMP
+
+/* Define in you have strerror(). */
+#undef HAVE_STRERROR
+
+/* Define if you want rc to encode strange characters in the environment. */
+#undef PROTECT_ENV
+
+/* Define if you have extra builtins. */
+#undef RC_ADDON
+
+/* Define if you want echo as a builtin. */
+#undef RC_ECHO
+
+/* Define if you want rc to support broken apps, like a job control shell. */
+#undef RC_JOB
+
+/* Define if you want to use editline. */
+#undef EDITLINE
+
+/* Define if you want to use GNU readline. */
+#undef READLINE
+
+/* Define if you have the older readline, with rl_deprep_terminal. */
+#undef READLINE_OLD
+
+/* Define if RLIMIT_foo defines need _KERNEL. */
+#undef RLIMIT_NEEDS_KERNEL
+
+/* Define if rlim_t is quad_t. */
+#undef RLIM_T_IS_QUAD_T
+
+/* Define to package name. */
+#undef PACKAGE
+
+/* Define to version. */
+#undef VERSION
+
+/* Define to release date. */
+#undef RELDATE
+
+/* Define if you have SA_INTERRUPT (and sigaction()). */
+#undef HAVE_SA_INTERRUPT
+
+/* Define if you have POSIX getgroups(). */
+#undef HAVE_POSIX_GETGROUPS
+
+/* Define if you have va_copy(). */
+#undef HAVE_VA_COPY
+
+/* Define to the type of elements in the array set by `getgroups'. Usually
+   this is either `int' or `gid_t'. */
+#undef GETGROUPS_T
+
+/* Define if you have the <dirent.h> header file, and it defines `DIR'. */
+#undef HAVE_DIRENT_H
+
+/* Define if you have the `getgroups' function. */
+#undef HAVE_GETGROUPS
+
+/* Define if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define if you have the `readline' library (-lreadline). */
+#undef HAVE_LIBREADLINE
+
+/* Define if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define if you have the `mkfifo' function. */
+#undef HAVE_MKFIFO
+
+/* Define if you have the <ndir.h> header file, and it defines `DIR'. */
+#undef HAVE_NDIR_H
+
+/* Define if system calls automatically restart after interruption by a
+   signal. */
+#undef HAVE_RESTARTABLE_SYSCALLS
+
+/* Define if you have the `setpgrp' function. */
+#undef HAVE_SETPGRP
+
+/* Define if you have the `setrlimit' function. */
+#undef HAVE_SETRLIMIT
+
+/* Define if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define if you have the <sys/dir.h> header file, and it defines `DIR'. */
+#undef HAVE_SYS_DIR_H
+
+/* Define if you have the <sys/ndir.h> header file, and it defines `DIR'. */
+#undef HAVE_SYS_NDIR_H
+
+/* Define if you have the <sys/resource.h> header file. */
+#undef HAVE_SYS_RESOURCE_H
+
+/* Define if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define if you have the <sys/time.h> header file. */
+#undef HAVE_SYS_TIME_H
+
+/* Define if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define if you have <sys/wait.h> that is POSIX.1 compatible. */
+#undef HAVE_SYS_WAIT_H
+
+/* Define if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Name of package */
+#undef PACKAGE
+
+/* Define if the `setpgrp' function takes no argument. */
+#undef SETPGRP_VOID
+
+/* Define if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* Version number of package */
+#undef VERSION
+
+/* Number of bits in a file offset, on hosts where this is settable. */
+#undef _FILE_OFFSET_BITS
+
+/* Define for large files, on AIX-style hosts. */
+#undef _LARGE_FILES
+
+/* Define to `int' if <sys/types.h> doesn't define. */
+#undef gid_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#undef pid_t
+
+/* Define to `unsigned' if <sys/types.h> does not define. */
+#undef size_t
+
+/* Define to `long' if <sys/types.h> does not define. */
+#undef ssize_t
+
+/* Define to `int' if <sys/types.h> doesn't define. */
+#undef uid_t
