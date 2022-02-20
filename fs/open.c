@@ -70,6 +70,20 @@ int sys_truncate(const char * path, unsigned int length){
     return error;
 }
 int sys_ftruncate(unsigned int fd, unsigned int length){
+    struct inode *inode;
+    if(fd>=NR_FILE || CUR_TASK->files[fd].used==0){
+        //文件已经关闭了
+        return -EBADF;
+    }
+    if(!(CUR_TASK->files[fd].f_inode)){
+        return -ENOENT;
+    }
+    inode=&CUR_TASK->files[fd].f_inode;
+    if (inode->i_ops && inode->i_ops->truncate) {
+        inode->i_ops->truncate(inode,length);
+    }
+    inode->i_dirt = 1;
+    puti(inode);
     return -ENOSYS;
 }
 int sys_utime(char * filename, struct utimbuf * times){
@@ -100,7 +114,6 @@ int sys_chdir(const char * filename){
 
     return 0;
 }
-//感觉这个没有必要存在，根据fd进入某个目录
 int sys_fchdir(unsigned int fd){
     struct inode *o_inode;
     if(fd>=NR_FILE || CUR_TASK->files[fd].used==0){

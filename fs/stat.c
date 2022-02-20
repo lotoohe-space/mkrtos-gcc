@@ -23,7 +23,6 @@ int32_t sys_stat(char * filename, struct new_stat * statbuf)
 {
     struct inode * inode;
     int res=0;
-    int32_t f_len;
     res = namei(filename,&inode);
     if (res<0) {
         return res;

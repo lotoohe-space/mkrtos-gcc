@@ -230,7 +230,6 @@ void tasks_check(void){
     /*关所有中断*/
    // uint32_t t=DisCpuInter();
     sysTasks.sysRunCount++;
-
     //检测所有的定时器信号
     ptb=sysTasks.allTaskList;
     while(ptb){
@@ -246,9 +245,32 @@ void tasks_check(void){
 nextAll:
         ptb=ptb->nextAll;
     }
-
 }
 
+int32_t task_change_prio(struct task *tk,int32_t new_prio){
+    uint32_t t;
+    uint32_t old_prio;
+    if(!tk){
+        return -1;
+    }
+    if(tk->prio==new_prio){
+        return 0;
+    }
+    t = DisCpuInter();
+    old_prio=CUR_TASK->prio;
+    CUR_TASK->prio = new_prio;
+    if (add_task(CUR_TASK) < 0) {
+        //没有足够的内存了，恢复之前的
+        CUR_TASK->prio = old_prio;
+        RestoreCpuInter(t);
+        return -ENOMEM;
+    }
+    CUR_TASK->prio = old_prio;
+    del_task(NULL,CUR_TASK);
+    CUR_TASK->prio = new_prio;
+    RestoreCpuInter(t);
+    return 0;
+}
 
 /**
 * @brief 执行任务调度，返回下一个任务的栈顶
@@ -323,7 +345,12 @@ int32_t sys_alarm (uint32_t seconds){
     sysTasks.currentTask->alarm = sysTasks.sysRunCount+(seconds*1000)/(1000/OS_WORK_HZ);
     return old;
 }
-
+// 挂起进程等待信号
+int32_t sys_pause(void){
+    CUR_TASK->status=TASK_SUSPEND;
+    task_sche();
+    return -1;
+}
 //唤醒队列中所有的任务
 void wake_up(struct wait_queue *queue){
     uint32_t t;
@@ -406,51 +433,6 @@ void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
 
 
 
-// 取当前进程号pid。
-int32_t
-sys_getpid (void)
-{
-    return sysTasks.currentTask->PID;
-}
-
-// 取父进程号ppid。
-int32_t
-sys_getppid (void)
-{
-    if(CUR_TASK->parentTask){
-        return CUR_TASK->parentTask->PID;
-    }else{
-        return -1;
-    }
-}
-
-// 取用户号uid。
-int32_t
-sys_getuid (void)
-{
-    return -ENOSYS;
-}
-
-// 取euid。
-int32_t
-sys_geteuid (void)
-{
-    return -ENOSYS;
-}
-
-// 取组号gid。
-int32_t
-sys_getgid (void)
-{
-    return CUR_TASK->PGID;
-}
-
-// 取egid。
-int32_t
-sys_getegid (void)
-{
-    return -ENOSYS;
-}
 
 /**
  * @brief 调整当前任务优先级

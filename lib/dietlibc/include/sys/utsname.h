@@ -6,7 +6,7 @@
 __BEGIN_DECLS
 
 /* Length of the entries in `struct utsname' is 65.  */
-#define _UTSNAME_LENGTH 65
+#define _UTSNAME_LENGTH 32
 #define _UTSNAME_NODENAME_LENGTH _UTSNAME_LENGTH
 
 /* Linux provides as additional information in the `struct utsname'

@@ -212,10 +212,44 @@ typedef struct task{
     int32_t exitCode;
 
     /**
-     * 管理进程内存申请的链表
+     * 管理进程内存申请的链表，任务关闭时，链表中所有申请的内存将被释放
      */
     struct mem_struct *mems;
 
+    uint8_t is_s_user;
+    /**
+     * 真实id
+     */
+    uid_t ruid;
+    /**
+     * 有效id
+     */
+    uid_t euid;
+    /**
+     * 保存的id
+     */
+    uid_t suid;
+
+    /**
+     * 真实id
+     */
+    uid_t rgid;
+    /**
+     * 有效id
+     */
+    uid_t egid;
+    /**
+     * 保存的id
+     */
+    uid_t sgid;
+
+    /**
+     * 在进程创建一个新文件或新目录时，就一定会使用文件方式创建屏蔽字 (回忆3 . 3和3 . 4节，
+在那里我们说明了 o p e n和c r e a t函数。这两个函数都有一个参数 m o d e，它指定了新文件的存取
+许可权位)。我们将在4 . 2 0节说明如何创建一个新目录，在文件方式创建屏蔽字中为 1的位，在
+文件m o d e中的相应位则一定被转成0。
+     */
+    mode_t maak;
     /**
      * 文件句柄
      */
@@ -324,7 +358,7 @@ void wake_up(struct wait_queue *queue);
 void add_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
 struct wait_queue * find_wait_queue(struct wait_queue ** queue, struct task* tk,uint32_t *max_prio);
 void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
-
+int32_t task_change_prio(struct task *tk,int32_t new_prio);
 
 //printk.c
 void printk(const char *fmt, ...);

@@ -1,6 +1,6 @@
 
 
-extern int sys_setup();        // 0 - 系统启动初始化设置函数。   (kernel/blk_drv/hd.c)
+extern int sys_setup();        // 0 - 系统启动初始化设置函数。
 extern int sys_exit();         // 1 - 程序退出。                 (kernel/exit.c )
 extern int sys_fork();         // 2 - 创建进程。                 (kernel/system_call.s)
 extern int sys_read();         // 3 - 读文件。                   (fs/read_write.c)
@@ -89,6 +89,8 @@ extern int sys_readlink();     // 85 - 读取符号链接文件信息。     (fs/stat.c，69
 extern int sys_uselib();       // 86 - 选择共享库。
 extern int sys_mmap();       // 90 - 选择共享库。
 extern int sys_munmap();    //91
+extern int sys_getpriority(); //96
+extern int sys_setpriority(); //97
 extern int sys_wait4();     //114-wait4
 
 extern int sys_rt_sigaction(); //174
@@ -101,99 +103,108 @@ int sys_statfs(const char * path, struct statfs * buf);
 int sys_fstatfs(unsigned int fd, struct statfs * buf);
 extern int sys_sigreturn();
 typedef void* fn_ptr ;
-// 系统调用函数指针表。用于系统调用中断处理程序(int 0x80)，作为跳转表。
-fn_ptr sys_call_table[] = {sys_setup,//实现
-                           sys_exit,//实现
-                           sys_fork,//实现
-                           sys_read,//实现
-                           sys_write,//实现
-                           sys_open,//实现
-                           sys_close,//实现
-                           sys_waitpid,//实现
 
-                            sys_creat,//实现
-                            sys_link,//实现
-                           sys_unlink,//实现
-                           NULL,//sys_execve,
-                            sys_chdir,//实现
-                            sys_time,//
-                            sys_mknod,
-                            sys_chmod,
-                           NULL,
-
-                           sys_break,
-                           sys_stat,
-
-                           sys_lseek,
-                           sys_getpid,
-                           sys_mount,
-                           NULL,//sys_umount,
-                           sys_setuid,
-                           sys_getuid,
-                           sys_stime,
-                           sys_ptrace,
-                           sys_alarm,
-                           NULL,//sys_fstat,
-                           NULL,//sys_pause,
-                           sys_utime,
-                           sys_stty,
-                           sys_gtty,
-                           sys_access,
-                           sys_nice,
-                           sys_ftime,
-                           NULL,//sys_sync,
-                           NULL, //sys_kill,
-                           sys_rename,
-                           sys_mkdir,
-                           sys_rmdir,
-                           sys_dup,
-                           NULL,//sys_pipe,
-                           sys_times,
-                           sys_prof,
-                           sys_brk,
-                           sys_setgid,
-                           sys_getgid,
-                           sys_signal,
-                           sys_geteuid,
-                           sys_getegid,
-                           sys_acct,
-                           NULL,
-//                           sys_phys,
-                           sys_lock,
-                           sys_ioctl,
-                           sys_fcntl,
-                           sys_mpx,
-                           sys_setpgid,
-                           sys_ulimit,
-                           sys_uname,
-                           sys_umask,
-                           sys_chroot,
-                           sys_ustat,
-                           sys_dup2,
-                           sys_getppid,
-                           sys_getpgrp,
-                           sys_setsid,
-                           sys_sigaction,
-                           sys_sgetmask,
-                           sys_ssetmask,
-                           sys_setreuid,
-                           sys_setregid,
-//                           sys_sigsuspend, sys_sigpending, sys_sethostname,
-//                           sys_setrlimit, sys_getrlimit, sys_getrusage, sys_gettimeofday,
-//                           sys_settimeofday, sys_getgroups, sys_setgroups, sys_select, sys_symlink,
-//                           sys_lstat, sys_readlink, sys_uselib,
-
-    [89]=sys_readdir,
-    [90]=sys_mmap,
-    [91]=sys_munmap,
-    [94]=sys_fchmod,
-    [99]=sys_statfs,
-    [100]=sys_fstatfs,
-    [114]=sys_wait4,
-    [173]=sys_rt_sigreturn,
-    [119]=sys_sigreturn,
-    [133]=sys_fchdir,
-    [174]=sys_rt_sigaction,
-    [182]=sys_chown,
+fn_ptr sys_call_table[] = {
+        [0]=sys_setup,//实现
+        [1]=sys_exit,//实现
+        [2]=sys_fork,//实现
+        [3]=sys_read,//实现
+        [4]=sys_write,//实现
+        [5]=sys_open,//实现
+        [6]=sys_close,//实现
+        [7]=sys_waitpid,//实现
+        [8]= sys_creat,//实现
+        [9]=sys_link,//实现
+        [10]sys_unlink,//实现
+        [11]=NULL,//sys_execve,
+        [12]=sys_chdir,//实现
+        [13]=sys_time,//
+        [14]=sys_mknod,
+        [15]=sys_chmod,
+        [16]= NULL,//sys_chown
+        [17]=sys_break,
+        [18]=sys_stat,
+        [19]=sys_lseek,
+        [20]sys_getpid,
+        [21]sys_mount,
+        [22]NULL,//sys_umount,
+        [23]sys_setuid,
+        [24]sys_getuid,
+        [25]sys_stime,
+        [26]sys_ptrace,
+        [27]sys_alarm,
+        [28]NULL,//sys_fstat,
+        [29]sys_pause,
+        [30]sys_utime,
+        [31]sys_stty,
+        [32]sys_gtty,
+        [33]sys_access,
+        [34]sys_nice,
+        [35]sys_ftime,
+        [36]NULL,//sys_sync,
+        [37]sys_kill,
+        [38]sys_rename,
+        [39]sys_mkdir,
+        [40]sys_rmdir,
+        [41]sys_dup,
+        [42]NULL,//sys_pipe,
+        [43]sys_times,
+        [44]sys_prof,
+        [45]sys_brk,
+        [46]sys_setgid,
+        [47]sys_getgid,
+        [48]sys_signal,
+        [49]sys_geteuid,
+        [50]sys_getegid,
+        [51]sys_acct,
+        [52]NULL,//sys_phys,
+        [53]sys_lock,
+        [54]sys_ioctl,
+        [55]sys_fcntl,
+        [56]sys_mpx,
+        [57]sys_setpgid,
+        [58]sys_ulimit,
+        [59]sys_uname,
+        [60]sys_umask,
+        [61]sys_chroot,
+        [62]sys_ustat,
+        [63]sys_dup2,
+        [64]sys_getppid,
+        [65]sys_getpgrp,
+        [66]sys_setsid,
+        [67]sys_sigaction,
+        [68]sys_sgetmask,
+        [69]sys_ssetmask,
+        [70]sys_setreuid,
+        [71]sys_setregid,
+//                           sys_sigsuspend,
+//                           sys_sigpending,
+//                           sys_sethostname,
+//                           sys_setrlimit,
+//                           sys_getrlimit,
+//                           sys_getrusage,
+//                           sys_gettimeofday,
+//                           sys_settimeofday,
+//                           sys_getgroups,
+//                           sys_setgroups,
+//                           sys_select,
+//                           sys_symlink,
+//                           sys_lstat,
+//                           sys_readlink,
+//                           sys_uselib,
+        [89]=sys_readdir,
+        [90]=sys_mmap,
+        [91]=sys_munmap,
+        [94]=sys_fchmod,
+        [96]=sys_getpriority,
+        [97]=sys_setpriority,
+        [99]=sys_statfs,
+        [100]=sys_fstatfs,
+        [114]=sys_wait4,
+        [173]=sys_rt_sigreturn,
+        [119]=sys_sigreturn,
+        [133]=sys_fchdir,
+        [174]=sys_rt_sigaction,
+        [182]=sys_chown,
 
 };
