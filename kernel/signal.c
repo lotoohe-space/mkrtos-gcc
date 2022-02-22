@@ -179,10 +179,11 @@ int32_t do_signal(struct task* tk,void *cur_psp,uint32_t signr){
                 //这里还应该进行core_dump
 //                if (core_dump(signr))
                 DoExit( (signr) | 0x80);
-                /* fall through */
+                return 0;
             default:
                 //直接干掉进程
                 DoExit( signr);
+                return 0;
         }
     }
 

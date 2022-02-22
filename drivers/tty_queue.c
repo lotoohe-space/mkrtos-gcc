@@ -25,6 +25,22 @@ int32_t q_add(struct tty_queue *t_queue,uint8_t d){
     RestoreCpuInter(t);
     return 0;
 }
+//检测尾部的字符是否是指定的字符
+int32_t q_check_f(struct tty_queue *t_queue,uint8_t c){
+    uint32_t t;
+    t=DisCpuInter();
+    if(t_queue->rear==t_queue->front){//空的
+        RestoreCpuInter(t);
+        return -1;
+    }
+    uint32_t tmp_rear = (t_queue->rear - 1 + TTY_READ_BUF_LEN) % TTY_READ_BUF_LEN;
+    if(t_queue->read_buf[tmp_rear]==c){
+        RestoreCpuInter(t);
+        return 0;
+    }
+    RestoreCpuInter(t);
+    return 1;
+}
 //尾部部出队
 int32_t q_get_f(struct tty_queue *t_queue,uint8_t *d){
     uint32_t t;

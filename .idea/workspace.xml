@@ -11,19 +11,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="下一步完善信号相关的系统调用">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="修改信号处理">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/signal.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/signal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/tty.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/tty_queue.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty_queue.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/tty.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/tty.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kernel/signal.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/signal.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,6 +117,11 @@
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">

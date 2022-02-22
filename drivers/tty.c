@@ -182,6 +182,9 @@ static int tty_ioctl(struct inode * inode, struct file * file, unsigned int cmd,
                 cur_tty->ioctl(cur_tty,file,TTY_IO_SET,&seri);
             }
             break;
+        case TIOCSWINSZ:
+            //改变窗体大小
+            break;
         default:
             //暂时不支持的CMD
             break;
@@ -313,6 +316,29 @@ int32_t tty_def_line_write(struct tty_struct * tty,struct file* fp,uint8_t *buf,
     return i;
 }
 /**
+ * 删除一个字符
+ * @param tty
+ * @return
+ */
+static int erase_c(struct tty_struct *tty){
+    char r_tmp;
+    //如果最后一个字符是换行符号，则不能在进行擦除了。
+    if(q_check_f(&tty->pre_queue,'\n')){
+        return 0;
+    }
+    if(q_get_f(&tty->pre_queue,&r_tmp)>=0) {
+        //刪除上次写的两个字符
+        //如果在标准模式下设定了ECHOE标志，则当收到一个ERASE控制符时将删除前一个显示字符。
+        tty_add_w_queue(tty, '\b');
+        tty_add_w_queue(tty, ' ');
+        tty_add_w_queue(tty, '\b');
+        if(tty->col>0) {
+            tty->col--;
+        }
+    }
+    return 0;
+}
+/**
  * 对读取的数据进行处理
  * @param tty
  */
@@ -372,12 +398,7 @@ void tty_def_line_handler(struct tty_struct *tty){
                     }
                     if (L_ICANON(tty)) {//标准模式
                         if (L_ECHOE(tty) && r == ERASE_C(tty)) {//删除一个字符
-                            //刪除上次写的两个字符
-                            //如果在标准模式下设定了ECHOE标志，则当收到一个ERASE控制符时将删除前一个显示字符。
-                            tty_add_w_queue(tty, '\b');
-                            tty_add_w_queue(tty, ' ');
-                            tty_add_w_queue(tty, '\b');
-                            q_get_f(&tty->pre_queue,NULL);
+                            erase_c(tty);
                             continue;
                         }
                         if (!L_ECHOKE(tty)) {
@@ -392,10 +413,7 @@ void tty_def_line_handler(struct tty_struct *tty){
                         } else if (r == KILL_C(tty)) {
                             //刪除这行的每一个字符
                             for (int i = 0; i < tty->col; i++) {
-                                tty_add_w_queue(tty, '\b');
-                                tty_add_w_queue(tty, ' ');
-                                tty_add_w_queue(tty, '\b');
-                                q_get_f(&tty->pre_queue,NULL);
+                                erase_c(tty);
                             }
                             continue;
                         }
@@ -423,7 +441,6 @@ void tty_def_line_handler(struct tty_struct *tty){
                             q_clear(&tty->w_queue);
                             q_clear(&tty->r_queue);
                         }
-//                        task_sche();
                         continue;
                     } else if (r == QUIT_C(tty)) {
                         CUR_TASK->signalBMap |= (1 << (SIGQUIT - 1));
@@ -431,14 +448,12 @@ void tty_def_line_handler(struct tty_struct *tty){
                             q_clear(&tty->w_queue);
                             q_clear(&tty->r_queue);
                         }
-//                        task_sche();
                         continue;
                     } else if (r == SUSP_C(tty)) {
                         CUR_TASK->signalBMap |= (1 << (SIGTSTP - 1));
                         if (!L_NOFLSH(tty)) {
                             q_clear(&tty->r_queue);
                         }
-//                        task_sche();
                         continue;
                     }
                 }
@@ -479,7 +494,7 @@ void tty_def_line_handler(struct tty_struct *tty){
                             }
                         }
                         tty->is_nl=1;
-                        q_clear(&tty->r_queue);
+//                        q_clear(&tty->r_queue);
                         return ;
                     }else{
                         tty->is_nl=0;

@@ -174,6 +174,7 @@ inline int32_t q_length(struct tty_queue* t_queue){
 int32_t q_add(struct tty_queue *t_queue,uint8_t d);
 int32_t q_get(struct  tty_queue *t_queue,uint8_t *d);
 int32_t q_get_f(struct tty_queue *t_queue,uint8_t *d);
+int32_t q_check_f(struct tty_queue *t_queue,uint8_t c);
 int32_t uart_open(struct tty_struct * tty, struct file * filp);
 
 //serail.c
