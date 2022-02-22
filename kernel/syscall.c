@@ -44,8 +44,8 @@ uint32_t svcHandler(uint32_t* pwdSF,uint32_t call_num) {
             psF[1]=-1;
         }
     }
-    extern void do_signal_isr(void* sp);
-    do_signal_isr(pwdSF+8);
+//    extern void do_signal_isr(void* sp);
+//    do_signal_isr(pwdSF+8);
 
     return 0;
 }

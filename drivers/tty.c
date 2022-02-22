@@ -359,7 +359,7 @@ void tty_def_line_handler(struct tty_struct *tty){
                 //本地模式的处理
                 if (L_ECHO(tty)) {
                     if (L_ECHOCTL(tty) && iscntrl(r)) {
-                        if (r != START_C(tty)
+                        if (r != START_C(tty)//显示指定的控制字符
                             && r != STOP_C(tty)
                             && r != '\t'
                             && r != '\n'
@@ -380,9 +380,6 @@ void tty_def_line_handler(struct tty_struct *tty){
                             q_get_f(&tty->pre_queue,NULL);
                             continue;
                         }
-//                    else{
-//                        tty->print_ctl=0;
-//                    }
                         if (!L_ECHOKE(tty)) {
                             if (L_ECHOK(tty)) {
                                 //如果ICANON同时设置，KILL将删除当前行
@@ -413,13 +410,14 @@ void tty_def_line_handler(struct tty_struct *tty){
                     }
                 }
                 next:
-//            if(!I_IGNBRK(tty) && I_BRKINT(tty) && r==BREAK){
-//                CUR_TASK->signalBMap|=(1<<(SIGINT-1));
-//            }
+//                if(!I_IGNBRK(tty) && I_BRKINT(tty) && r==){
+//                    CUR_TASK->signalBMap|=(1<<(SIGINT-1));
+//                }
 
                 if (L_ISIG(tty)) {
                     //发送响应的信号
                     if (r == INTR_C(tty)) {
+                        //发送给前台进程组的所有进程
                         CUR_TASK->signalBMap |= (1 << (SIGINT - 1));
                         if (!L_NOFLSH(tty)) {
                             q_clear(&tty->w_queue);

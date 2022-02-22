@@ -228,20 +228,27 @@ int32_t add_task(struct task* pTaskBlock){
 void tasks_check(void){
     PTaskBlock ptb;
     /*关所有中断*/
-   // uint32_t t=DisCpuInter();
     sysTasks.sysRunCount++;
     //检测所有的定时器信号
     ptb=sysTasks.allTaskList;
     while(ptb){
-        if(ptb->alarm){
+        if(ptb->status==TASK_RUNNING
+        && ptb->alarm){
             //时间到了
             if(ptb->alarm<sysTasks.sysRunCount){
+                //发送指定信号
                 ptb->signalBMap|=1<<(SIGALRM-1);
                 ptb->alarm = 0;
             }
         }
-        //运行时间+1
-        ptb->runCount++;
+        /*else if(ptb->status==TASK_SUSPEND){
+            //SIGCONT信号在这里处理
+            if (ptb->signalBMap & (1 << (SIGCONT - 1))) {
+                //如果收到的信号是SIGCONT，并且此时任务暂停了，则唤醒它
+                ptb->status=TASK_RUNNING;
+            }
+        }
+         */
 nextAll:
         ptb=ptb->nextAll;
     }
@@ -327,10 +334,11 @@ struct _stackInfo* sys_task_sche(void* psp,void* msp,uint32_t spType){
         }while(1);
     }
     //恢复任务的svc状态
-    if(sysTasks.currentTask->skInfo.svcStatus==1){
+    if(sysTasks.currentTask->skInfo.svcStatus==TRUE){
         (*svcPendReg)|=0x80L;
         (*svcPendReg)&=~(0x100L);
     }
+    sysTasks.currentTask->runCount++;
     /*返回堆栈的地址*/
     return &(sysTasks.currentTask->skInfo);
 }
@@ -388,8 +396,7 @@ struct wait_queue * find_wait_queue(struct wait_queue ** queue, struct task* tk,
         *max_prio = 0;
     }
     while(temp){
-        if (temp->task->status != TASK_CLOSING
-            || temp->task->status != TASK_CLOSED
+        if ( temp->task->status != TASK_CLOSED
                 ) {
             if(temp->task==tk){
                 res=temp;

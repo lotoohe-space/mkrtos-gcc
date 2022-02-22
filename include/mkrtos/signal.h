@@ -68,29 +68,7 @@ struct sigaction
     sigset_t sa_mask;
 };
 
-// 为信号_sig 安装一个新的信号处理程序（信号句柄），与sigaction()类似。
-//void (*signal (int _sig, void (*_func) (int))) (int);
-// 向当前进程发送一个信号。其作用等价于kill(getpid(),sig)。
-int raise (int sig);
-// 可用于向任何进程组或进程发送任何信号。
-int kill (int32_t pid, int sig);
-// 向信号集中添加信号。
-int sigaddset (sigset_t * mask, int signo);
-// 从信号集中去除指定的信号。
-int sigdelset (sigset_t * mask, int signo);
-// 从信号集中清除指定信号集。
-int sigemptyset (sigset_t * mask);
-// 向信号集中置入所有信号。
-int sigfillset (sigset_t * mask);
-// 判断一个信号是否是信号集中的。1 -- 是， 0 -- 不是， -1 -- 出错。
-int sigismember (sigset_t * mask, int signo);	/* 1 - is, 0 - not, -1 error */
-// 对set 中的信号进行检测，看是否有挂起的信号。
-int sigpending (sigset_t * set);
-// 改变目前的被阻塞信号集（信号屏蔽码）。
-int sigprocmask (int how, sigset_t * set, sigset_t * oldset);
-// 用sigmask 临时替换进程的信号屏蔽码,然后暂停该进程直到收到一个信号。
-int sigsuspend (sigset_t * sigmask);
-// 用于改变进程在收到指定信号时所采取的行动。
-int sigaction (int sig, struct sigaction *act, struct sigaction *oldact);
+void sig_chld(struct task *tk);
+
 
 #endif /* _SIGNAL_H */

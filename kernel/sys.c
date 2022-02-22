@@ -355,3 +355,9 @@ int sys_setpriority(int which,int who, int prio){
     RestoreCpuInter(t);
     return ret;
 }
+
+//执行一个新的程序
+int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
+
+    return -ENOSYS;
+}

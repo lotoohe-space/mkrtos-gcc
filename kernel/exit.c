@@ -6,12 +6,14 @@
 #include <mkrtos/task.h>
 #include "arch/arch.h"
 #include "stdlib.h"
-#include "sys/wait.h"
 #include <mkrtos/mem.h>
 
-//extern PTaskBlock find_task(int32_t PID);
+//signal.c
+extern void sig_chld(void);
+//shced.c
 extern void update_cur_task(void);
 extern void task_sche(void);
+//fs.h
 extern void sys_close(int fp);
 /**
 * @brief 在系统中删除当前执行的任务，该删除只是设置为僵尸进程
@@ -42,6 +44,8 @@ void DoExit(int32_t exitCode){
     }
     mem_clear();
     t=DisCpuInter();
+    //发送chld给父进程
+    sig_chld();
     //释放栈空间
     OSFree(CUR_TASK->memLowStack);
     //设置任务已经关闭了

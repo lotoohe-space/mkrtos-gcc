@@ -31,10 +31,10 @@ typedef enum{
     * @brief	任务挂起
     */
     TASK_SUSPEND,
-    /**
-    * @brief	任务关闭中
-    */
-    TASK_CLOSING,
+//    /**
+//    * @brief	任务关闭中
+//    */
+//    TASK_CLOSING,
     /**
      * @brief 任务已经被关闭了
      */
@@ -100,7 +100,7 @@ struct _stackInfo{
     */
     uint16_t stackType;
     /**
-    * @brief svc中断是否产生,pendsv可能嵌套svc中断
+    * @brief svc中断是否产生,pendsv可能嵌套svc中断,为1代表正在svc调用
     */
     uint16_t svcStatus;
 };
@@ -110,6 +110,7 @@ struct _stackInfo{
 struct _SysTaskBaseLinks;
 struct sigaction;
 struct mem_struct;
+struct tty_struct;
 /**
 * @brief	任务控制块
 */
@@ -193,9 +194,9 @@ typedef struct task{
      */
     struct sigaction signals[_NSIG];
     /**
-     * @brief 信号mask
+     * @brief 信号mask，
      */
-    uint32_t signalBlocked;
+    uint32_t sig_mask;
 
     /**
      * @brief 定时多少ms
@@ -234,30 +235,20 @@ typedef struct task{
      * 真实id
      */
     uid_t rgid;
-    /**
-     * 有效id
-     */
-    uid_t egid;
-    /**
-     * 保存的id
-     */
-    uid_t sgid;
+    uid_t egid;//有效id
+    uid_t sgid;//保存的id
 
     /**
      * 在进程创建一个新文件或新目录时，就一定会使用文件方式创建屏蔽字 (回忆3 . 3和3 . 4节，
-在那里我们说明了 o p e n和c r e a t函数。这两个函数都有一个参数 m o d e，它指定了新文件的存取
-许可权位)。我们将在4 . 2 0节说明如何创建一个新目录，在文件方式创建屏蔽字中为 1的位，在
-文件m o d e中的相应位则一定被转成0。
+     * 在那里我们说明了 o p e n和c r e a t函数。这两个函数都有一个参数 m o d e，它指定了新文件的存取
+     * 许可权位)。我们将在4 . 2 0节说明如何创建一个新目录，在文件方式创建屏蔽字中为 1的位，在
+     * 文件m o d e中的相应位则一定被转成0。
      */
     mode_t maak;
-    /**
-     * 文件句柄
-     */
-    struct file files[NR_FILE];
-    //根inode
-    void* root_inode;
-    //当前目录
-    void* pwd_inode;
+    struct tty_struct *tty;//当前进程使用的tty，如果是后台进程，则该参数为NULL
+    struct file files[NR_FILE];//文件
+    void* root_inode; //根inode
+    void* pwd_inode;//当前目录
 
 }*PTaskBlock,TaskBlock;
 

@@ -116,7 +116,7 @@ fn_ptr sys_call_table[] = {
         [8]= sys_creat,//实现
         [9]=sys_link,//实现
         [10]sys_unlink,//实现
-        [11]=NULL,//sys_execve,
+        [11]=sys_execve,
         [12]=sys_chdir,//实现
         [13]=sys_time,//
         [14]=sys_mknod,
