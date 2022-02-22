@@ -92,7 +92,8 @@ int32_t sem_take(sem_t mid){
     if(atomic_test(&sem_list[mid].s_sem_count,0)) {
         atomic_inc(&(sem_list[mid].s_wait_num));
         //如果为零则挂起当前任务
-        CUR_TASK->status=TASK_SUSPEND;
+        task_suspend();
+//        CUR_TASK->status=TASK_SUSPEND;
         task_sche();
         //醒来重新检查
         goto again;

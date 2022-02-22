@@ -191,7 +191,7 @@ __BEGIN_DECLS
 #define SA_ONSTACK	0x08000000
 #define SA_RESTART	0x10000000
 #define SA_INTERRUPT	0x20000000 /* dummy -- ignored */
-#define SA_NODEFER	0x40000000
+#define SA_NODEFER	0x40000000//阻止在指定的信号处理程序(信号句柄)中再收到该信号
 #define SA_RESETHAND	0x80000000
 #endif
 

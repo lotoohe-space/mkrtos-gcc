@@ -252,13 +252,15 @@ static void __wait_on_bk_ch_ls(dev_t bk_dev_no){
 
     add_wait_queue(&(devs_bk[bk_dev_no].b_ch_ls_wait), &wait);
     again:
-    CUR_TASK->status = TASK_SUSPEND;
+    task_suspend();
+//    CUR_TASK->status = TASK_SUSPEND;
     if (atomic_read(&(devs_bk[bk_dev_no].bk_ch_ls_lock))) {
         task_sche();
         goto again;
     }
     remove_wait_queue(&(devs_bk[bk_dev_no].b_ch_ls_wait), &wait);
-    CUR_TASK->status = TASK_RUNNING;
+    task_run();
+//    CUR_TASK->status = TASK_RUNNING;
 }
 
 void wait_on_bk_ch_ls(dev_t bk_dev_no){

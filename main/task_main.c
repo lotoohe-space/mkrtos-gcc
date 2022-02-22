@@ -172,20 +172,22 @@ void rc_shell_exec(void){
    }else if(res==0){
        extern int rc_main(int argc, char *argv[], char *envp[]) ;
        static char * argv[]={
-               {"/rc.rc"}
+               "./rcshell"
+               ,"-l"
                ,NULL
        };
        static char *env[]={
-               {"mkrtos"}
+               {"PATH=/"}
                ,NULL
        };
-       rc_main(1,argv,env);
+       rc_main(2,argv,env);
+       while(1);
    }else if(res>0){
        wait(0);
    }
 }
 void sig_test_fuN(int signo){
-    CUR_TASK->signalBMap|=(1<<(SIGHUP-1));
+    inner_set_sig(SIGHUP);
     delay_ms(200);
     printf("接收到了信号：%d\r\n",signo);
 }
@@ -201,16 +203,30 @@ void start_task(void* arg0,void*arg1){
     open("/dev/tty", O_RDWR, 0777);
 
     printf("to init task.\r\n");
+#if 0
+    int ret=fork();
+    if(ret<0){
+        printf("init create error.\r\n");
+    }else if(ret==0){
 
-//    extern int sys_sigaction(int sig, const struct sigaction *restrict act,struct sigaction *restrict oact);
-//
-//    struct sigaction sigact={0};
-//    sigact.sa_flags=0;//SA_RESETHAND;
-//    sigact._u._sa_handler=sig_test_fuN;
-//    sys_sigaction(SIGHUP,&sigact,NULL);
-//
-//    CUR_TASK->signalBMap|=(1<<(SIGHUP-1));
-//    while(1);
+        extern int sys_sigaction(int sig, const struct sigaction *restrict act,struct sigaction *restrict oact);
+
+        struct sigaction sigact={0};
+        sigact.sa_flags=0;//SA_RESETHAND;
+        sigact._u._sa_handler=sig_test_fuN;
+        sys_sigaction(SIGHUP,&sigact,NULL);
+
+        extern int32_t sys_pause(void);
+        pause();
+        while(1);
+    }else {
+        delay_ms(50);
+
+        inner_set_task_sig(ret,SIGHUP);
+    }
+
+    while(1);
+#endif
 #if 1
     int ret=fork();
     if(ret<0){
@@ -251,7 +267,7 @@ void KernelTaskInit(void){
     tcp.arg0=(void*)0;
     tcp.arg1=0;
     tcp.prio=6;
-    tcp.userStackSize=512;
+    tcp.userStackSize=1024;
     tcp.kernelStackSize=512;
     tcp.taskName="init";
 

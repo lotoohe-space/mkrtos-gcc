@@ -79,7 +79,7 @@
 #define HAVE_SA_INTERRUPT 0
 
 /* Define if you have POSIX getgroups(). */
-#define HAVE_POSIX_GETGROUPS 1
+#define HAVE_POSIX_GETGROUPS 0
 
 /* Define if you have va_copy(). */
 /* #undef HAVE_VA_COPY */

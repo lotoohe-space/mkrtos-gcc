@@ -39,7 +39,7 @@ int32_t q_check_f(struct tty_queue *t_queue,uint8_t c){
         return 0;
     }
     RestoreCpuInter(t);
-    return 1;
+    return -1;
 }
 //尾部部出队
 int32_t q_get_f(struct tty_queue *t_queue,uint8_t *d){

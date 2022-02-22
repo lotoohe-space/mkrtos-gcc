@@ -18,9 +18,9 @@ int32_t  do_kill_pid(pid_t pid,int32_t sig){
     return -ESRCH;
    }
    //发送kill信号
-   tmp->signalBMap|=(1<<(SIGKILL-1));
+    inner_set_sig(SIGKILL);
    if(!sig) {//发送指定信号
-       tmp->signalBMap |= (1 << (sig - 1));
+       inner_set_sig(sig);
    }
    RestoreCpuInter(t);
    return 0;
@@ -38,9 +38,9 @@ int32_t do_kill_group(pid_t pgid,int32_t sig){
     tmp=sysTasks.allTaskList;
     while(tmp){
         if(pgid==tmp->PGID){
-            tmp->signalBMap|=(1<<(SIGKILL-1));
+            inner_set_sig(SIGKILL);
             if(!sig) {//发送指定信号
-                tmp->signalBMap |= (1 << (sig - 1));
+                inner_set_sig(sig);
             }
         }
         tmp=tmp->nextAll;

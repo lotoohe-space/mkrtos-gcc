@@ -11,12 +11,33 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="修改信号处理">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="下一步完善信号相关的系统调用">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/rc-1.7/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/rc-1.7/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drivers/tty.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drivers/tty_queue.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty_queue.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/tty.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/tty.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/uart.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/uart.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/bk.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/dev.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/dev.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/inode.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/mem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/mem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/mutex.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/mutex.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/sem.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/sem.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/kill.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/kill.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kernel/signal.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/signal.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/syscall.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/syscall.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/wait_pid.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/wait_pid.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/include/signal.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/include/signal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,11 +138,6 @@
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -417,10 +433,15 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/app/rc-1.7/builtins.c</url>
-          <line>108</line>
-          <option name="timeStamp" value="674" />
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main/task_main.c</url>
+          <line>182</line>
+          <option name="timeStamp" value="759" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/app/rc-1.7/main.c</url>
+          <line>20</line>
+          <option name="timeStamp" value="760" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -429,7 +450,7 @@
         <watch expression="action" language="ObjectiveC" />
         <watch expression="inbuf" language="ObjectiveC" />
         <watch expression="_psp[0]" language="ObjectiveC" />
-        <watch expression="&amp;buf" language="ObjectiveC" />
+        <watch expression="sysTasks" language="ObjectiveC" />
         <watch expression="sysTasks.currentTask" language="ObjectiveC" />
         <watch expression="_psp[8]" language="ObjectiveC" />
       </configuration>

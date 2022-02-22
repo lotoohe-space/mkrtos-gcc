@@ -77,10 +77,12 @@ static void wait_task(struct wait_queue **wait_c){
     struct wait_queue wait={CUR_TASK,NULL};
     //如果这个进程还没有进入关闭状态，则等待关闭这个进程
     add_wait_queue(wait_c,&wait);
-    CUR_TASK->status=TASK_SUSPEND;
+    task_suspend();
+//    CUR_TASK->status=TASK_SUSPEND;
     task_sche();
     remove_wait_queue(wait_c,&wait);
-    CUR_TASK->status=TASK_RUNNING;
+    task_run();
+//    CUR_TASK->status=TASK_RUNNING;
 }
 static pid_t shutdown_task(struct task* ls){
     int32_t res_pid;
@@ -187,7 +189,8 @@ pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusa
                 }
 
                 //开始等待
-                CUR_TASK->status=TASK_SUSPEND;
+                task_suspend();
+//                CUR_TASK->status=TASK_SUSPEND;
                 //当前线程挂起
                 task_sche();
                 //说明某个进程被关闭了
@@ -202,7 +205,8 @@ pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusa
                 }
                 //清除队列
                 clear_task_q(&close_task);
-                CUR_TASK->status=TASK_RUNNING;
+                task_run();
+//                CUR_TASK->status=TASK_RUNNING;
                 return pid;
             }
         }

@@ -5,6 +5,7 @@
 
 #include "arch/arch.h"
 #include "errno.h"
+#include "stdio.h"
 #include <string.h>
 #include <mkrtos/mem.h>
 #include <mkrtos/task.h>
@@ -219,14 +220,14 @@ uint32_t GetMemSize(uint16_t inxMem, void* mem_addr){
 * @param inxMem 内存块索引
 * @return 返回剩余多少字节
 */
-uint32_t GetFreeMemory(void) {
+uint32_t GetFreeMemory(uint8_t mem_no) {
 	
 	/*剩余内存大小*/
-	return osMem.OSMemItemLs[OS_USE_MEM_AREA_INX].freeBlockNum * osMem.OSMemItemLs[OS_USE_MEM_AREA_INX].memBlockSize;
+	return osMem.OSMemItemLs[mem_no].freeBlockNum * osMem.OSMemItemLs[OS_USE_MEM_AREA_INX].memBlockSize;
 
 }
-uint32_t GetTotalMemory(void){
-	return osMem.OSMemItemLs[OS_USE_MEM_AREA_INX].memSize;
+uint32_t GetTotalMemory(uint8_t mem_no){
+	return osMem.OSMemItemLs[mem_no].memSize;
 }
 /**
 * @breif 申请内存
@@ -347,6 +348,7 @@ void mem_clear(void){
         OSFree((*tmp));
         *tmp=next;
     }
+    printk("remain memory size is %d.\n",GetFreeMemory(1));
 }
 void* sys_mmap(void *start, size_t length, int prot, int flags,int fd, off_t offset){
 //    if(fd!=-1){

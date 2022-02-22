@@ -82,8 +82,8 @@ void _Free(uint16_t inxMem, void* mem_addr) ;
 * @param inxMem 内存块索引
 * @return 返回剩余多少字节
 */
-uint32_t GetFreeMemory(void) ;
-uint32_t GetTotalMemory(void);
+uint32_t GetFreeMemory(uint8_t mem_no);
+uint32_t GetTotalMemory(uint8_t mem_no);
 /**
 * @breif 申请内存
 * @param size 申请的大小

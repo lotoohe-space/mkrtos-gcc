@@ -246,10 +246,12 @@ int32_t tty_def_line_read(struct tty_struct * tty,struct file* fp,uint8_t *buf,i
     if(!q_length(&tty->r_queue)){//读取数据的长度为零，则休眠等待
         struct wait_queue wait = {CUR_TASK , NULL };
         add_wait_queue(&tty->r_wait, &wait);
-        CUR_TASK->status = TASK_SUSPEND;
+        task_suspend();
+//        CUR_TASK->status = TASK_SUSPEND;
         task_sche();
         remove_wait_queue(&tty->r_wait, &wait);
-        CUR_TASK->status = TASK_RUNNING;
+        task_run();
+//        CUR_TASK->status = TASK_RUNNING;
         goto again;
     }
     if(tty_lines[tty->line_no].handler){
@@ -260,6 +262,7 @@ int32_t tty_def_line_read(struct tty_struct * tty,struct file* fp,uint8_t *buf,i
         //规范模式下没有成一行
         goto again;
     }
+    tty->is_nl=0;
 //    if(q_length(&tty->pre_queue)<=0){
 //        goto again;
 //    }
@@ -323,7 +326,7 @@ int32_t tty_def_line_write(struct tty_struct * tty,struct file* fp,uint8_t *buf,
 static int erase_c(struct tty_struct *tty){
     char r_tmp;
     //如果最后一个字符是换行符号，则不能在进行擦除了。
-    if(q_check_f(&tty->pre_queue,'\n')){
+    if(q_check_f(&tty->pre_queue,'\n')==0){
         return 0;
     }
     if(q_get_f(&tty->pre_queue,&r_tmp)>=0) {
@@ -436,21 +439,21 @@ void tty_def_line_handler(struct tty_struct *tty){
                     //发送响应的信号
                     if (r == INTR_C(tty)) {
                         //发送给前台进程组的所有进程
-                        CUR_TASK->signalBMap |= (1 << (SIGINT - 1));
+                        inner_set_sig(SIGINT);
                         if (!L_NOFLSH(tty)) {
                             q_clear(&tty->w_queue);
                             q_clear(&tty->r_queue);
                         }
                         continue;
                     } else if (r == QUIT_C(tty)) {
-                        CUR_TASK->signalBMap |= (1 << (SIGQUIT - 1));
+                        inner_set_sig(SIGQUIT);
                         if (!L_NOFLSH(tty)) {
                             q_clear(&tty->w_queue);
                             q_clear(&tty->r_queue);
                         }
                         continue;
                     } else if (r == SUSP_C(tty)) {
-                        CUR_TASK->signalBMap |= (1 << (SIGTSTP - 1));
+                        inner_set_sig(SIGTSTP);
                         if (!L_NOFLSH(tty)) {
                             q_clear(&tty->r_queue);
                         }

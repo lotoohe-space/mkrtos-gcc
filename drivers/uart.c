@@ -55,9 +55,9 @@ void console_write(const char* str){
     if(initFlag==0){
         extern void EXTI9_5_IRQHandler(void);
 
-        RegIsrFunc(EXTI9_5_IRQHandler,23,0);
+        RegIsrFunc(EXTI9_5_IRQHandler,24,0);
         Ch432_SPI_Init();
-        CH432T_recv_1_data_fun = CH432TRecvCB;
+//        CH432T_recv_1_data_fun = CH432TRecvCB;
         initFlag=1;
 //        return ;
     }

@@ -44,23 +44,21 @@ void DoExit(int32_t exitCode){
     }
     mem_clear();
     t=DisCpuInter();
+    /*实际会等待执行了66行后，才会调度*/
+    task_sche();
     //发送chld给父进程
     sig_chld();
-    //释放栈空间
-    OSFree(CUR_TASK->memLowStack);
-    //设置任务已经关闭了
-    CUR_TASK->status=TASK_CLOSED;
     //唤醒等待这个队列关闭的
     wake_up(CUR_TASK->close_wait);
-
+    //设置任务已经关闭了
+    CUR_TASK->status=TASK_CLOSED;
     sysTasks.currentMaxTaskNode->taskReadyCount--;
     if(sysTasks.currentMaxTaskNode->taskReadyCount==0){
         //任务更新
         update_cur_task();
     }
-
-    /*立刻进行任务调度*/
-    task_sche();
+    //释放栈空间
+    OSFree(CUR_TASK->memLowStack);
     RestoreCpuInter(t);
 
 }
@@ -75,6 +73,6 @@ void TaskToEnd(int32_t exitCode){
 
 int sys_exit(int exitCode){
     /*删除当前任务*/
-    DoExit(exitCode);
+    inner_set_sig(SIGKILL);
     return 0;
 }

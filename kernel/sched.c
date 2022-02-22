@@ -34,10 +34,42 @@ struct task* find_task(int32_t PID){
     return NULL;
 }
 
+//让任务挂起
+void task_suspend(void){
+    if(CUR_TASK->status!=TASK_SUSPEND
+     &&CUR_TASK->status!=TASK_CLOSED
+    ) {
+        sysTasks.currentMaxTaskNode->taskReadyCount--;
+        if(sysTasks.currentMaxTaskNode->taskReadyCount==0){
+            //任务更新
+            update_cur_task();
+        }
+        CUR_TASK->status = TASK_SUSPEND;
+    }
+}
+//让任务运行
+void task_run(void){
+    if(CUR_TASK->status!=TASK_RUNNING
+       &&CUR_TASK->status!=TASK_CLOSED
+    ){
+        sysTasks.currentMaxTaskNode->taskReadyCount++;
+        CUR_TASK->status = TASK_RUNNING;
+    }
+}
+void task_run_1(struct task* tk){
+    if(tk->status!=TASK_RUNNING){
+        tk->parent->taskReadyCount++;
+        tk->status = TASK_RUNNING;
+    }
+}
+
 /**
 * @brief 任务调度，如果任务调度关闭，则调用无效
 */
 void task_sche(void){
+    if(sysTasks.currentMaxTaskNode->taskReadyCount==0){
+        return ;
+    }
     //监测是否可以调度
     if(atomic_test(&(sysTasks.isSch),TRUE)){
         _TaskSchedule();
@@ -128,9 +160,12 @@ static PSysTaskBaseLinks AddLinks(uint8_t prio){
  */
 void del_task(struct task** task_ls, struct task* del){
     PSysTaskBaseLinks taskLinks;
+    uint32_t t;
+    t=DisCpuInter();
     if(!task_ls){
         taskLinks = FindTaskLinks(del->prio);
         if(taskLinks==NULL){
+            RestoreCpuInter(t);
             return ;
         }
         task_ls=&(taskLinks->pSysTaskLinks);
@@ -150,6 +185,7 @@ void del_task(struct task** task_ls, struct task* del){
         lastP=pTemp;
         pTemp=pTemp->next;
     }
+    RestoreCpuInter(t);
 }
 /**
 * @brief 通过优先级添加任务，如果这个优先级不存在，则创建该优先级的任务节点
@@ -237,7 +273,7 @@ void tasks_check(void){
             //时间到了
             if(ptb->alarm<sysTasks.sysRunCount){
                 //发送指定信号
-                ptb->signalBMap|=1<<(SIGALRM-1);
+                inner_set_sig(SIGALRM);
                 ptb->alarm = 0;
             }
         }
@@ -355,7 +391,8 @@ int32_t sys_alarm (uint32_t seconds){
 }
 // 挂起进程等待信号
 int32_t sys_pause(void){
-    CUR_TASK->status=TASK_SUSPEND;
+    task_suspend();
+//    CUR_TASK->status=TASK_SUSPEND;
     task_sche();
     return -1;
 }
@@ -366,7 +403,8 @@ void wake_up(struct wait_queue *queue){
     while(queue){
         if(queue->task){
             if(queue->task->status==TASK_SUSPEND){
-                queue->task->status=TASK_RUNNING;
+                task_run_1(queue->task);
+//                queue->task->status=TASK_RUNNING;
             }
         }
         queue=queue->next;

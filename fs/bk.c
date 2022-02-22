@@ -410,13 +410,15 @@ static void __wait_on_bk(struct bk_cache* bk){
 
     add_wait_queue(&bk->b_wait, &wait);
     again:
-    CUR_TASK->status = TASK_SUSPEND;
+    task_suspend();
+//    CUR_TASK->status = TASK_SUSPEND;
     if (atomic_read(&( bk->b_lock))) {
         task_sche();
         goto again;
     }
     remove_wait_queue(&bk->b_wait, &wait);
-    CUR_TASK->status = TASK_RUNNING;
+    task_run();
+//    CUR_TASK->status = TASK_RUNNING;
 }
 
 void wait_on_bk(struct bk_cache* bk){

@@ -20,10 +20,6 @@
 typedef enum{
 
     /**
-    * @brief	任务休息
-    */
-    TASK_REST=0,
-    /**
     * @brief	任务运行
     */
     TASK_RUNNING,
@@ -31,10 +27,6 @@ typedef enum{
     * @brief	任务挂起
     */
     TASK_SUSPEND,
-//    /**
-//    * @brief	任务关闭中
-//    */
-//    TASK_CLOSING,
     /**
      * @brief 任务已经被关闭了
      */
@@ -188,7 +180,7 @@ typedef struct task{
     /**
      * @brief 信号的位图
      */
-    uint32_t signalBMap;
+    uint32_t sig_bmp;
     /**
      * @brief 信号处理
      */
@@ -350,9 +342,17 @@ void add_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
 struct wait_queue * find_wait_queue(struct wait_queue ** queue, struct task* tk,uint32_t *max_prio);
 void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
 int32_t task_change_prio(struct task *tk,int32_t new_prio);
+void update_cur_task(void);
+void task_suspend(void);
+void task_run(void);
+void task_run_1(struct task* tk);
 
 //printk.c
 void printk(const char *fmt, ...);
 void fatalk(const char* fmt, ...);
+
+//signal.c
+int32_t inner_set_sig(uint32_t signum);
+int32_t inner_set_task_sig(pid_t pid,uint32_t signum);
 
 #endif //UNTITLED1_TASK_H

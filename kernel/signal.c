@@ -11,6 +11,13 @@ void DoExit(int32_t exitCode);
 //发送SIGCHLD给父进程
 void sig_chld(struct task *tk){
     struct sigaction *sig;
+    //
+    if(tk->status==TASK_CLOSED
+    || tk->parentTask==NULL
+    || tk->parentTask->status==TASK_CLOSED
+    ){
+        return ;
+    }
     tk=CUR_TASK->parentTask;
     sig=&(tk->parentTask->signals[SIGCHLD-1]);
     if(sig->sa_handler!=SIG_IGN){
@@ -18,18 +25,46 @@ void sig_chld(struct task *tk){
         if(sig->sa_flags&SA_NOCLDSTOP){
             return ;
         }
-        tk->signalBMap|=(1<<(SIGCHLD-1));
+        tk->sig_bmp|=(1<<(SIGCHLD-1));
     }
 }
-//int32_t inner_set_sig(struct task* tk,uint32_t signum){
-//    if (signum<1 || signum>32){
-//        return -EINVAL;
-//    }
-//
-//    //设置相应的位
-//    tk->signalBMap|=(1<<(signum-1));
-//    return 0;
-//}
+int32_t inner_set_sig(uint32_t signum){
+    if (
+            signum<1 || signum>32
+            ){
+        return -EINVAL;
+    }
+    //设置相应的位
+    CUR_TASK->sig_bmp|=(1<<(signum-1));
+    //收到信号的进程都应该被设置为运行状态
+    if(CUR_TASK->status!=TASK_RUNNING){
+        task_run();
+    }
+    return 0;
+}
+int32_t inner_set_task_sig(pid_t pid,uint32_t signum){
+    if (
+            signum<1 || signum>32
+            ){
+        return -EINVAL;
+    }
+    struct task *tk;
+    uint32_t t;
+    t=DisCpuInter();
+    tk= find_task(pid);
+    if(tk->status==TASK_CLOSED){
+        RestoreCpuInter(t);
+        return -1;
+    }
+    //设置相应的位
+    tk->sig_bmp|=(1<<(signum-1));
+    //收到信号的进程都应该被设置为运行状态
+    if(tk->status!=TASK_RUNNING){
+        task_run_1(tk);
+    }
+    RestoreCpuInter(t);
+    return 0;
+}
 
 int32_t sys_sgetmask()
 {
@@ -123,32 +158,34 @@ int sys_rt_sigaction(int signum, const struct sigaction * action,
  * @param signr
  * @return
  */
-int32_t do_signal(struct task* tk,void *cur_psp,uint32_t signr){
+int32_t do_signal(void *cur_psp,uint32_t signr){
     struct sigaction  *sig;
     if(
-        tk->skInfo.svcStatus==1
-        ||tk->userStackSize==0
+            CUR_TASK->status==TASK_CLOSED
+//        ||CUR_TASK->skInfo.svcStatus==1
+        ||CUR_TASK->userStackSize==0
         ){
         // 任务必须没有正在执行系统调用
         // 内核线程不能够执行信号量
         return -2;
     }
-    sig = &(tk->signals[signr - 1]);
+    sig = &(CUR_TASK->signals[signr - 1]);
+    //先复位信号
+    sysTasks.currentTask->sig_bmp&=~(1<<(signr-1));
     //忽略信号
     if(sig->sa_handler==SIG_IGN){
         return -1;
     }
     //默认的信号处理函数
     if(sig->sa_handler==SIG_DFL) {
+
         switch (signr) {
             // 如果信号是以下两个则也忽略之，并返回。
             case SIGCONT:
                 //此作业控制信号送给需要继续运行的处于停止状态的进程。
                 // 如果接收到此信号的进程处于停止状态，
                 // 则系统默认动作是使该进程继续运行，否则默认动作是忽略此信号。
-                if(tk->status==TASK_SUSPEND){
-                    tk->status=TASK_RUNNING;
-                }
+                // 收到信号的进程都会被激活，所以这个信号直接忽略就行了
             case SIGCHLD:
                return 1;
 
@@ -157,13 +194,10 @@ int32_t do_signal(struct task* tk,void *cur_psp,uint32_t signr){
             case SIGTTIN:
             case SIGTTOU:
                 //挂起当前任务
-                tk->status = TASK_SUSPEND;
-                tk->exitCode = signr;
-                sig_chld(tk);
-//                if (!(tk->parentTask->signals[SIGCHLD-1].sa_flags &
-//                      SA_NOCLDSTOP)) {
-//                    tk->parentTask->signalBMap |= (1 << (SIGCHLD - 1));
-//                }
+                task_suspend();
+//                CUR_TASK->status = TASK_SUSPEND;
+                CUR_TASK->exitCode = signr;
+                sig_chld(CUR_TASK);
                 return (1);  /* Reschedule another event */
                 // 如果信号是以下6种信号之一，那么若信号产生了core dump，则以退出码为signr|0x80
                 // 调用do_exit()退出。否则退出码就是信号值。do_exit()的参数是返回码和程序提供的退出
@@ -192,10 +226,10 @@ int32_t do_signal(struct task* tk,void *cur_psp,uint32_t signr){
 
     }
     uint32_t *_psp;
-    if(tk==CUR_TASK){
+    if(CUR_TASK==CUR_TASK){
         _psp = cur_psp;
     }else {
-        _psp = tk->skInfo.pspStack;
+        _psp = CUR_TASK->skInfo.pspStack;
     }
     //
 //    if(!(sig->sa_flags & SA_NODEFER)) {
@@ -241,7 +275,7 @@ int32_t do_signal(struct task* tk,void *cur_psp,uint32_t signr){
 //        sysTasks.currentTask->sig_mask |= (1<<(signr-1));
 //    }
     //处理完成信号，复位信号
-    sysTasks.currentTask->signalBMap&=~(1<<(signr-1));
+//    sysTasks.currentTask->sig_bmp&=~(1<<(signr-1));
     return 0;
 }
 /**
@@ -268,13 +302,11 @@ int32_t sys_rt_sigreturn(void* psp){
 //#define __NR_rt_sigtimedwait		(__NR_SYSCALL_BASE+177)
 //#define __NR_rt_sigqueueinfo		(__NR_SYSCALL_BASE+178)
 //#define __NR_rt_sigsuspend		(__NR_SYSCALL_BASE+179)
-void do_signal_isr_(struct task* tk,void *cur_psp){
-//    void *sp;
-//    获得用户栈
-//    sp=tk->skInfo.pspStack;
-    if(tk->status!=TASK_CLOSED){
+
+void do_signal_isr(void* sp){
+    if(CUR_TASK->status!=TASK_CLOSED){
         //过滤掉阻塞的
-        uint32_t bBmp=(~tk->sig_mask) & tk->signalBMap;
+        uint32_t bBmp=(~CUR_TASK->sig_mask) & CUR_TASK->sig_bmp;
         if(!bBmp) {
             return ;
         }
@@ -284,22 +316,9 @@ void do_signal_isr_(struct task* tk,void *cur_psp){
                 continue;
             }
             //信号一个一个处理，处理完成则返回,下次到来在处理另外一个
-            if (do_signal(tk,cur_psp, i + 1) == 1) {
+            if (do_signal(sp, i + 1) == 1) {
                 task_sche();
             }
         }
     }
-}
-void do_signal_isr(void* sp){
-    //在该函数中检测每一个没有被关闭的任务的信号
-    struct task* tmp;
-//    uint32_t t;
-//    t=DisCpuInter();
-    tmp=sysTasks.allTaskList;
-    while(tmp){
-        //如果是当前进程
-        do_signal_isr_(tmp,sp);
-        tmp=tmp->nextAll;
-    }
-//    RestoreCpuInter(t);
 }

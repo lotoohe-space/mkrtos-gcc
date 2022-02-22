@@ -25,13 +25,15 @@ static void __wait_on_inode_list(void){
 
     add_wait_queue(&ino_ls, &wait);
     again:
-    CUR_TASK->status = TASK_SUSPEND;
+    task_suspend();
+//    CUR_TASK->status = TASK_SUSPEND;
     if (atomic_read(&( ino_ls_lock))) {
         task_sche();
         goto again;
     }
     remove_wait_queue(&ino_ls, &wait);
-    CUR_TASK->status = TASK_RUNNING;
+    task_run();
+//    CUR_TASK->status = TASK_RUNNING;
 }
 void wake_up_wait_inode_list(void){
     wake_up(&ino_ls);
@@ -213,13 +215,15 @@ static void __wait_on_inode(struct inode * inode)
 
     add_wait_queue(&inode->i_wait_q, &wait);
     again:
-    CUR_TASK->status = TASK_SUSPEND;
+    task_suspend();
+//    CUR_TASK->status = TASK_SUSPEND;
     if (atomic_read(&( inode->i_lock))) {
         task_sche();
         goto again;
     }
     remove_wait_queue(&inode->i_wait_q, &wait);
-    CUR_TASK->status = TASK_RUNNING;
+    task_run();
+//    CUR_TASK->status = TASK_RUNNING;
 }
 void wait_on_inode(struct inode* inode){
     if (atomic_read(&( inode->i_lock))) {

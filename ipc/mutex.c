@@ -89,7 +89,8 @@ int32_t lock_mutex(int32_t mt_l){
         mx->m_who_lock=CUR_TASK;
     }else{
         //如果为零则挂起当前任务
-        CUR_TASK->status=TASK_SUSPEND;
+        task_suspend();
+//        CUR_TASK->status=TASK_SUSPEND;
         task_sche();
         goto again;
     }
