@@ -5,6 +5,7 @@
 #include <type.h>
 #include <mkrtos/task.h>
 #include <errno.h>
+#include <signal.h>
 void DoExit(int32_t exitCode);
 
 //发送SIGCHLD给父进程
@@ -32,14 +33,14 @@ void sig_chld(struct task *tk){
 
 int32_t sys_sgetmask()
 {
-    return sysTasks.currentTask->sig_mask;
+    return CUR_TASK->sig_mask;
 }
 
 int32_t sys_ssetmask(int32_t newmask)
 {
-    int32_t old=sysTasks.currentTask->sig_mask;
+    int32_t old=CUR_TASK->sig_mask;
 
-    sysTasks.currentTask->sig_mask = newmask & ~(1<<(SIGKILL-1)) & ~(1<<(SIGSTOP-1));
+    CUR_TASK->sig_mask = newmask & ~(1<<(SIGKILL-1)) & ~(1<<(SIGSTOP-1));
     return old;
 }
 extern void rt_sigreturn();
@@ -62,33 +63,54 @@ int32_t sys_signal(int32_t signum, int32_t handler, int32_t restorer)
     }
 
     temp.sa_handler = (void (*)(int)) handler;
-    temp.sa_mask = 0;
-    temp.sa_flags = SA_ONESHOT | SA_NOMASK;
+    temp.sa_mask.sig[0] = 0;
+    temp.sa_mask.sig[1] = 0;
+    temp.sa_flags = SA_RESETHAND | SA_NODEFER;
 //    temp.sa_restorer = (void (*)(void)) restorer;
     temp.sa_restorer=rt_sigreturn;//直接指向一个系统调用
-    handler = (uint32_t) sysTasks.currentTask->signals[signum-1].sa_handler;
-    sysTasks.currentTask->signals[signum-1] = temp;
+    handler = (uint32_t) CUR_TASK->signals[signum-1].sa_handler;
+    CUR_TASK->signals[signum-1] = temp;
     return handler;
 }
-// sigaction()系统调用。改变进程在收到一个信号时的操作。signum是除了SIGKILL以外的
-// 任何信号。[如果新操作（action）不为空 ]则新操作被安装。如果 oldaction指针不为空，
-// 则原操作被保留到oldaction。成功则返回0，否则为-EINVAL。
-int sys_sigaction(int signum, const struct sigaction * action,
-                  struct sigaction * oldaction)
-{
+// 如果参数act不是一个空指针，它将指向一个结构，指定与指定信号相关的动作。
+// 与指定信号相关联的结构。
+// 如果参数oact不是一个空指针，那么之前与信号相关的动作 被存储在参数oact所指向的位置。
+// 如果 参数act是一个空指针，信号的处理是不变的；
+// 因此，该调用可用于 查询当前对一个给定信号的处理。
+// SIGKILL和SIGSTOP信号应 不应使用这种机制将SIGKILL和SIGSTOP信号添加到信号掩码中；
+// 这一限制应被系统强制执行。这个限制应该由系统来执行，而不会导致显示错误。
 
-    if (signum<1 || signum>32 || signum==SIGKILL || signum==SIGSTOP)
+//如果在sigaction结构的sa_flags字段中清除了SA_SIGINFO标志（见下文），
+// sa_handler字段就会确定与指定信号相关的动作。
+// 如果sa_flags字段中的SA_SIGINFO标志被设置，并且实现支持实时信号扩展选项或XSI扩展选项，
+// sa_sigaction字段指定了一个信号捕捉函数。
+//sa_flags字段可用于修改指定信号的行为。
+
+int sys_sigaction(int sig, const struct sigaction *restrict act,struct sigaction *restrict oact){
+
+    if (sig<1 || sig>32 || sig==SIGKILL || sig==SIGSTOP){
         return -EINVAL;
+    }
+    if(!act){
+        return -EINVAL;
+    }
+    if(oact){
+        *oact = CUR_TASK->signals[sig-1];
+    }
 
-    sysTasks.currentTask->signals[signum-1]=*action;
-    sysTasks.currentTask->signals[signum-1].sa_restorer= (void (*)(void)) rt_sigreturn;
-    if (oldaction)
-        *oldaction = sysTasks.currentTask->signals[signum-1];
+    CUR_TASK->signals[sig-1]=*act;
+    CUR_TASK->signals[sig-1].sa_restorer= (void (*)(void)) rt_sigreturn;
     // 如果允许信号在自己的信号句柄中收到，则令屏蔽码为0，否则设置屏蔽本信号。
-    if (sysTasks.currentTask->signals[signum-1].sa_flags & SA_NOMASK)
-        sysTasks.currentTask->signals[signum-1].sa_mask = 0;
-    else
-        sysTasks.currentTask->signals[signum-1].sa_mask |= (1<<(signum-1));
+    if (CUR_TASK->signals[sig-1].sa_flags & SA_NODEFER) {
+        CUR_TASK->signals[sig - 1].sa_mask.sig[0]=0;
+        CUR_TASK->signals[sig - 1].sa_mask.sig[1]=0;
+    }else {
+        CUR_TASK->signals[sig - 1].sa_mask.sig[0] |= (1 << (sig - 1));
+    }
+//    if(CUR_TASK->signals[sig-1].sa_flags&SA_RESETHAND){
+//        CUR_TASK->signals[sig - 1].sa_mask.sig[0]=0;
+//        CUR_TASK->signals[sig - 1].sa_mask.sig[1]=0;
+//    }
     return 0;
 }
 int sys_rt_sigaction(int signum, const struct sigaction * action,
@@ -101,7 +123,7 @@ int sys_rt_sigaction(int signum, const struct sigaction * action,
  * @param signr
  * @return
  */
-int32_t do_signal(struct task* tk,uint32_t signr){
+int32_t do_signal(struct task* tk,void *cur_psp,uint32_t signr){
     struct sigaction  *sig;
     if(
         tk->skInfo.svcStatus==1
@@ -164,35 +186,59 @@ int32_t do_signal(struct task* tk,uint32_t signr){
         }
     }
 
-    uint32_t *_psp=tk->skInfo.pspStack;
-    //
-    if(!(sig->sa_flags & SA_NOMASK)) {
-        *(_psp) = 1;
-        //不阻塞，则压入阻塞列表
-        *(--_psp) = sysTasks.currentTask->sig_mask;
-        *(--_psp) = (uint32_t)0x01000000L; /* xPSR */
-    }else{
-        *(_psp) = 0;
-        *(--_psp) = NULL;
-        *(--_psp) = (uint32_t)0x01000000L; /* xPSR */
+    if(sig->sa_flags&SA_ONSTACK){
+        //是否采用备用栈
+
     }
+    uint32_t *_psp;
+    if(tk==CUR_TASK){
+        _psp = cur_psp;
+    }else {
+        _psp = tk->skInfo.pspStack;
+    }
+    //
+//    if(!(sig->sa_flags & SA_NODEFER)) {
+//        *(_psp) = ;
+        //不阻塞，则压入阻塞列表
+        *(_psp) = sig->sa_mask.sig[0];
+        *(--_psp) = (uint32_t)0x01000000L; /* xPSR */
+//    }else{
+//        *(_psp) = 0;
+//        *(--_psp) = NULL;
+//        *(--_psp) = (uint32_t)0x01000000L; /* xPSR */
+//    }
     *(--_psp) = ((uint32_t)sig->sa_handler); /* Entry Point */
     /* R14 (LR) (init value will cause fault if ever used)*/
     *(--_psp) = (uint32_t)sig->sa_restorer;/*LR*/
     *(--_psp) = (uint32_t)0x12121212L; /* R12*/
     *(--_psp) = (uint32_t)0x03030303L; /* R3 */
-    *(--_psp) = (uint32_t)0x02020202L; /* R2 */
-    *(--_psp) = (uint32_t)0x01010101L; 	/* R1 */
-    *(--_psp) = (uint32_t)signr; 	    /* R0 : argument */
+    if(sig->sa_flags&SA_SIGINFO){
+        struct siginfo siginfo;
+        siginfo.si_signo=signr;
+        siginfo.si_errno=0;
+        siginfo.si_code=0;
+        *(--_psp) = (uint32_t) NULL; /* R2 */
+        *(--_psp) = (uint32_t) &siginfo;    /* R1 */
+        *(--_psp) = (uint32_t) signr;        /* R0 : argument */
+    }else {
+        *(--_psp) = (uint32_t) 0x02020202L; /* R2 */
+        *(--_psp) = (uint32_t) 0x01010101L;    /* R1 */
+        *(--_psp) = (uint32_t) signr;        /* R0 : argument */
+    }
 
     //设置新的用户栈
     SetPSP(_psp);
     //如果只处理一次，则清空信号处理函数，设置为默认
-    if(sig->sa_flags&SA_ONESHOT){
+    if(sig->sa_flags&SA_RESETHAND){
         sig->sa_handler=SIG_DFL;
+        //恢复默认值
+        sig->sa_flags=0;
     }
-    //设置阻塞码
-    sysTasks.currentTask->sig_mask |= sig->sa_mask;
+    CUR_TASK->sig_mask|=sig->sa_mask.sig[0];
+//    if(!(sig->sa_flags&SA_NODEFER)) {
+//        //在处理信号时不在收到该信号
+//        sysTasks.currentTask->sig_mask |= (1<<(signr-1));
+//    }
     //处理完成信号，复位信号
     sysTasks.currentTask->signalBMap&=~(1<<(signr-1));
     return 0;
@@ -204,10 +250,10 @@ int32_t do_signal(struct task* tk,uint32_t signr){
  */
 int32_t sys_sigreturn(void* psp){
     uint32_t *_psp=psp;
-    if(_psp[10]==1) {
-        sysTasks.currentTask->sig_mask = _psp[9];
-    }
-    void* newPSP=((uint32_t)psp)+10*4;
+    //针对SA_NODEFER标志，复位sig_mask
+//    sysTasks.currentTask->sig_mask &= ~(1<<(_psp[8]-1));
+    CUR_TASK->sig_mask&=~(_psp[9]);
+    void* newPSP=((uint32_t)psp)+9*4;
     SetPSP(newPSP);
     return 0;
 }
@@ -221,10 +267,10 @@ int32_t sys_rt_sigreturn(void* psp){
 //#define __NR_rt_sigtimedwait		(__NR_SYSCALL_BASE+177)
 //#define __NR_rt_sigqueueinfo		(__NR_SYSCALL_BASE+178)
 //#define __NR_rt_sigsuspend		(__NR_SYSCALL_BASE+179)
-void do_signal_isr_(struct task* tk){
-    void *sp;
-    //获得用户栈
-    sp=tk->skInfo.pspStack;
+void do_signal_isr_(struct task* tk,void *cur_psp){
+//    void *sp;
+//    获得用户栈
+//    sp=tk->skInfo.pspStack;
     if(tk->status!=TASK_CLOSED){
         //过滤掉阻塞的
         uint32_t bBmp=(~tk->sig_mask) & tk->signalBMap;
@@ -237,7 +283,7 @@ void do_signal_isr_(struct task* tk){
                 continue;
             }
             //信号一个一个处理，处理完成则返回,下次到来在处理另外一个
-            if (do_signal(sp, i + 1) == 1) {
+            if (do_signal(tk,cur_psp, i + 1) == 1) {
                 task_sche();
             }
         }
@@ -250,7 +296,8 @@ void do_signal_isr(void* sp){
 //    t=DisCpuInter();
     tmp=sysTasks.allTaskList;
     while(tmp){
-        do_signal_isr_(tmp);
+        //如果是当前进程
+        do_signal_isr_(tmp,sp);
         tmp=tmp->nextAll;
     }
 //    RestoreCpuInter(t);

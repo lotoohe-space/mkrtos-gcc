@@ -184,6 +184,11 @@ void rc_shell_exec(void){
        wait(0);
    }
 }
+void sig_test_fuN(int signo){
+    CUR_TASK->signalBMap|=(1<<(SIGHUP-1));
+    delay_ms(200);
+    printf("接收到了信号：%d\r\n",signo);
+}
 //启动进程
 void start_task(void* arg0,void*arg1){
     extern void fs_init(void);
@@ -196,6 +201,17 @@ void start_task(void* arg0,void*arg1){
     open("/dev/tty", O_RDWR, 0777);
 
     printf("to init task.\r\n");
+
+//    extern int sys_sigaction(int sig, const struct sigaction *restrict act,struct sigaction *restrict oact);
+//
+//    struct sigaction sigact={0};
+//    sigact.sa_flags=0;//SA_RESETHAND;
+//    sigact._u._sa_handler=sig_test_fuN;
+//    sys_sigaction(SIGHUP,&sigact,NULL);
+//
+//    CUR_TASK->signalBMap|=(1<<(SIGHUP-1));
+//    while(1);
+#if 1
     int ret=fork();
     if(ret<0){
         printf("init create error.\r\n");
@@ -206,6 +222,7 @@ void start_task(void* arg0,void*arg1){
     }else {
        while(1);
     }
+#endif
 }
 void idle_task(void){
     while(1);
