@@ -147,7 +147,7 @@ fn_ptr sys_call_table[] = {
         [39]sys_mkdir,
         [40]sys_rmdir,
         [41]sys_dup,
-        [42]NULL,//sys_pipe,
+        [42]sys_pipe,
         [43]sys_times,
         [44]sys_prof,
         [45]sys_brk,

@@ -20,6 +20,7 @@ struct tty_queue{
 
 struct tty_struct{
     struct termios termios;//当前使用的终端信息
+    struct winsize w_size;
     int line_no;//所使用的line号码
 
     //这里是底层的处理函数

@@ -151,6 +151,7 @@ static int tty_ioctl(struct inode * inode, struct file * file, unsigned int cmd,
     void *res_term;
     dev_t  dev_no;
     struct tty_struct *cur_tty;
+    struct winsize *pw_size;
     struct serial_struct seri;
     dev_no=file->f_rdev;
     res_term=(void*)arg;
@@ -182,8 +183,20 @@ static int tty_ioctl(struct inode * inode, struct file * file, unsigned int cmd,
                 cur_tty->ioctl(cur_tty,file,TTY_IO_SET,&seri);
             }
             break;
+        case TIOCGWINSZ:
+            //获取窗口大小
+            pw_size =(struct winszie* )arg;
+            *pw_size=cur_tty->w_size;
+            break;
         case TIOCSWINSZ:
             //改变窗体大小
+            pw_size=(struct winszie* )arg;
+            if(pw_size->ws_col!=cur_tty->w_size.ws_col
+            ||pw_size->ws_row!=cur_tty->w_size.ws_row
+            ){
+                inner_set_sig(SIGWINCH);
+            }
+            cur_tty->w_size=*pw_size;
             break;
         default:
             //暂时不支持的CMD
