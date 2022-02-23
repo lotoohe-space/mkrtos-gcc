@@ -86,7 +86,8 @@ struct pipe_struct{
     uint32_t rear;
     uint32_t front;
     uint32_t lock;
-    struct task* wait_tk;
+    struct task* r_wait_tk;
+    struct task* w_wait_tk;
 };
 #define PIPE_LEN(a) ((a->rear-a->front+a->data_len)%a->data_len)
 #define MIN(a,b) ((a)<(b)?(a):(b))
@@ -103,7 +104,7 @@ static int pipe_read (struct inode *inode, struct file *fp, char * buf, int cn){
     again:
     if(pipe->rear==pipe->front){
         //没有数据则等待
-        pipe->wait_tk=CUR_TASK;
+        pipe->r_wait_tk=CUR_TASK;
         task_suspend();
         task_sche();
         goto again;
@@ -118,15 +119,17 @@ static int pipe_read (struct inode *inode, struct file *fp, char * buf, int cn){
             buf[i]= pipe->data[pipe->front];
             pipe->front=(pipe->front+1)%pipe->data_len;
         }
+        atomic_set(&pipe->lock,0);
+        task_run_1(pipe->w_wait_tk);
         if(read_inx>=cn){
-            atomic_set(&pipe->lock,0);
             return read_inx;
+        }else{
+            read_cn=cn-read_inx;
+            //没有读够，继续等待
+            goto again;
         }
-        read_cn=cn-read_inx;
-        //没有读够，继续等待
-        goto again;
     }else{
-        pipe->wait_tk=CUR_TASK;
+        pipe->r_wait_tk=CUR_TASK;
         task_suspend();
         task_sche();
         goto again_lock;
@@ -142,7 +145,7 @@ static int pipe_write (struct inode *inode, struct file *fp, char *buf, int cn){
     again:
     if((pipe->rear+1)%pipe->data_len==pipe->front) {
         //满了，等待
-        pipe->wait_tk=CUR_TASK;
+        pipe->w_wait_tk=CUR_TASK;
         task_suspend();
         task_sche();
         goto again;
@@ -157,15 +160,16 @@ static int pipe_write (struct inode *inode, struct file *fp, char *buf, int cn){
             pipe->data[pipe->rear]=buf[i];
             pipe->rear=(pipe->rear+1)%pipe->data_len;
         }
+        atomic_set(&pipe->lock,0);
+        task_run_1(pipe->r_wait_tk);
         if(write_inx>=cn){
-            atomic_set(&pipe->lock,0);
             return write_inx;
+        }else{
+            write_cn=cn-write_inx;
+            goto again;
         }
-        write_cn=cn-write_inx;
-        //没有写够，继续等待
-        goto again;
     }else{
-        pipe->wait_tk=CUR_TASK;
+        pipe->w_wait_tk=CUR_TASK;
         task_suspend();
         task_sche();
         goto again_lock;

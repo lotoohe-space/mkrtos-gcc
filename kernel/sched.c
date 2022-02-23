@@ -57,6 +57,9 @@ void task_run(void){
     }
 }
 void task_run_1(struct task* tk){
+    if(!tk){
+        return ;
+    }
     if(tk->status!=TASK_RUNNING){
         tk->parent->taskReadyCount++;
         tk->status = TASK_RUNNING;
