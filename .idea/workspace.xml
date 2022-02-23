@@ -11,10 +11,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="修改信号处理">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="实现了sys_pipe函数，还没有测试。">
       <change afterPath="$PROJECT_DIR$/fs/pipe.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/arch/arm/asm/isr.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/isr.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
@@ -384,7 +383,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645201122931</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="实现了sys_pipe函数，还没有测试。">
+      <created>1645634761550</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1645634761550</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -420,7 +426,8 @@
     <MESSAGE value="正在搞sys_kill" />
     <MESSAGE value="cortex没有mmu，所以mmap和mumap直接调用malloc和free函数进行申请内存了" />
     <MESSAGE value="bash没搞出来，但是我移植了rcshell，目前能运行了，还修复了不少的bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="bash没搞出来，但是我移植了rcshell，目前能运行了，还修复了不少的bug" />
+    <MESSAGE value="实现了sys_pipe函数，还没有测试。" />
+    <option name="LAST_COMMIT_MESSAGE" value="实现了sys_pipe函数，还没有测试。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
