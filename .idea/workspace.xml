@@ -14,6 +14,8 @@
     <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="实现了sys_pipe函数，还没有测试。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/pipe.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/pipe.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/fork.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/fork.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,11 +119,6 @@
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -205,6 +202,7 @@
       <workItem from="1645156605403" duration="25896000" />
       <workItem from="1645325346153" duration="8454000" />
       <workItem from="1645417793358" duration="9653000" />
+      <workItem from="1645693518715" duration="5579000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>

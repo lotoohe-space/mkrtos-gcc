@@ -87,6 +87,16 @@ int32_t sys_fork(uint32_t *psp){
     //设置为用户模式
     newPtb->skInfo.svcStatus=0;
     newPtb->skInfo.stackType=1;
+
+    //对于打开的文件，我们应当对其inode的引用进行+1的操作。
+    for(int i=0;i<NR_FILE;i++){
+        if(newPtb->files[i].used){
+            if(newPtb->files[i].f_inode){
+                atomic_inc(&newPtb->files[i].f_inode);
+            }
+        }
+    }
+
     newPtb->status=TASK_RUNNING;
     RestoreCpuInter(t);
 
