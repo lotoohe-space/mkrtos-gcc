@@ -37,7 +37,7 @@ void DoExit(int32_t exitCode){
     TaskUserInfoDestory(ptb);
 #endif
     //关闭所有的文件
-    for( int i=3;i<NR_FILE;i++){
+    for( int i=0;i<NR_FILE;i++){
         if(CUR_TASK->files[i].used){
             sys_close(i);
         }

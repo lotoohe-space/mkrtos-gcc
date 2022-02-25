@@ -2,7 +2,7 @@
 #define _SYS_SEM_H
 
 #include <sys/ipc.h>
-
+#include <mkrtos/task.h>
 __BEGIN_DECLS
 
 /* semop flags */
@@ -21,15 +21,33 @@ __BEGIN_DECLS
 #define SEM_STAT 18
 #define SEM_INFO 19
 
+struct sem{
+    uint16_t semval;
+    pid_t sempid;
+    uint16_t semncnt;
+    uint16_t semzcnt;
+};
+union semun{
+    int val;
+    struct semid_ds *buf;
+    uint16_t *array;
+};
+struct sem_queue{
+    //任务为了那个semid而挂起
+    int semid;
+    struct task *task;
+    struct sem_queue* next;
+};
+
 struct semid_ds {
   struct ipc_perm	sem_perm;		/* permissions .. see ipc.h */
-  time_t		sem_otime;		/* last semop time */
-  time_t		sem_ctime;		/* last change time */
+  time_t		    sem_otime;		/* last semop time */
+  time_t		    sem_ctime;		/* last change time */
   struct sem		*sem_base;		/* ptr to first semaphore in array */
   struct sem_queue	*sem_pending;		/* pending operations to be processed */
   struct sem_queue	**sem_pending_last;	/* last pending operation */
   struct sem_undo	*undo;			/* undo requests on this array */
-  uint16_t		sem_nsems;		/* no. of semaphores in array */
+  uint16_t		    sem_nsems;		/* no. of semaphores in array */
 };
 
 /* semop system calls takes an array of these. */

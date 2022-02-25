@@ -6,24 +6,8 @@
 #define UNTITLED1_IPC_H
 #include <type.h>
 #include <arch/atomic.h>
-//sem.c
-struct sem{
-    //使用次数
-    Atomic_t s_used_count;
-    //等待的任务数量
-    Atomic_t s_wait_num;
-    //最大计数
-    uint32_t s_max_count;
-    //信号计数
-    Atomic_t s_sem_count;
-    //等待链表
-    struct wait_queue *s_wait;
-};
+#include <sys/sem.h>
 
-int32_t sem_get(sem_t mid);
-int32_t sem_put(sem_t mid) ;
-int32_t sem_take(sem_t mid);
-int32_t sem_release(sem_t mid);
 
 //mutex.c
 struct mutex{

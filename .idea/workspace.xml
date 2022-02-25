@@ -12,11 +12,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="实现了sys_pipe函数，还没有测试。">
+      <change afterPath="$PROJECT_DIR$/ipc/sys_sem.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/pipe.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/pipe.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/pipe.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/pipe.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ipc/ipc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ipc/ipc.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/fork.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/fork.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/sem.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/spin_lock.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/spin_lock.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/include/errno.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/include/errno.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/include/sys/sem.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/include/sys/sem.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,11 +116,11 @@
       <recent name="C:\Users\zz\CLionProjects\mkrtos-gcc\app" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\ipc" />
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\kernel" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\bash-2.0" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\arch\arm\asm" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\include\old" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\include" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\include\mkrtos" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -117,6 +132,11 @@
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">

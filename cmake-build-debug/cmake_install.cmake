@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/zz/CLionProjects/mkrtos-gcc
+# Install script for directory: D:/Project/MyProject1/mkrtos-gcc
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/zz/CLionProjects/mkrtos-gcc/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Project/MyProject1/mkrtos-gcc/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

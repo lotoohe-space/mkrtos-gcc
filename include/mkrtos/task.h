@@ -232,8 +232,9 @@ typedef struct task{
      * 真实id
      */
     uid_t rgid;
-    uid_t egid;//有效id
-    uid_t sgid;//保存的id
+
+    uid_t egid;//有效组id
+    uid_t sgid;//保存的组id
 
     /**
      * 在进程创建一个新文件或新目录时，就一定会使用文件方式创建屏蔽字 (回忆3 . 3和3 . 4节，

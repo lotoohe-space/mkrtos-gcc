@@ -695,6 +695,7 @@
 #define	EKEYEXPIRED	127	/* Key has expired */
 #define	EKEYREVOKED	128	/* Key has been revoked */
 #define	EKEYREJECTED	129	/* Key was rejected by service */
+#define ERMID       130
 #define __SYS_NERR  ((EKEYREJECTED) + 1)
 #endif
 
