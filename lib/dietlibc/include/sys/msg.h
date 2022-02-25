@@ -13,6 +13,20 @@ __BEGIN_DECLS
 #define MSG_NOERROR     010000  /* no error if message is too big */
 #define MSG_EXCEPT      020000  /* recv any msg except of specified type.*/
 
+
+struct msg{
+    struct msg *next;
+    int32_t msg_size;
+    uint32_t msg_type;
+    uint8_t *data;
+};
+
+struct msg_queue{
+    uint32_t msgtype;
+    struct task* task;
+    struct msg_queue* next;
+};
+
 struct msqid_ds {
   struct ipc_perm msg_perm;
   struct msg *msg_first;	/* first message on queue,unused  */
@@ -27,6 +41,10 @@ struct msqid_ds {
   unsigned short msg_qbytes;	/* max number of bytes on queue */
   pid_t msg_lspid;		/* pid of last msgsnd */
   pid_t msg_lrpid;		/* last receive pid */
+
+  struct msg_wait *r_wait; /*read queue for reading*/
+  struct msg_wait *w_wait; /*write queue for reading*/
+  int lock;
 };
 
 /* message buffer for msgsnd and msgrcv calls */

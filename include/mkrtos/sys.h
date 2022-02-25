@@ -92,6 +92,7 @@ extern int sys_munmap();    //91
 extern int sys_getpriority(); //96
 extern int sys_setpriority(); //97
 extern int sys_wait4();     //114-wait4
+extern int sys_ipc();       //117
 
 extern int sys_rt_sigaction(); //174
 extern int sys_rt_sigreturn(void* psp);
@@ -201,6 +202,7 @@ fn_ptr sys_call_table[] = {
         [99]=sys_statfs,
         [100]=sys_fstatfs,
         [114]=sys_wait4,
+        [117]=sys_ipc,
         [173]=sys_rt_sigreturn,
         [119]=sys_sigreturn,
         [133]=sys_fchdir,

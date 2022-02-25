@@ -23,6 +23,7 @@ __BEGIN_DECLS
 #define IPC_CREAT  00001000   /* create if key is nonexistent */
 #define IPC_EXCL   00002000   /* fail if key exists */
 #define IPC_NOWAIT 00004000   /* return error on wait */
+#define IPC_NOERROR 00010000 /* no error*/
 
 #define IPC_RMID 0     /* remove resource */
 #define IPC_SET  1     /* set ipc_perm options */

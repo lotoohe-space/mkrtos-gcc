@@ -7,6 +7,7 @@
 #include <arch/atomic.h>
 #include <mkrtos/mem.h>
 #include <mkrtos/task.h>
+#include <arch/arch.h>
 #define SEM_NUM 4
 static struct semid_ds semid_ds_ls[SEM_NUM]={0};
 static Atomic_t semid_ds_used[SEM_NUM]={0};
@@ -17,7 +18,7 @@ static int32_t inner_find_sem(key_t key){
 
    while(!atomic_test_set(&sem_list_lk,1));
     for(i=0;i<SEM_NUM;i++){
-        if (!atomic_test(&semid_ds_used,0)) {
+        if (!atomic_test(&semid_ds_used[i],0)) {
             if (semid_ds_ls[i].sem_perm.key == key) {
                 atomic_set(&sem_list_lk, 0);
                 return i;
@@ -45,6 +46,7 @@ static int32_t inner_sem_creat(key_t key,int nsems,int flag){
     semid_ds_ls[i].sem_base=OSMalloc(nsems);
     if(!semid_ds_ls[i].sem_base) {
         atomic_set(&semid_ds_used[i],0);
+        return -ENOMEM;
     }
     semid_ds_ls[i].sem_perm.cgid=CUR_TASK->egid;
     semid_ds_ls[i].sem_perm.cuid=CUR_TASK->euid;
@@ -66,7 +68,7 @@ static int32_t inner_sem_creat(key_t key,int nsems,int flag){
 }
 
 #define ABS(a) ((a)<0?(-(a)):(a))
-#include <arch/arch.h>
+
 //唤醒队列中所有的任务
 void sem_wake_up(struct sem_queue *queue,int semnum){
     uint32_t t;
@@ -130,11 +132,11 @@ int32_t sys_semget(key_t key,int nsems,int flag){
     if(key==IPC_PRIVATE){
         id=inner_sem_creat(key,nsems,flag);
         if(id<0) {
-            return -ENOMEM;
+            return id;
         }
     }else{
+        id=inner_find_sem(key);
         if(!flag){
-            id=inner_find_sem(key);
             if(id<0) {
                 return -ENOENT;
             }
@@ -143,9 +145,22 @@ int32_t sys_semget(key_t key,int nsems,int flag){
             //获取一个存在的
             if (flag & IPC_CREAT) {
                 if (flag & IPC_EXCL) {
-                } else {
+                    if(id>=0) {
+                        return -ENOENT;
+                    }
+                    id=inner_sem_creat(key,nsems,flag);
+                    if(id<0) {
+                        return id;
+                    }
+                    return 0;
                 }
+                if(id>=0){
+                    return id;
+                }
+                id=inner_sem_creat(key,nsems,flag);
+                return id;
             }
+            return id;
         }
     }
     return -ENOMEM;
@@ -178,7 +193,7 @@ int32_t sys_semctl(int semid,int semnum,int cmd,union semun arg){
             break;
         case IPC_RMID:
             //唤醒所有等待该信号量的进程
-            sem_wake_up(&semid_ds_ls[semid].sem_pending,-1);
+            sem_wake_up(semid_ds_ls[semid].sem_pending,-1);
             //删除该信号量
             atomic_set(&semid_ds_used[semid],0);
             //释放内存
@@ -235,7 +250,7 @@ int32_t sys_semctl(int semid,int semnum,int cmd,union semun arg){
     return 0;
 }
 
-int semop(int semid,struct sembuf semoparray[],size_t ops){
+int sys_semop(int semid,struct sembuf semoparray[],size_t ops){
     if(semid<0||semid>=SEM_NUM){
         return -1;
     }
@@ -243,6 +258,8 @@ int semop(int semid,struct sembuf semoparray[],size_t ops){
         return -EIDRM;
     }
     for(int i=0;i<ops;i++){
+        //最后一次操作的进程pid
+        semid_ds_ls[semid].sem_base[semoparray[i].sem_num].sempid=CUR_TASK->PID;
         if(semoparray[i].sem_op>0){
             if(semoparray[i].sem_num>=semid_ds_ls[semid].sem_nsems){
                 return -1;
@@ -266,7 +283,7 @@ int semop(int semid,struct sembuf semoparray[],size_t ops){
                     semid_ds_ls[semid].sem_base[semoparray[i].sem_num].semncnt--;
                 }
                 //进程释放了资源，唤醒等待的进程
-                sem_wake_up(&semid_ds_ls[semid].sem_pending,semoparray[i].sem_num);
+                sem_wake_up(semid_ds_ls[semid].sem_pending,semoparray[i].sem_num);
             }
 
             //检查信号量是否到零
@@ -276,7 +293,7 @@ int semop(int semid,struct sembuf semoparray[],size_t ops){
                     semid_ds_ls[semid].sem_base[semoparray[i].sem_num].semzcnt--;
                 }
                 //进程释放了资源，唤醒等待的进程
-                sem_wake_up(&semid_ds_ls[semid].sem_pending,semoparray[i].sem_num);
+                sem_wake_up(semid_ds_ls[semid].sem_pending,semoparray[i].sem_num);
             }
 
         }else if(semoparray[i].sem_op==0){
@@ -295,6 +312,7 @@ int semop(int semid,struct sembuf semoparray[],size_t ops){
             sem_add_wait_queue(&semid_ds_ls[semid].sem_pending,&sem_q);
             task_suspend();
             task_sche();
+            task_run();
             sem_remove_wait_queue(&semid_ds_ls[semid].sem_pending,&sem_q);
 
             //信号被删除了，则返回ERMID
@@ -310,6 +328,8 @@ int semop(int semid,struct sembuf semoparray[],size_t ops){
         } if(semoparray[i].sem_op<0){
             again_get:
             //大于绝对值
+            //下面应该原子操作的
+            //锁住当前的信号集
             if(semid_ds_ls[semid].sem_base[semoparray[i].sem_num].semval>=ABS(semoparray[i].sem_op)) {
                 //则直接进行操作
                 if (semoparray->sem_flg & SEM_UNDO) {
@@ -324,12 +344,12 @@ int semop(int semid,struct sembuf semoparray[],size_t ops){
                 }
                 //要挂其进程了
                 semid_ds_ls[semid].sem_base[semoparray[i].sem_num].semncnt++;
-
                 //挂起这个进程
                 struct sem_queue sem_q={semoparray[i].sem_num,CUR_TASK,NULL};
                 sem_add_wait_queue(&semid_ds_ls[semid].sem_pending,&sem_q);
                 task_suspend();
                 task_sche();
+                task_run();
                 sem_remove_wait_queue(&semid_ds_ls[semid].sem_pending,&sem_q);
 
                 //信号被删除了，则返回ERMID
