@@ -21,17 +21,6 @@ extern void sys_close(int fp);
 void DoExit(int32_t exitCode){
     //关所有中断
     uint32_t t;
-//    t=DisCpuInter();
-//    //任务正在关闭，相当于僵尸进程，任务不在参与调度
-//    CUR_TASK->status=TASK_CLOSING;
-//    sysTasks.currentMaxTaskNode->taskReadyCount--;
-//    if(sysTasks.currentMaxTaskNode->taskReadyCount==0){
-//        //任务更新
-//        update_cur_task();
-//    }
-//    CUR_TASK->exitCode=exitCode;
-//    CUR_TASK->status=TASK_RUNNING;
-//    RestoreCpuInter(t);
 #if 0
     //关闭打开的文件，并释放程序相关信息
     TaskUserInfoDestory(ptb);
@@ -44,6 +33,15 @@ void DoExit(int32_t exitCode){
     }
     mem_clear();
     t=DisCpuInter();
+    //当前进程结束了，应该吧当前进程的子进程全部移交给初始化进程
+    struct task* tmp=sysTasks.allTaskList;
+    while(tmp){
+        if(tmp->parentTask==CUR_TASK){
+            tmp->parentTask=sysTasks.init_task;
+        }
+        tmp=tmp->nextAll;
+    }
+
     /*实际会等待执行了66行后，才会调度*/
     task_sche();
     //发送chld给父进程

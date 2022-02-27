@@ -5,26 +5,31 @@
 #include "mkrtos/task.h"
 #include "fcntl.h"
 #include "mkrtos/mem.h"
+#include <arch/atomic.h>
+#include <arch/arch.h>
 
-
+struct pipe_queue{
+    struct task* task;
+    struct pipe_queue* next;
+};
 struct pipe_struct{
     uint8_t *data;
     uint32_t data_len;
     uint32_t rear;
     uint32_t front;
-    uint32_t lock;
+    Atomic_t lock;
 
     int fd[2];//读写的fd
     //pipe中的next
-    struct task* pipe_r_next;
+    struct pipe_queue* pipe_r;
     //pipe中的next
-    struct task* pipe_w_next;
+    struct pipe_queue* pipe_w;
 
     struct wait_queue* r_wait;
     struct wait_queue* w_wait;
 };
 
-#define PIPE_LEN(a) ((a->rear-a->front+a->data_len)%a->data_len)
+#define PIPE_LEN(a) (((a)->rear-(a)->front+(a)->data_len)%(a)->data_len)
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define FIFO_SIZE 512
 
@@ -32,12 +37,46 @@ extern struct inode_operations pipe_iops;
 static int pipe_open (struct inode * inode, struct file * fp);
 //pipe如何知道没有进程来读或者来写了？
 //只有在fork的时候将当前进程添加到pipe的链表中去。
-
+static void wakup_pipe(struct pipe_queue* pipe_q){
+    uint32_t t;
+    t=DisCpuInter();
+    while(pipe_q){
+        if(pipe_q->task){
+            if(pipe_q->task->status==TASK_SUSPEND){
+                task_run_1(pipe_q->task);
+//                queue->task->status=TASK_RUNNING;
+            }
+        }
+        pipe_q=pipe_q->next;
+    }
+    RestoreCpuInter(t);
+}
+static int add_to_pipe(struct pipe_queue** p_pipe,struct task* tk){
+    struct pipe_queue *pipe_q;
+    pipe_q = OSMalloc(sizeof(struct pipe_queue));
+    if(!pipe_q){
+        //沒有内存了，pipe fork失敗
+        printk("pipe fork not have memory!\n");
+        return -1;
+    }
+    pipe_q->task=tk;
+    pipe_q->next=NULL;
+    uint32_t t;
+    t=DisCpuInter();
+    if (!(*p_pipe)) {
+        (*p_pipe)= pipe_q;
+    } else {
+        pipe_q->next = (*p_pipe)->next;
+        (*p_pipe) = pipe_q;
+    }
+    RestoreCpuInter(t);
+    return 0;
+}
 /**
  * 对pipe进行fork
  * @param inode
  */
-void do_fork_pipe(struct inode *inode){
+void do_fork_pipe(struct inode *inode,struct task* newtask,int fd){
     struct pipe_struct *pipe;
     if(!inode){
         return ;
@@ -50,50 +89,65 @@ void do_fork_pipe(struct inode *inode){
     if(atomic_test(&inode->i_used_count,0)){
         return ;
     }
-
-    if(!pipe->pipe_r_next){
-        CUR_TASK->pipe_r_next=NULL;
-        pipe->pipe_r_next=CUR_TASK;
-    }else{
-        CUR_TASK->pipe_r_next=pipe->pipe_r_next;
-        pipe->pipe_r_next=CUR_TASK;
-    }
-
-    if(!pipe->pipe_w_next){
-        CUR_TASK->pipe_w_next=NULL;
-        pipe->pipe_w_next=CUR_TASK;
-    }else{
-        CUR_TASK->pipe_w_next=pipe->pipe_w_next;
-        pipe->pipe_w_next=CUR_TASK;
-    }
-
-    return ;
-}
-
-static void remove_task(struct task** tasks,struct inode* inode){
-    struct task *temp;
-    struct task *prev=NULL;
-//    struct pipe_struct *pipe;
-    if(!tasks){
+    struct pipe_queue *pipe_q;
+    pipe_q = OSMalloc(sizeof(struct pipe_queue));
+    if(!pipe_q){
+        //沒有内存了，pipe fork失敗
+        printk("pipe fork not have memory!\n");
         return ;
     }
-//    pipe=inode->i_fs_priv_info;
+    pipe_q->task=newtask;
+    pipe_q->next=NULL;
+    uint32_t t;
+    t=DisCpuInter();
+    if(fd==pipe->fd[0]) {
+        if (!pipe->pipe_r) {
+            pipe->pipe_r= pipe_q;
+        } else {
+            pipe_q->next = pipe->pipe_r;
+            pipe->pipe_r = pipe_q;
+        }
+    }else if(fd==pipe->fd[1]) {
 
-    temp=*tasks;
+        if (!pipe->pipe_w) {
+            pipe->pipe_w = pipe_q;
+        } else {
+            pipe_q->next = pipe->pipe_w;
+            pipe->pipe_w = pipe_q;
+        }
+    }else{
+        RestoreCpuInter(t);
+        fatalk("pipe fd is error.\n");
+    }
+    RestoreCpuInter(t);
+    return ;
+}
+static void remove_task(struct pipe_queue** p_pipe,struct task* tk){
+    struct pipe_queue *temp;
+    struct pipe_queue *prev=NULL;
+    if(!p_pipe){
+        return ;
+    }
+    uint32_t t;
+    t=DisCpuInter();
+    temp=*p_pipe;
     while(temp){
-        if(temp==CUR_TASK) {
+        if(temp->task==tk) {
             if (prev==NULL) {
                 //删除的第一个
-                (*tasks)->pipe_r_next=temp->pipe_r_next;
+                (*p_pipe) = temp->next;
+                OSFree(temp);
                 break;
             }else{
-                prev->pipe_r_next=temp->pipe_r_next;
+                prev->next = temp->next;
+                OSFree(temp);
                 break;
             }
         }
         prev=temp;
-        temp=temp->pipe_r_next;
+        temp = temp->next;
     }
+    RestoreCpuInter(t);
 }
 
 /**
@@ -105,7 +159,7 @@ struct inode * get_pipe_inode(void){
     r_inode=get_empty_inode();
     //初始化pipe_inode信息
     //使用计数
-    atomic_set(&(r_inode->i_used_count),1);
+//    atomic_set(&(r_inode->i_used_count),1);
     atomic_set(&(r_inode->i_lock),0);
     r_inode->i_file_size=0;
     r_inode->i_wait_q = NULL;
@@ -138,6 +192,7 @@ int32_t sys_pipe(int32_t *fd){
         if(!f->used){
             fds[0]=i;
             f->used=1;
+            break;
         }
     }
     if(i==NR_FILE){
@@ -148,6 +203,7 @@ int32_t sys_pipe(int32_t *fd){
         if(!f->used){
             fds[1]=i;
             f->used=1;
+            break;
         }
     }
     if(i==NR_FILE){
@@ -178,9 +234,25 @@ int32_t sys_pipe(int32_t *fd){
         puti(new_inode);
         return -ENOMEM;
     }
-    atomic_inc(&new_inode->i_used_count);
+
     struct pipe_struct *pipe;
     pipe=new_inode->i_fs_priv_info;
+    if(add_to_pipe(&pipe->pipe_r,CUR_TASK)<0){
+        CUR_TASK->files[fds[0]].used=0;
+        CUR_TASK->files[fds[1]].used=0;
+        puti(new_inode);
+        return -ENOMEM;
+    }
+    if(add_to_pipe(&pipe->pipe_w,CUR_TASK)<0){
+        remove_task(&pipe->pipe_r,CUR_TASK);
+        CUR_TASK->files[fds[0]].used=0;
+        CUR_TASK->files[fds[1]].used=0;
+        puti(new_inode);
+        return -ENOMEM;
+    }
+
+    atomic_inc(&new_inode->i_used_count);
+
     //保存两个fd
     pipe->fd[0]=fds[0];
     pipe->fd[1]=fds[1];
@@ -211,26 +283,26 @@ static int pipe_read (struct inode *inode, struct file *fp, char * buf, int cn){
     pipe=inode->i_fs_priv_info;
     again:
     if(pipe->rear==pipe->front){
-        if(!pipe->pipe_w_next){
+        if(!pipe->pipe_w){
             //没有写进程则直接返回0
-            return 0;
+            return read_inx;
         }
         //没有数据则等待
-        struct wait_queue* wait={CUR_TASK,NULL};
+        struct wait_queue wait={CUR_TASK,NULL};
 //        pipe->r_wait_tk=CUR_TASK;
-        add_wait_queue(&pipe->r_wait,wait);
+        add_wait_queue(&pipe->r_wait,&wait);
         task_suspend();
         task_sche();
-        remove_wait_queue(&pipe->r_wait,wait);
+        remove_wait_queue(&pipe->r_wait,&wait);
         goto again;
     }
     again_lock:
     //如果所
     if(atomic_test_set(&pipe->lock,1)){
         int i;
-        int read_len;
-        read_len=MIN(read_cn,PIPE_LEN(pipe));
-        for(i=read_inx;i<read_len+read_inx;i++,read_inx++){
+        int read_end;
+        read_end=MIN(read_cn,PIPE_LEN(pipe))+read_inx;
+        for(i=read_inx;i<read_end;i++,read_inx++){
             buf[i]= pipe->data[pipe->front];
             pipe->front=(pipe->front+1)%pipe->data_len;
         }
@@ -241,7 +313,7 @@ static int pipe_read (struct inode *inode, struct file *fp, char * buf, int cn){
             return read_inx;
         }else{
             read_cn=cn-read_inx;
-            if(!pipe->pipe_w_next){
+            if(!pipe->pipe_w){
                 //没有写进程则直接返回
                 return read_inx;
             }
@@ -249,12 +321,14 @@ static int pipe_read (struct inode *inode, struct file *fp, char * buf, int cn){
             goto again;
         }
     }else{
-        struct wait_queue* wait={CUR_TASK,NULL};
-//        pipe->r_wait_tk=CUR_TASK;
-        add_wait_queue(&pipe->r_wait,wait);
+        struct wait_queue wait={CUR_TASK,NULL};
+        add_wait_queue(&pipe->r_wait,&wait);
         task_suspend();
-        task_sche();
-        remove_wait_queue(&pipe->r_wait,wait);
+        if(atomic_test_set(&pipe->lock,1)) {
+            task_sche();
+        }
+        remove_wait_queue(&pipe->r_wait,&wait);
+        task_run();
         goto again_lock;
     }
     atomic_set(&pipe->lock,0);
@@ -273,29 +347,31 @@ static int pipe_write (struct inode *inode, struct file *fp, char *buf, int cn){
     int write_cn=cn;
     int write_inx=0;
     pipe=inode->i_fs_priv_info;
-    if(!pipe->pipe_w_next){
+    again:
+    if(!pipe->pipe_r){
         //发送信号SIGPIPE
         inner_set_sig(SIGPIPE);
         //并返回EPIPE
         return -EPIPE;
     }
-    again:
     if((pipe->rear+1)%pipe->data_len==pipe->front) {
         //满了，等待
-        struct wait_queue* wait={CUR_TASK,NULL};
-        add_wait_queue(&pipe->w_wait,wait);
+        struct wait_queue wait={CUR_TASK,NULL};
+        add_wait_queue(&pipe->w_wait,&wait);
         task_suspend();
-        task_sche();
-        remove_wait_queue(&pipe->w_wait,wait);
+        if((pipe->rear+1)%pipe->data_len==pipe->front) {
+            task_sche();
+        }
+        remove_wait_queue(&pipe->w_wait,&wait);
         goto again;
     }
     again_lock:
     //如果所
     if(atomic_test_set(&pipe->lock,1)){
         int i;
-        int write_len;
-        write_len=MIN(write_cn,pipe->data_len-PIPE_LEN(pipe));
-        for(i=write_inx;i<write_len+write_inx;i++,write_inx++){
+        int write_end;
+        write_end=MIN(write_cn,pipe->data_len-PIPE_LEN(pipe))+write_inx;
+        for(i=write_inx;i<write_end;i++,write_inx++){
             pipe->data[pipe->rear]=buf[i];
             pipe->rear=(pipe->rear+1)%pipe->data_len;
         }
@@ -309,11 +385,14 @@ static int pipe_write (struct inode *inode, struct file *fp, char *buf, int cn){
             goto again;
         }
     }else{
-        struct wait_queue* wait={CUR_TASK,NULL};
-        add_wait_queue(&pipe->w_wait,wait);
+        struct wait_queue wait={CUR_TASK,NULL};
+        add_wait_queue(&pipe->w_wait,&wait);
         task_suspend();
-        task_sche();
-        remove_wait_queue(&pipe->w_wait,wait);
+        if(atomic_test_set(&pipe->lock,1)) {
+            task_sche();
+        }
+        remove_wait_queue(&pipe->w_wait,&wait);
+        task_run();
         goto again_lock;
     }
     atomic_set(&pipe->lock,0);
@@ -328,18 +407,22 @@ static int pipe_write (struct inode *inode, struct file *fp, char *buf, int cn){
 static int pipe_open(struct inode * inode, struct file * fp){
     struct pipe_struct *pipe;
 
-    pipe= OSMalloc(sizeof(struct pipe_struct));
-    if(!pipe){
-        return -ENOMEM;
+    if(!inode->i_fs_priv_info) {
+        pipe = OSMalloc(sizeof(struct pipe_struct));
+        if (!pipe) {
+            return -ENOMEM;
+        }
+        memset(pipe, 0, sizeof(struct pipe_struct));
+        pipe->data = OSMalloc(FIFO_SIZE);
+        if (!pipe->data) {
+            OSFree(pipe);
+            return -ENOMEM;
+        }
+        pipe->data_len = FIFO_SIZE;
+        inode->i_fs_priv_info = pipe;
+    }else{
+        pipe=inode->i_fs_priv_info;
     }
-    memset(pipe,0,sizeof(struct pipe_struct));
-    pipe->data= OSMalloc(FIFO_SIZE);
-    if(!pipe->data){
-        OSFree(pipe);
-        return -ENOMEM;
-    }
-    pipe->data_len=FIFO_SIZE;
-    inode->i_fs_priv_info=pipe;
 
     return 0;
 }
@@ -364,14 +447,20 @@ static void pipe_release (struct inode * inode, struct file * fp){
     //判断是读端还是写端，并从相应的链表中删除
     pipe=((struct pipe_struct*)inode->i_fs_priv_info);
     if(i==pipe->fd[0]) {
-        //删除读端
-        remove_task(pipe->pipe_r_next, inode);
+        //删除读端8
+        remove_task(&pipe->pipe_r,CUR_TASK);
     }else if(i==pipe->fd[1]){
         //删除写端
-        remove_task(pipe->pipe_w_next,inode);
+        remove_task(&pipe->pipe_w,CUR_TASK);
     }
-
-    if(!pipe->pipe_r_next && !pipe->pipe_w_next){
+    if(!pipe->pipe_r){
+        //读端全部被删除了，唤醒写端
+        wake_up(pipe->w_wait);
+    }
+    if(!pipe->pipe_w){
+        wake_up(pipe->r_wait);
+    }
+    if(!pipe->pipe_r && !pipe->pipe_w){
         //没有读端也没有写端，则删除这个pipe，释放内存
 //    if(atomic_test(&inode->i_used_count,0)) {
         if (inode->i_fs_priv_info) {

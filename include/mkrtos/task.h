@@ -124,10 +124,10 @@ typedef struct task{
     */
     struct task *nextAll;
 
-    //pipe中的next
-    struct task* pipe_r_next;
-    //pipe中的next
-    struct task* pipe_w_next;
+//    //pipe中的next
+//    struct task* pipe_r_next;
+//    //pipe中的next
+//    struct task* pipe_w_next;
 
     /**
      * @brief 删除等待队列
@@ -292,7 +292,8 @@ typedef struct{
     /**
     * @brief 所有被阻塞的任务链表
     */
-    PTaskBlock pBlockedLinks;
+    struct task* pBlockedLinks;
+    struct task* init_task;
     /**
     * @brief 运行时间
     */
@@ -309,7 +310,7 @@ typedef struct{
     /**
     * @brief 当前工作的任务节点
     */
-    PTaskBlock currentTask;
+    struct task* currentTask;
     /**
     * @brief 系统任务数
     */

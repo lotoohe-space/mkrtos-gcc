@@ -79,10 +79,13 @@ static int tty_open(struct inode * ino, struct file * fp){
     //暂时只支持串口
     //设置open函数
     cur_tty->open=uart_open;
-    //初始化termio
-    init_termios(0,&cur_tty->termios);
+
+    if(!cur_tty->used_cn) {
+        //初始化termio
+        init_termios(0,&cur_tty->termios);
+        cur_tty->open(cur_tty, fp);
+    }
     cur_tty->used_cn++;
-    cur_tty->open(cur_tty,fp);
     //参数
     cur_tty->line_no=tty_dev_no;
     cur_tty->termios.c_line=tty_dev_no;
@@ -223,11 +226,11 @@ static void tty_release(struct inode * ino, struct file * fp){
     }
     if(cur_tty->used_cn==1){
 
+        cur_tty->close(cur_tty,fp);
+        cur_tty->open=NULL;
+        memset(&cur_tty->termios,0,sizeof(cur_tty->termios));
     }
     cur_tty->used_cn--;
-    cur_tty->close(cur_tty,fp);
-    cur_tty->open=NULL;
-    memset(&cur_tty->termios,0,sizeof(cur_tty->termios));
 }
 
 

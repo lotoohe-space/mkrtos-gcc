@@ -13,5 +13,5 @@ union semun {
 
 int semctl(int semid, int semnum, int cmd, union semun arg);
 int semctl(int semid, int semnum, int cmd, union semun arg) {
-  return __ipc(SEMCTL,semid,semnum,cmd,&arg);
+  return __ipc(SEMCTL,semid,semnum,cmd,(void*)(arg.buf));
 }

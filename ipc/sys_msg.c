@@ -87,7 +87,7 @@ void msg_wake_up(struct msg_queue *queue,uint32_t msgtype){
 }
 
 //添加一个到等待队列中
-void sem_add_wait_queue(struct msg_queue** queue,struct msg_queue* add_queue){
+void msg_add_wait_queue(struct msg_queue** queue,struct msg_queue* add_queue){
     uint32_t t;
     t=DisCpuInter();
     if(*queue==NULL){
@@ -99,7 +99,7 @@ void sem_add_wait_queue(struct msg_queue** queue,struct msg_queue* add_queue){
     RestoreCpuInter(t);
 }
 //移除一个等待的
-void sem_remove_wait_queue(struct msg_queue ** queue,struct msg_queue* add_queue){
+void msg_remove_wait_queue(struct msg_queue ** queue,struct msg_queue* add_queue){
     struct msg_queue *temp=*queue;
     struct msg_queue *prev=NULL;
     uint32_t t;
@@ -228,42 +228,34 @@ int sys_msgsnd(int msgid,const void *ptr,size_t nbytes,int flag){
         //否则截断它
         nbytes=DATA_SIZE-nbytes;
     }
-
+    int test;
     //等待有空闲的空间写入数据
-    //下面的操作应该原子化
-    uint32_t t;
+    //下面的操作，利用spinlock锁起来
     again_e:
-    t=DisCpuInter();
-    int test=nbytes+msq->msg_cbytes>msq->msg_qbytes;
+    test=nbytes+msq->msg_cbytes>msq->msg_qbytes;
     if(test){
-        RestoreCpuInter(t);
         //消息大小满了，等待
         if(flag&IPC_NOWAIT){
             return -EAGAIN;
         }
         struct msg_queue msg_wait={s_msg->mtype,CUR_TASK,NULL};
 
-        sem_add_wait_queue(&msq->w_wait,&msg_wait);
+        msg_add_wait_queue(&msq->w_wait,&msg_wait);
         task_suspend();
         task_sche();
         task_run();
-        sem_remove_wait_queue(&msq->w_wait,&msg_wait);
+        msg_remove_wait_queue(&msq->w_wait,&msg_wait);
         goto again_e;
-    }else{
-        msq->lock=1;
     }
-    RestoreCpuInter(t);
 
     newmsg=OSMalloc(sizeof(struct msg));
     if(!newmsg){
-        msq->lock=0;
         return -ENOMEM;
     }
 
     newmsg->data=OSMalloc(nbytes);
     if(!newmsg->data){
         OSFree(newmsg);
-        msq->lock=0;
         return -ENOMEM;
     }
     newmsg->msg_size=nbytes;
@@ -280,6 +272,5 @@ int sys_msgsnd(int msgid,const void *ptr,size_t nbytes,int flag){
         msq->msg_first=newmsg;
     }
 
-    msq->lock=0;
     return 0;
 }

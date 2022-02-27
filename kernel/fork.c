@@ -9,6 +9,8 @@
 
 extern PTaskBlock find_task(int32_t PID);
 extern int32_t add_task(PTaskBlock pTaskBlock);
+//pipe.c
+void do_fork_pipe(struct inode *inode,struct task* new_task,int fd);
 //创建一个子进程
 int32_t sys_fork(uint32_t *psp){
     TaskStatus oldStatus;
@@ -91,8 +93,15 @@ int32_t sys_fork(uint32_t *psp){
     //对于打开的文件，我们应当对其inode的引用进行+1的操作。
     for(int i=0;i<NR_FILE;i++){
         if(newPtb->files[i].used){
-            if(newPtb->files[i].f_inode){
-                atomic_inc(&newPtb->files[i].f_inode);
+            struct inode *tmp;
+            tmp=newPtb->files[i].f_inode;
+            if(tmp){
+                if(i<3){
+                    tmp->i_ops->default_file_ops->open(tmp,&newPtb->files[i]);
+                }
+                //对pipe进行fork
+                do_fork_pipe(tmp,newPtb,i);
+                atomic_inc(&(tmp->i_used_count));
             }
         }
     }

@@ -82,6 +82,7 @@ include_directories(
 #        app/dash
 
         app/rc-1.7
+        /
  )
 
 file(GLOB_RECURSE SOURCES

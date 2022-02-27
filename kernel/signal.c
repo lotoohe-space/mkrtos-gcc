@@ -25,7 +25,8 @@ void sig_chld(struct task *tk){
         if(sig->sa_flags&SA_NOCLDSTOP){
             return ;
         }
-        tk->sig_bmp|=(1<<(SIGCHLD-1));
+        inner_set_sig(SIGCHLD);
+//        tk->sig_bmp|=(1<<(SIGCHLD-1));
     }
 }
 int32_t inner_set_sig(uint32_t signum){

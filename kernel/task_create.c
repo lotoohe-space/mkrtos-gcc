@@ -62,6 +62,10 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     pTaskBlock->runCount=0;
 //    pTaskBlock->delayCount=0;
     pTaskBlock->PID = (int16_t)atomic_read(&sysTasks.pidTemp);
+    if(atomic_test(&(sysTasks.pidTemp),1)) {
+        sysTasks.init_task=pTaskBlock;
+    }
+
     pTaskBlock->memLowStack=memStack;
     if(userStackSize!=0){
         pTaskBlock->skInfo.pspStack=(void*)(&(((uint32_t*)memStack)[userStackSize+kernelSize-1]));
@@ -74,6 +78,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     pTaskBlock->userStackSize=userStackSize;
     pTaskBlock->kernelStackSize=kernelSize;
     pTaskBlock->status=TASK_SUSPEND;
+    pTaskBlock->parentTask=pTaskBlock;
 
     pTaskBlock->next=NULL;
 //    pTaskBlock->nextBk=NULL;

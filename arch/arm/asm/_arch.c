@@ -12,7 +12,9 @@ extern int sram_test(void);
 extern uint8_t RTC_Init(void);
 int32_t BSPInit(void){
     FSMC_SRAM_Init();
-    sram_test();
+    if(sram_test()<0){
+//        fatalk("ÄÚ´æ³õÊ¼»¯Ê§°Ü!\r\n");
+    }
     RTC_Init();
     return 0;
 }

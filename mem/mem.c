@@ -348,7 +348,7 @@ void mem_clear(void){
         OSFree((*tmp));
         *tmp=next;
     }
-    printk("remain memory size is %d.\n",GetFreeMemory(1));
+//    printk("remain memory size is %d.\r\n",GetFreeMemory(1));
 }
 void* sys_mmap(void *start, size_t length, int prot, int flags,int fd, off_t offset){
 //    if(fd!=-1){

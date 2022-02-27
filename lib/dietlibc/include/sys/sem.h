@@ -26,6 +26,7 @@ struct sem{
     pid_t sempid;
     uint16_t semncnt;
     uint16_t semzcnt;
+    Atomic_t semlock;
 };
 union semun{
     int val;

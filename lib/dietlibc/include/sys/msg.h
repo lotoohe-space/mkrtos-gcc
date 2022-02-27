@@ -42,8 +42,8 @@ struct msqid_ds {
   pid_t msg_lspid;		/* pid of last msgsnd */
   pid_t msg_lrpid;		/* last receive pid */
 
-  struct msg_wait *r_wait; /*read queue for reading*/
-  struct msg_wait *w_wait; /*write queue for reading*/
+  struct msg_queue *r_wait; /*read queue for reading*/
+  struct msg_queue *w_wait; /*write queue for reading*/
   int lock;
 };
 

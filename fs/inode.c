@@ -60,7 +60,6 @@ void unlocki(struct inode* p_inode){
  */
 struct inode* get_empty_inode(void){
     uint32_t i;
-
     if(atomic_read(&inode_free_num)==0){
         //如果这里找不到，应该让系统休眠等待释放信号到来
         __wait_on_inode_list();
@@ -68,8 +67,9 @@ struct inode* get_empty_inode(void){
     again:
     for(i=0;i<INODE_NUM;i++){
         if(atomic_test_inc(&(inode_ls[i].i_used_count))){
+            static struct inode tmp={.i_used_count={1}};
             atomic_dec(&inode_free_num);
-            memset(&(inode_ls[i]),0,sizeof(struct inode));
+            memcpy(&(inode_ls[i]),&tmp,sizeof(struct inode));
             return &(inode_ls[i]);
         }
     }

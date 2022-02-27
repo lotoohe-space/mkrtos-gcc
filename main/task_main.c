@@ -5,6 +5,8 @@
 #include <mkrtos/fs.h>
 #include "mkrtos/task.h"
 #include "bsp/delay.h"
+#include "mkrtos/mem.h"
+#include "sys/sem.h"
 #include <mkrtos/stat.h>
 //#include "mkrtos/signal.h"
 #include <xprintf.h>
@@ -191,6 +193,119 @@ void sig_test_fuN(int signo){
     delay_ms(200);
     printf("接收到了信号：%d\r\n",signo);
 }
+int init_sem(int sem_id,int init_value){
+    union semun sem_union;
+    sem_union.val=init_value;
+    if(semctl(sem_id,0,SETVAL,sem_union)<0){
+        printf("Init semaphore");
+        return -1;
+    }
+    return 0;
+}
+int del_sem(int sem_id){
+    union semun sem_union;
+    if(semctl(sem_id,0,IPC_RMID,sem_union)<0){
+        printf("Delete semaphore");
+        return -1;
+    }
+    return 0;
+}
+int sem_p(int sem_id){
+    struct sembuf sem_b;
+    sem_b.sem_num=0;
+    sem_b.sem_op=-1;
+    sem_b.sem_flg=SEM_UNDO;
+    if(semop(sem_id,&sem_b,1)<0){
+        printf("P operation");
+        return -1;
+    }
+    return 0;
+}
+int sem_v(int sem_id){
+    struct sembuf sem_b;
+    sem_b.sem_num=0;
+    sem_b.sem_op=1;
+    sem_b.sem_flg=SEM_UNDO;
+    if(semop(sem_id,&sem_b,1)<0){
+        printf("V operation");
+        return -1;
+    }
+    return 0;
+}
+void user_task(void* arg0,void *arg1){
+    int ret;
+#if 0
+    char line[32];
+    int fd[2];
+    int n;
+    if(pipe(fd)<0){
+        printf("pipe crate fail.\r\n");
+    }
+    ret=fork();
+    if(ret<0){
+        printf("init create error.\r\n");
+    }else if(ret==0){
+        close(fd[0]);
+        write(fd[1],"hello world\n",13);
+        delay_ms(1000);
+    }else {
+        close(fd[1]);
+        n=read(fd[0],line,5);
+        line[n]=0;
+        printf("len:%d,data:",n,line);
+        n=read(fd[0],line,5);
+        line[n]=0;
+        printf("len:%d,data:",n,line);
+        n=read(fd[0],line,5);
+        line[n]=0;
+        printf("len:%d,data:",n,line);
+    }
+    exit(0);
+#endif
+
+#if 0
+    again_fork:
+    ret=fork();
+    if(ret<0){
+        printf("init create error.\r\n");
+    }else if(ret==0){
+        int fd[2];
+        pipe(fd);
+        delay_ms(100);
+        printf("%d remain memory is %d.\r\n",getpid(),GetFreeMemory(1));
+        exit(0);
+    }else {
+
+        wait(0);
+        delay_ms(500);
+        printf("%d remain memory is %d.\r\n",getpid(),GetFreeMemory(1));
+        goto again_fork;
+    }
+#endif
+
+#if 1
+    int sem_id;
+    sem_id=semget(123,1,IPC_CREAT);
+    if(sem_id<0){
+        printf("sem creating is error.\r\n");
+    }
+    init_sem(sem_id,0);
+    ret=fork();
+    if(ret<0){
+        printf("init create error.\r\n");
+    }else if(ret==0){
+        printf("child will wait 3S.\r\n");
+        delay_ms(3000);
+        printf("child PID is %d.\r\n",getpid());
+        sem_v(sem_id);
+    }else {
+        sem_p(sem_id);
+        printf("father pid is %d.\r\n");
+        sem_v(sem_id);
+        del_sem(sem_id);
+    }
+#endif
+}
 //启动进程
 void start_task(void* arg0,void*arg1){
     extern void fs_init(void);
@@ -203,31 +318,26 @@ void start_task(void* arg0,void*arg1){
     open("/dev/tty", O_RDWR, 0777);
 
     printf("to init task.\r\n");
-#if 0
+    printf("%d remain memory is %d.\n",getpid(),GetFreeMemory(1));
+#if 1
+//    int fd[2];
+//    int n;
+//    if(pipe(fd)<0){
+//        printf("pipe crate fail.\r\n");
+//    }
     int ret=fork();
     if(ret<0){
         printf("init create error.\r\n");
     }else if(ret==0){
-
-        extern int sys_sigaction(int sig, const struct sigaction *restrict act,struct sigaction *restrict oact);
-
-        struct sigaction sigact={0};
-        sigact.sa_flags=0;//SA_RESETHAND;
-        sigact._u._sa_handler=sig_test_fuN;
-        sys_sigaction(SIGHUP,&sigact,NULL);
-
-        extern int32_t sys_pause(void);
-        pause();
-        while(1);
+        user_task(0,0);
     }else {
-        delay_ms(50);
-
-        inner_set_task_sig(ret,SIGHUP);
+        while(1){
+           // delay_ms(1000);
+           // printf("remain memory is %d.\n",GetFreeMemory(1));
+        }
     }
-
-    while(1);
 #endif
-#if 1
+#if 0
     int ret=fork();
     if(ret<0){
         printf("init create error.\r\n");

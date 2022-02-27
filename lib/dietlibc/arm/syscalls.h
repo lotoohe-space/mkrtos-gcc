@@ -629,15 +629,15 @@
 .type \sym,function
 .global \sym
 \sym:
-push {r7}
-mov r7,\name
 .ifgt \typ
 	mov	ip, sp
 	stmfd	sp!,{r4, r5, r6}
 	ldmia	ip, {r4, r5, r6}
 .endif
+    push {r7};
+    mov r7,\name
 	svc	128
-    pop {r7}
+    pop {r7};
 .ifgt \typ
 	b	__unified_syscall4
 .else
@@ -654,15 +654,15 @@ mov r7,\name
 .type \sym,function
 .global \sym
 \sym:
-push {r7}
-mov r7,\name
 .ifgt \typ
 	mov	ip, sp
 	stmfd	sp!,{r4, r5, r6}
 	ldmia	ip, {r4, r5, r6}
 .endif
+    push {r7};
+    mov r7,\name
 	svc	128
-pop {r7}
+    pop {r7};
 .ifgt \typ
 	b	__unified_syscall4
 .else

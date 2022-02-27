@@ -23,7 +23,7 @@ typedef int wchar_t;
 #if defined(__cplusplus)
 #define NULL 0
 #else
-#define NULL (void*)0
+#define NULL ((void*)0)
 #endif
 
 #undef offsetof
