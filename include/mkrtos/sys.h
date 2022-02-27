@@ -89,6 +89,9 @@ extern int sys_readlink();     // 85 - 读取符号链接文件信息。     (fs/stat.c，69
 extern int sys_uselib();       // 86 - 选择共享库。
 extern int sys_mmap();       // 90 - 选择共享库。
 extern int sys_munmap();    //91
+extern int sys_truncate();//92
+extern int sys_ftruncate();//93
+extern int sys_fchown();//95
 extern int sys_getpriority(); //96
 extern int sys_setpriority(); //97
 extern int sys_wait4();     //114-wait4
@@ -105,7 +108,7 @@ int sys_fstatfs(unsigned int fd, struct statfs * buf);
 extern int sys_sigreturn();
 typedef void* fn_ptr ;
 
-fn_ptr sys_call_table[] = {
+const fn_ptr sys_call_table[] = {
         [0]=sys_setup,//实现
         [1]=sys_exit,//实现
         [2]=sys_fork,//实现
@@ -185,28 +188,31 @@ fn_ptr sys_call_table[] = {
 //                           sys_getrlimit,
 //                           sys_getrusage,
                            [78]=sys_gettimeofday,
-//                           sys_settimeofday,
+                           [79]=sys_settimeofday,
 //                           sys_getgroups,
 //                           sys_setgroups,
 //                           sys_select,
-//                           sys_symlink,
+                          [83]=sys_symlink,
 //                           sys_lstat,
 //                           sys_readlink,
 //                           sys_uselib,
         [89]=sys_readdir,
         [90]=sys_mmap,
         [91]=sys_munmap,
+        [92]=sys_truncate,
+        [93]=sys_ftruncate,
         [94]=sys_fchmod,
+        [95]=sys_fchown,
         [96]=sys_getpriority,
         [97]=sys_setpriority,
         [99]=sys_statfs,
         [100]=sys_fstatfs,
         [114]=sys_wait4,
         [117]=sys_ipc,
-        [173]=sys_rt_sigreturn,
         [119]=sys_sigreturn,
         [133]=sys_fchdir,
         [162]=sys_nanosleep,
+        [173]=sys_rt_sigreturn,
         [174]=sys_rt_sigaction,
         [182]=sys_chown,
 

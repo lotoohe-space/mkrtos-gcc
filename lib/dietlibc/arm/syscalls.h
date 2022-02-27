@@ -404,7 +404,7 @@
 #define __ARGS_swapon			0
 #define __ARGS_reboot			0
 #define __ARGS_readdir			0
-#define __ARGS_mmap			0	/* this is NOT 1 !!! (special case) */
+#define __ARGS_mmap			1	/* 这个函数有6个参数，还是可以指定其1为1，之前为0，不知道作者为啥要设置为0，也许是linux内核的内部实现不一样this is NOT 1 !!! (special case) */
 #define __ARGS_munmap			0
 #define __ARGS_truncate			0
 #define __ARGS_ftruncate		0

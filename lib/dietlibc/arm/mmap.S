@@ -1,6 +1,8 @@
 
 #include <errno.h>
 #include "syscalls.h"
+syscall(mmap,mmap)
+/*
 .syntax unified
 .cpu cortex-m3
 .thumb
@@ -28,3 +30,4 @@ mmap:
 	add	sp, sp, #16
 	b	__unified_syscall
 
+*/

@@ -16,6 +16,7 @@ uint32_t svcHandler(uint32_t* pwdSF,uint32_t call_num) {
     uint32_t svc_r2;
     uint32_t svc_r3;
     uint32_t svc_r4;
+    uint32_t svc_r5;
     int32_t retVal; //用于存储返回值
     uint32_t *psF;
     psF = pwdSF+8 ;
@@ -25,34 +26,56 @@ uint32_t svcHandler(uint32_t* pwdSF,uint32_t call_num) {
     svc_r2 = ((uint32_t) psF[2]);
     svc_r3 = ((uint32_t) psF[3]);
     svc_r4 = ((uint32_t) psF[-8]);
+    svc_r5 = ((uint32_t) psF[-7]);
 
     if (svc_number != 0x80) {
         psF[0] = -1;
         return 0;
     }
 
-    extern int SysCall(void *callNo,void*arg1,void *arg2,void*arg3);
-    if(call_num==119||call_num==173){//sys_sigreturn
-        psF[0]=((int(*)(int arg0,int arg1,int arg2,int arg3))sys_call_table[call_num])((int)(pwdSF+8),(int)svc_r0,(int)svc_r1,(int)svc_r2);
-    }else if(call_num==2) {//fork
-        psF[0]=((int(*)(int arg0,int arg1,int arg2,int arg3))sys_call_table[call_num])((int)(pwdSF),(int)svc_r0,(int)svc_r1,(int)svc_r2);
-    }else{
-        if(sys_call_table[call_num]) {
-            if(call_num==117){
-                psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3, int arg4)) sys_call_table[call_num])((int) (svc_r0),
+//    extern int SysCall(void *callNo,void*arg1,void *arg2,void*arg3);
+    if(sys_call_table[call_num]) {
+        switch (call_num) {
+            case 119://sys_sigreturn
+            case 173:
+                psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3)) sys_call_table[call_num])((int) (pwdSF + 8),
+                                                                                                      (int) svc_r0,
+                                                                                                      (int) svc_r1,
+                                                                                                      (int) svc_r2);
+                break;
+            case 2:
+                psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3)) sys_call_table[call_num])((int) (pwdSF),
+                                                                                                      (int) svc_r0,
+                                                                                                      (int) svc_r1,
+                                                                                                      (int) svc_r2);
+                break;
+            case 117:
+                psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3, int arg4)) sys_call_table[call_num])(
+                        (int) (svc_r0),
+                        (int) svc_r1,
+                        (int) svc_r2,
+                        (int) svc_r3,
+                        (int) svc_r4
+                );
+                break;
+            case 90:
+                psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3, int arg4,
+                                   int arg5)) sys_call_table[call_num])((int) (svc_r0),
+                                                                        (int) svc_r1,
+                                                                        (int) svc_r2,
+                                                                        (int) svc_r3,
+                                                                        (int) svc_r4,
+                                                                        (int) svc_r5
+                );
+                break;
+            default:
+                psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3)) sys_call_table[call_num])((int) (svc_r0),
                                                                                                       (int) svc_r1,
                                                                                                       (int) svc_r2,
-                                                                                                      (int) svc_r3,
-                                                                                                      (int) svc_r4
-                                                                                                      );
-            }else
-            psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3)) sys_call_table[call_num])((int) (svc_r0),
-                                                                                                  (int) svc_r1,
-                                                                                                  (int) svc_r2,
-                                                                                                  (int) svc_r3);
-        }else {//没有实现的直接返回-1
-            psF[0]=-1;
+                                                                                                      (int) svc_r3);
         }
+    }else{
+        psF[0]=-1;
     }
     extern void do_signal_isr(void* sp);
     do_signal_isr(pwdSF+8);

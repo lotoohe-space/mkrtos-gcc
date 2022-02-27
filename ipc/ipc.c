@@ -27,7 +27,7 @@ int sys_ipc(int func,int a,int b,int c,int d){
         case SEMCTL:
             return sys_semctl(a,b,c,(union semun)d);
         case SEMOP:
-            return sys_semop(a,(struct sembuf*)b,c);
+            return sys_semop(a,(struct sembuf*)d,b);
     }
     return -ENOSYS;
 }

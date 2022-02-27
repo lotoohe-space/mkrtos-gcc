@@ -11,23 +11,22 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="实现了nanosleep系统调用，精度ms">
-      <change afterPath="$PROJECT_DIR$/arch/bsp/tim3.c" afterDir="false" />
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="实现了gettimeofday，精度ms">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/asm/_arch.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/_arch.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/asm/isr.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/isr.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/rtc.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/rtc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/rtc.h" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/rtc.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sleep.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sleep.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/ipc.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/ipc.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kernel/sys.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sys.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/syscall.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/syscall.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/mmap.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/mmap.S" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/syscalls.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/syscalls.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,9 +129,9 @@
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -220,7 +219,8 @@
       <workItem from="1645417793358" duration="9653000" />
       <workItem from="1645693518715" duration="5579000" />
       <workItem from="1645802866385" duration="23020000" />
-      <workItem from="1645933334896" duration="8381000" />
+      <workItem from="1645933334896" duration="15215000" />
+      <workItem from="1645971929812" duration="599000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -439,7 +439,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645937079571</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="实现了gettimeofday，精度ms">
+      <created>1645941822819</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1645941822819</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +487,8 @@
     <MESSAGE value="下一步增加msg支持，以及解决其中存在的原子问题。" />
     <MESSAGE value="测试了一下pipe" />
     <MESSAGE value="实现了nanosleep系统调用，精度ms" />
-    <option name="LAST_COMMIT_MESSAGE" value="实现了nanosleep系统调用，精度ms" />
+    <MESSAGE value="实现了gettimeofday，精度ms" />
+    <option name="LAST_COMMIT_MESSAGE" value="实现了gettimeofday，精度ms" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -489,11 +497,6 @@
           <url>file://$PROJECT_DIR$/ipc/pipe.c</url>
           <line>324</line>
           <option name="timeStamp" value="825" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/kernel/syscall.c</url>
-          <line>41</line>
-          <option name="timeStamp" value="853" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

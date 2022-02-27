@@ -95,6 +95,7 @@ int sys_ulimit ()
 {
     return -ENOSYS;
 }
+extern uint32_t rtc_set_tick(uint32_t tick);
 extern uint32_t rtc_get_tick(void);
 extern uint32_t rtc_get_msofsec(void);
 // 返回从1970 年1 月1 日00:00:00 GMT 开始计时的时间值（秒）。如果tloc 不为null，则时间值
@@ -162,16 +163,28 @@ int sys_times (struct tms *tbuf)
     tbuf->tms_stime=0;
     return -ENOSYS;
 }
+int sys_settimeofday(struct timeval *tv, struct timezone *tz){
+    if(!tv){
+        return -EINVAL;
+    }
+    if(!CUR_TASK->is_s_user){
+        return -EPERM;
+    }
+
+    rtc_set_tick(tv->tv_sec+tv->tv_usec/1000/1000);
+
+    return 0;
+}
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz){
 
     if(!tv){
         return -EINVAL;
     }
-    struct tm *tm;
+//    struct tm *tm;
     time_t r_tim;
     r_tim=rtc_get_tick();
-    tm=gmtime(&r_tim);
-    tv->tv_sec=tm->tm_hour*60*60+tm->tm_min*60+tm->tm_sec;
+//    tm=gmtime(&r_tim);
+    tv->tv_sec=r_tim;
     tv->tv_usec=rtc_get_msofsec()*1000;
 //    DST_NONE     /* not on DST */
 //    DST_USA      /* USA style DST */

@@ -284,10 +284,14 @@ void user_task(void* arg0,void *arg1){
 #endif
 
 #if 0
-    printf("I am sleep 5S\r\n");
+    struct timeval t_val1,t_val2;
+    gettimeofday(&t_val1,NULL);
     sleep(5);
-    printf("I am wake up.\r\n");
+    gettimeofday(&t_val2,NULL);
+    printf("%d\r\n",t_val2.tv_sec*1000*10000+t_val2.tv_usec-t_val1.tv_sec*1000*10000+t_val1.tv_usec);
 #endif
+
+#if 1
     time_t tim;
     while(1) {
         time(&tim);
@@ -296,7 +300,14 @@ void user_task(void* arg0,void *arg1){
         printf("%s", asctime(gmtime(&tim)));
         printf("%d %d\r\n",t_val.tv_sec,t_val.tv_usec);
         sleep(1);
+        void * mem=malloc(100);
+        printf("0x%x remain mem %d\r\n",mem,GetFreeMemory(1));
+//        struct timespec tims;
+//        tims.tv_sec=0;
+//        tims.tv_nsec=10000000;
+//        nanosleep(&tims,NULL);
     }
+#endif
 #if 0
     int sem_id;
     sem_id=semget(123,1,IPC_CREAT);
@@ -309,8 +320,7 @@ void user_task(void* arg0,void *arg1){
         printf("init create error.\r\n");
     }else if(ret==0){
         printf("child will wait 3S.\r\n");
-        delay_ms(3000);
-        sleep(5);
+        sleep(3);
         printf("child PID is %d.\r\n",getpid());
         sem_v(sem_id);
     }else {

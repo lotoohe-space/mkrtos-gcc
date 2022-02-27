@@ -351,9 +351,11 @@ void mem_clear(void){
 //    printk("remain memory size is %d.\r\n",GetFreeMemory(1));
 }
 void* sys_mmap(void *start, size_t length, int prot, int flags,int fd, off_t offset){
-//    if(fd!=-1){
-//        return -ENOSYS;
-//    }
+    if(fd!=-1
+        ||start
+    ){
+        return -ENOSYS;
+    }
     void* res_mem = OSMalloc(length);
     if(!res_mem){
         return -ENOMEM;

@@ -79,7 +79,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     pTaskBlock->kernelStackSize=kernelSize;
     pTaskBlock->status=TASK_SUSPEND;
     pTaskBlock->parentTask=pTaskBlock;
-
+    pTaskBlock->is_s_user=1;
     pTaskBlock->next=NULL;
 //    pTaskBlock->nextBk=NULL;
     pTaskBlock->nextAll=NULL;
