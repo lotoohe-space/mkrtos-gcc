@@ -7,6 +7,10 @@
  * @brief OS工作频率
  */
 #define OS_WORK_HZ 1000
+/**
+ * @brief OS周期的ms
+ */
+#define OS_WORK_PERIOD_MS  ((1000/OS_WORK_HZ))
 
 int32_t ArchInit(void);
 /**

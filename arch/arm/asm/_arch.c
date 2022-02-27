@@ -171,7 +171,10 @@ void _TaskSchedule(void){
 
 extern void tasks_check(void);
 extern void task_sche(void);
+//sleep.c
+extern void do_check_sleep_tim(void);
 void SysTick_Handler(void){
+    do_check_sleep_tim();
     tasks_check();
     task_sche();
 }

@@ -283,7 +283,10 @@ void user_task(void* arg0,void *arg1){
     }
 #endif
 
-#if 1
+    printf("I am sleep 5S\r\n");
+    sleep(5);
+    printf("I am wake up.\r\n");
+#if 0
     int sem_id;
     sem_id=semget(123,1,IPC_CREAT);
     if(sem_id<0){
@@ -296,6 +299,7 @@ void user_task(void* arg0,void *arg1){
     }else if(ret==0){
         printf("child will wait 3S.\r\n");
         delay_ms(3000);
+        sleep(5);
         printf("child PID is %d.\r\n",getpid());
         sem_v(sem_id);
     }else {

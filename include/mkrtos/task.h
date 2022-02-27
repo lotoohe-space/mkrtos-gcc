@@ -242,7 +242,7 @@ typedef struct task{
      * 许可权位)。我们将在4 . 2 0节说明如何创建一个新目录，在文件方式创建屏蔽字中为 1的位，在
      * 文件m o d e中的相应位则一定被转成0。
      */
-    mode_t maak;
+    mode_t mask;
     struct tty_struct *tty;//当前进程使用的tty，如果是后台进程，则该参数为NULL
     struct file files[NR_FILE];//文件
     void* root_inode; //根inode

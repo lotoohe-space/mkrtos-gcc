@@ -223,8 +223,8 @@ int sys_uname (struct utsname *name) {
     */
 mode_t sys_umask (mode_t mask){
     mode_t old_mask;
-    old_mask=CUR_TASK->euid;
-    CUR_TASK->euid=mask;
+    old_mask=CUR_TASK->mask;
+    CUR_TASK->mask=mask;
     return old_mask;
 }
 
@@ -361,3 +361,4 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
 
     return -ENOSYS;
 }
+

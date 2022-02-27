@@ -93,7 +93,7 @@ extern int sys_getpriority(); //96
 extern int sys_setpriority(); //97
 extern int sys_wait4();     //114-wait4
 extern int sys_ipc();       //117
-
+extern int sys_nanosleep(); //162
 extern int sys_rt_sigaction(); //174
 extern int sys_rt_sigreturn(void* psp);
 
@@ -206,6 +206,7 @@ fn_ptr sys_call_table[] = {
         [173]=sys_rt_sigreturn,
         [119]=sys_sigreturn,
         [133]=sys_fchdir,
+        [162]=sys_nanosleep,
         [174]=sys_rt_sigaction,
         [182]=sys_chown,
 

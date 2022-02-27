@@ -15,6 +15,8 @@ extern void update_cur_task(void);
 extern void task_sche(void);
 //fs.h
 extern void sys_close(int fp);
+//sleep.c
+extern void do_remove_sleep_tim(struct task* tk) ;
 /**
 * @brief 在系统中删除当前执行的任务，该删除只是设置为僵尸进程
 */
@@ -32,6 +34,7 @@ void DoExit(int32_t exitCode){
         }
     }
     mem_clear();
+    do_remove_sleep_tim(CUR_TASK);
     t=DisCpuInter();
     //当前进程结束了，应该吧当前进程的子进程全部移交给初始化进程
     struct task* tmp=sysTasks.allTaskList;
