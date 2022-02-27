@@ -11,22 +11,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="实现了gettimeofday，精度ms">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="修复了两个小bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/ipc.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/ipc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sys.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sys.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/syscall.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/syscall.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/mmap.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/mmap.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/syscalls.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/syscalls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/sleep.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sleep.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +212,7 @@
       <workItem from="1645693518715" duration="5579000" />
       <workItem from="1645802866385" duration="23020000" />
       <workItem from="1645933334896" duration="15215000" />
-      <workItem from="1645971929812" duration="599000" />
+      <workItem from="1645971929812" duration="768000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -446,7 +438,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645941822819</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="修复了两个小bug">
+      <created>1645975005451</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1645975005452</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,7 +487,8 @@
     <MESSAGE value="测试了一下pipe" />
     <MESSAGE value="实现了nanosleep系统调用，精度ms" />
     <MESSAGE value="实现了gettimeofday，精度ms" />
-    <option name="LAST_COMMIT_MESSAGE" value="实现了gettimeofday，精度ms" />
+    <MESSAGE value="修复了两个小bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复了两个小bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

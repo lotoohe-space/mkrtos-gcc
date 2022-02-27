@@ -124,8 +124,8 @@ int sys_nanosleep(const struct timespec *req, struct timespec *rem){
         if(!rem){
             uint32_t rems;
             rems=stq.slp_ms-stq.cur_ms;
-            rem->tv_nsec=rems*1000*10000;
-            rem->tv_sec=0;
+            rem->tv_nsec=(rems%1000)*1000*1000;
+            rem->tv_sec=rems/1000;
         }
         return -1;
     }
