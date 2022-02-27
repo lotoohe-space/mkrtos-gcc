@@ -27,15 +27,17 @@ IsrFunc isrFuncList[59]={NULL};
 void ExternInter(void* sp){
 	uint32_t isrNum;
 	isrNum = GetISRNum();
-	if(!(isrFuncList[isrNum-ISR_START_INX].isrFlag&0x1)){
+//	if(!(isrFuncList[isrNum-ISR_START_INX].isrFlag&0x1)){
 		//内核中直接调用中断
-		if(isrFuncList[isrNum-ISR_START_INX].isrFunc!=NULL){
-			isrFuncList[isrNum-ISR_START_INX].isrFunc();
-		}
+    if(isrFuncList[isrNum-ISR_START_INX].isrFunc!=NULL){
+        isrFuncList[isrNum-ISR_START_INX].isrFunc();
+    }else{
+        printk("unreg isr %d.\r\n",isrNum);
+    }
 
-	}else{
-		//用户线程调用中断
-	}
+//	}else{
+//		用户线程调用中断
+//	}
     extern void do_signal_isr(void* sp);
     do_signal_isr(sp);
 }

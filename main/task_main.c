@@ -283,9 +283,20 @@ void user_task(void* arg0,void *arg1){
     }
 #endif
 
+#if 0
     printf("I am sleep 5S\r\n");
     sleep(5);
     printf("I am wake up.\r\n");
+#endif
+    time_t tim;
+    while(1) {
+        time(&tim);
+        struct timeval t_val;
+        gettimeofday(&t_val,NULL);
+        printf("%s", asctime(gmtime(&tim)));
+        printf("%d %d\r\n",t_val.tv_sec,t_val.tv_usec);
+        sleep(1);
+    }
 #if 0
     int sem_id;
     sem_id=semget(123,1,IPC_CREAT);

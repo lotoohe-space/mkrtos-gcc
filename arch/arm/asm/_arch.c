@@ -10,12 +10,15 @@ void SysTick_Handler(void);
 extern void FSMC_SRAM_Init(void);
 extern int sram_test(void);
 extern uint8_t RTC_Init(void);
+//tim3.c
+extern void TIM3_BASEInitSys(int16_t arr,uint16_t psc);
 int32_t BSPInit(void){
     FSMC_SRAM_Init();
     if(sram_test()<0){
 //        fatalk("ÄÚ´æ³õÊ¼»¯Ê§°Ü!\r\n");
     }
     RTC_Init();
+    TIM3_BASEInitSys(719,99);
     return 0;
 }
 int32_t ArchInit(void){

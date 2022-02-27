@@ -184,7 +184,7 @@ fn_ptr sys_call_table[] = {
 //                           sys_setrlimit,
 //                           sys_getrlimit,
 //                           sys_getrusage,
-//                           sys_gettimeofday,
+                           [78]=sys_gettimeofday,
 //                           sys_settimeofday,
 //                           sys_getgroups,
 //                           sys_setgroups,

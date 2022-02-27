@@ -55,7 +55,7 @@ static void remove_sleep(struct sleep_time_queue **queue,struct sleep_time_queue
     }
     RestoreCpuInter(t);
 }
-//删除某个任务的
+//删除某个任务的，在exit.c中调用
 void do_remove_sleep_tim(struct task* tk) {
     struct sleep_time_queue *temp;
     struct sleep_time_queue *prev=NULL;
