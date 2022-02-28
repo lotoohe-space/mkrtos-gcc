@@ -20,7 +20,7 @@ static void unlock_ls(void){
     atomic_set(&sem_list_lk,0);
 }
 static void lock_sem(struct sem* _sem){
-    while(atomic_test_set(&_sem->semlock,1));
+    while(!atomic_test_set(&_sem->semlock,1));
 }
 static void unlock_sem(struct sem* _sem){
     atomic_set(&_sem->semlock,0);
@@ -387,7 +387,7 @@ int sys_semop(int semid,struct sembuf semoparray[],size_t ops){
                 task_run();
                 sem_remove_wait_queue(&semid_ds_ls[semid].sem_pending,&sem_q);
 
-                //信号被删除了，则返回ERMID
+                //信号量被删除了，则返回ERMID
                 if(atomic_test(&semid_ds_used[semid],0)){
                     return -ERMID;
                 }

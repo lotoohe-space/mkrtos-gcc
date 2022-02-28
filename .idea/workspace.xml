@@ -11,14 +11,19 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="修复了两个小bug">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="修复了nanosleep返回剩余值不对的bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/ipc.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/ipc.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/sys_msg.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/sys_msg.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/sys_sem.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/sys_sem.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kernel/sleep.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sleep.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/include/sys/msg.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/include/sys/msg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +217,7 @@
       <workItem from="1645693518715" duration="5579000" />
       <workItem from="1645802866385" duration="23020000" />
       <workItem from="1645933334896" duration="15215000" />
-      <workItem from="1645971929812" duration="768000" />
+      <workItem from="1645971929812" duration="12655000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -445,7 +450,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645975005452</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="修复了nanosleep返回剩余值不对的bug">
+      <created>1645975175827</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1645975175828</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -463,7 +475,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="首次提交" />
     <MESSAGE value="inode增加等待队列，修正bug" />
     <MESSAGE value="emmmm" />
     <MESSAGE value="修复了几个bug，并给bk_cache添加了缓存" />
@@ -488,18 +499,10 @@
     <MESSAGE value="实现了nanosleep系统调用，精度ms" />
     <MESSAGE value="实现了gettimeofday，精度ms" />
     <MESSAGE value="修复了两个小bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复了两个小bug" />
+    <MESSAGE value="修复了nanosleep返回剩余值不对的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复了nanosleep返回剩余值不对的bug" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/ipc/pipe.c</url>
-          <line>324</line>
-          <option name="timeStamp" value="825" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="time_tick" language="ObjectiveC" />

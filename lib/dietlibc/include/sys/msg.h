@@ -22,7 +22,7 @@ struct msg{
 };
 
 struct msg_queue{
-    uint32_t msgtype;
+//    uint32_t msgtype;
     struct task* task;
     struct msg_queue* next;
 };
@@ -44,7 +44,6 @@ struct msqid_ds {
 
   struct msg_queue *r_wait; /*read queue for reading*/
   struct msg_queue *w_wait; /*write queue for reading*/
-  int lock;
 };
 
 /* message buffer for msgsnd and msgrcv calls */

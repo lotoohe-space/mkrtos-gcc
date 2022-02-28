@@ -7,6 +7,7 @@
 #include "bsp/delay.h"
 #include "mkrtos/mem.h"
 #include "sys/sem.h"
+#include "sys/msg.h"
 #include <mkrtos/stat.h>
 //#include "mkrtos/signal.h"
 #include <xprintf.h>
@@ -291,7 +292,7 @@ void user_task(void* arg0,void *arg1){
     printf("%d\r\n",t_val2.tv_sec*1000*10000+t_val2.tv_usec-t_val1.tv_sec*1000*10000+t_val1.tv_usec);
 #endif
 
-#if 1
+#if 0
     time_t tim;
     while(1) {
         time(&tim);
@@ -328,6 +329,71 @@ void user_task(void* arg0,void *arg1){
         printf("father pid is %d.\r\n");
         sem_v(sem_id);
         del_sem(sem_id);
+    }
+#endif
+
+#if 1
+//    ftok
+    int mqid;
+    struct msgbuf {
+        long mtype;     /* message type, must be > 0 */
+        char mtext[32];  /* message data */
+    }msg;
+    struct timeval t_val;
+#define SNDMSG 1
+#define RCVMSG 2
+    mqid = msgget(123, IPC_CREAT | IPC_EXCL | 0666);
+    if (mqid == -1) {
+        printf("msgget error: ");
+        exit(-1);
+    }
+    ret=fork();
+    if(ret<0){
+        printf("init create error.\r\n");
+    }else if(ret==0){
+        key_t mqkey;
+
+        printf("Lucy: ");
+        fgets(msg.mtext, 256, stdin);
+        if (strncmp("quit", msg.mtext, 4) == 0) {
+            msgctl(mqid, IPC_RMID, NULL);
+            exit(0);
+        }
+        msg.mtext[strlen(msg.mtext)-1] = '\0';
+        msg.mtype = SNDMSG;
+        gettimeofday(&t_val,NULL);
+        msgsnd(mqid, &msg, strlen(msg.mtext) + 1, 0);
+        printf("%d %d\r\n",t_val.tv_sec,t_val.tv_usec/1000);
+        gettimeofday(&t_val,NULL);
+        msgsnd(mqid, &msg, strlen(msg.mtext) + 1, 0);
+        printf("%d %d\r\n",t_val.tv_sec,t_val.tv_usec/1000);
+        gettimeofday(&t_val,NULL);
+        msgsnd(mqid, &msg, strlen(msg.mtext) + 1, 0);
+        printf("%d %d\r\n",t_val.tv_sec,t_val.tv_usec/1000);
+        msgrcv(mqid, &msg, 256, RCVMSG, 0);
+        printf("Peter talk: %s\n", msg.mtext);
+//        printf("%d exit.\n",getpid());
+    }else {
+        msgrcv(mqid, &msg, 256, SNDMSG, 0);
+        gettimeofday(&t_val,NULL);
+        printf("%d %d\r\n",t_val.tv_sec,t_val.tv_usec/1000);
+        msgrcv(mqid, &msg, 256, SNDMSG, 0);
+        gettimeofday(&t_val,NULL);
+        printf("%d %d\r\n",t_val.tv_sec,t_val.tv_usec/1000);
+        msgrcv(mqid, &msg, 256, SNDMSG, 0);
+        gettimeofday(&t_val,NULL);
+        printf("%d %d\r\n",t_val.tv_sec,t_val.tv_usec/1000);
+
+        printf("Lucy talk: %s\n", msg.mtext);
+        printf("Peter: ");
+        fgets(msg.mtext, 256, stdin);
+        if (strncmp("quit", msg.mtext, 4) == 0) {
+            exit(0);
+        }
+        msg.mtext[strlen(msg.mtext)-1] = '\0';
+        msg.mtype = RCVMSG;
+        msgsnd(mqid, &msg, strlen(msg.mtext) + 1, 0);
+//        printf("%d exit.\n",getpid());
     }
 #endif
 }

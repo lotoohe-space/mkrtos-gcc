@@ -7,7 +7,7 @@
 //
 struct sleep_time_queue{
     struct task* task;
-    struct sleep_list *next;
+    struct sleep_time_queue *next;
     uint32_t slp_ms;
     uint32_t cur_ms;
 };
