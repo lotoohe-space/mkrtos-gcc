@@ -8,6 +8,7 @@
 #include "mkrtos/mem.h"
 #include "sys/sem.h"
 #include "sys/msg.h"
+#include "sys/shm.h"
 #include <mkrtos/stat.h>
 //#include "mkrtos/signal.h"
 #include <xprintf.h>
@@ -233,6 +234,12 @@ int sem_v(int sem_id){
     }
     return 0;
 }
+#define TEXT_SZ 32
+struct shared_use_st
+{
+    int written;//作为一个标志，非0：表示可读，0表示可写
+    char text[TEXT_SZ];//记录写入和读取的文本
+};
 void user_task(void* arg0,void *arg1){
     int ret;
 #if 0
@@ -331,8 +338,98 @@ void user_task(void* arg0,void *arg1){
         del_sem(sem_id);
     }
 #endif
-
 #if 1
+    ret=fork();
+    if(ret<0){
+        printf("init create error.\r\n");
+    }else if(ret==0){
+        int running = 1;//程序是否继续运行的标志
+        void *shm = NULL;//分配的共享内存的原始首地址
+        struct shared_use_st *shared;//指向shm
+        int shmid;//共享内存标识符 //创建共享内存
+        shmid = shmget((key_t)1234, sizeof(struct shared_use_st), 0666|IPC_CREAT);
+        if(shmid == -1)
+        {
+            fprintf(stderr, "shmget failed\n");
+            exit(EXIT_FAILURE);
+        }   //将共享内存连接到当前进程的地址空间
+        shm = shmat(shmid, 0, 0);
+        if(shm == (void*)-1)
+        {
+            fprintf(stderr, "shmat failed\n");
+            exit(EXIT_FAILURE);
+        }
+        printf("\nMemory attached at %X\n", (int)shm);  //设置共享内存
+        shared = (struct shared_use_st*)shm;
+        shared->written = 0;
+        while(running)//读取共享内存中的数据
+        {       //没有进程向共享内存定数据有数据可读取
+            if(shared->written != 0)
+            {
+                printf("You wrote: %s", shared->text);
+                sleep(rand() % 3);          //读取完数据，设置written使共享内存段可写
+                shared->written = 0;         //输入了end，退出循环（程序）
+                if(strncmp(shared->text, "end", 3) == 0)
+                    running = 0;
+            }
+            else//有其他进程在写数据，不能读取数据
+                sleep(1);
+        }   //把共享内存从当前进程中分离
+        if(shmdt(shm) == -1)
+        {
+            fprintf(stderr, "shmdt failed\n");
+            exit(EXIT_FAILURE);
+        }   //删除共享内存
+        if(shmctl(shmid, IPC_RMID, 0) == -1)
+        {
+            fprintf(stderr, "shmctl(IPC_RMID) failed\n");
+            exit(EXIT_FAILURE);
+        }
+        exit(EXIT_SUCCESS);
+    }else {
+        int running = 1;
+        void *shm = NULL;
+        struct shared_use_st *shared = NULL;
+        char buffer[BUFSIZ + 1];//用于保存输入的文本
+        int shmid;  //创建共享内存
+        shmid = shmget((key_t)1234, sizeof(struct shared_use_st), 0666|IPC_CREAT);
+        if(shmid == -1)
+        {
+            fprintf(stderr, "shmget failed\n");
+            exit(EXIT_FAILURE);
+        }   //将共享内存连接到当前进程的地址空间
+        shm = shmat(shmid, (void*)0, 0);
+        if(shm == (void*)-1)
+        {
+            fprintf(stderr, "shmat failed\n");
+            exit(EXIT_FAILURE);
+        }
+        printf("Memory attached at %X\n", (int)shm);    //设置共享内存
+        shared = (struct shared_use_st*)shm;
+        while(running)//向共享内存中写数据
+        {       //数据还没有被读取，则等待数据被读取,不能向共享内存中写入文本
+            while(shared->written == 1)
+            {
+                sleep(1);
+                printf("Waiting...\n");
+            }       //向共享内存中写入数据
+            printf("Enter some text: ");
+            fgets(buffer, BUFSIZ, stdin);
+            strncpy(shared->text, buffer, TEXT_SZ);      //写完数据，设置written使共享内存段可读
+            shared->written = 1;     //输入了end，退出循环（程序）
+            if(strncmp(buffer, "end", 3) == 0)
+                running = 0;
+        }   //把共享内存从当前进程中分离
+        if(shmdt(shm) == -1)
+        {
+            fprintf(stderr, "shmdt failed\n");
+            exit(EXIT_FAILURE);
+        }
+        sleep(2);
+        exit(EXIT_SUCCESS);
+    }
+#endif
+#if 0
 //    ftok
     int mqid;
     struct msgbuf {
@@ -420,9 +517,10 @@ void start_task(void* arg0,void*arg1){
     if(ret<0){
         printf("init create error.\r\n");
     }else if(ret==0){
-        user_task(0,0);
+        //user_task(0,0);
+        rc_shell_exec();
     }else {
-        while(1){
+         while(1){
            // delay_ms(1000);
            // printf("remain memory is %d.\n",GetFreeMemory(1));
         }

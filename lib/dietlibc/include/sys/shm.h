@@ -2,6 +2,7 @@
 #define _SYS_SHM_H
 
 #include <sys/ipc.h>
+#include "arch/atomic.h"
 
 __BEGIN_DECLS
 
@@ -21,7 +22,7 @@ struct shmid_ds {
   pid_t			shm_lpid;	/* pid of last operator */
   uint16_t		shm_nattch;	/* no. of current attaches */
   uint16_t 		shm_unused;	/* compatibility */
-  void 			*shm_unused2;	/* ditto - used by DIPC */
+  void 			*shm_unused2;	/* 被我用了，哈哈哈*/
   void			*shm_unused3;	/* unused */
 };
 

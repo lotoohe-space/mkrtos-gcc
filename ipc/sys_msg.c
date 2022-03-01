@@ -28,6 +28,93 @@ static void unlock_msg(int id){
     atomic_set(&msg_locks[id],0);
 }
 
+static struct msg* do_find_msg(struct msg* newmsg,int type){
+
+    //type等于零，直接返回第一个
+    if(!type){
+        return newmsg;
+    }else if(type>0) {
+        while (newmsg) {
+            if (newmsg->msg_type == type) {
+                return newmsg;
+            }
+            newmsg = newmsg->next;
+        }
+    }else {
+        //type<0
+        //返回类型值最小的消息，这里直接返回第一个，因为插入按type大小插入的
+        return newmsg;
+    }
+    return NULL;
+}
+//按照type的大小进行消息的插入
+static void insert_msg(struct msg** head,struct msg* ins){
+    struct msg *temp=*head;
+    struct msg *prev=NULL;
+
+    do{
+        if(!temp && !prev){//没有任何消息
+            *head=ins;
+            break;
+        }else if(!temp->next){ //最后一条消息
+            if(!prev){//只有一条消息
+                //头部插入
+                ins->next=temp;
+                *head=ins;
+            }else{
+                ins->next=temp;
+                prev->next=ins;
+            }
+            break;
+        }else{
+            if(temp->msg_type>=ins->msg_type) {
+                if(!prev){//只有一条消息
+                    //头部插入
+                    ins->next=temp;
+                    *head=ins;
+                }else{
+                    ins->next=temp;
+                    prev->next=ins;
+                }
+                break;
+            }
+        }
+        prev=temp;
+        temp=temp->next;
+    }while(temp);
+}
+static void do_remove_msg(struct msg** head,struct msg* remmsg){
+    struct msg *prev=NULL;
+    struct msg *temp=*head;
+    uint32_t t;
+    while(temp){
+        if(temp==remmsg) {
+            if (prev==NULL) {
+                //删除的第一个
+                *head=temp->next;
+                OSFree(temp->data);
+                OSFree(temp);
+                break;
+            }else{
+                prev->next=temp->next;
+                break;
+            }
+        }
+        prev=temp;
+        temp=temp->next;
+    }
+}
+static void do_remove_all_msg(struct msg* head){
+    struct msg *temp=head;
+    uint32_t t;
+    while(temp){
+        struct msg *next;
+        next=temp->next;
+        OSFree(temp->data);
+        OSFree(temp);
+        temp=next;
+    }
+}
 static int32_t inner_find_msg(key_t key){
     int i;
 
@@ -195,17 +282,21 @@ int sys_msgctl(int msgid,int cmd,struct msqid_ds *buf){
     msq=&msgid_ds_ls[msgid];
     switch(cmd){
         case IPC_STAT:
+            lock_msg(msgid);
             memcpy(buf,msq,sizeof(struct msqid_ds));
+            lock_msg(msgid);
             break;
         case IPC_SET:
             if(CUR_TASK->euid==msq->msg_perm.cuid
             ||CUR_TASK->euid==msq->msg_perm.uid
             ||CUR_TASK->is_s_user
             ){
+                lock_msg(msgid);
                 msq->msg_perm.uid=buf->msg_perm.uid;
                 msq->msg_perm.gid=buf->msg_perm.gid;
                 msq->msg_perm.mode=buf->msg_perm.mode;
                 msq->msg_qbytes=buf->msg_qbytes;
+                unlock_msg(msgid);
             }
             break;
         case IPC_RMID:
@@ -213,8 +304,12 @@ int sys_msgctl(int msgid,int cmd,struct msqid_ds *buf){
                ||CUR_TASK->euid==msq->msg_perm.uid
                ||CUR_TASK->is_s_user
                     ) {
+                lock_msg(msgid);
+                do_remove_all_msg(msgid_ds_ls[msgid].msg_first);
                 //删除所有的数据
                 atomic_set(&msgid_ds_used[msgid], 0);
+                unlock_msg(msgid);
+                //删除所有的消息
                 //唤醒所有的在等待读或者写的任务，告诉他们任务被删除了
                 msg_wake_up(msgid_ds_ls[msgid].r_wait);
                 msg_wake_up(msgid_ds_ls[msgid].w_wait);
@@ -226,82 +321,6 @@ int sys_msgctl(int msgid,int cmd,struct msqid_ds *buf){
     return 0;
 }
 
-static struct msg* do_find_msg(struct msg* newmsg,int type){
-
-    //type等于零，直接返回第一个
-    if(!type){
-        return newmsg;
-    }else if(type>0) {
-        while (newmsg) {
-            if (newmsg->msg_type == type) {
-                return newmsg;
-            }
-            newmsg = newmsg->next;
-        }
-    }else {
-        //type<0
-        //返回类型值最小的消息，这里直接返回第一个，因为插入按type大小插入的
-        return newmsg;
-    }
-    return NULL;
-}
-//按照type的大小进行消息的插入
-static void insert_msg(struct msg** head,struct msg* ins){
-    struct msg *temp=*head;
-    struct msg *prev=NULL;
-
-    do{
-        if(!temp && !prev){//没有任何消息
-            *head=ins;
-            break;
-        }else if(!temp->next){ //最后一条消息
-            if(!prev){//只有一条消息
-                //头部插入
-                ins->next=temp;
-                *head=ins;
-            }else{
-                ins->next=temp;
-                prev->next=ins;
-            }
-            break;
-        }else{
-            if(temp->msg_type>=ins->msg_type) {
-                if(!prev){//只有一条消息
-                    //头部插入
-                    ins->next=temp;
-                    *head=ins;
-                }else{
-                    ins->next=temp;
-                    prev->next=ins;
-                }
-                break;
-            }
-        }
-        prev=temp;
-        temp=temp->next;
-    }while(temp);
-}
-static void do_remove_msg(struct msg** head,struct msg* remmsg){
-    struct msg *prev=NULL;
-    struct msg *temp=*head;
-    uint32_t t;
-    while(temp){
-        if(temp==remmsg) {
-            if (prev==NULL) {
-                //删除的第一个
-                *head=temp->next;
-                OSFree(temp->data);
-                OSFree(temp);
-                break;
-            }else{
-                prev->next=temp->next;
-                break;
-            }
-        }
-        prev=temp;
-        temp=temp->next;
-    }
-}
 int sys_msgrcv(int msgid,void *ptr,size_t nbytes,long type,int flag){
     struct s_msg *s_msg;
     struct msqid_ds *msq;
@@ -358,6 +377,7 @@ int sys_msgrcv(int msgid,void *ptr,size_t nbytes,long type,int flag){
     do_remove_msg(&msq->msg_first,f_msg);
     msq->msg_cbytes-=f_msg->msg_size;
     msq->msg_qnum--;
+    msq->msg_lrpid=CUR_TASK->PID;
     unlock_msg(msgid);
     //唤醒等待这个类型的消息
     msg_wake_up(msq->w_wait);
@@ -446,6 +466,7 @@ int sys_msgsnd(int msgid,const void *ptr,size_t nbytes,int flag){
 //    }
     msq->msg_qnum++;
     msq->msg_cbytes+=nbytes;
+    msq->msg_lspid=CUR_TASK->PID;
     unlock_msg(msgid);
     //唤醒在等待读的队列
     msg_wake_up(msgid_ds_ls[msgid].r_wait);

@@ -8,21 +8,21 @@
 #define CH432_BPS1  115200    /* 定义CH432串口1通讯波特率 */
 #define Fpclk    1843200    /* 定义内部时钟频率    */
 
-static Atomic_t lock={0};
+//static Atomic_t lock={0};
 //data:要写入的数据
 //返回值:读到的数据
 uint8_t Ch432_SPI_ReadWriteByte(uint8_t data)
 {
     uint8_t r ;
     again:
-    if(atomic_test_set(&lock,1)) {
+//    if(atomic_test_set(&lock,1)) {
         //uint32_t t=DisCpuInter();
         r= SPI2_ReadWriteByte(data);
         //RestoreCpuInter(t);
-        atomic_set(&lock,0);
-    }else{
-        goto again;
-    }
+//        atomic_set(&lock,0);
+//    }else{
+//        goto again;
+//    }
 	return r;
 }	  
 void WriteCH432Block( uint32_t mAddr, uint8_t mLen, uint8_t *mBuf )    /* 向指定起始地址写入数据块 */
