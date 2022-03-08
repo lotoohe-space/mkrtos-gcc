@@ -61,7 +61,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     /*初始化任务控制表*/
     pTaskBlock->runCount=0;
 //    pTaskBlock->delayCount=0;
-    pTaskBlock->PID = (int16_t)atomic_read(&sysTasks.pidTemp);
+    pTaskBlock->PID = (pid_t)atomic_read(&sysTasks.pidTemp);
     if(atomic_test(&(sysTasks.pidTemp),1)) {
         sysTasks.init_task=pTaskBlock;
     }
@@ -81,15 +81,16 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     pTaskBlock->parentTask=pTaskBlock;
     pTaskBlock->is_s_user=1;
     pTaskBlock->next=NULL;
+    strncpy(pTaskBlock->pwd_path,"/",sizeof(pTaskBlock->pwd_path));
 //    pTaskBlock->nextBk=NULL;
     pTaskBlock->nextAll=NULL;
     if(userStackSize!=0){
         /*设置栈的初始化寄存器*/
         pTaskBlock->skInfo.pspStack=
-                OSTaskSetReg(pTaskBlock->skInfo.pspStack,taskFun,arg0,arg1);
+                OSTaskSetReg(pTaskBlock->skInfo.pspStack,taskFun,arg0,arg1,0);
     }
     pTaskBlock->skInfo.mspStack=
-            OSTaskSetReg(pTaskBlock->skInfo.mspStack,taskFun,arg0,arg1);
+            OSTaskSetReg(pTaskBlock->skInfo.mspStack,taskFun,arg0,arg1,0);
 
     if(userStackSize==0){
         //线程在内核模式;
@@ -97,7 +98,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
     }else{
         pTaskBlock->skInfo.stackType=1;
     }
-
+    pTaskBlock->skInfo.svcStatus=0;
     /*通过优先级添加任务*/
     int32_t err = add_task(pTaskBlock);
     if(err != 0){

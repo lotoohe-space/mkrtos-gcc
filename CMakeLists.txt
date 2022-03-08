@@ -71,6 +71,8 @@ include_directories(
         arch/bsp/lib/STM32F10x_FWLib
         lib/dietlibc/include
         lib/dietlibc
+        elf
+        app/shell/include
 #        lib/mpfr-master/src/arm
 #        lib/mpfr-master/src/
 #        lib/config/arm
@@ -92,6 +94,9 @@ file(GLOB_RECURSE SOURCES
         "mem/*.*"
         "ipc/*.*"
         "fs/*.*"
+        "elf/loader.c"
+        "elf/elf_main.c"
+        "app/shell/GShell/*.*"
         "drivers/*.*"
         "fs/sampleFS/*.*"
         "arch/arm/*.*"
@@ -101,24 +106,27 @@ file(GLOB_RECURSE SOURCES
         "lib/dietlibc/arm/dyn_syscalls.S"
         "lib/dietlibc/arm/start.S"
         "lib/dietlibc/arm/__guard.S"
-#        "lib/dietlibc/arm/*.*"
-#        "lib/dietlibc/contrib/*.*"
         "lib/dietlibc/dynlinker/*.*"
         "lib/dietlibc/lib/*.*"
         "lib/dietlibc/libcompat/*.*"
         "lib/dietlibc/libcruft/*.*"
         "lib/dietlibc/libcrypt/*.*"
-#        "lib/dietlibc/libdl/*.*"
         "lib/dietlibc/liblatin1/*.*"
         "lib/dietlibc/libm/*.*"
-#        "lib/dietlibc/libpthread/*.*"
         "lib/dietlibc/libregex/*.*"
         "lib/dietlibc/librpc/*.*"
         "lib/dietlibc/libshell/*.*"
         "lib/dietlibc/libstdio/*.*"
         "lib/dietlibc/libugly/*.*"
         "lib/dietlibc/libutf8/*.*"
-#        "lib/config/arm/*.*"
+
+        #        "lib/dietlibc/arm/*.*"
+        #        "lib/dietlibc/contrib/*.*"
+        #        "lib/dietlibc/libdl/*.*"
+        #        "lib/dietlibc/libpthread/*.*"
+        #        "lib/config/arm/*.*"
+
+
 #        "lib/soft-fp/*.*"
 
 

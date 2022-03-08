@@ -105,24 +105,25 @@ typedef struct super_block {
 
 
 struct file {
-    uint8_t f_mode;		    /* 文件不存在时，创建文件的权限 */
+    uint32_t f_mode;		    /* 文件不存在时，创建文件的权限 */
     int32_t f_ofs;            /* 文件读写偏移量 */
     dev_t  f_rdev;             /* 这是tty设备所对于的字符设备驱动号 */
 //    uint32_t f_count;           /*这个file被使用了多少次,暂时用不上*/
     unsigned short f_flags; /* 以什么样的方式打开文件，如只读，只写等等 */
     struct inode * f_inode;		/* 文件对应的inode */
     struct file_operations * f_op; /*文件对应的操作符*/
-    uint8_t used;   /*是否被使用标记*/
+    uint32_t used;   /*是否被使用标记*/
 };
 
-struct dirent
-{
-    long d_ino; /*索引节点号 */
-    int32_t d_off; /*在目录文件中的偏移 */
-    uint16_t d_file_name_len; /*文件名长 */
-//    unsigned char d_type; /*文件类型 */
-    char d_name [128+1]; /*文件名，最长128字符 */
-};
+#include <dirent.h>
+//struct dirent
+//{
+//    long d_ino; /*索引节点号 */
+//    int32_t d_off; /*在目录文件中的偏移 */
+//    uint16_t d_file_name_len; /*文件名长 */
+////    unsigned char d_type; /*文件类型 */
+//    char d_name [128+1]; /*文件名，最长128字符 */
+//};
 
 /* 对inode对应文件的操作
  */

@@ -51,7 +51,8 @@ uint32_t* OSTaskSetReg(
 		uint32_t * memStack,
 		void (*taskFun)(void*arg0,void *arg1),
 		void *prg0,
-		void *prg1
+		void *prg1,
+        void *prg2
 	);
 
 

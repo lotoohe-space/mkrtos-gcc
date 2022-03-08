@@ -18,9 +18,9 @@ struct inode * sp_alloc_inode(struct inode * p_inode){
 }
 
 int32_t sp_free_inode(struct inode *p_inode){
-    if(p_inode->i_hlink){
-        return -1;
-    }
+//    if(p_inode->i_hlink){
+//        return -1;
+//    }
     if(atomic_read(&p_inode->i_used_count)){
         return -1;
     }
@@ -179,8 +179,11 @@ void sp_put_inode(struct inode * i_node){
         return ;
     }
     i_node->i_file_size=0;
+    sp_truncate(i_node,0);
+    free_inode_no(i_node->i_sb,i_node->i_no);
     //这里需要删除文件的所有内容
     //然后让这个inode空闲
+    OSFree(i_node->i_fs_priv_info);
 }
 //释放超级块
 void sp_put_super(struct super_block * sb){
@@ -285,7 +288,7 @@ struct super_operations sp_s_ops={
     .read_inode=sp_read_inode,
     .notify_change=NULL,
     .write_inode=sp_write_inode,
-    .put_inode=NULL,
+    .put_inode=sp_put_inode,
     .put_super=NULL,
     .write_super=sp_write_super,
     .statfs=NULL,

@@ -45,7 +45,8 @@ uint32_t* OSTaskSetReg(
 		uint32_t * memStack,
 		void (*taskFun)(void*arg0,void *arg1),
 		void *prg0,
-		void *prg1
+		void *prg1,
+        void *prg2
 	){
     void TaskToEnd(int32_t exitCode);
 #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
@@ -90,7 +91,7 @@ uint32_t* OSTaskSetReg(
 	*(--memStack) = (uint32_t)TaskToEnd;
 	*(--memStack) = (uint32_t)0x12121212L; /* R12*/
 	*(--memStack) = (uint32_t)0x03030303L; /* R3 */
-	*(--memStack) = (uint32_t)0x02020202L; /* R2 */
+	*(--memStack) = (uint32_t)prg2; /* R2 */
 	*(--memStack) = (uint32_t)prg1; 				/* R1 */
 	*(--memStack) = (uint32_t)prg0; 				/* R0 : argument */
 	/* Remaining registers saved on process stack */
@@ -162,6 +163,8 @@ void RestoreCpuInter(uint32_t s){
 * @brief 手动触发PendSv进行任务切换
 */
 void _TaskSchedule(void){
+    uint32_t t;
+    t=DisCpuInter();
     __asm__ __volatile__(
     "LDR R0, =0xE000ED04\n"
     "LDR R1, =0x10000000\n"
@@ -170,6 +173,7 @@ void _TaskSchedule(void){
     :
     :
     );
+    RestoreCpuInter(t);
 }
 
 extern void tasks_check(void);

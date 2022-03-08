@@ -45,7 +45,8 @@ int sys_fcntl(unsigned int fd, unsigned int cmd, unsigned long arg)
 {
     struct file * filp;
 
-    if (fd >= NR_FILE || (filp = &(CUR_TASK->files[fd]))->used==0)
-        return -EBADF;
-    return -ENOSYS;
+//    if (fd >= NR_FILE || (filp = &(CUR_TASK->files[fd]))->used==0)
+//        return -EBADF;
+//    return -ENOSYS;
+    return 0;
 }

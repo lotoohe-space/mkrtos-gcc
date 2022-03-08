@@ -110,6 +110,9 @@ pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusa
                     int32_t res_pid;
                     res_pid=shutdown_task(ls);
                     RestoreCpuInter(t);
+                    if(statloc) {
+                        *statloc = ls->exitCode;
+                    }
                     return res_pid;
                 } else {
                     //先添加到一个链表中，然后在结尾处进行判断
@@ -125,6 +128,9 @@ pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusa
                     if (ls->status == TASK_CLOSED) {
                         int32_t res_pid;
                         res_pid=shutdown_task(ls);
+                        if(statloc) {
+                            *statloc = ls->exitCode;
+                        }
                         RestoreCpuInter(t);
                         return res_pid;
                     } else {
@@ -148,6 +154,9 @@ pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusa
                     if(ls->status == TASK_CLOSED) {
                         int32_t res_pid;
                         res_pid = shutdown_task(ls);
+                        if(statloc) {
+                            *statloc = ls->exitCode;
+                        }
                         RestoreCpuInter(t);
                         return res_pid;
                     }else{
@@ -193,16 +202,27 @@ pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusa
 //                CUR_TASK->status=TASK_SUSPEND;
                 //当前线程挂起
                 task_sche();
+                uint8_t find=FALSE;
+//                t=DisCpuInter();
                 //说明某个进程被关闭了
                 tmp=close_task;
-                while(tmp){//移除所有的等待任务
-                    if(tmp->status==TASK_CLOSED){
+                while(tmp){//移除所有的等待任务，并找到那个closed的进程
+                    struct task* del_wait_next;
+                    struct wait_queue **close_wait;
+                    del_wait_next=tmp->del_wait;
+                    close_wait=&tmp->close_wait;
+                    if(tmp->status==TASK_CLOSED && !find){
                         pid=tmp->PID;
+                        if(statloc) {
+                            *statloc = tmp->exitCode;
+                        }
                         shutdown_task(tmp);
+                        find=TRUE;
                     }
-                    remove_wait_queue(&tmp->close_wait,&wait_c);
-                    tmp=tmp->del_wait;
+                    remove_wait_queue(close_wait,&wait_c);
+                    tmp=del_wait_next;
                 }
+//                RestoreCpuInter(t);
                 //清除队列
                 clear_task_q(&close_task);
                 task_run();

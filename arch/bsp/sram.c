@@ -32,7 +32,7 @@ void FSMC_SRAM_Init(void)
 						
 	readWriteTiming.FSMC_AddressSetupTime = 0;	 //地址建立时间（ADDSET）为1个HCLK 1/36M=27ns
 	readWriteTiming.FSMC_AddressHoldTime = 0;	 //地址保持时间（ADDHLD）模式A未用到	
-	readWriteTiming.FSMC_DataSetupTime = 3;		 //数据保持时间（DATAST）为3个HCLK 4/72M=55ns(对EM的SRAM芯片)	 
+	readWriteTiming.FSMC_DataSetupTime = 4;		 //数据保持时间（DATAST）为3个HCLK 4/72M=55ns(对EM的SRAM芯片)
 	readWriteTiming.FSMC_BusTurnAroundDuration = 0;
 	readWriteTiming.FSMC_CLKDivision = 0x00;
 	readWriteTiming.FSMC_DataLatency = 0x00;

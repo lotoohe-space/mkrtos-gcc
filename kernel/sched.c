@@ -226,6 +226,7 @@ int32_t add_task(struct task* pTaskBlock){
     //放到同优先级任务链表里面
     PTaskBlock pstl=taskLinks->pSysTaskLinks;
     if(pstl == NULL){
+        pTaskBlock->next=NULL;
         taskLinks->pSysTaskLinks=pTaskBlock;
     }else{
         /*放在链表最开头*/
@@ -237,6 +238,7 @@ int32_t add_task(struct task* pTaskBlock){
     //存到所有任务的链表中
     pstl=sysTasks.allTaskList;
     if(pstl == NULL){
+        pTaskBlock->nextAll=NULL;
         sysTasks.allTaskList=pTaskBlock;
     }else{
         /*放在链表最开头*/

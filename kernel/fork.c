@@ -32,7 +32,7 @@ int32_t sys_fork(uint32_t *psp){
         RestoreCpuInter(t);
         return -1;
     }
-    newPtb->PID = (int16_t)atomic_read(&sysTasks.pidTemp);
+    newPtb->PID = (pid_t)atomic_read(&sysTasks.pidTemp);
 #if 0
     if(ptb->taskInfo.peam!=NULL){
         newPtb->taskInfo.peam=EOS_load_item_new();
@@ -57,7 +57,7 @@ int32_t sys_fork(uint32_t *psp){
     memcpy(newPtb->taskInfo.fileList,ptb->taskInfo.fileList,sizeof(File)*FILE_MAX_NUM);
 #endif
     int32_t err;
-
+    newPtb->parent=NULL;
     /*通过优先级添加任务*/
     err = add_task(newPtb);
     if(err != 0){
@@ -105,7 +105,14 @@ int32_t sys_fork(uint32_t *psp){
             }
         }
     }
-
+    newPtb->del_wait=NULL;
+    newPtb->close_wait=NULL;
+    newPtb->sig_bmp=0;
+    for(int i=0;i<_NSIG;i++) {
+        newPtb->signals[i]._u._sa_handler=SIG_DFL;
+    }
+    //mem信息不进行fork
+    newPtb->mems=NULL;
     newPtb->status=TASK_RUNNING;
     RestoreCpuInter(t);
 

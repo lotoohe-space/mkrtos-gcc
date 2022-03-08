@@ -10,7 +10,6 @@
 	.global __unified_syscall4
     .syntax unified
 __unified_syscall4:
-
 	ldmia	sp!, {r4, r5, r6}
 __unified_syscall:
 	cmn	r0, #4096

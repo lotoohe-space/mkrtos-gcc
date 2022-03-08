@@ -161,7 +161,8 @@ void* _Malloc(uint16_t inxMem, uint32_t size) {
 		}
 	}
 	osMem.OSMemItemLs[inxMem].freeBlockNum -= i_need_block_num;
-	return (void*)(&(malloc_mem[bkSize * i]));
+    printk("malloc %x.\n\n",(void*)(&(malloc_mem[bkSize * i])));
+    return (void*)(&(malloc_mem[bkSize * i]));
 }
 /**
 * @brief 释放申请的内存
@@ -238,6 +239,7 @@ void* OSMalloc(uint32_t size) {
 	int32_t st=DisCpuInter();
 	void* res = _Malloc(OS_USE_MEM_AREA_INX, size);
 	RestoreCpuInter(st);
+    memset(res,0,size);
 	return res;
 }
 #ifndef NOT_USE_EX_MEM
@@ -287,6 +289,7 @@ void OSFree(void* mem) {
     if(!mem){
         return ;
     }
+    printk("free %x.\n\n",mem);
     st=DisCpuInter();
 	_Free(OS_USE_MEM_AREA_INX, mem);
 	RestoreCpuInter(st);
@@ -336,10 +339,12 @@ static void mem_remove(void *mem){
     RestoreCpuInter(t);
 }
 /**
- * 清楚进程占用的内存
+ * 清楚进程占用的内存，用戶的exit函數中調用
  */
 void mem_clear(void){
+    uint32_t t;
     struct mem_struct **tmp;
+    t=DisCpuInter();
     tmp=&CUR_TASK->mems;
     while(*tmp){
         struct mem_struct *next;
@@ -348,25 +353,33 @@ void mem_clear(void){
         OSFree((*tmp));
         *tmp=next;
     }
-//    printk("remain memory size is %d.\r\n",GetFreeMemory(1));
+    CUR_TASK->mems=NULL;
+    RestoreCpuInter(t);
 }
 void* sys_mmap(void *start, size_t length, int prot, int flags,int fd, off_t offset){
     if(fd!=-1
         ||start
     ){
-        return -ENOSYS;
+        return -1;
     }
     void* res_mem = OSMalloc(length);
     if(!res_mem){
-        return -ENOMEM;
+        return -1;
     }
-    if(mem_add(res_mem,length)<0){
-        OSFree(res_mem);
-        return -ENOMEM;
-    }
+//    printk("mmap %x start:%x length:%d prot:%d flags:%x fd:%d ost:%d\r\n",res_mem,start,length,prot,flags,fd,offset);
+//    if(mem_add(res_mem,length)<0){
+//        OSFree(res_mem);
+//        return -ENOMEM;
+//    }
     return res_mem;
 }
 void sys_munmap(void *start, size_t length){
-    mem_remove(start);
+//    mem_remove(start);
+//    printk("munamp start:%x length:%d\r\n",start,length);
+
     return OSFree(start);
+}
+void *sys_mremap(void *__addr, size_t __old_len, size_t __new_len,
+                 unsigned long __may_move){
+    return OSRealloc(__addr,__new_len);
 }

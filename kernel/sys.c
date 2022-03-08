@@ -10,6 +10,9 @@
 #include <sys/times.h>
 #include <sys/resource.h>
 
+char* sys_getenv(char* key){
+    return NULL;
+}
 // 废弃了
 int sys_ftime ()
 {
@@ -400,9 +403,5 @@ int sys_setpriority(int which,int who, int prio){
     return ret;
 }
 
-//执行一个新的程序
-int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
 
-    return -ENOSYS;
-}
 

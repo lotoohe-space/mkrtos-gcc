@@ -8,6 +8,7 @@
 #include "arch/atomic.h"
 #include "mkrtos/signal.h"
 #include <mkrtos/fs.h>
+#include <loader.h>
 #define NR_FILE 8
 
 #define CUR_TASK sysTasks.currentTask
@@ -161,7 +162,7 @@ typedef struct task{
     /**
     * @brief 进程id
     */
-    int32_t PID;
+    pid_t PID;
     /**
      * @brief 组ID
      */
@@ -247,7 +248,8 @@ typedef struct task{
     struct file files[NR_FILE];//文件
     void* root_inode; //根inode
     void* pwd_inode;//当前目录
-
+    char pwd_path[128];//当前的绝对路径
+    ELFExec_t *exec;//当前应用的上下文
 }*PTaskBlock,TaskBlock;
 
 
@@ -362,4 +364,9 @@ void fatalk(const char* fmt, ...);
 int32_t inner_set_sig(uint32_t signum);
 int32_t inner_set_task_sig(pid_t pid,uint32_t signum);
 
+//exit.c
+void pre_exit(void);
+
+//sleep.c
+void do_remove_sleep_tim(struct task* tk) ;
 #endif //UNTITLED1_TASK_H

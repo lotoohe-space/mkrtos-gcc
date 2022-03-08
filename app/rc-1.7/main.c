@@ -14,6 +14,7 @@ static void checkfd(int, enum redirtype);
 extern int rc_main(int argc, char *argv[], char *envp[]) {
 	char *dashsee[2], *dollarzero, *null[1];
 	int c;
+    dashoh=FALSE;
 	initprint();
 	dashsee[0] = dashsee[1] = NULL;
 	dollarzero = argv[0];
@@ -71,6 +72,10 @@ quitopts:
 		checkfd(1, rCreate);
 		checkfd(2, rCreate);
 	}
+    init_lex_var();
+    init_input();
+    init_rc_fork();
+    init_walk();
 	initsignal();
 	inithash();
 	initparse();

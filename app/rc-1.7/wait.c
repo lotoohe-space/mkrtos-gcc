@@ -14,7 +14,9 @@ static struct Pid {
 	bool alive;
 	Pid *n;
 } *plist = NULL;
-
+void init_rc_fork(){
+    forked=FALSE;
+}
 extern pid_t rc_fork() {
 	Pid *new;
 	struct Pid *p, *q;

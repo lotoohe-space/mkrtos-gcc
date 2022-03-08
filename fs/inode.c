@@ -9,7 +9,7 @@
 #include <string.h>
 
 //系统内支持的最大inode数量
-#define INODE_NUM 32
+#define INODE_NUM 16
 struct inode inode_ls[INODE_NUM];
 
 //空闲的inode数量
@@ -104,9 +104,14 @@ void lose_inode(struct inode* p_inode){
     //不等于零则减
     atomic_test_dec_nq(&(p_inode->i_used_count));
     if(atomic_read(&(p_inode->i_used_count))==0){
+        if(p_inode->i_sb->s_ops
+        &&p_inode->i_sb->s_ops->free_inode
+        ) {
+            p_inode->i_sb->s_ops->free_inode(p_inode);
+        }
+        atomic_inc(&inode_free_num);
         //释放等待的进程
         wake_up_wait_inode_list();
-        atomic_inc(&inode_free_num);
     }
 
 }
@@ -216,14 +221,12 @@ static void __wait_on_inode(struct inode * inode)
     add_wait_queue(&inode->i_wait_q, &wait);
     again:
     task_suspend();
-//    CUR_TASK->status = TASK_SUSPEND;
     if (atomic_read(&( inode->i_lock))) {
         task_sche();
         goto again;
     }
     remove_wait_queue(&inode->i_wait_q, &wait);
     task_run();
-//    CUR_TASK->status = TASK_RUNNING;
 }
 void wait_on_inode(struct inode* inode){
     if (atomic_read(&( inode->i_lock))) {

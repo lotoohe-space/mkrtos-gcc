@@ -63,12 +63,22 @@ static bool prerror = FALSE;
 static wordstates w = NW;
 static int fd_left, fd_right;
 
+
 #define checkfreecaret {if (w != NW) { w = NW; ugchar(c); return '^'; }}
 
 enum filedescriptors {
 	UNSET = -9, CLOSED = -1
 };
-
+void init_lex_var(void){
+     bufsize = BUFSIZE;
+    realbuf = NULL;
+    newline = FALSE;
+    errset = FALSE;
+     prerror = FALSE;
+     w = NW;
+    fd_left=0;
+    fd_right=0;
+}
 /* does this string require quoting? */
 extern bool quotep(char *s, bool dollar) {
 	unsigned char c;

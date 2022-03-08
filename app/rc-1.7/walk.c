@@ -22,6 +22,9 @@ static void dopipe(Node *);
 
 #define WALK(x, y) { n = x; parent = y; goto top; }
 
+void init_walk(void){
+    cond=FALSE;
+}
 /* walk the parse-tree. "obvious". */
 
 extern bool walk(Node *n, bool parent) {

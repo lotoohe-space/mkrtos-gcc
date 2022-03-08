@@ -11,20 +11,346 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="搞定了消息队列，并且测试了下">
-      <change afterPath="$PROJECT_DIR$/ipc/sys_shm.c" afterDir="false" />
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="想了下，mmap映射到文件的实现原理，首先申请size大小的内存，然后假设这片内存就是文件的对应于磁盘的内存，那么直接对这片区域进行读写就行了。然后后台定期去同步这部分的内存区域到文件就行了。这里会发生一个冲突，就是我也可以调用write等函数进行写入，此时就需要一种同步的方法">
+      <change afterPath="$PROJECT_DIR$/app/shell/list.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/shell/list.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/shell/shell.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/shell/shell.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/shell/shell_cmd.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/shell/shell_cmd.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/app/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/app/elf.ld" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/app/sysent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/arm/CMSIS/include/arm_common_tables.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/arm/CMSIS/include/arm_math.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/arm/CMSIS/include/core_cm4.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/arm/CMSIS/include/core_cm4_simd.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/arm/CMSIS/include/core_cmFunc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/arm/CMSIS/include/core_cmInstr.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/arm/fault.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/arm/startup_ARMCM4.S" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/elf.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/elf_main.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/loader.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/loader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/loader_config.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/elf/loader_userdata.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/.idea/ls.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/arm/syscalls.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/binshstr.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietdirent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietdns.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietfeatures.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dieticonv.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietlibm.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietlocale.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietstdio.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietstring.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietuglyweaks.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/dietwarning.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/elf.ld" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/alloca.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/ar.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/arpa/inet.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/arpa/nameser.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/arpa/tftp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/alpha-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/arm-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/i386-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/ia64-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/mips-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/parisc-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/ppc-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/s390-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/sparc-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/statfs.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/types.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/asm/x86_64-sigcontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/assert.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/attr/xattr.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/byteswap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/clocale" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/cpio.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/cstddef" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/cstdlib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/ctype.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/cwchar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/cwctype" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/daemon.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/dietref.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/dietrefdef.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/dirent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/dlfcn.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/elf.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/endian.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/err.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/errno.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/fcntl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/features.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/float.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/fnmatch.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/ftw.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/getopt.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/glob.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/grp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/iconv.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/inttypes.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/langinfo.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/libgen.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/libintl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/limits.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/link.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/aio.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/eventpoll.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/fadvise.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/fd.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/if.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/if_ether.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/if_tun.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/kd.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/loop.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/nfs.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/soundcard.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/linux/types.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/locale.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/malloc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/math.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/md5.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/memory.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/mntent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/mqueue.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/net/ethernet.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/net/if.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/net/if_arp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/net/if_ether.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/net/route.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netdb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netinet/ether.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netinet/if_ether.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netinet/in.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netinet/in_systm.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netinet/ip.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netinet/ip_icmp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netinet/tcp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netinet/udp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/netpacket/packet.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/nl_types.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/paths.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/poll.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/pthread.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/pty.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/pwd.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/regex.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/resolv.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/auth.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/auth_des.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/auth_unix.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/clnt.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/des_crypt.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/key_prot.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/netdb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/pmap_clnt.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/pmap_prot.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/pmap_rmt.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/rpc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/rpc_des.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/rpc_msg.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/svc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/svc_auth.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/types.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/rpc/xdr.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sched.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/scsi/scsi.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/scsi/scsi_ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/scsi/sg.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/semaphore.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/setjmp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/shadow.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/signal.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/stdarg-cruft.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/stdarg.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/stdbool.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/stddef.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/stdint.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/stdio.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/stdlib.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/string.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/strings.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/alpha-ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/arm-ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/cdefs.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/epoll.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/file.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/fsuid.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/futex.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/gmon.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/gmon_out.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/hppa-ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/i386-ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/inotify.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/io.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/ipc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/kd.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/key.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/klog.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/mips-ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/mman.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/mount.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/msg.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/mtio.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/param.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/personality.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/poll.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/ppc-ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/prctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/ptrace.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/quota.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/reboot.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/resource.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/s390-ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/select.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/sem.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/sendfile.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/shm.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/signal.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/socket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/soundcard.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/sparc-ioctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/stat.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/statfs.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/swap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/syscall.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/sysctl.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/sysinfo.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/syslog.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/sysmacros.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/time.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/timeb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/times.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/timex.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/tls.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/types.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/ucontext.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/uio.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/un.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/utsname.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/vfs.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/vm86.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sys/wait.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/sysexits.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/syslog.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/tar.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/termio.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/termios.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/time.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/unistd.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/ustat.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/utime.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/utmp.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/wchar.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/wctype.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/include/write12.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/__ltostr.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/atexit.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/errno_location.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/fflush.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/fputc_unlocked.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/fwrite.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isalnum.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isalpha.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isascii.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isatty.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isblank.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iscntrl.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isdigit.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isgraph.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/islower.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isprint.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/ispunct.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isspace.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isupper.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswalnum.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswalpha.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswblank.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswcntrl.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswdigit.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswgraph.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswlower.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswprint.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswpunct.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswspace.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswupper.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/iswxdigit.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isxdigit.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/memcpy.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/memmove.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/stderr.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/stdin.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/stdout.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strlen.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strtol.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strtoll.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strtoul.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strtoull.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/vsprintf.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/linuxnet.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/longlong.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/main.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/parselib.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/syscall.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/syscalls.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/dietlibc.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/ls.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/CH432T.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/CH432T.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/rc-1.7/input.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/rc-1.7/input.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/rc-1.7/lex.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/rc-1.7/lex.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/rc-1.7/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/rc-1.7/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/rc-1.7/wait.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/rc-1.7/wait.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/rc-1.7/walk.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/rc-1.7/walk.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arch/arm/asm/_arch.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/_arch.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arch/bsp/sram.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/sram.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/ipc.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/ipc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/sys_msg.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/sys_msg.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/uart.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/uart.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/fcntl.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/fcntl.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/inode.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/open.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/open.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/rw.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_dir.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_dir.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/arch/arch.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/arch/arch.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/fork.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/fork.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/sys.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sys.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/wait_pid.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/wait_pid.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/mmap.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/mmap.S" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/unified.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/unified.S" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/dietlibc/include/sys/shm.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/include/sys/shm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/lib/opendir.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/lib/opendir.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/lib/perror.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/lib/perror.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/lib/readdir.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/lib/readdir.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/fs_init.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/fs_init.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,13 +414,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/arch/bsp" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/shell" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="structure.view.defaults.are.configured" value="true" />
   </component>
   <component name="ReaderModeSettings">
@@ -102,18 +429,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\app\shell" />
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\elf" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\arch\bsp" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\rc-master" />
-      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\dash" />
-      <recent name="C:\Users\zz\CLionProjects\mkrtos-gcc\app" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\app\shell\GShell" />
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\elf" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\ipc" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\kernel" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\bash-2.0" />
-      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\arch\arm\asm" />
-      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\include\old" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -125,11 +452,6 @@
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -219,7 +541,18 @@
       <workItem from="1645802866385" duration="23020000" />
       <workItem from="1645933334896" duration="15215000" />
       <workItem from="1645971929812" duration="13883000" />
-      <workItem from="1646104062483" duration="13984000" />
+      <workItem from="1646104062483" duration="32489000" />
+      <workItem from="1646379114696" duration="16742000" />
+      <workItem from="1646456298910" duration="4310000" />
+      <workItem from="1646463663959" duration="515000" />
+      <workItem from="1646464436755" duration="1000" />
+      <workItem from="1646479868949" duration="7000" />
+      <workItem from="1646479986977" duration="41997000" />
+      <workItem from="1646637639553" duration="21867000" />
+      <workItem from="1646665673361" duration="24000" />
+      <workItem from="1646666082223" duration="9000" />
+      <workItem from="1646715427903" duration="5536000" />
+      <workItem from="1646721614969" duration="7106000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -466,7 +799,14 @@
       <option name="project" value="LOCAL" />
       <updated>1646056287713</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="想了下，mmap映射到文件的实现原理，首先申请size大小的内存，然后假设这片内存就是文件的对应于磁盘的内存，那么直接对这片区域进行读写就行了。然后后台定期去同步这部分的内存区域到文件就行了。这里会发生一个冲突，就是我也可以调用write等函数进行写入，此时就需要一种同步的方法">
+      <created>1646151592061</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1646151592061</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,7 +824,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="emmmm" />
     <MESSAGE value="修复了几个bug，并给bk_cache添加了缓存" />
     <MESSAGE value="bk缓存改进，主要在于写缓存时存在不同步的情况" />
     <MESSAGE value="解决了mkdir多进程创建写混乱问题，但是可能回创建一样的文件，这个问题咋解决啊。" />
@@ -509,26 +848,25 @@
     <MESSAGE value="修复了两个小bug" />
     <MESSAGE value="修复了nanosleep返回剩余值不对的bug" />
     <MESSAGE value="搞定了消息队列，并且测试了下" />
-    <option name="LAST_COMMIT_MESSAGE" value="搞定了消息队列，并且测试了下" />
+    <MESSAGE value="想了下，mmap映射到文件的实现原理，首先申请size大小的内存，然后假设这片内存就是文件的对应于磁盘的内存，那么直接对这片区域进行读写就行了。然后后台定期去同步这部分的内存区域到文件就行了。这里会发生一个冲突，就是我也可以调用write等函数进行写入，此时就需要一种同步的方法" />
+    <option name="LAST_COMMIT_MESSAGE" value="想了下，mmap映射到文件的实现原理，首先申请size大小的内存，然后假设这片内存就是文件的对应于磁盘的内存，那么直接对这片区域进行读写就行了。然后后台定期去同步这部分的内存区域到文件就行了。这里会发生一个冲突，就是我也可以调用write等函数进行写入，此时就需要一种同步的方法" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/ipc/sys_shm.c</url>
-          <line>154</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/fs/open.c</url>
+          <line>291</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="time_tick" language="ObjectiveC" />
-        <watch expression="inbuf" language="ObjectiveC" />
-        <watch expression="_psp[0]" language="ObjectiveC" />
         <watch expression="sysTasks" language="ObjectiveC" />
         <watch expression="sysTasks.currentTask" language="ObjectiveC" />
-        <watch expression="&amp;sem_id" language="ObjectiveC" />
+        <watch expression="__small_mem" language="ObjectiveC" />
       </configuration>
     </watches-manager>
   </component>

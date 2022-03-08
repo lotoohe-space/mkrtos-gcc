@@ -111,8 +111,20 @@ int sys_chdir(const char * filename){
     //设置新的
     CUR_TASK->pwd_inode=o_inode;
     puti(o_inode);
+//
+//    if(filename[0]=='.'&&filename[1]=='.'){
+//        //相对路径
+//    }else if(filename[0]=='.'){
+//
+//    }else{
+        strncpy(CUR_TASK->pwd_path,filename,sizeof(CUR_TASK->pwd_path));
+//    }
 
     return 0;
+}
+int sys_getcwd(char* source,int cn){
+    strncpy(source,CUR_TASK->pwd_path,cn);
+    return strlen(CUR_TASK->pwd_path);
 }
 int sys_fchdir(unsigned int fd){
     struct inode *o_inode;
@@ -206,9 +218,9 @@ int sys_fchown(unsigned int fd, int user, int group){
 int sys_chown(const char * filename, int user, int group){
     return -ENOSYS;
 }
+
 int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
     uint32_t i;
-    char *_path;
     int32_t res;
     struct inode *o_inode;
     for(i=0;i<NR_FILE;i++){
@@ -221,12 +233,11 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
         errno = EMFILE;
         return -1;
     }
-//    getname(path,&_path);
+
     //打开文件
     res= open_namei(path,flags,mode,&o_inode,NULL);
     if(res<0){
         files[i].used=0;
-//        putname(_path);
         return -1;
     }
     files[i].f_flags=flags;
@@ -236,7 +247,6 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
             ) {
         files[i].f_op = o_inode->i_ops->default_file_ops;
     }
-
     //调用打开函数
     if(
             files[i].f_op
@@ -245,14 +255,18 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
         if (files[i].f_op->open(o_inode, &(files[i])) < 0) {
             files[i].used = 0;
             puti(o_inode);
-//            putname(_path);
             return -1;
         }
 
     }
+    files[i].f_ofs=0;
     files[i].f_inode=o_inode;
     files[i].f_mode= o_inode->i_type_mode;
-//    putname(_path);
+
+//    static int count;
+//    if(count++>15) {
+//        printk("%s %s fp:%d\n", __FUNCTION__, path,i);
+//    }
 
     return i;
 }
@@ -274,7 +288,10 @@ int sys_creat(const char * pathname, int mode){
 //关闭文件
 void sys_close(int fp){
     struct inode *inode;
-
+    if(fp<0||fp>=NR_FILE){
+        printk("%s fp.\n",__FUNCTION__ );
+        return ;
+    }
     if(CUR_TASK->files[fp].used==0){
         //文件已经关闭了
         return ;
@@ -286,8 +303,9 @@ void sys_close(int fp){
     ){
         CUR_TASK->files[fp].f_op->release(inode,&CUR_TASK->files[fp]);
     }
+    CUR_TASK->files[fp].f_op=NULL;
     CUR_TASK->files[fp].used=0;
-
+    CUR_TASK->files[fp].f_ofs=0;
     CUR_TASK->files[fp].f_inode=NULL;
     puti(inode);
 }

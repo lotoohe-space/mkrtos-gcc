@@ -7,7 +7,7 @@
 #include "arch/arch.h"
 #include "stdlib.h"
 #include <mkrtos/mem.h>
-
+#include <loader.h>
 //signal.c
 extern void sig_chld(void);
 //shced.c
@@ -15,8 +15,18 @@ extern void update_cur_task(void);
 extern void task_sche(void);
 //fs.h
 extern void sys_close(int fp);
-//sleep.c
-extern void do_remove_sleep_tim(struct task* tk) ;
+
+//半关闭
+void pre_exit(void){
+//关闭所有的文件
+    for( int i=0;i<NR_FILE;i++){
+        if(CUR_TASK->files[i].used){
+            sys_close(i);
+        }
+    }
+    mem_clear();
+    do_remove_sleep_tim(CUR_TASK);
+}
 /**
 * @brief 在系统中删除当前执行的任务，该删除只是设置为僵尸进程
 */
@@ -27,14 +37,7 @@ void DoExit(int32_t exitCode){
     //关闭打开的文件，并释放程序相关信息
     TaskUserInfoDestory(ptb);
 #endif
-    //关闭所有的文件
-    for( int i=0;i<NR_FILE;i++){
-        if(CUR_TASK->files[i].used){
-            sys_close(i);
-        }
-    }
-    mem_clear();
-    do_remove_sleep_tim(CUR_TASK);
+    pre_exit();
     t=DisCpuInter();
     //当前进程结束了，应该吧当前进程的子进程全部移交给初始化进程
     struct task* tmp=sysTasks.allTaskList;
@@ -44,9 +47,6 @@ void DoExit(int32_t exitCode){
         }
         tmp=tmp->nextAll;
     }
-
-    /*实际会等待执行了66行后，才会调度*/
-    task_sche();
     //发送chld给父进程
     sig_chld();
     //唤醒等待这个队列关闭的
@@ -58,8 +58,12 @@ void DoExit(int32_t exitCode){
         //任务更新
         update_cur_task();
     }
+    unload_elf(CUR_TASK->exec);
+    CUR_TASK->exec=NULL;
     //释放栈空间
     OSFree(CUR_TASK->memLowStack);
+    CUR_TASK->memLowStack=NULL;
+    task_sche();
     RestoreCpuInter(t);
 
 }
@@ -67,6 +71,7 @@ void DoExit(int32_t exitCode){
 * @brief 任务结束时会调用该函数，任务执行结束，在这里销毁这个任务
 */
 void TaskToEnd(int32_t exitCode){
+//    printk("exit %d\n",exitCode);
     /*这里需要通过系统调用，这个函数是用户层调用的*/
     exit(exitCode);
     /*for(;;);*/

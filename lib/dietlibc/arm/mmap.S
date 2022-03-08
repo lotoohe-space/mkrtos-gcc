@@ -1,6 +1,7 @@
 
 #include <errno.h>
 #include "syscalls.h"
+//直接这样也行，哈哈哈
 syscall(mmap,mmap)
 /*
 .syntax unified

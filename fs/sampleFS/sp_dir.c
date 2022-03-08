@@ -16,20 +16,20 @@ int sp_readdir(struct inode * inode, struct file * filp,
                   struct dirent * dirent, int count)
 {
     struct dir_item di;
-
+    int ret=0;
     again:
-    if(sp_file_read(inode, filp,(uint8_t*)(&di), sizeof( struct dir_item))<=0){
-        return 0;
+    if((ret=sp_file_read(inode, filp,(uint8_t*)(&di), sizeof( struct dir_item)))<=0){
+        return ret;
     }
     if(di.used==0){
         goto again;
     }
 
-    strncpy(dirent->d_name,di.name,sizeof(dirent->d_name));
-    dirent->d_file_name_len=strlen(di.name);
+    strncpy(dirent->d_name,di.name,sizeof(di.name));
+    dirent->d_reclen=strlen(di.name);
     dirent->d_ino=di.inode_no;
     dirent->d_off=filp->f_ofs-sizeof(struct dir_item);
-    return filp->f_ofs;
+    return sizeof(di);
 }
 
 

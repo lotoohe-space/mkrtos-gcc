@@ -44,7 +44,15 @@ int lastchar;
 #if EDITLINE || READLINE
 static char *rlinebuf, *prompt;
 #endif
-
+void init_input(void){
+     inbuf=0;
+     istacksize=0;
+    chars_in=chars_out=0;
+     eofread = FALSE;
+    save_lineno=0;
+    istack=0;
+    itop=0;
+}
 extern int gchar() {
 	int c;
 

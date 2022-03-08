@@ -23,14 +23,17 @@ int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count){
     if(_file->f_op
     &&_file->f_op->readdir){
         err=_file->f_op->readdir(_file->f_inode,_file,dirent,count);
-        if(err<0){
-            return err;
-        }
     }else{
         return -ENOENT;
     }
 
     return err;
+}
+int sys_getdents(unsigned int fd, struct dirent *dirp, unsigned int count){
+    int ret;
+//    printk("%s.\n",__FUNCTION__ );
+    ret=sys_readdir(fd, dirp,  count);
+    return ret;
 }
 int sys_lseek(unsigned int fd, int32_t ofs, uint32_t origin){
     int32_t ofs_temp=0;
@@ -40,8 +43,10 @@ int sys_lseek(unsigned int fd, int32_t ofs, uint32_t origin){
     if(CUR_TASK->files[fd].used==0){
         return -1;
     }
-    if(!CUR_TASK->files[fd].f_ofs
-       ||!CUR_TASK->files[fd].f_inode
+    if(
+//            !CUR_TASK->files[fd].f_ofs
+//       ||
+       !CUR_TASK->files[fd].f_inode
             ){
         return -1;
     }
@@ -51,6 +56,7 @@ int sys_lseek(unsigned int fd, int32_t ofs, uint32_t origin){
         ) {
         CUR_TASK->files[fd].f_op->release(CUR_TASK->files[fd].f_inode, &(CUR_TASK->files[fd]));
     }
+    ofs_temp=CUR_TASK->files[fd].f_ofs;
 
     switch (origin) {
         case 0:

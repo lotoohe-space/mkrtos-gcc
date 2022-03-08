@@ -96,8 +96,12 @@ extern int sys_getpriority(); //96
 extern int sys_setpriority(); //97
 extern int sys_wait4();     //114-wait4
 extern int sys_ipc();       //117
+extern int sys_getdents();
 extern int sys_nanosleep(); //162
+extern int sys_mremap();//163
 extern int sys_rt_sigaction(); //174
+extern int sys_getcwd();//183
+extern int sys_getenv();
 extern int sys_rt_sigreturn(void* psp);
 
 extern int sys_readdir();
@@ -207,13 +211,17 @@ const fn_ptr sys_call_table[] = {
         [97]=sys_setpriority,
         [99]=sys_statfs,
         [100]=sys_fstatfs,
+        [106]=sys_stat,
         [114]=sys_wait4,
         [117]=sys_ipc,
         [119]=sys_sigreturn,
         [133]=sys_fchdir,
+        [141]=sys_getdents,
         [162]=sys_nanosleep,
+        [163]=sys_mremap,
         [173]=sys_rt_sigreturn,
         [174]=sys_rt_sigaction,
         [182]=sys_chown,
+        [183]=sys_getcwd,
 
 };
