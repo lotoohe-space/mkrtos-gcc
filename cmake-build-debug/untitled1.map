@@ -11559,7 +11559,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x08000000                g_pfnVectors
                 0x080001e4                . = ALIGN (0x4)
 
-.text           0x080001e4    0x136e4
+.text           0x080001e4    0x136c4
                 0x080001e4                . = ALIGN (0x4)
  *(.text)
  .text          0x080001e4      0xc54 CMakeFiles/untitled1.elf.dir/lib/dietlibc/arm/dyn_syscalls.S.obj
@@ -13820,605 +13820,598 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x08013598                KernelTaskInit
  .text.InitMem  0x080135f0       0x40 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x080135f0                InitMem
- .text._Malloc  0x08013630       0xc0 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .text._Malloc  0x08013630       0xb0 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x08013630                _Malloc
- .text._Free    0x080136f0       0x58 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x080136f0                _Free
+ .text._Free    0x080136e0       0x58 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x080136e0                _Free
  .text.GetMemSize
-                0x08013748       0x40 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x08013748                GetMemSize
+                0x08013738       0x40 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08013738                GetMemSize
  .text.GetFreeMemory
-                0x08013788       0x18 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x08013788                GetFreeMemory
+                0x08013778       0x18 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08013778                GetFreeMemory
  .text.OSMalloc
-                0x080137a0       0x28 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x080137a0                OSMalloc
- .text.OSFree   0x080137c8       0x2c CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x080137c8                OSFree
+                0x08013790       0x28 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08013790                OSMalloc
+ .text.OSFree   0x080137b8       0x1e CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x080137b8                OSFree
  .text.OSRealloc
-                0x080137f4       0x42 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x080137f4                OSRealloc
- *fill*         0x08013836        0x2 
+                0x080137d6       0x42 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x080137d6                OSRealloc
  .text.mem_clear
-                0x08013838       0x40 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x08013838                mem_clear
+                0x08013818       0x40 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08013818                mem_clear
  .text.sys_mmap
-                0x08013878       0x26 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x08013878                sys_mmap
+                0x08013858       0x26 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08013858                sys_mmap
  .text.sys_munmap
-                0x0801389e        0x8 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x0801389e                sys_munmap
+                0x0801387e        0x8 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x0801387e                sys_munmap
  .text.sys_mremap
-                0x080138a6        0xa CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x080138a6                sys_mremap
+                0x08013886        0xa CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+                0x08013886                sys_mremap
  *(.glue_7)
- .glue_7        0x080138b0        0x0 linker stubs
+ .glue_7        0x08013890        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x080138b0        0x0 linker stubs
+ .glue_7t       0x08013890        0x0 linker stubs
  *(.eh_frame)
  *(.init)
  *(.fini)
-                0x080138b0                . = ALIGN (0x4)
-                0x080138b0                _etext = .
-                0x080138b0                . = ALIGN (0x4)
-                0x080138b0                _dev_reg_item_start = .
+                0x08013890                . = ALIGN (0x4)
+                0x08013890                _etext = .
+                0x08013890                . = ALIGN (0x4)
+                0x08013890                _dev_reg_item_start = .
  *(DevRegList)
- DevRegList     0x080138b0        0x8 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
-                0x080138b0                dev_reg_flash
- DevRegList     0x080138b8        0x8 CMakeFiles/untitled1.elf.dir/drivers/null.c.obj
-                0x080138b8                dev_reg_null
- DevRegList     0x080138c0        0x8 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
-                0x080138c0                dev_reg_tty
-                0x080138c8                _dev_reg_item_end = .
+ DevRegList     0x08013890        0x8 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+                0x08013890                dev_reg_flash
+ DevRegList     0x08013898        0x8 CMakeFiles/untitled1.elf.dir/drivers/null.c.obj
+                0x08013898                dev_reg_null
+ DevRegList     0x080138a0        0x8 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
+                0x080138a0                dev_reg_tty
+                0x080138a8                _dev_reg_item_end = .
 
-.vfp11_veneer   0x080138c8        0x0
- .vfp11_veneer  0x080138c8        0x0 linker stubs
+.vfp11_veneer   0x080138a8        0x0
+ .vfp11_veneer  0x080138a8        0x0 linker stubs
 
-.v4_bx          0x080138c8        0x0
- .v4_bx         0x080138c8        0x0 linker stubs
+.v4_bx          0x080138a8        0x0
+ .v4_bx         0x080138a8        0x0 linker stubs
 
-.iplt           0x080138c8        0x0
- .iplt          0x080138c8        0x0 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+.iplt           0x080138a8        0x0
+ .iplt          0x080138a8        0x0 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
 
-.rodata         0x080138c8     0x970c
-                0x080138c8                . = ALIGN (0x4)
+.rodata         0x080138a8     0x96f0
+                0x080138a8                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x080138c8       0x12 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
- *fill*         0x080138da        0x2 
- .rodata        0x080138dc       0x45 CMakeFiles/untitled1.elf.dir/elf/loader.c.obj
+ .rodata        0x080138a8       0x12 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
+ *fill*         0x080138ba        0x2 
+ .rodata        0x080138bc       0x45 CMakeFiles/untitled1.elf.dir/elf/loader.c.obj
  *(.rodata*)
- *fill*         0x08013921        0x3 
+ *fill*         0x08013901        0x3 
  .rodata.arg_count.str1.4
-                0x08013924       0x1a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x0801393e        0x2 
+                0x08013904       0x1a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x0801391e        0x2 
  .rodata.badnum.str1.4
-                0x08013940       0x14 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+                0x08013920       0x14 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .rodata.b_echo.str1.4
-                0x08013954        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x08013963        0x1 
+                0x08013934        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x08013943        0x1 
  .rodata.b_wait.str1.4
-                0x08013964        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x08013969        0x3 
+                0x08013944        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x08013949        0x3 
  .rodata.b_umask.str1.4
-                0x0801396c       0x1a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x08013986        0x2 
+                0x0801394c       0x1a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x08013966        0x2 
  .rodata.b_shift.str1.4
-                0x08013988       0x1a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+                0x08013968       0x1a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
                                  0x1e (size before relaxing)
- *fill*         0x080139a2        0x2 
+ *fill*         0x08013982        0x2 
  .rodata.b_break.str1.4
-                0x080139a4        0x6 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x080139aa        0x2 
+                0x08013984        0x6 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x0801398a        0x2 
  .rodata.b_newpgrp.str1.4
-                0x080139ac        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+                0x0801398c        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .rodata.printlimit.str1.4
-                0x080139b4       0x1b CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+                0x08013994       0x1b CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
                                  0x1f (size before relaxing)
- *fill*         0x080139cf        0x1 
+ *fill*         0x080139af        0x1 
  .rodata.parselimit.str1.4
-                0x080139d0        0xa CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x080139da        0x2 
+                0x080139b0        0xa CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x080139ba        0x2 
  .rodata.b_limit.str1.4
-                0x080139dc       0x2a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x08013a06        0x2 
+                0x080139bc       0x2a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x080139e6        0x2 
  .rodata.b_cd.str1.4
-                0x08013a08       0x33 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+                0x080139e8       0x33 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
                                  0x37 (size before relaxing)
- *fill*         0x08013a3b        0x1 
+ *fill*         0x08013a1b        0x1 
  .rodata.b_dot.str1.4
-                0x08013a3c        0x3 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x08013a3f        0x1 
+                0x08013a1c        0x3 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x08013a1f        0x1 
  .rodata.b_whatis.str1.4
-                0x08013a40       0x4a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- *fill*         0x08013a8a        0x2 
+                0x08013a20       0x4a CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ *fill*         0x08013a6a        0x2 
  .rodata.str1.4
-                0x08013a8c       0xbb CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+                0x08013a6c       0xbb CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
                                  0xd7 (size before relaxing)
- *fill*         0x08013b47        0x1 
+ *fill*         0x08013b27        0x1 
  .rodata.builtins
-                0x08013b48       0x78 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- .rodata.gbsuf  0x08013bc0        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- .rodata.htsuf  0x08013bcc        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- .rodata.kbsuf  0x08013bd8        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+                0x08013b28       0x78 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ .rodata.gbsuf  0x08013ba0        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ .rodata.htsuf  0x08013bac        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ .rodata.kbsuf  0x08013bb8        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .rodata.limits
-                0x08013be4       0x90 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- .rodata.mbsuf  0x08013c74        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- .rodata.mtsuf  0x08013c80        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
- .rodata.stsuf  0x08013c8c        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+                0x08013bc4       0x90 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ .rodata.mbsuf  0x08013c54        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ .rodata.mtsuf  0x08013c60        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+ .rodata.stsuf  0x08013c6c        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .rodata.rc_raise.str1.4
-                0x08013c98       0x33 CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
- *fill*         0x08013ccb        0x1 
+                0x08013c78       0x33 CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
+ *fill*         0x08013cab        0x1 
  .rodata.sigint.str1.4
-                0x08013ccc       0x1e CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
+                0x08013cac       0x1e CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
                                  0x22 (size before relaxing)
- *fill*         0x08013cea        0x2 
+ *fill*         0x08013cca        0x2 
  .rodata.exec.str1.4
-                0x08013cec       0x10 CMakeFiles/untitled1.elf.dir/app/rc-1.7/exec.c.obj
+                0x08013ccc       0x10 CMakeFiles/untitled1.elf.dir/app/rc-1.7/exec.c.obj
  .rodata.fn_handler.str1.4
-                0x08013cfc        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
- *fill*         0x08013d0b        0x1 
+                0x08013cdc        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
+ *fill*         0x08013ceb        0x1 
  .rodata.rc_exit.str1.4
-                0x08013d0c        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
+                0x08013cec        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
  .rodata.fnassign.str1.4
-                0x08013d14       0x1e CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
- *fill*         0x08013d32        0x2 
+                0x08013cf4       0x1e CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
+ *fill*         0x08013d12        0x2 
  .rodata.setsigdefaults.str1.4
-                0x08013d34       0x10 CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
+                0x08013d14       0x10 CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
  .rodata.fnlookup_string.str1.4
-                0x08013d44        0xb CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
- *fill*         0x08013d4f        0x1 
+                0x08013d24        0xb CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
+ *fill*         0x08013d2f        0x1 
  .rodata.inithandler.str1.4
-                0x08013d50        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
+                0x08013d30        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
  .rodata.whatare_all_signals.str1.4
-                0x08013d58       0x1f CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
- *fill*         0x08013d77        0x1 
+                0x08013d38       0x1f CMakeFiles/untitled1.elf.dir/app/rc-1.7/fn.c.obj
+ *fill*         0x08013d57        0x1 
  .rodata.Fconv.str1.4
-                0x08013d78        0x7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
- *fill*         0x08013d7f        0x1 
+                0x08013d58        0x7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+ *fill*         0x08013d5f        0x1 
  .rodata.Sconv.str1.4
-                0x08013d80        0x7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
- *fill*         0x08013d87        0x1 
+                0x08013d60        0x7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+ *fill*         0x08013d67        0x1 
  .rodata.Lconv.str1.4
-                0x08013d88        0x7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
- *fill*         0x08013d8f        0x1 
+                0x08013d68        0x7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+ *fill*         0x08013d6f        0x1 
  .rodata.Dconv.str1.4
-                0x08013d90       0x16 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
- *fill*         0x08013da6        0x2 
+                0x08013d70       0x16 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+ *fill*         0x08013d86        0x2 
  .rodata.Aconv.str1.4
-                0x08013da8        0x4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+                0x08013d88        0x4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
  .rodata.Tconv.str1.4
-                0x08013dac      0x13f CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+                0x08013d8c      0x13f CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
                                 0x14b (size before relaxing)
- *fill*         0x08013eeb        0x1 
+ *fill*         0x08013ecb        0x1 
  .rodata.list2array.str1.4
-                0x08013eec        0x4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+                0x08013ecc        0x4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
                                   0x8 (size before relaxing)
  .rodata.parse_fn.str1.4
-                0x08013ef0        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
- *fill*         0x08013ef5        0x3 
+                0x08013ed0        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+ *fill*         0x08013ed5        0x3 
  .rodata.hexchar.1
-                0x08013ef8       0x11 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
- *fill*         0x08013f09        0x3 
+                0x08013ed8       0x11 CMakeFiles/untitled1.elf.dir/app/rc-1.7/footobar.c.obj
+ *fill*         0x08013ee9        0x3 
  .rodata.rc_getopt.str1.4
-                0x08013f0c       0x3f CMakeFiles/untitled1.elf.dir/app/rc-1.7/getopt.c.obj
+                0x08013eec       0x3f CMakeFiles/untitled1.elf.dir/app/rc-1.7/getopt.c.obj
                                  0x43 (size before relaxing)
- *fill*         0x08013f4b        0x1 
+ *fill*         0x08013f2b        0x1 
  .rodata.dmatch.str1.4
-                0x08013f4c        0x6 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glob.c.obj
+                0x08013f2c        0x6 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glob.c.obj
                                   0xa (size before relaxing)
  .rodata.doglob.str1.4
-                0x08013f52        0x2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glob.c.obj
+                0x08013f32        0x2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glob.c.obj
  .rodata.lmatch.str1.4
-                0x08013f52        0x2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glob.c.obj
- *fill*         0x08013f52        0x2 
+                0x08013f32        0x2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glob.c.obj
+ *fill*         0x08013f32        0x2 
  .rodata.bqinput.str1.4
-                0x08013f54        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
+                0x08013f34        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
  .rodata.count.str1.4
-                0x08013f63        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
+                0x08013f43        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
                                   0x3 (size before relaxing)
- *fill*         0x08013f63        0x1 
+ *fill*         0x08013f43        0x1 
  .rodata.mkcmdarg.str1.4
-                0x08013f64       0x13 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
- *fill*         0x08013f77        0x1 
+                0x08013f44       0x13 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
+ *fill*         0x08013f57        0x1 
  .rodata.concat.str1.4
-                0x08013f78       0x12 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
- *fill*         0x08013f8a        0x2 
+                0x08013f58       0x12 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
+ *fill*         0x08013f6a        0x2 
  .rodata.varsub.str1.4
-                0x08013f8c        0xe CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
- *fill*         0x08013f9a        0x2 
+                0x08013f6c        0xe CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
+ *fill*         0x08013f7a        0x2 
  .rodata.assign.str1.4
-                0x08013f9c       0x79 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
+                0x08013f7c       0x79 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
                                  0x7e (size before relaxing)
- *fill*         0x08014015        0x3 
+ *fill*         0x08013ff5        0x3 
  .rodata.glom.str1.4
-                0x08014018       0x18 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
+                0x08013ff8       0x18 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
  .rodata.backq.str1.4
-                0x08014030        0x9 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
+                0x08014010        0x9 CMakeFiles/untitled1.elf.dir/app/rc-1.7/glom.c.obj
  .rodata.rehash.str1.4
-                0x08014039        0x1 CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
+                0x08014019        0x1 CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
  .rodata.fn_exportable.str1.4
-                0x08014039        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
- *fill*         0x08014039        0x3 
+                0x08014019        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
+ *fill*         0x08014019        0x3 
  .rodata.initenv.str1.4
-                0x0801403c        0x4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
+                0x0801401c        0x4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
  .rodata.str1.4
-                0x08014040       0x33 CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
+                0x08014020       0x33 CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
                                  0x56 (size before relaxing)
- *fill*         0x08014073        0x1 
+ *fill*         0x08014053        0x1 
  .rodata.neverexport
-                0x08014074       0x28 CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
+                0x08014054       0x28 CMakeFiles/untitled1.elf.dir/app/rc-1.7/hash.c.obj
  .rodata.readheredoc.str1.4
-                0x0801409c       0x13 CMakeFiles/untitled1.elf.dir/app/rc-1.7/heredoc.c.obj
+                0x0801407c       0x13 CMakeFiles/untitled1.elf.dir/app/rc-1.7/heredoc.c.obj
  .rodata.parseheredoc.str1.4
-                0x080140af       0x13 CMakeFiles/untitled1.elf.dir/app/rc-1.7/heredoc.c.obj
+                0x0801408f       0x13 CMakeFiles/untitled1.elf.dir/app/rc-1.7/heredoc.c.obj
                                   0x2 (size before relaxing)
- *fill*         0x080140af        0x1 
+ *fill*         0x0801408f        0x1 
  .rodata.qdoc.str1.4
-                0x080140b0       0x25 CMakeFiles/untitled1.elf.dir/app/rc-1.7/heredoc.c.obj
- *fill*         0x080140d5        0x3 
+                0x08014090       0x25 CMakeFiles/untitled1.elf.dir/app/rc-1.7/heredoc.c.obj
+ *fill*         0x080140b5        0x3 
  .rodata.history.str1.4
-                0x080140d8        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
+                0x080140b8        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
  .rodata.fdgchar.str1.4
-                0x080140e0       0x15 CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
- *fill*         0x080140f5        0x3 
+                0x080140c0       0x15 CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
+ *fill*         0x080140d5        0x3 
  .rodata.gchar.str1.4
-                0x080140f8       0x20 CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
+                0x080140d8       0x20 CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
  .rodata.pushstring.str1.4
-                0x08014118        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
- *fill*         0x0801411d        0x3 
+                0x080140f8        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
+ *fill*         0x080140fd        0x3 
  .rodata.doit.str1.4
-                0x08014120        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
+                0x08014100        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/input.c.obj
                                  0x24 (size before relaxing)
  .rodata.yyerror.str1.4
-                0x0801412c       0x3d CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
+                0x0801410c       0x3d CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
                                  0x44 (size before relaxing)
- *fill*         0x08014169        0x3 
+ *fill*         0x08014149        0x3 
  .rodata.getpair.str1.4
-                0x0801416c       0x75 CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
- *fill*         0x080141e1        0x3 
+                0x0801414c       0x75 CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
+ *fill*         0x080141c1        0x3 
  .rodata.yylex.str1.4
-                0x080141e4       0x55 CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
- *fill*         0x08014239        0x3 
- .rodata.dnw    0x0801423c      0x100 CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
-                0x0801423c                dnw
- .rodata.nw     0x0801433c      0x100 CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
-                0x0801433c                nw
+                0x080141c4       0x55 CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
+ *fill*         0x08014219        0x3 
+ .rodata.dnw    0x0801421c      0x100 CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
+                0x0801421c                dnw
+ .rodata.nw     0x0801431c      0x100 CMakeFiles/untitled1.elf.dir/app/rc-1.7/lex.c.obj
+                0x0801431c                nw
  .rodata.checkfd.str1.4
-                0x0801443c        0xa CMakeFiles/untitled1.elf.dir/app/rc-1.7/main.c.obj
+                0x0801441c        0xa CMakeFiles/untitled1.elf.dir/app/rc-1.7/main.c.obj
  .rodata.assigndefault.str1.4
-                0x08014446        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/main.c.obj
- *fill*         0x08014446        0x2 
+                0x08014426        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/main.c.obj
+ *fill*         0x08014426        0x2 
  .rodata.rc_main.str1.4
-                0x08014448       0x5c CMakeFiles/untitled1.elf.dir/app/rc-1.7/main.c.obj
+                0x08014428       0x5c CMakeFiles/untitled1.elf.dir/app/rc-1.7/main.c.obj
                                  0x90 (size before relaxing)
  .rodata.rc_match.str1.4
-                0x080144a4       0x1b CMakeFiles/untitled1.elf.dir/app/rc-1.7/match.c.obj
- *fill*         0x080144bf        0x1 
+                0x08014484       0x1b CMakeFiles/untitled1.elf.dir/app/rc-1.7/match.c.obj
+ *fill*         0x0801449f        0x1 
  .rodata.ealloc.str1.4
-                0x080144c0        0x7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/nalloc.c.obj
- *fill*         0x080144c7        0x1 
+                0x080144a0        0x7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/nalloc.c.obj
+ *fill*         0x080144a7        0x1 
  .rodata.erealloc.str1.4
-                0x080144c8        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/nalloc.c.obj
+                0x080144a8        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/nalloc.c.obj
  .rodata.rc_open.str1.4
-                0x080144d0       0x1b CMakeFiles/untitled1.elf.dir/app/rc-1.7/open.c.obj
- *fill*         0x080144eb        0x1 
+                0x080144b0       0x1b CMakeFiles/untitled1.elf.dir/app/rc-1.7/open.c.obj
+ *fill*         0x080144cb        0x1 
  .rodata.makeblocking.str1.4
-                0x080144ec        0x6 CMakeFiles/untitled1.elf.dir/app/rc-1.7/open.c.obj
- *fill*         0x080144f2        0x2 
+                0x080144cc        0x6 CMakeFiles/untitled1.elf.dir/app/rc-1.7/open.c.obj
+ *fill*         0x080144d2        0x2 
  .rodata.makesamepgrp.str1.4
-                0x080144f4        0x9 CMakeFiles/untitled1.elf.dir/app/rc-1.7/open.c.obj
- *fill*         0x080144fd        0x3 
+                0x080144d4        0x9 CMakeFiles/untitled1.elf.dir/app/rc-1.7/open.c.obj
+ *fill*         0x080144dd        0x3 
  .rodata.mode_masks
-                0x08014500        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/open.c.obj
+                0x080144e0        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/open.c.obj
  .rodata.initparse.str1.4
-                0x0801450c        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x080144ec        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
  .rodata.yyparse.str1.4
-                0x0801450c      0x1f8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x080144ec      0x1f8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
                                 0x220 (size before relaxing)
  .rodata.str1.4
-                0x08014704      0x7c4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x080146e4      0x7c4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
                                 0x7d4 (size before relaxing)
  .rodata.yycheck
-                0x08014ec8      0xb72 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08014ec8                yycheck
- *fill*         0x08015a3a        0x2 
+                0x08014ea8      0xb72 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08014ea8                yycheck
+ *fill*         0x08015a1a        0x2 
  .rodata.yydefred
-                0x08015a3c      0x132 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08015a3c                yydefred
- *fill*         0x08015b6e        0x2 
+                0x08015a1c      0x132 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08015a1c                yydefred
+ *fill*         0x08015b4e        0x2 
  .rodata.yydgoto
-                0x08015b70       0x32 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08015b70                yydgoto
- *fill*         0x08015ba2        0x2 
+                0x08015b50       0x32 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08015b50                yydgoto
+ *fill*         0x08015b82        0x2 
  .rodata.yygindex
-                0x08015ba4       0x32 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08015ba4                yygindex
- *fill*         0x08015bd6        0x2 
- .rodata.yylen  0x08015bd8       0xac CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08015bd8                yylen
- .rodata.yylhs  0x08015c84       0xac CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08015c84                yylhs
+                0x08015b84       0x32 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08015b84                yygindex
+ *fill*         0x08015bb6        0x2 
+ .rodata.yylen  0x08015bb8       0xac CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08015bb8                yylen
+ .rodata.yylhs  0x08015c64       0xac CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08015c64                yylhs
  .rodata.yyname
-                0x08015d30      0x464 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08015d30                yyname
+                0x08015d10      0x464 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08015d10                yyname
  .rodata.yyrindex
-                0x08016194      0x132 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08016194                yyrindex
- *fill*         0x080162c6        0x2 
+                0x08016174      0x132 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08016174                yyrindex
+ *fill*         0x080162a6        0x2 
  .rodata.yyrule
-                0x080162c8      0x158 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x080162c8                yyrule
+                0x080162a8      0x158 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x080162a8                yyrule
  .rodata.yysindex
-                0x08016420      0x132 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08016420                yysindex
- *fill*         0x08016552        0x2 
+                0x08016400      0x132 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08016400                yysindex
+ *fill*         0x08016532        0x2 
  .rodata.yytable
-                0x08016554      0xb72 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
-                0x08016554                yytable
- *fill*         0x080170c6        0x2 
+                0x08016534      0xb72 CMakeFiles/untitled1.elf.dir/app/rc-1.7/parse.c.obj
+                0x08016534                yytable
+ *fill*         0x080170a6        0x2 
  .rodata.badconv.str1.4
-                0x080170c8       0x25 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
- *fill*         0x080170ed        0x3 
+                0x080170a8       0x25 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
+ *fill*         0x080170cd        0x3 
  .rodata.xconv.str1.4
-                0x080170f0        0x3 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
+                0x080170d0        0x3 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
  .rodata.oconv.str1.4
-                0x080170f3        0x2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
+                0x080170d3        0x2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
  .rodata.dconv.str1.4
-                0x080170f3        0x1 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
- *fill*         0x080170f3        0x1 
+                0x080170d3        0x1 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
+ *fill*         0x080170d3        0x1 
  .rodata.str1.4
-                0x080170f4       0x4d CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
- *fill*         0x08017141        0x3 
+                0x080170d4       0x4d CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
+ *fill*         0x08017121        0x3 
  .rodata.table.1
-                0x08017144        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
+                0x08017124        0x8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/print.c.obj
  .rodata.doredirs.str1.4
-                0x0801714c       0x65 CMakeFiles/untitled1.elf.dir/app/rc-1.7/redir.c.obj
+                0x0801712c       0x65 CMakeFiles/untitled1.elf.dir/app/rc-1.7/redir.c.obj
                                  0x6d (size before relaxing)
- *fill*         0x080171b1        0x3 
+ *fill*         0x08017191        0x3 
  .rodata.str1.4
-                0x080171b4      0x7a2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/sigmsgs.c.obj
+                0x08017194      0x7a2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/sigmsgs.c.obj
                                 0x7be (size before relaxing)
- *fill*         0x08017956        0x2 
+ *fill*         0x08017936        0x2 
  .rodata.sigchk.str1.4
-                0x08017958       0x69 CMakeFiles/untitled1.elf.dir/app/rc-1.7/signal.c.obj
- *fill*         0x080179c1        0x3 
+                0x08017938       0x69 CMakeFiles/untitled1.elf.dir/app/rc-1.7/signal.c.obj
+ *fill*         0x080179a1        0x3 
  .rodata.statprint.str1.4
-                0x080179c4       0x19 CMakeFiles/untitled1.elf.dir/app/rc-1.7/status.c.obj
+                0x080179a4       0x19 CMakeFiles/untitled1.elf.dir/app/rc-1.7/status.c.obj
                                  0x34 (size before relaxing)
- *fill*         0x080179dd        0x3 
+ *fill*         0x080179bd        0x3 
  .rodata.strstatus.str1.4
-                0x080179e0       0x16 CMakeFiles/untitled1.elf.dir/app/rc-1.7/status.c.obj
+                0x080179c0       0x16 CMakeFiles/untitled1.elf.dir/app/rc-1.7/status.c.obj
                                  0x1b (size before relaxing)
- *fill*         0x080179f6        0x2 
+ *fill*         0x080179d6        0x2 
  .rodata.ssetstatus.str1.4
-                0x080179f8        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/status.c.obj
+                0x080179d8        0xc CMakeFiles/untitled1.elf.dir/app/rc-1.7/status.c.obj
  .rodata.mk.str1.4
-                0x08017a04       0x16 CMakeFiles/untitled1.elf.dir/app/rc-1.7/tree.c.obj
- *fill*         0x08017a1a        0x2 
+                0x080179e4       0x16 CMakeFiles/untitled1.elf.dir/app/rc-1.7/tree.c.obj
+ *fill*         0x080179fa        0x2 
  .rodata.treecpy.str1.4
-                0x08017a1c       0x1b CMakeFiles/untitled1.elf.dir/app/rc-1.7/tree.c.obj
- *fill*         0x08017a37        0x1 
+                0x080179fc       0x1b CMakeFiles/untitled1.elf.dir/app/rc-1.7/tree.c.obj
+ *fill*         0x08017a17        0x1 
  .rodata.treefree.str1.4
-                0x08017a38       0x1c CMakeFiles/untitled1.elf.dir/app/rc-1.7/tree.c.obj
+                0x08017a18       0x1c CMakeFiles/untitled1.elf.dir/app/rc-1.7/tree.c.obj
  .rodata.pr_error.str1.4
-                0x08017a54        0xd CMakeFiles/untitled1.elf.dir/app/rc-1.7/utils.c.obj
+                0x08017a34        0xd CMakeFiles/untitled1.elf.dir/app/rc-1.7/utils.c.obj
                                  0x11 (size before relaxing)
- *fill*         0x08017a61        0x3 
+ *fill*         0x08017a41        0x3 
  .rodata.uerror.str1.4
-                0x08017a64       0x18 CMakeFiles/untitled1.elf.dir/app/rc-1.7/utils.c.obj
+                0x08017a44       0x18 CMakeFiles/untitled1.elf.dir/app/rc-1.7/utils.c.obj
  .rodata.panic.str1.4
-                0x08017a7c        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/utils.c.obj
- *fill*         0x08017a8b        0x1 
+                0x08017a5c        0xf CMakeFiles/untitled1.elf.dir/app/rc-1.7/utils.c.obj
+ *fill*         0x08017a6b        0x1 
  .rodata.colonassign.str1.4
-                0x08017a8c        0x4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+                0x08017a6c        0x4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
                                   0x8 (size before relaxing)
  .rodata.varlookup.str1.4
-                0x08017a90       0x12 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+                0x08017a70       0x12 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
  .rodata.varlookup_string.str1.4
-                0x08017a90        0x6 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+                0x08017a70        0x6 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
  .rodata.varrm.str1.4
-                0x08017a96        0x2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
- *fill*         0x08017a96        0x2 
+                0x08017a76        0x2 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+ *fill*         0x08017a76        0x2 
  .rodata.prettyprint_var.str1.4
-                0x08017a98       0x1c CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+                0x08017a78       0x1c CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
                                  0x22 (size before relaxing)
  .rodata.str1.4
-                0x08017ab4       0x17 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+                0x08017a94       0x17 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
                                  0x5f (size before relaxing)
- *fill*         0x08017acb        0x1 
+ *fill*         0x08017aab        0x1 
  .rodata.aliases
-                0x08017acc       0x18 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+                0x08017aac       0x18 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
  .rodata.keywords.0
-                0x08017ae4       0x20 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+                0x08017ac4       0x20 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
  .rodata.vectors.1
-                0x08017b04       0x18 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
+                0x08017ae4       0x18 CMakeFiles/untitled1.elf.dir/app/rc-1.7/var.c.obj
  .rodata.rc_fork.str1.4
-                0x08017b1c        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/wait.c.obj
+                0x08017afc        0x5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/wait.c.obj
  .rodata.rc_wait4.str1.4
-                0x08017b1c        0xb CMakeFiles/untitled1.elf.dir/app/rc-1.7/wait.c.obj
+                0x08017afc        0xb CMakeFiles/untitled1.elf.dir/app/rc-1.7/wait.c.obj
                                  0x13 (size before relaxing)
  .rodata.sgetapids.str1.4
-                0x08017b27        0x3 CMakeFiles/untitled1.elf.dir/app/rc-1.7/wait.c.obj
- *fill*         0x08017b27        0x1 
+                0x08017b07        0x3 CMakeFiles/untitled1.elf.dir/app/rc-1.7/wait.c.obj
+ *fill*         0x08017b07        0x1 
  .rodata.walk.str1.4
-                0x08017b28       0xa1 CMakeFiles/untitled1.elf.dir/app/rc-1.7/walk.c.obj
+                0x08017b08       0xa1 CMakeFiles/untitled1.elf.dir/app/rc-1.7/walk.c.obj
                                  0xd5 (size before relaxing)
- *fill*         0x08017bc9        0x3 
+ *fill*         0x08017ba9        0x3 
  .rodata.dopipe.str1.4
-                0x08017bcc        0xe CMakeFiles/untitled1.elf.dir/app/rc-1.7/walk.c.obj
+                0x08017bac        0xe CMakeFiles/untitled1.elf.dir/app/rc-1.7/walk.c.obj
                                  0x15 (size before relaxing)
  .rodata.which.str1.4
-                0x08017bda       0x1a CMakeFiles/untitled1.elf.dir/app/rc-1.7/which.c.obj
- *fill*         0x08017bda        0x2 
+                0x08017bba       0x1a CMakeFiles/untitled1.elf.dir/app/rc-1.7/which.c.obj
+ *fill*         0x08017bba        0x2 
  .rodata.ExternInter.str1.4
-                0x08017bdc       0x10 CMakeFiles/untitled1.elf.dir/arch/arm/asm/isr.c.obj
+                0x08017bbc       0x10 CMakeFiles/untitled1.elf.dir/arch/arm/asm/isr.c.obj
  .rodata.mon_table
-                0x08017bec        0xc CMakeFiles/untitled1.elf.dir/arch/bsp/rtc.c.obj
-                0x08017bec                mon_table
+                0x08017bcc        0xc CMakeFiles/untitled1.elf.dir/arch/bsp/rtc.c.obj
+                0x08017bcc                mon_table
  .rodata.bk_flash_init.str1.4
-                0x08017bf8       0x12 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
- *fill*         0x08017c0a        0x2 
+                0x08017bd8       0x12 CMakeFiles/untitled1.elf.dir/drivers/bk_flash.c.obj
+ *fill*         0x08017bea        0x2 
  .rodata.null_init.str1.4
-                0x08017c0c        0x5 CMakeFiles/untitled1.elf.dir/drivers/null.c.obj
- *fill*         0x08017c11        0x3 
+                0x08017bec        0x5 CMakeFiles/untitled1.elf.dir/drivers/null.c.obj
+ *fill*         0x08017bf1        0x3 
  .rodata.tty_init.str1.4
-                0x08017c14        0x4 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
+                0x08017bf4        0x4 CMakeFiles/untitled1.elf.dir/drivers/tty.c.obj
  .rodata.sys_execve.str1.4
-                0x08017c18       0x21 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
- *fill*         0x08017c39        0x3 
+                0x08017bf8       0x21 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
+ *fill*         0x08017c19        0x3 
  .rodata.str1.4
-                0x08017c3c        0x9 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
- *fill*         0x08017c45        0x3 
- .rodata.env    0x08017c48        0x8 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
+                0x08017c1c        0x9 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
+ *fill*         0x08017c25        0x3 
+ .rodata.env    0x08017c28        0x8 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
  .rodata.exports
-                0x08017c50        0x8 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
+                0x08017c30        0x8 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
  .rodata.sysentries
-                0x08017c58       0x18 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
+                0x08017c38       0x18 CMakeFiles/untitled1.elf.dir/elf/elf_main.c.obj
  .rodata.relocateSections.str1.4
-                0x08017c70        0x9 CMakeFiles/untitled1.elf.dir/elf/loader.c.obj
+                0x08017c50        0x9 CMakeFiles/untitled1.elf.dir/elf/loader.c.obj
                                  0x4c (size before relaxing)
  .rodata.placeInfo.str1.4
-                0x08017c70       0x8c CMakeFiles/untitled1.elf.dir/elf/loader.c.obj
+                0x08017c50       0x8c CMakeFiles/untitled1.elf.dir/elf/loader.c.obj
  .rodata.sync_all_bk.str1.4
-                0x08017cfc        0xf CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- *fill*         0x08017d0b        0x1 
+                0x08017cdc        0xf CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ *fill*         0x08017ceb        0x1 
  .rodata.__FUNCTION__.0
-                0x08017d0c        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08017cec        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.1
-                0x08017d14        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08017cf4        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.2
-                0x08017d18        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08017cf8        0x4 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.3
-                0x08017d1c        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08017cfc        0x8 CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.__FUNCTION__.4
-                0x08017d24        0xd CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
- *fill*         0x08017d31        0x3 
+                0x08017d04        0xd CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+ *fill*         0x08017d11        0x3 
  .rodata.__FUNCTION__.5
-                0x08017d34        0xc CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
+                0x08017d14        0xc CMakeFiles/untitled1.elf.dir/fs/bk.c.obj
  .rodata.str1.4
-                0x08017d40        0x3 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
- *fill*         0x08017d43        0x1 
+                0x08017d20        0x3 CMakeFiles/untitled1.elf.dir/fs/fs_type.c.obj
+ *fill*         0x08017d23        0x1 
  .rodata.sys_close.str1.4
-                0x08017d44        0x8 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+                0x08017d24        0x8 CMakeFiles/untitled1.elf.dir/fs/open.c.obj
  .rodata.__FUNCTION__.0
-                0x08017d4c        0xa CMakeFiles/untitled1.elf.dir/fs/open.c.obj
- *fill*         0x08017d56        0x2 
+                0x08017d2c        0xa CMakeFiles/untitled1.elf.dir/fs/open.c.obj
+ *fill*         0x08017d36        0x2 
  .rodata.sys_write.str1.4
-                0x08017d58       0x10 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
+                0x08017d38       0x10 CMakeFiles/untitled1.elf.dir/fs/rw.c.obj
  .rodata.alloc_bk.str1.4
-                0x08017d68        0xe CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- *fill*         0x08017d76        0x2 
+                0x08017d48        0xe CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ *fill*         0x08017d56        0x2 
  .rodata.alloc_inode_no.str1.4
-                0x08017d78       0x11 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
- *fill*         0x08017d89        0x3 
+                0x08017d58       0x11 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_bmap.c.obj
+ *fill*         0x08017d69        0x3 
  .rodata.add_file_to_entry.str1.4
-                0x08017d8c       0x81 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x08017e0d        0x3 
+                0x08017d6c       0x81 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x08017ded        0x3 
  .rodata.sp_mkdir.str1.4
-                0x08017e10       0x1e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+                0x08017df0       0x1e CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
                                  0x27 (size before relaxing)
- *fill*         0x08017e2e        0x2 
+ *fill*         0x08017e0e        0x2 
  .rodata.sp_unlink.str1.4
-                0x08017e30       0x21 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x08017e51        0x3 
+                0x08017e10       0x21 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x08017e31        0x3 
  .rodata.__FUNCTION__.0
-                0x08017e54        0x9 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x08017e5d        0x3 
+                0x08017e34        0x9 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x08017e3d        0x3 
  .rodata.__FUNCTION__.1
-                0x08017e60       0x12 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
- *fill*         0x08017e72        0x2 
+                0x08017e40       0x12 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_namei.c.obj
+ *fill*         0x08017e52        0x2 
  .rodata.inode_alloc_new_bk.str1.4
-                0x08017e74        0xd CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
- *fill*         0x08017e81        0x3 
+                0x08017e54        0xd CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+ *fill*         0x08017e61        0x3 
  .rodata.sp_file_write.str1.4
-                0x08017e84        0xf CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
+                0x08017e64        0xf CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_rw.c.obj
  .rodata.sp_mkfs.str1.4
-                0x08017e93        0x7 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
- *fill*         0x08017e93        0x1 
+                0x08017e73        0x7 CMakeFiles/untitled1.elf.dir/fs/sampleFS/sp_super.c.obj
+ *fill*         0x08017e73        0x1 
  .rodata.add_to_pipe.str1.4
-                0x08017e94       0x1c CMakeFiles/untitled1.elf.dir/ipc/pipe.c.obj
+                0x08017e74       0x1c CMakeFiles/untitled1.elf.dir/ipc/pipe.c.obj
  .rodata.do_fork_pipe.str1.4
-                0x08017eb0       0x13 CMakeFiles/untitled1.elf.dir/ipc/pipe.c.obj
- *fill*         0x08017ec3        0x1 
+                0x08017e90       0x13 CMakeFiles/untitled1.elf.dir/ipc/pipe.c.obj
+ *fill*         0x08017ea3        0x1 
  .rodata.sys_uname.str1.4
-                0x08017ec4       0x1f CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
- *fill*         0x08017ee3        0x1 
+                0x08017ea4       0x1f CMakeFiles/untitled1.elf.dir/kernel/sys.c.obj
+ *fill*         0x08017ec3        0x1 
  .rodata.sys_call_table
-                0x08017ee4      0x2e0 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
-                0x08017ee4                sys_call_table
+                0x08017ec4      0x2e0 CMakeFiles/untitled1.elf.dir/kernel/syscall.c.obj
+                0x08017ec4                sys_call_table
  .rodata.task_create.str1.4
-                0x080181c4        0x2 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
+                0x080181a4        0x2 CMakeFiles/untitled1.elf.dir/kernel/task_create.c.obj
  .rodata.__v_printf.str1.4
-                0x080181c4        0x7 CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/__v_printf.c.obj
- *fill*         0x080181cb        0x1 
+                0x080181a4        0x7 CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/__v_printf.c.obj
+ *fill*         0x080181ab        0x1 
  .rodata.pad_line
-                0x080181cc       0x20 CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/__v_printf.c.obj
+                0x080181ac       0x20 CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/__v_printf.c.obj
  .rodata.stackgap.str1.4
-                0x080181ec        0xd CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/stackgap.c.obj
+                0x080181cc        0xd CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/stackgap.c.obj
  .rodata.strerror.str1.4
-                0x080181f9        0xd CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/strerror.c.obj
+                0x080181d9        0xd CMakeFiles/untitled1.elf.dir/lib/dietlibc/lib/strerror.c.obj
                                   0x6 (size before relaxing)
  .rodata.puts.str1.4
-                0x080181f9        0x2 CMakeFiles/untitled1.elf.dir/lib/dietlibc/libstdio/puts.c.obj
- *fill*         0x080181f9        0x3 
+                0x080181d9        0x2 CMakeFiles/untitled1.elf.dir/lib/dietlibc/libstdio/puts.c.obj
+ *fill*         0x080181d9        0x3 
  .rodata.fs_init.str1.4
-                0x080181fc       0x31 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
+                0x080181dc       0x31 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
                                  0x3d (size before relaxing)
- *fill*         0x0801822d        0x3 
+ *fill*         0x0801820d        0x3 
  .rodata.rc_shell_exec.str1.4
-                0x08018230       0x23 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- *fill*         0x08018253        0x1 
+                0x08018210       0x23 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ *fill*         0x08018233        0x1 
  .rodata.start_task.str1.4
-                0x08018254       0x51 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x08018234       0x51 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
                                  0x5d (size before relaxing)
- *fill*         0x080182a5        0x3 
+ *fill*         0x08018285        0x3 
  .rodata.KernelTaskInit.str1.4
-                0x080182a8       0x1d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- *fill*         0x080182c5        0x3 
+                0x08018288       0x1d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ *fill*         0x080182a5        0x3 
  .rodata.str1.4
-                0x080182c8       0x1f CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- *fill*         0x080182e7        0x1 
+                0x080182a8       0x1f CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ *fill*         0x080182c7        0x1 
  .rodata.app_test.1
-                0x080182e8      0x614 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .rodata.ls.2   0x080188fc     0x46bc CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .rodata._Malloc.str1.4
-                0x0801cfb8        0xd CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
- *fill*         0x0801cfc5        0x3 
- .rodata.OSFree.str1.4
-                0x0801cfc8        0xb CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                0x0801cfd4                . = ALIGN (0x4)
- *fill*         0x0801cfd3        0x1 
+                0x080182c8      0x614 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+ .rodata.ls.2   0x080188dc     0x46bc CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
+                0x0801cf98                . = ALIGN (0x4)
 
-.rel.dyn        0x0801cfd4        0x0
- .rel.iplt      0x0801cfd4        0x0 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
+.rel.dyn        0x0801cf98        0x0
+ .rel.iplt      0x0801cf98        0x0 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x0801cfd4        0x0
-                0x0801cfd4                __exidx_start = .
+.ARM            0x0801cf98        0x0
+                0x0801cf98                __exidx_start = .
  *(.ARM.exidx*)
-                0x0801cfd4                __exidx_end = .
+                0x0801cf98                __exidx_end = .
 
-.preinit_array  0x0801cfd4        0x0
+.preinit_array  0x0801cf98        0x0
                 [!provide]                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
                 [!provide]                PROVIDE (__preinit_array_end = .)
 
-.init_array     0x0801cfd4        0x0
+.init_array     0x0801cf98        0x0
                 [!provide]                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
                 [!provide]                PROVIDE (__init_array_end = .)
 
-.fini_array     0x0801cfd4        0x0
+.fini_array     0x0801cf98        0x0
                 [!provide]                PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
                 [!provide]                PROVIDE (__fini_array_end = .)
-                0x0801cfd4                _sidata = LOADADDR (.data)
+                0x0801cf98                _sidata = LOADADDR (.data)
 
-.data           0x20000000      0x78c load address 0x0801cfd4
+.data           0x20000000      0x78c load address 0x0801cf98
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -14522,11 +14515,11 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x2000078c                . = ALIGN (0x4)
                 0x2000078c                _edata = .
 
-.igot.plt       0x2000078c        0x0 load address 0x0801d760
+.igot.plt       0x2000078c        0x0 load address 0x0801d724
  .igot.plt      0x2000078c        0x0 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
                 0x2000078c                . = ALIGN (0x4)
 
-.bss            0x20000800     0xe440 load address 0x0801d760
+.bss            0x20000800     0xe440 load address 0x0801d724
                 0x20000800                _sbss = .
                 0x20000800                __bss_start__ = _sbss
  *(.bss)
@@ -14819,7 +14812,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
                 0x2000ec40                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2000ec40      0x600 load address 0x0801d760
+                0x2000ec40      0x600 load address 0x0801d724
                 0x2000ec40                . = ALIGN (0x8)
                 [!provide]                PROVIDE (end = .)
                 [!provide]                PROVIDE (_end = .)
@@ -14828,7 +14821,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
  *fill*         0x2000ec40      0x600 
                 0x2000f240                . = ALIGN (0x8)
 
-.ext_sram       0x68000000    0xff000 load address 0x0801d760
+.ext_sram       0x68000000    0xff000 load address 0x0801d724
                 0x68000000                . = ALIGN (0x4)
                 0x68000000                _sext_sram = .
  *(.ext_sram)
@@ -15197,7 +15190,7 @@ LOAD CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 OUTPUT(untitled1.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000    0x64c12
+.debug_info     0x00000000    0x64bcf
  .debug_info    0x00000000     0x1be5 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .debug_info    0x00001be5      0x799 CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
  .debug_info    0x0000237e      0x689 CMakeFiles/untitled1.elf.dir/app/rc-1.7/exec.c.obj
@@ -15372,9 +15365,9 @@ LOAD linker stubs
  .debug_info    0x000604a8      0x2a4 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
  .debug_info    0x0006074c       0xb5 CMakeFiles/untitled1.elf.dir/main/main.c.obj
  .debug_info    0x00060801     0x2614 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_info    0x00062e15     0x1dfd CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_info    0x00062e15     0x1dba CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_abbrev   0x00000000    0x12a33
+.debug_abbrev   0x00000000    0x12a20
  .debug_abbrev  0x00000000      0x390 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .debug_abbrev  0x00000390      0x293 CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
  .debug_abbrev  0x00000623      0x212 CMakeFiles/untitled1.elf.dir/app/rc-1.7/exec.c.obj
@@ -15549,9 +15542,9 @@ LOAD linker stubs
  .debug_abbrev  0x00012062      0x103 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
  .debug_abbrev  0x00012165       0x80 CMakeFiles/untitled1.elf.dir/main/main.c.obj
  .debug_abbrev  0x000121e5      0x482 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_abbrev  0x00012667      0x3cc CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_abbrev  0x00012667      0x3b9 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_loc      0x00000000    0x23dd5
+.debug_loc      0x00000000    0x23dcf
  .debug_loc     0x00000000      0xe11 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .debug_loc     0x00000e11       0xc7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
  .debug_loc     0x00000ed8      0x2f7 CMakeFiles/untitled1.elf.dir/app/rc-1.7/exec.c.obj
@@ -15706,7 +15699,7 @@ LOAD linker stubs
  .debug_loc     0x00022d4f       0x6d CMakeFiles/untitled1.elf.dir/lib/dietlibc/libstdio/vfscanf.c.obj
  .debug_loc     0x00022dbc       0xa8 CMakeFiles/untitled1.elf.dir/lib/dietlibc/libstdio/vprintf.c.obj
  .debug_loc     0x00022e64      0x475 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_loc     0x000232d9      0xafc CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_loc     0x000232d9      0xaf6 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
 .debug_aranges  0x00000000     0x3158
  .debug_aranges
@@ -16230,7 +16223,7 @@ LOAD linker stubs
  .debug_ranges  0x00002f38       0x88 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
  .debug_ranges  0x00002fc0       0xa0 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_line     0x00000000    0x29bc7
+.debug_line     0x00000000    0x29bc8
  .debug_line    0x00000000      0xd52 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .debug_line    0x00000d52      0x38d CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
  .debug_line    0x000010df      0x335 CMakeFiles/untitled1.elf.dir/app/rc-1.7/exec.c.obj
@@ -16405,7 +16398,7 @@ LOAD linker stubs
  .debug_line    0x00028b5f      0x106 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
  .debug_line    0x00028c65       0x74 CMakeFiles/untitled1.elf.dir/main/main.c.obj
  .debug_line    0x00028cd9      0x79d CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_line    0x00029476      0x751 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_line    0x00029476      0x752 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
 .debug_str      0x00000000     0xa0c6
  .debug_str     0x00000000      0x648 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
@@ -16757,7 +16750,7 @@ LOAD linker stubs
  .debug_str     0x00009de6       0xef CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
                                 0xe10 (size before relaxing)
  .debug_str     0x00009ed5      0x1f1 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
-                                0xc6f (size before relaxing)
+                                0xc68 (size before relaxing)
 
 .comment        0x00000000       0x49
  .comment       0x00000000       0x49 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
@@ -16929,7 +16922,7 @@ LOAD linker stubs
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
  .comment       0x00000049       0x4a CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
 
-.debug_frame    0x00000000     0x717c
+.debug_frame    0x00000000     0x7190
  .debug_frame   0x00000000      0x2a4 CMakeFiles/untitled1.elf.dir/app/rc-1.7/builtins.c.obj
  .debug_frame   0x000002a4       0xa8 CMakeFiles/untitled1.elf.dir/app/rc-1.7/except.c.obj
  .debug_frame   0x0000034c       0x3c CMakeFiles/untitled1.elf.dir/app/rc-1.7/exec.c.obj
@@ -17094,4 +17087,4 @@ LOAD linker stubs
  .debug_frame   0x00006e28       0x28 CMakeFiles/untitled1.elf.dir/main/fs_init.c.obj
  .debug_frame   0x00006e50       0x28 CMakeFiles/untitled1.elf.dir/main/main.c.obj
  .debug_frame   0x00006e78      0x154 CMakeFiles/untitled1.elf.dir/main/task_main.c.obj
- .debug_frame   0x00006fcc      0x1b0 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj
+ .debug_frame   0x00006fcc      0x1c4 CMakeFiles/untitled1.elf.dir/mem/mem.c.obj

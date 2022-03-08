@@ -161,7 +161,7 @@ void* _Malloc(uint16_t inxMem, uint32_t size) {
 		}
 	}
 	osMem.OSMemItemLs[inxMem].freeBlockNum -= i_need_block_num;
-    printk("malloc %x.\n\n",(void*)(&(malloc_mem[bkSize * i])));
+//    printk("malloc %x.\n\n",(void*)(&(malloc_mem[bkSize * i])));
     return (void*)(&(malloc_mem[bkSize * i]));
 }
 /**
@@ -289,7 +289,7 @@ void OSFree(void* mem) {
     if(!mem){
         return ;
     }
-    printk("free %x.\n\n",mem);
+//    printk("free %x.\n\n",mem);
     st=DisCpuInter();
 	_Free(OS_USE_MEM_AREA_INX, mem);
 	RestoreCpuInter(st);
