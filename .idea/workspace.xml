@@ -11,10 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="支持了ls mkdir uname cat clear这些小程序，并且支持了一个很简单的shell，能够执行这些命令">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.m" beforeDir="false" afterPath="$PROJECT_DIR$/README.m" afterDir="false" />
-    </list>
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="更新readme" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -221,7 +218,7 @@
       <workItem from="1646666082223" duration="9000" />
       <workItem from="1646715427903" duration="5536000" />
       <workItem from="1646721614969" duration="29803000" />
-      <workItem from="1646796029225" duration="15118000" />
+      <workItem from="1646796029225" duration="15199000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -496,7 +493,14 @@
       <option name="project" value="LOCAL" />
       <updated>1646809929916</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="更新readme">
+      <created>1646813025246</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1646813025246</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -514,7 +518,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="完成了大部分的vfs支持的函数，但是没有详细的测试" />
     <MESSAGE value="增加了信号量和mutex，mutex支持优先级继承" />
     <MESSAGE value="编译有问题" />
     <MESSAGE value="基本移植完成，但是还没有办法调用，cortex-m3处理器没有swi指令，只有svc指令，svc指令最大的系统调用只有256个，不够用。" />
@@ -539,7 +542,8 @@
     <MESSAGE value="解决了诸多的bug" />
     <MESSAGE value="现在可以通过调用execve执行可重定向的elf文件了，并且还挺稳定" />
     <MESSAGE value="支持了ls mkdir uname cat clear这些小程序，并且支持了一个很简单的shell，能够执行这些命令" />
-    <option name="LAST_COMMIT_MESSAGE" value="支持了ls mkdir uname cat clear这些小程序，并且支持了一个很简单的shell，能够执行这些命令" />
+    <MESSAGE value="更新readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新readme" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
