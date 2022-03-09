@@ -1,6 +1,6 @@
 ## MKRTOS 是什么
 
-- MKRTOS 全称是 Micro-Kernel Real-Time Operating System，中文名字是微内核实时操作系统。其最终的意义是实现一个小内核，并兼容 Posix 标准的操作系统。
+- MKRTOS 全称是 Micro-Kernel Real-Time Operating System，中文名字是微内核实时操作系统。其最终的意义是实现一个小内核，并兼容 Posix 标准的操作系统，使其完全适用于各类嵌入式场合。
 
 ### 开发背景
 
