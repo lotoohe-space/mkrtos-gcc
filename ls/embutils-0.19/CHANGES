@@ -1,0 +1,193 @@
+0.19:
+  tr '\040' '\012' now works
+  tar can now extract really ancient tarballs where directories
+    aren't marked as such but the filename ends with a slash
+  fix "env -u" crashing if no option was given (Nikola Vladov)
+  also support "env -uWHATEVER", not just "env -u WHATEVER" (Nikola Vladov)
+  fix tar regarding device files (if the mode didn't contain the device bit)
+  allow obsolete "tail +16c" syntax so that gcc 4.2 can be built
+    (current coreutils 6.9 does not support this syntax in tail)
+  fix long standing command line parsing bug in chmod
+  fix "short read" bug in tar when reading from a pipe
+  support install -b
+
+0.18:
+  remove S_IFREG bit in file mode when creating tars
+  allow "tr - _"
+  solaris compile fix for tar
+  error message update for mv
+  fix ls invalid option error message (Wayne Marshall)
+  fix uninitialized variable in truncate
+  tar: extract Solaris tar created tar files with long file names
+  make cmp - fnord work again
+  add chrootuid
+  fix long link target GNU extension in tar x
+  Olaf: add renice
+  add -t and -p to mktemp
+  work around broken tars from the mono people
+
+0.17:
+  fix ls core dump when opendir fails (Johannes Berth)
+  head -1 -> head -n 1
+  add date and mount (no loop devices, no NFS) (Ruediger Sonderfeld)
+  add printenv
+  add primitive umount (no fstab)
+  large file support for dd, cat, install, mv, wc, cmp, strings, tail, tee, uniq
+  ls: ignore files that are not there when readdir just said they were
+  Makefile cleanups (Hideki IWAMOTO)
+  fix bug in sleep2 when localtime and gmtime are on different days
+  add undocumented GNU tail -n +6 mode (skip first 5 lines)
+  tar can now create and extract hard links and GNU-style long file and
+    link names
+  support -C in tar
+  add --use-compress-program support in tar
+  install -s now also passes -R .comment -R .note to strip
+
+0.16:
+  fix tee -a (Heiko Berges)
+  fix embarassing segfault in dmesg
+  add strings (Andreas Krennmair)
+  fix df percentage
+  fix sync return code (Dan Melomedman says sync() returns void on some
+    systems)
+  fix mv without -i overwriting files on another file system (Heiko Berges)
+  fix dd file creation permissions (Heiko Berges)
+  fix ls -Ra (would recurse into . and ..) (Heiko Berges)
+  add test (Laurent G. Bercot, Jean Marot)
+  fix backslashes in sets in tr (Gunnar Ritter)
+  make ls compile again with no color support (Derek Fawcus)
+  catch circular directory trees in ls (triggered when running "ln -LRa"
+    in /dev when /dev/fd is a symlink to /proc/self/fd)
+  make rm susv3 compliant: reject . and .. basenames (Heiko Berges)
+
+0.15:
+  add truncate (an invention of me)
+  add mktemp
+  fix which exit code
+  fix ls sorting by size for large files
+  fix signedness issue and add buffering to cmp (Andreas Krennmair)
+  tar can now create tape archives, too ;)
+  fix cat to handle several - (Ralf Wildenhues)
+  fix dd
+  add UID cache for tar (don't parse /etc/passwd and /etc/group for each
+    file in the tape archive)
+  fix tr to handle sets (a-z) correctly (Olaf Dreesen)
+  add GNU style --mode options to install
+  add make uninstall target
+
+0.14:
+  add uuencode, uudecode, nohup and nice (from Andreas Krennmair)
+  Andreas also fixed a bug in contrib/kill
+  Olaf: Fixed a BUG in tail.
+  Do some more size improvements (use diet libc __write1 and __write2
+    and move uname to using bits instead of ints for each flag.
+  Andreas also sent me a cmp implementation.
+  Alexandre Karev found and fixed a bug in tr regarding octal escapes.
+
+0.13:
+  Andreas Krennmair contributed a uniq (it's a little on the large side
+    because it uses malloc to work with long lines)
+  Olaf Dreesen contributed tr and dd.
+  Also added the other kill in contrib.  I feel bad just throwing it
+    away just because Olaf's was smaller ;)
+  Olaf Dreesen contributed touch.
+  Andreas also contributed mesg and write
+  Olaf Dreesen contributed du.
+  Fixed ls -l so it does not dump core if readlink fails.
+  Olaf Dreesen contributed tail.
+
+0.12:
+  add sleep2 (like sleep, but can do "sleep 20:15").  By Frank Klemm.
+  optimize echo (<1024 bytes on x86 now, thanks to Frank Klemm).
+  rm no longer asks when the superuser deletes files not owned by him.
+  "mv foo/ bar" would rename("foo","bar/oo").
+  add allinone, which uses the busybox concept to decide by argv[0]
+    what to do.  Supports: arch, basename, clear, chvt, dirname, dmesg,
+    domainname, echo, env, false, hostname, pwd, sleep, sync, tee, true,
+    tty, uname, which, whoami, yes.  By Frank Klemm.  8k.
+  Two kills were contributed.  I took the smaller one.
+  install will no longer assume -D.
+  install will no longer use the given mode for the intermediate
+    directories created by -D.
+
+0.11:
+  ls -p or -F qualifiers were colored.
+  "mv foo/a/ foo/b/ ." did not work.
+  added whoami.
+  implemented -h in chown.
+  ls -l displayed the gid as uid.
+  added mkfifo as argv[0] variant of mknod
+  added head.
+  added install.
+  added soscp, sosmv and sosrm, as suggested by Frank Klemm.
+  added sosln, soslns (for ln -s).
+  added md5sum (without -c).
+
+0.10.1:
+  fix ls formatting bug when size was wider than 8 characters.
+
+0.10:
+  added cat.
+  added rm.
+  added wc.
+  fix includes to cleanly compile with diet libc includes (and no glibc
+    fall-back)
+  added ls (a color ls even!).
+  added embfeatures.h to not compile in unneeded features.
+
+0.9:
+  added -v to ln.
+  added mv and cp in one binary (argv[0] decides).
+  added yes.
+  added which.
+  repaired wrong exit codes.
+  fixed uname (it always wrote a trailing space, confusing config.guess)
+
+0.8:
+  changed printf to libowfat routines in df: 5.2k -> 1.7k.
+  same in id: 8k -> 5k.
+  same in tar: 15k -> 13k.
+  tar: when uname or gname are "", print uid or gid instead.
+
+0.7:
+  added ln.
+  clarified license to be GPLv2.
+
+0.6:
+  imported fixes for df and dmesg from Jens Laas.  Thanks, Jens!
+  implemented dmesg -n.
+  added "ustar" magic comparison to tar.
+  the size display of tar was broken.
+
+0.5.1:
+  added dirname, env, domainname, id (no supplementary groups for
+    "id ftp" type usage yet)
+
+0.5:
+  added "U" (unlink first) to tar.  Thanks to Jens Laas for the contribution!
+  added basename, chvt, df (not complete yet), tee, uname, arch, hostname
+
+0.4:
+  added sleep, tty, tar (well, almost.  It can do "t" and "x" with
+    verbosity and supports "z" for gzip and "I" for bzip2).
+
+0.3:
+  oops, chown was broken.  One of my late-night optimizations broke
+    getpwnam.  I detected it when I tested my other late-night
+    optimizations in diet libc ;-)
+
+0.2:
+  added chown, chgrp, chmod
+  ugh, directory traversal is a lot of code.
+  I reused a lot of code by writing "openreadclose" and "split" which
+    others might find useful for their own projects.
+  I decided to implement small custom parsers for /etc/passwd and
+    /etc/group, based on openreadclose and split, so I can add some
+    defines to not include filling in parts of struct passwd and struct
+    group that I don't use after that.  chown is still >7k on x86-linux.
+    I am depressed about this.
+  chgrp is actually a link to chown, argv[0] decides.
+
+0.1:
+  initial release.
+  chroot clear echo false mkdir mknod pwd rmdir sync true

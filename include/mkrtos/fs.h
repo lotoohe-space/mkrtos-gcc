@@ -207,10 +207,12 @@ int32_t puti(struct inode* put_inode);
 void wait_on_inode(struct inode* inode);
 void lock_inode(struct inode* inode);
 void unlock_inode(struct inode* inode);
+int sync_all_inode(void);
 
 
 //namei.c
 int namei(const char * pathname, struct inode ** res_inode);
+int lnamei(const char * pathname, struct inode ** res_inode);
 int32_t dir_namei(const char * pathname, int32_t * namelen, const char ** name,
                   struct inode * base, struct inode ** res_inode);
 int32_t open_namei(const char* file_path,int32_t flags,int32_t mode,struct inode **res_inode,struct inode *base_dir);
@@ -253,6 +255,7 @@ int32_t request_char_no(dev_t dev_no);
 void lock_bk_ls(dev_t bk_dev_no);
 void unlock_bk_ls(dev_t bk_dev_no);
 void devs_init(void);
+int sync_all_bk_dev(void) ;
 /////////
 
 //bk.c
@@ -276,6 +279,7 @@ struct bk_cache {
 //super.c
 struct super_block* get_empty_sb(void);
 void free_sb(struct super_block* sb);
+int sync_all_sb(void);
 
 //super.c
 struct task;

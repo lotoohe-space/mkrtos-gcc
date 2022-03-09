@@ -21,10 +21,10 @@ struct old_stat {
 	unsigned long  st_ctime;
 };
 struct new_stat {
-	unsigned short st_dev;
+	unsigned long st_dev;
 	unsigned short __pad1;
 	unsigned long st_ino;
-	unsigned short st_mode;
+	unsigned long st_mode;
 	unsigned short st_nlink;
 	unsigned short st_uid;
 	unsigned short st_gid;

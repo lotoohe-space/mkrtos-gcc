@@ -1,0 +1,54 @@
+0.7:
+  You can now run fgetty as "fgetty 1" and it will try "/dev/vc/1" and
+    "/dev/tty1" before giving up.  That means, the same fgetty line can
+    be run with and without devfs.  Your boot sequence may fail but at
+    least you get a getty!
+  call setsid in case your init does not do it. Minit and sysvinit do.
+    Now you can run fgetty under runit, and maybe even directly from
+    the console.  Patch by John Palkovic.
+  checkpassword now gives an error message if stdout is a TTY.
+  fgetty now works (a little) if it can't set the controlling TTY.
+  checkpassword now also accepts an empty password if the password
+    field in /etc/passwd or /etc/shadow is empty.
+  fix bug if someone left descriptors open in login.c (Florian Westphal)
+
+0.6:
+  the utmp code was broken.  It only looked for the PID, not for the
+    "line" (device).  So utmp grew needlessly.
+  fixed make install
+  add man page from Tino Reichardt
+  Enrico Scholz sent a patch that adds --long-hostname and adds error
+    checking for gethostname when it is not \0-terminated.
+
+0.5
+  login will accept passwords up to 99 characters (previously it limited
+  to 8 because DES crypt() only looks at the first 8 characters anyway).
+  With MD5 crypt support, that's not so smart a move.  Laurent BERCOT
+  reported this bug.  Thanks, Laurent!
+
+  Also, login will try to add users to group "console".  This can be
+  used to give console users write access to the sound device.
+
+0.4
+  fgetty will turn echo off before executing login.  This fixes the
+    age-old security problem when the load is heavy at login:
+
+      host login: hax0r
+      imsol33tPassword: _
+
+0.3.1
+  login2 contained a bad beginner's error regarding error checking when
+    reading motd.  If you didn't have motd, login2 would loop :-(
+    Found and fixed by Michael Bacarella.
+
+0.3
+  added a checkpassword that accepts a "nosetuid" flag in the
+    additional data section of the checkpassword API and then omits the
+    setuid().  Then, the called application (in the fgetty case,
+    /bin/login2) can do a "chown $UID. $TTY" before doing the setuid()
+    call itself, so finally, your TTY belongs to you.  screen was always
+    complaining ;)
+
+0.2:
+  added login and login2 and edited README to "document" them.
+  fgetty will now also put $TTY and $HOST in the environment.

@@ -8,6 +8,15 @@
 #include <mkrtos/fs.h>
 #include <mkrtos/sp.h>
 #include <mkrtos/bk.h>
+
+int file_fsync (struct inode *inode, struct file *filp)
+{
+    struct super_block *sb;
+    sb=inode->i_sb;
+    //同步当前的inode
+    sp_sync_inode(inode);
+    return sync_all_bk(sb->s_dev_no);
+}
 //同步一个文件
 int sp_sync_file(struct inode * inode, struct file * file) {
     if (!(S_ISREG(inode->i_type_mode) || S_ISDIR(inode->i_type_mode) ||
@@ -35,16 +44,14 @@ int sp_sync_file(struct inode * inode, struct file * file) {
                     sync_bk(inode->i_sb->s_dev_no, ino);
                 }else{
                     bk_release(tmp);
-                    return 0;
+                    goto next;
                 }
             }
             bk_release(tmp);
         }
     }
-
+    next:
     //三级还没做
-
-
     sp_sync_inode(inode);
     return 0;
 }

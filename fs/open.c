@@ -238,7 +238,7 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
     res= open_namei(path,flags,mode,&o_inode,NULL);
     if(res<0){
         files[i].used=0;
-        return -1;
+        return res;
     }
     files[i].f_flags=flags;
     //设置文件操作符号
@@ -252,10 +252,10 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
             files[i].f_op
             &&files[i].f_op->open
             ) {
-        if (files[i].f_op->open(o_inode, &(files[i])) < 0) {
+        if ((res=files[i].f_op->open(o_inode, &(files[i]))) < 0) {
             files[i].used = 0;
             puti(o_inode);
-            return -1;
+            return res;
         }
 
     }
@@ -303,6 +303,12 @@ void sys_close(int fp){
     ){
         CUR_TASK->files[fp].f_op->release(inode,&CUR_TASK->files[fp]);
     }
+    if(CUR_TASK->files[fp].f_op
+       &&CUR_TASK->files[fp].f_op->fsync
+            ) {
+        CUR_TASK->files[fp].f_op->fsync(inode,&CUR_TASK->files[fp]);
+    }
+
     CUR_TASK->files[fp].f_op=NULL;
     CUR_TASK->files[fp].used=0;
     CUR_TASK->files[fp].f_ofs=0;
@@ -311,4 +317,23 @@ void sys_close(int fp){
 }
 int sys_vhangup(void){
     return -ENOSYS;
+}
+int sys_fsync(int fp){
+    int res=-ENOSYS;
+    struct inode *inode;
+    if(fp<0||fp>=NR_FILE){
+        printk("%s fp.\n",__FUNCTION__ );
+        return -EBADF;
+    }
+    if(CUR_TASK->files[fp].used==0){
+        //文件已经关闭了
+        return -EINVAL;
+    }
+    inode=CUR_TASK->files[fp].f_inode;
+    if(CUR_TASK->files[fp].f_op
+       &&CUR_TASK->files[fp].f_op->fsync
+            ) {
+        res=CUR_TASK->files[fp].f_op->fsync(inode,&CUR_TASK->files[fp]);
+    }
+    return res;
 }

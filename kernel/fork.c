@@ -33,28 +33,39 @@ int32_t sys_fork(uint32_t *psp){
         return -1;
     }
     newPtb->PID = (pid_t)atomic_read(&sysTasks.pidTemp);
-#if 0
-    if(ptb->taskInfo.peam!=NULL){
-        newPtb->taskInfo.peam=EOS_load_item_new();
-        if(newPtb->taskInfo.peam==NULL){
+#if 1
+    if(ptb->exec){
+        void* exec_tmp=newPtb->exec;
+        //重新复制应用信息
+        newPtb->exec=OSMalloc(sizeof(ELFExec_t));
+        if(!newPtb->exec){
             OSFree(newPtb);
             OSFree(newPtb->memLowStack);
             RestoreCpuInter(t);
             return -1;
         }
-        memcpy(newPtb->taskInfo.peam,ptb->taskInfo.peam,sizeof(EOS_APP_MAN));
-        memcpy(newPtb->taskInfo.peam->ram_data,ptb->taskInfo.peam->ram_data,ptb->taskInfo.peam->ram_size);
+        memcpy(newPtb->exec,exec_tmp,sizeof(ELFExec_t));
+        newPtb->exec->data.data = OSMalloc(ptb->exec->data.sh_size);
+        if(!newPtb->exec->data.data){
+            OSFree(newPtb);
+            OSFree(ptb->exec);
+            OSFree(newPtb->memLowStack);
+            RestoreCpuInter(t);
+            return -1;
+        }
+        memcpy(newPtb->exec->data.data,ptb->exec->data.data,ptb->exec->data.sh_size);
+        newPtb->exec->bss.data = OSMalloc(ptb->exec->bss.sh_size);
+        if(!newPtb->exec->bss.data){
+            OSFree(newPtb);
+            OSFree(ptb->exec);
+            OSFree(newPtb->memLowStack);
+            OSFree(newPtb->exec->data.data);
+            RestoreCpuInter(t);
+            return -1;
+        }
+        memcpy(newPtb->exec->bss.data,ptb->exec->bss.data,ptb->exec->bss.sh_size);
+        (*(ptb->exec->used_count))++;
     }
-    //复制文件描述符
-    newPtb->taskInfo.fileList=(PFile)OSMalloc(sizeof(File)*FILE_MAX_NUM);
-    if(newPtb->taskInfo.fileList == NULL){
-        OSFree(newPtb);
-        OSFree(newPtb->memLowStack);
-        EOS_load_item_del(newPtb->taskInfo.peam);
-        RestoreCpuInter(t);
-        return -1;
-    }
-    memcpy(newPtb->taskInfo.fileList,ptb->taskInfo.fileList,sizeof(File)*FILE_MAX_NUM);
 #endif
     int32_t err;
     newPtb->parent=NULL;
@@ -64,14 +75,14 @@ int32_t sys_fork(uint32_t *psp){
         //	RestoreCpuInter(t);
         /*释放申请的内存*/
         OSFree(newPtb);
+        OSFree(ptb->exec);
         OSFree(newPtb->memLowStack);
-#if 0
-        OSFree(newPtb->taskInfo.fileList);
-        EOS_load_item_del(newPtb->taskInfo.peam);
-#endif
+        OSFree(newPtb->exec->data.data);
+        OSFree(newPtb->exec->bss.data);
         RestoreCpuInter(t);
         return -1;
     }
+
     atomic_inc(&sysTasks.pidTemp);
     //设置父进程
     newPtb->parentTask=ptb;

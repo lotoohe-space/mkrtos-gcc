@@ -96,10 +96,13 @@ extern int sys_getpriority(); //96
 extern int sys_setpriority(); //97
 extern int sys_wait4();     //114-wait4
 extern int sys_ipc();       //117
+extern int sys_fsync();
 extern int sys_getdents();
+extern int sys_sigprocmask();
 extern int sys_nanosleep(); //162
 extern int sys_mremap();//163
 extern int sys_rt_sigaction(); //174
+extern int sys_rt_sigprocmask();
 extern int sys_getcwd();//183
 extern int sys_getenv();
 extern int sys_rt_sigreturn(void* psp);
@@ -149,7 +152,7 @@ const fn_ptr sys_call_table[] = {
         [33]sys_access,
         [34]sys_nice,
         [35]sys_ftime,
-        [36]NULL,//sys_sync,
+        [36]=sys_sync,
         [37]sys_kill,
         [38]sys_rename,
         [39]sys_mkdir,
@@ -197,7 +200,7 @@ const fn_ptr sys_call_table[] = {
 //                           sys_setgroups,
 //                           sys_select,
                           [83]=sys_symlink,
-//                           sys_lstat,
+                           [84]=sys_lstat,
 //                           sys_readlink,
 //                           sys_uselib,
         [89]=sys_readdir,
@@ -212,15 +215,20 @@ const fn_ptr sys_call_table[] = {
         [99]=sys_statfs,
         [100]=sys_fstatfs,
         [106]=sys_stat,
+        [107]=sys_lstat,
         [114]=sys_wait4,
         [117]=sys_ipc,
+        [118]=sys_fsync,
         [119]=sys_sigreturn,
+        [122]=sys_uname,
+        [126]=sys_sigprocmask,
         [133]=sys_fchdir,
         [141]=sys_getdents,
         [162]=sys_nanosleep,
         [163]=sys_mremap,
         [173]=sys_rt_sigreturn,
         [174]=sys_rt_sigaction,
+        [175]=sys_rt_sigprocmask,
         [182]=sys_chown,
         [183]=sys_getcwd,
 

@@ -400,6 +400,8 @@ int sp_mkdir(struct inode * dir, const char * name, int len, int mode)
 
     dir->i_hlink++;
     dir->i_dirt=TRUE;
+//    sp_sync_inode(dir);
+//    sync_all_bk(sb->s_dev_no);
     puti(dir);
     puti(inode);
     return 0;

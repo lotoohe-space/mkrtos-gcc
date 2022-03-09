@@ -326,10 +326,10 @@ __extension__	long long st_blocks;		/* Number 512-byte blocks allocated. */
 };
 #elif defined(__arm__)
 struct stat {
-	uint16_t	st_dev;
+	uint32_t	st_dev;
 	uint16_t	__pad1;
 	unsigned long	st_ino;
-	uint16_t	st_mode;
+	uint32_t	st_mode;
 	uint16_t	st_nlink;
 	uint16_t	st_uid;
 	uint16_t	st_gid;

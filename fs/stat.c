@@ -6,12 +6,12 @@
 
 static void cp_new_stat(struct inode * inode, struct new_stat * statbuf)
 {
-    statbuf->st_dev = -1;
+    statbuf->st_dev = inode->i_sb->s_dev_no;
     statbuf->st_ino = inode->i_no;
     statbuf->st_mode = inode->i_type_mode;
     statbuf->st_nlink = inode->i_hlink;
-    statbuf->st_uid = -1;
-    statbuf->st_gid = -1;
+    statbuf->st_uid = 0;
+    statbuf->st_gid = 0;
     statbuf->st_rdev = inode->i_rdev_no;
     statbuf->st_size = inode->i_file_size;
     statbuf->st_atime = 0;
@@ -31,4 +31,13 @@ int32_t sys_stat(char * filename, struct new_stat * statbuf)
     puti(inode);
     return 0;
 }
-
+int32_t sys_lstat(char * filename, struct new_stat * statbuf) {
+    struct inode * inode;
+    int res=0;
+    res = lnamei(filename,&inode);
+    if (res<0) {
+        return res;
+    }
+    cp_new_stat(inode,statbuf);
+    puti(inode);
+}

@@ -44,6 +44,7 @@ static struct tty_struct * get_tty(dev_t dev_no){
 static void init_termios(int line, struct termios * tp){
     memset(tp, 0, sizeof(struct termios));
     memcpy(tp->c_cc, C_CC_INIT, NCCS);
+
 //    if (IS_A_CONSOLE(line) || IS_A_PTY_SLAVE(line)) {
 //        tp->c_iflag = ICRNL | IXON;
 //        tp->c_oflag = OPOST | ONLCR;
@@ -187,6 +188,9 @@ static int tty_ioctl(struct inode * inode, struct file * file, unsigned int cmd,
             }
             break;
         case TIOCGWINSZ:
+            //TODO:
+            cur_tty->w_size.ws_col=80;
+            cur_tty->w_size.ws_row=80;
             //获取窗口大小
             pw_size =(struct winszie* )arg;
             *pw_size=cur_tty->w_size;

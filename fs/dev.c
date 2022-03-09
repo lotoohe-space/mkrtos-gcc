@@ -29,7 +29,6 @@ struct bk_dev{
     //设备类型
     dev_t d_type;
 
-
     //块数
     uint32_t bk_count;
     //块设备缓存
@@ -55,6 +54,15 @@ struct ch_dev devs_char[CH_DEV_MAX_NUM]={0};
  */
 struct bk_dev devs_bk[BK_DEV_MAX_NUM]={0};
 
+
+int sync_all_bk_dev(void) {
+    for(int i=0;i<BK_DEV_MAX_NUM;i++) {
+        if(devs_bk[i].bk_ops) {
+            sync_all_bk(i);
+        }
+    }
+    return 0;
+}
 /**
  * 请求一个块设备号
  * @param dev_no

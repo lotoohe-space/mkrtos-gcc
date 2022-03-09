@@ -36,7 +36,7 @@ static void __wait_on_inode_list(void){
 //    CUR_TASK->status = TASK_RUNNING;
 }
 void wake_up_wait_inode_list(void){
-    wake_up(&ino_ls);
+    wake_up(ino_ls);
 }
 
 
@@ -116,6 +116,22 @@ void lose_inode(struct inode* p_inode){
 
 }
 
+int sync_all_inode(void){
+    int i;
+    for(i=0;i<INODE_NUM;i++){
+        if(!atomic_test(&(inode_ls[i].i_used_count),0)){
+            lock_inode(&inode_ls[i]);
+            if(inode_ls[i].i_sb
+            &&inode_ls[i].i_sb->s_ops
+            &&inode_ls[i].i_sb->s_ops->write_inode
+            ) {
+                inode_ls[i].i_sb->s_ops->write_inode(&inode_ls[i]);
+            }
+            unlock_inode(&inode_ls[i]);
+        }
+    }
+    return 0;
+}
 /**
  * ªÒ»°inode
  * @param p_sb

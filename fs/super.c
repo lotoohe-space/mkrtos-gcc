@@ -43,6 +43,17 @@ struct super_block* find_sb(const dev_t d_no){
     }
     return NULL;
 }
+int sync_all_sb(void){
+    for(int i=0;i<SB_MAX_NUM;i++){
+        if(sb_used_flag[i]){
+            if(sb_list[i].s_ops
+            &&sb_list[i].s_ops->write_super
+            ) {
+                sb_list[i].s_ops->write_super(&sb_list[i]);
+            }
+        }
+    }
+}
 //读取指定设备的sb
 struct super_block* read_sb(dev_t dev_no,const char * fs_name,int32_t req_dev_no){
     struct super_block *sb;

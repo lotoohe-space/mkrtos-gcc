@@ -15,7 +15,7 @@
 #define GET_BIT(a,b) (((a)>>(b))&0x1)
 #define ABS(a) ((a)<0?-(a):(a))
 
-static int32_t sync_all_bk(dev_t dev_no);
+
 /**
  * 块缓存初始化
  * @param p_bk_ch_ls
@@ -59,12 +59,7 @@ int32_t bk_cache_destory(struct bk_cache* p_bk_ch_ls,uint32_t cache_len){
 }
 
 
-int file_fsync (struct inode *inode, struct file *filp)
-{
-    struct super_block *sb;
-    sb=inode->i_sb;
-    return sync_all_bk(sb->s_dev_no);
-}
+
 /**
  * 随机同步一个块
  * @param dev_no
@@ -110,7 +105,7 @@ struct bk_cache* sync_rand_bk(dev_t dev_no,uint32_t new_bk) {
     unlock_bk_ls(dev_no);
     return sync_cache;
 }
-static int32_t sync_all_bk(dev_t dev_no){
+int32_t sync_all_bk(dev_t dev_no){
     struct bk_cache* bk_cache_ls;
     struct bk_operations *bk_ops;
     uint32_t cache_len;
@@ -126,17 +121,18 @@ static int32_t sync_all_bk(dev_t dev_no){
     }
     lock_bk_ls(dev_no);
     for(i=0;i<cache_len;i++){
-        if(GET_BIT(bk_cache_ls[i].flag,7)){
+        if(!(bk_cache_ls[i].flag&0x80)){
             continue;
         }
         lock_bk(bk_cache_ls+i);
-        if (GET_BIT(bk_cache_ls[i].flag,0)) {
+        if (GET_BIT(bk_cache_ls[i].flag, 1)) {
+            //先擦除
             if(bk_ops->erase_bk(bk_cache_ls[i].bk_no)<0){
+                bk_cache_ls[i].flag=0;
                 fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
-        }
-        if (GET_BIT(bk_cache_ls[i].flag, 1)) {
-            if(bk_ops->read_bk(bk_cache_ls[i].bk_no,bk_cache_ls[i].cache)<0){
+            if(bk_ops->write_bk(bk_cache_ls[i].bk_no,bk_cache_ls[i].cache)<0){
+                bk_cache_ls[i].flag=0;
                 fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
         }
@@ -144,6 +140,29 @@ static int32_t sync_all_bk(dev_t dev_no){
         unlock_bk(bk_cache_ls+i);
     }
     unlock_bk_ls(dev_no);
+    return 0;
+}
+int32_t sync_all_bk_raw(struct bk_cache* bk_cache_ls,struct bk_operations *bk_ops,int cache_len){
+    int i;
+    for(i=0;i<cache_len;i++){
+        if(!(bk_cache_ls[i].flag&0x80)){
+            continue;
+        }
+        lock_bk(bk_cache_ls+i);
+        if (GET_BIT(bk_cache_ls[i].flag, 1)) {
+            //先擦除
+            if(bk_ops->erase_bk(bk_cache_ls[i].bk_no)<0){
+                bk_cache_ls[i].flag=0;
+                fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+            }
+            if(bk_ops->write_bk(bk_cache_ls[i].bk_no,bk_cache_ls[i].cache)<0){
+                bk_cache_ls[i].flag=0;
+                fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+            }
+        }
+        bk_cache_ls[i].flag=0;
+        unlock_bk(bk_cache_ls+i);
+    }
     return 0;
 }
 /**
@@ -164,7 +183,7 @@ static struct bk_cache* find_bk_cache(dev_t dev_no,uint32_t bk_no){
 
     //这里用hash时最快的，后面优化
     for(i=0;i<cache_len;i++){
-        if(!GET_BIT(bk_cache_ls[i].flag,7)){
+        if(!(bk_cache_ls[i].flag&0x80)){
             prev_i=i;
             continue;
         }
@@ -207,7 +226,7 @@ struct bk_cache* sync_bk(dev_t dev_no,uint32_t bk_no){
 
     //这里用hash时最快的，后面优化
     for(i=0;i<cache_len;i++){
-        if(!GET_BIT(bk_cache_ls[i].flag,7)){
+        if(!(bk_cache_ls[i].flag&0x80)){
             prev_i=i;
             continue;
         }

@@ -1,0 +1,7 @@
+mount
+insmod
+ifconfig
+
+ls: make -s and -i work without -l (Heiko Berges)
+
+tar: hard links

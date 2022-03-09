@@ -58,8 +58,18 @@ void DoExit(int32_t exitCode){
         //任务更新
         update_cur_task();
     }
-    unload_elf(CUR_TASK->exec);
-    CUR_TASK->exec=NULL;
+    if(CUR_TASK->exec) {
+        (*(CUR_TASK->exec->used_count))--;
+        if(!((*CUR_TASK->exec->used_count))) {
+            unload_elf(CUR_TASK->exec);
+        }else{
+            OSFree(CUR_TASK->exec->data.data);
+            OSFree(CUR_TASK->exec->bss.data);
+            //fork后的exec也是新的
+            OSFree(CUR_TASK->exec);
+        }
+        CUR_TASK->exec=NULL;
+    }
     //释放栈空间
     OSFree(CUR_TASK->memLowStack);
     CUR_TASK->memLowStack=NULL;

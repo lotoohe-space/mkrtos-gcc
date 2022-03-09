@@ -44,6 +44,7 @@ typedef struct {
     void *data;
     int secIdx;
     off_t relSecIdx;
+    int sh_size;
 } ELFSection_t;
 
 typedef struct ELFExec {
@@ -61,16 +62,17 @@ typedef struct ELFExec {
 
     ELFSection_t text;
     ELFSection_t rodata;
-    ELFSection_t data;
-    ELFSection_t bss;
+    ELFSection_t data;//fork时需要被复制
+    ELFSection_t bss;//fork时需要被复制
     ELFSection_t init_array;
     ELFSection_t fini_array;
     ELFSection_t sdram_rodata;
-    ELFSection_t sdram_data;
-    ELFSection_t sdram_bss;
+    ELFSection_t sdram_data;//fork时需要被复制
+    ELFSection_t sdram_bss;//fork时需要被复制
 
     unsigned int fini_array_size;
 
+    uint32_t* used_count;//使用计数
 } ELFExec_t;
 
 

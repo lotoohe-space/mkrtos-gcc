@@ -177,7 +177,7 @@ pid_t do_sys_wait(pid_t pid,int32_t *statloc,int32_t options,struct rusage *rusa
     if(pid==-1 || pid<-1){
         if(child_all_cn==0){
             //没有子进程，返回-1
-            return -1;
+            return -ECHILD;
         }else {
             //没有子进程被关闭
             if (child_all_cn == child_run_cn) {

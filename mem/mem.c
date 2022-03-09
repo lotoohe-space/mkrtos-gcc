@@ -367,19 +367,20 @@ void* sys_mmap(void *start, size_t length, int prot, int flags,int fd, off_t off
         return -1;
     }
 //    printk("mmap %x start:%x length:%d prot:%d flags:%x fd:%d ost:%d\r\n",res_mem,start,length,prot,flags,fd,offset);
-//    if(mem_add(res_mem,length)<0){
-//        OSFree(res_mem);
-//        return -ENOMEM;
-//    }
+    if(mem_add(res_mem,length)<0){
+        OSFree(res_mem);
+        return -ENOMEM;
+    }
     return res_mem;
 }
 void sys_munmap(void *start, size_t length){
-//    mem_remove(start);
+    mem_remove(start);
 //    printk("munamp start:%x length:%d\r\n",start,length);
 
     return OSFree(start);
 }
 void *sys_mremap(void *__addr, size_t __old_len, size_t __new_len,
                  unsigned long __may_move){
+    mem_remove(__addr);
     return OSRealloc(__addr,__new_len);
 }

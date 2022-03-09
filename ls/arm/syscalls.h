@@ -7,6 +7,7 @@
 #define __NR_write			(__NR_SYSCALL_BASE+  4)
 #define __NR_open			(__NR_SYSCALL_BASE+  5)
 #define __NR_close			(__NR_SYSCALL_BASE+  6)
+#define __NR_waitpid			(__NR_SYSCALL_BASE+  7)
 					/* 7 was sys_waitpid */
 #define __NR_creat			(__NR_SYSCALL_BASE+  8)
 #define __NR_link			(__NR_SYSCALL_BASE+  9)

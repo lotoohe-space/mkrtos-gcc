@@ -119,16 +119,8 @@ int32_t sp_read_inode(struct inode * inode){
             break;
     }
 
-    //使用计数
-//    atomic_set(&inode->i_open_count,0);
-    //使用计数
-//    atomic_set(&inode->i_used_count,0);
-    //用来锁这个inode
-//    atomic_set(&inode->i_lock,0);
-
     //是否被修改过
     inode-> i_dirt=0;
-
     return 0;
 }
 
@@ -144,6 +136,9 @@ int sp_notify_change(int flags, struct inode * i_node){
 void sp_write_inode (struct inode * i_node){
     struct super_block *sb=i_node->i_sb;
     struct sp_super_block * sp_sb=sb->s_sb_priv_info;
+    if(!i_node->i_dirt){
+        return ;
+    }
     //写Inode
     uint32_t bk_inx = ROUND_DOWN(i_node->i_no, INODE_NUM_IN_BK(sb));
 
@@ -255,6 +250,9 @@ struct super_block* sp_read_sb(struct super_block* sb){
 }
 void sp_write_super (struct super_block * sb){
     struct bk_cache* bk_tmp;
+    if(!sb->s_dirt){
+        return ;
+    }
     bk_tmp=bk_read(sb->s_dev_no,1,1);
     memcpy(bk_tmp->cache,sb,sizeof(struct super_block));
 //    wbk(sb->s_dev_no,1,sb,0,sizeof(struct super_block));
@@ -267,7 +265,6 @@ int sp_sync_inode(struct inode * inode)
 {
     lock_inode(inode);
     sp_write_inode(inode);
-    inode->i_dirt=0;
     unlock_inode(inode);
     return 0;
 }
@@ -281,9 +278,9 @@ int sp_remount_fs(struct super_block * sb, int * a, char * b){
 }
 
 struct super_operations sp_s_ops={
-    //申请指定文件系统的inode
+    //申请指定文件系统的inode占用的内存
     .alloc_inode=sp_alloc_inode,
-    //释放指定文件系统的inode
+    //释放指定文件系统的inode占用的内存
     .free_inode=sp_free_inode,
     .read_inode=sp_read_inode,
     .notify_change=NULL,

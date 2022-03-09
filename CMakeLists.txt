@@ -34,7 +34,7 @@ add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-le
 
 # Enable assembler files preprocessing
 add_compile_options($<$<COMPILE_LANGUAGE:ASM>:-x$<SEMICOLON>assembler-with-cpp>)
-
+set(CMAKE_BUILD_TYPE Debug)
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     message(STATUS "Maximum optimization for speed")
     add_compile_options(-Ofast)
@@ -85,6 +85,7 @@ include_directories(
 
         app/rc-1.7
         /
+        /
  )
 
 file(GLOB_RECURSE SOURCES
@@ -126,7 +127,8 @@ file(GLOB_RECURSE SOURCES
         #        "lib/dietlibc/libpthread/*.*"
         #        "lib/config/arm/*.*"
 
-
+#        app/fgetty-0.7/checkpassword.c
+#        app/fgetty-0.7/login.c
 #        "lib/soft-fp/*.*"
 
 

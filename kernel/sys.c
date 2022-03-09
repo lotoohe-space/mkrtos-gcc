@@ -145,6 +145,9 @@ int sys_setuid (uid_t uid) {
 }
 int sys_stime (time_t *tptr)
 {
+    if(!tptr){
+        return -EINVAL;
+    }
     if(!CUR_TASK->is_s_user){
         return -EPERM;
     }

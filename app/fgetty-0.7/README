@@ -1,0 +1,51 @@
+
+This is actually a mingetty without the printfs.
+Why?  Because then you can link it against dietlibc
+(http://www.fefe.de/dietlibc/).
+
+Actually, diet libc now supports printf, but not using it makes binaries
+smaller nonetheless.
+
+The difference is remarkable:
+
+USER       PID %CPU %MEM   VSZ  RSS TTY      STAT START   TIME COMMAND
+root      5487  0.0  0.1  1180  444 tty5     S    00:40   0:00 /sbin/mingetty tty5
+root      6035  0.0  0.0    16   16 tty5     S    00:45   0:00 /sbin/fgetty tty5
+
+
+
+I saw that on some really absurdly broken crap Linux distributions
+(apparently the ones using PAM ;-}), login stay in memory as long as a
+user is logged in, wasting precious memory.  So I decided to write a
+replacement login as well.
+
+My login uses the checkpassword (see http://cr.yp.to/checkpwd.html)
+password checking interface.  For the casual end-user, this means that
+you will need to get and install checkpassword.  For others, this means
+unprecedented flexibility for the system administrator, because the
+authentication for login can be done separately from login, and without
+sacrificing system resources.
+
+The default checkpassword program from http://cr.yp.to/checkpwd.html)
+checks against /etc/passwd and /etc/shadow, but the interface is general
+enough to make it possible to plug in different authentication, even
+RADIUS or LDAP or whatever you had in mind.  You just have to write the
+trivial checkpassword utility for your authentication method.  I plan to
+write a few small checkpassword variants to allow for shadowed MD5
+passwords from a CBD database, for example.
+
+This design has the following drawbacks:
+
+  1. since checkpassword exits on error, there is no "bad
+     username/password pair" error message.
+  2. For the same reason, there is no 1 second delay on bad passwords.
+
+We can't wrap checkpassword, because once the wrapper exits, init
+respawns fgetty.  The only good solution would be to make a
+checkpassword that prints the error message and exits only after a one
+second delay.
+
+
+login and login2 do _not_ mess with the tty or apply /etc/environment.
+These are prime cases of unnecessary features in my eyes.  Do that in
+your shell startup files or whatever.

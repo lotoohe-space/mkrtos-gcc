@@ -5,18 +5,22 @@
 #include <mkrtos/fs.h>
 #include <bsp/lib/sys.h>
 
+#define TOTAL_KB        (512)
+#define CODE_KB         (256)
+#define REMAIN_BK       ((TOTAL_KB-CODE_KB)>>1)
+
 #define CR_LOCK_Set              ((uint32_t)0x00000080)
 
 #define FLASH_KEY1               ((uint32_t)0x45670123)
 #define FLASH_KEY2               ((uint32_t)0xCDEF89AB)
 
-#define FLASH_W_BASE_ADDR        (0x8000000+128*1024)
+#define FLASH_W_BASE_ADDR        (0x8000000+CODE_KB*1024)
 
 #define FLASH_DEV_NO 0
 #define FLASH_BK_CACHE_LEN 3
 
 #define BK_SIZE 2048
-#define BK_COUNT 192
+#define BK_COUNT REMAIN_BK
 
 void STMFLASH_Write_NoCheck(u32 WriteAddr,u16 *pBuffer,u16 NumToWrite)
 {

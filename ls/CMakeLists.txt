@@ -36,19 +36,19 @@ add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-le
 # Enable assembler files preprocessing
 add_compile_options($<$<COMPILE_LANGUAGE:ASM>:-x$<SEMICOLON>assembler-with-cpp>)
 
-if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-    message(STATUS "Maximum optimization for speed")
-    add_compile_options(-Ofast)
-elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
-    message(STATUS "Maximum optimization for speed, debug info included")
-    add_compile_options(-Ofast -g)
-elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
+#if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+#    message(STATUS "Maximum optimization for speed")
+#    add_compile_options(-Ofast)
+#elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
+#    message(STATUS "Maximum optimization for speed, debug info included")
+#    add_compile_options(-Ofast -g)
+#elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
     message(STATUS "Maximum optimization for size")
     add_compile_options(-Os)
-else ()
-    message(STATUS "Minimal optimization, debug info included")
-    add_compile_options(-Og -g)
-endif ()
+#else ()
+#    message(STATUS "Minimal optimization, debug info included")
+#    add_compile_options(-Og -g)
+#endif ()
 
 add_compile_options(-mfloat-abi=softfp)
 add_compile_options(-fno-builtin)
@@ -58,13 +58,28 @@ add_compile_options(-mword-relocations -mlong-calls -fno-common)
 
 include_directories(
         include
+        embutils-0.19
+        include/netinet
+        fgetty-0.7
         /
 )
 
 file(GLOB_RECURSE SOURCES
         lib/*.c
-        main.c
+#        main.c
+#        lib/atexit.c
+#        lib/strlen.c
+#        lib/strcmp.c
+#        lib/strchr.c
+#        lib/strcmp.c
+        start.c
         syscall.c
+        fgetty-0.7/checkpassword.c
+        fgetty-0.7/fgetty.c
+#        start_info.c
+#        embutils-0.19/uname.c
+#        zshell.c
+#        embutils-0.19/ls.c
         )
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/elf.ld)
@@ -77,7 +92,7 @@ add_link_options(-nostdlib -nodefaultlibs)
 add_link_options(-fno-builtin )
 add_link_options(-nostdinc)
 add_link_options(-nostartfiles)
-add_link_options(-r -Bsymbolic  -mlong-calls -fno-common)
+add_link_options(-Bsymbolic  -mlong-calls -fno-common)
 #add_link_options(-r -Bsymbolic  -mlong-calls -fno-common)
 #add_link_options(-nostartfiles)
 

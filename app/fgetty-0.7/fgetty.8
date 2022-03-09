@@ -1,0 +1,90 @@
+.\" Tino Reichardt <der@mcmilk.de> (2002-01-19)
+.TH FGETTY 8 "2002-01-19" "fgetty" "System Administrator's Manual"
+.SH "NAME"
+fgetty \- a small getty for linux
+.SH "SYNOPSIS"
+\fBfgetty\fR \fItty\fR [\fI--noclear\fR] [\fI--long-hostname\fR]
+.SH "DESCRIPTION"
+The command \fBfgetty\fP is normally invoked by \fIinit(8)\fP, opens a tty port,
+prompts for a login name and invokes the /bin/login command.
+.SH "OPTIONS"
+\fB--noclear\fR makes fgetty not clear the screen before displaying the
+login prompt.
+
+\fB--long-hostname\fR makes fgetty display the full
+hostname in the login prompt.
+.SH "FILES"
+.TS
+tab (@);
+l l.
+/etc/issue@ printed before the login prompt
+/etc/inittab@ \fIinit\fP(8) configuration file
+/var/run/utmp@ the system status file
+.TE
+.SH ISSUE ESCAPES
+The issue-file (\fI/etc/issue\fP or the file may contain certain escape codes to
+display the system name, date and time etc. All escape codes consist of a backslash
+(\\) immediately followed by one of the letters explained below.
+.TP
+d
+the current date. (eg: 2002-01-19)
+.TP
+s
+the system name, the name of the operating system. (eg: Linux)
+.TP
+l
+the name of the current tty line. (eg: tty3)
+.TP
+m
+the architecture identifier of the machine (eg: i586)
+.TP
+n
+the nodename of the machine, also known as the hostname. (eg: sirius)
+.TP
+o
+the domainname of the machine. (eg: (none))
+.TP
+r
+the release number of the OS. (eg: 2.4.3-i)
+.TP
+t
+the current time. (eg: 14:51:51)
+.TP
+u
+the number of current users logged in. (eg: 4)
+.TP
+U
+the string "1 user" or "<n> users", where <n> is the number of current
+users logged in. (eg: 4 users)
+.TP
+v
+Insert the version of the OS. (eg: #2 Fre Jan 18 23:05:45 CET 2002)
+.SH "ENVIRONMENT VARIABLES"
+.TS
+tab (@);
+l l.
+HOST@ is set to your hostname
+TERM@ is set to linux
+TTY@ is set to the current tty line
+.TE
+.SH "RETURN VALUES"
+.TS
+tab (@);
+l l.
+\fB1\fP @could not chown/chmod tty device
+\fB3\fP @could not open tty device
+\fB4\fP @not a typewriter
+\fB5\fP @vhangup failed
+\fB6\fP @could not open tty (can't happen)
+\fB7\fP @dup failed
+\fB8\fP @could not exec login
+\fB9\fP @read returned an unexpected error
+\fB10\fP @unprintable character in login name
+\fB11\fP @login name too long (>40)
+\fB13\fP @user name started with a dash
+\fB23\fP @received SIGQUIT
+.TE
+.SH "AUTHOR"
+Felix von Leitner <felix-fgetty@fefe.de>
+.PP
+Homepage: http://www.fefe.de/fgetty/

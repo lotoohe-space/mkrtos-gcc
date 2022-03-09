@@ -8,6 +8,7 @@
 #include <mkrtos/task.h>
 #include <mkrtos/mem.h>
 #include <string.h>
+
 //fifo µœ÷
 struct fifo{
     uint32_t fifo_len;
@@ -15,7 +16,7 @@ struct fifo{
     uint32_t front;
     uint32_t rear;
     uint8_t *data;
-    uint8_t used_cnt;
+    Atomic_t used_cnt;
     struct wait_queue *f_put_wait;
     struct wait_queue *f_get_wait;
 };

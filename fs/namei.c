@@ -111,13 +111,13 @@ static int _namei(const char * pathname, struct inode * base,
 int lnamei(const char * pathname, struct inode ** res_inode)
 {
     int error;
-    char * tmp;
+//    char * tmp;
 
-    error = getname(pathname,&tmp);
-    if (!error) {
-        error = _namei(tmp,NULL,0,res_inode);
-        putname(tmp);
-    }
+//    error = getname(pathname,&tmp);
+//    if (!error) {
+        error = _namei(pathname,NULL,0,res_inode);
+//        putname(tmp);
+//    }
     return error;
 }
 int namei(const char * pathname, struct inode ** res_inode)
@@ -269,6 +269,7 @@ int sys_mkdir(const char * pathname, int mode){
     ) {
         atomic_inc(&path_inode->i_used_count);
         res = path_inode->i_ops->mkdir(path_inode,file_name, strlen(file_name), mode);
+
         puti(path_inode);
         return res;
     }

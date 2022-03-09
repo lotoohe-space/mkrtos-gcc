@@ -5,7 +5,7 @@
 #include "include/stddef.h"
 #include "include/sys/types.h"
 
-
+int errno=0;
 int call4(int call_num,int a,int b,int c,int d){
     int out=0;
     __asm__ __volatile__(
@@ -22,6 +22,10 @@ int call4(int call_num,int a,int b,int c,int d){
     :"r"(a),"r"(b),"r"(c),"r"(d),"r"(call_num)
     :
     );
+
+    if(out<0){
+        errno=-out;
+    }
 
     return out;
 }
@@ -44,7 +48,9 @@ int call7(int call_num,int a,int b,int c,int d,int e,int f,int g){
     :"r"(a),"r"(b),"r"(c),"r"(d),"r"(e),"r"(f),"r"(g),"r"(call_num)
     :
     );
-
+    if(out<0){
+        errno=-out;
+    }
     return out;
 }
 #define syscall0(name,res_type)\
@@ -63,9 +69,9 @@ res_type name(type0 a,type1 b){ \
 res_type name(type0 a,type1 b,type2 c){ \
     return (res_type)call4(__NR_##name,(int)a,(int)b,(int)c,0); \
 }
-#define syscall4(name,type0,type1,type2,typ3)\
-int name(type0 a,type1 b,type2 c,typ3 d){ \
-    return call4(__NR_##name,(int)a,(int)b,(int)c,(int)d,); \
+#define syscall4(name,res_type,type0,type1,type2,typ3)\
+res_type name(type0 a,type1 b,type2 c,typ3 d){ \
+    return (res_type)call4(__NR_##name,(int)a,(int)b,(int)c,(int)d); \
 }
 
 #define syscall6(name,res_type,type0,type1,type2,typ3,type4,type5)\
@@ -75,6 +81,18 @@ res_type name(type0 a,type1 b,type2 c,typ3 d,type4 e,type5 f){ \
 
 syscall0(setup,int)
 syscall1(_exit,int,int)
+syscall1(fchdir,int,int)
+syscall1(chdir,int,char*)
+syscall2(mkdir,int ,const char*, int)
+syscall1(umask,int,int)
+syscall1(time,int,void*)
+syscall2(stat,int ,const char*, void*)
+syscall2(lstat,int ,const char*, void*)
+syscall3(readlink,int,const char*,char*const,int)
+syscall3(execve,int,char*,char*const,char*const)
+syscall3(waitpid,int,int,int*,int)
+
+syscall1(uname,int,void*);
 //int _exit(int exit_code){
 //    return exit(exit_code);
 //}
@@ -83,11 +101,17 @@ syscall1(_exit,int,int)
 //}
 syscall0(fork,int)
 syscall3(read,int,int,void*,int)
+int __libc_read(int fd,void* buf,int cn){
+    return read(fd,buf,cn);
+}
 syscall3(write,int,int,void*,int)
 syscall3(lseek,int,int,int,int);
 int __libc_write(int fd,void* buf,int cn){
     return write(fd,buf,cn);
 }
+
+syscall4(mremap,void*,void*,int,int,unsigned long);
+
 
 syscall3(open,int,int,int,int)
 syscall1(close,int,int)

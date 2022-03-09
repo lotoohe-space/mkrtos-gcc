@@ -31,7 +31,7 @@ struct super_block* sp_alloc_sb(struct super_block* sb){
  */
 int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
     bk_no_t new_bk;
-    bk_no_t new_inode;
+    ino_t new_inode;
     int32_t res=0;
     struct sp_super_block* sp_sb;
     struct super_block* sb;
@@ -39,7 +39,7 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
     sb->s_sb_priv_info=OSMalloc(sizeof(struct sp_super_block));
     sp_sb= sb->s_sb_priv_info;
 
-
+    sb->s_dirt=1;
     sb->s_ops=&sp_s_ops;
     sb->s_dev_no=dev_no;
     sp_sb->iNodeCount= sb->s_inode_size=128;
@@ -135,6 +135,7 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
     r_inode->i_type_mode=1<<16;
     //设置sb
     r_inode->i_sb=sb;
+    r_inode->i_dirt=1;
     r_inode->i_no=new_inode;
     //硬链接数等于2
     r_inode->i_hlink=2;
@@ -168,9 +169,11 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
     }
     //写inode
     sp_write_inode(r_inode);
+    //同步所有的块
+    sync_all_bk(sb->s_dev_no);
+
     OSFree(r_inode);
     goto end;
-
     end2:
     sp_free_inode(r_inode);
     OSFree(r_inode);

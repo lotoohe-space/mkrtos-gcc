@@ -122,6 +122,7 @@ typedef enum {
 
 static int loadSecData(ELFExec_t *e, ELFSection_t *s, Elf32_Shdr *h, MemType_t memType) {
   if (!h->sh_size) {
+      s->sh_size=0;
     MSG(" No data for section");
     return 0;
   }
@@ -154,6 +155,8 @@ static int loadSecData(ELFExec_t *e, ELFSection_t *s, Elf32_Shdr *h, MemType_t m
     /* DBG("DATA: "); */
     dumpData(s->data, h->sh_size);
   }
+
+  s->sh_size=  h->sh_size;
   return 0;
 }
 
@@ -636,22 +639,39 @@ int load_elf(const char *path, LOADER_USERDATA_T user_data, ELFExec_t **exec_ptr
     DBG("allocation failed\n\n");
     return -1;
   }
-  clearELFExec(exec);
+    clearELFExec(exec);
+  //used_count 使用指针，这样fork后也能够同步
+  exec->used_count=LOADER_ALIGN_ALLOC(sizeof(uint32_t),4, ELF_SEC_READ | ELF_SEC_WRITE);
+  if(!exec->used_count){
+      LOADER_FREE(exec);
+      DBG("allocation failed\n\n");
+      return -1;
+  }
+
   exec->user_data = user_data;
 //    printk("remain memory size is %d.\r\n",GetFreeMemory(1));
   LOADER_OPEN_FOR_RD(exec->user_data, path);
+  if(exec->user_data.fd<0){
+      LOADER_FREE(exec->used_count);
+      LOADER_FREE(exec);
+      return -1;
+  }
 //    printk("remain memory size is %d.\r\n",GetFreeMemory(1));
   if (initElf(exec) != 0) {
+      LOADER_FREE(exec->used_count);
+      LOADER_FREE(exec);
     DBG("Invalid elf %s\n", path);
     return -1;
   }
   if (!IS_FLAGS_SET(loadSymbols(exec), FoundValid)) {
     freeElf(exec);
+      LOADER_FREE(exec->used_count);
     LOADER_FREE(exec);
     return -2;
   }
   if (relocateSections(exec) != 0) {
     freeElf(exec);
+      LOADER_FREE(exec->used_count);
     LOADER_FREE(exec);
     return -3;
   }
@@ -666,6 +686,7 @@ int unload_elf(ELFExec_t *exec) {
     }
     do_fini(exec);
     freeElf(exec);
+    LOADER_FREE(exec->used_count);
     LOADER_FREE(exec);
     return 0;
 }

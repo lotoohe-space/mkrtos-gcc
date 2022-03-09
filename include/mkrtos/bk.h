@@ -26,6 +26,7 @@ struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write);
 void bk_release(struct bk_cache* bk_tmp);
 struct bk_cache* sync_rand_bk(dev_t dev_no,uint32_t new_bk) ;
 struct bk_cache* sync_bk(dev_t dev_no,uint32_t bk_no);
-
+int32_t sync_all_bk(dev_t dev_no);
+int32_t sync_all_bk_raw(struct bk_cache* bk_cache_ls,struct bk_operations *bk_ops,int cache_len);
 int file_fsync (struct inode *inode, struct file *filp);
 #endif 

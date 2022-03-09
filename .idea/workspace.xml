@@ -11,8 +11,228 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="解决了诸多的bug">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="现在可以通过调用execve执行可重定向的elf文件了，并且还挺稳定">
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/.cvsignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/CHANGES" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/COPYING" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/README.PAM" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/checkpassword-pam.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/checkpassword-pam2.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/checkpassword.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/fgetty.8" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/fgetty.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/fmt.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/fmt_ulong.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/login.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/fgetty-0.7/login2.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fs/sync.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/.cvsignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/CHANGES" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/COPYING" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/TODO" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/__puts.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/allinone.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/arch.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/basename.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/buffer.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/cat.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/chmod.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/chown.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/chroot.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/chrootuid.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/chvt.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/clear.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/cmp.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/contrib/kill.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/date.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/dd.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/df.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/dirname.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/dmesg.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/domainname.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/du.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/echo.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/embfeatures.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/env.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/error.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/false.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/fmt_8long.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/fmt_long.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/fmt_str.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/fmt_ulong.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/fmt_ulongpadright.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/head.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/hostname.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/id.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/insmod.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/install.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/kill.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/ln.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/ls.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/lsmod.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/md5sum.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/mesg.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/mkdir.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/mknod.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/mktemp.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/mount.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/mv.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/mygetgrnam.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/mygetpwnam.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/nice.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/nohup.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/openreadclose.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/parsemode.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/pivot_root.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/printenv.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/pwd.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/renice.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/rm.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/rmdir.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/rmmod.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/scan_int.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/scan_uint.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/sleep.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/sleep2.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/soscp.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/sosln.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/soslns.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/sosmv.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/sosrm.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/split.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/strings.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/sync.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/tail.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/tar.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/tee.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/test.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/time.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/touch.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/tr.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/true.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/truncate.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/tty.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/umount.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/uname.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/uniq.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/uudecode.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/uuencode.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/wc.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/which.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/whoami.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/write.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/write12.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/embutils-0.19/yes.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/.cvsignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/CHANGES" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/COPYING" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/README.PAM" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/checkpassword-pam.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/checkpassword-pam2.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/checkpassword.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/fgetty.8" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/fgetty.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/fmt.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/fmt_ulong.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/login.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/fgetty-0.7/login2.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/alloc.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/atoi.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/errlistu.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/exec_lib.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/exec_lib.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/execvp.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/feof.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/fgetc_unlocked.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/fprintf.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/getenv.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/gmtime.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/gmtime_r.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/htonl.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/htons.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/isleap.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/localtime.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/localtime_r.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/memcmp.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/memset.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/perror.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/qsort.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strchr.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strcmp.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strcpy.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strcspn.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strdup.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strspn.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strtok.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/strtok_r.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/time_table_spd.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/timezone.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/tzfile.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/vfprintf.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/lib/vprintf.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/start.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/start_info.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls/zshell.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/cat.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/clear.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/login.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/ls_.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/mkdir.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/start_info.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/uname.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/zshell.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32F103RCTx_FLASH.ld" beforeDir="false" afterPath="$PROJECT_DIR$/STM32F103RCTx_FLASH.ld" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arch/bsp/delay.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/delay.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/bk_flash.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/bk_flash.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drivers/tty.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/tty.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/elf/elf_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/elf/elf_main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/elf/loader.c" beforeDir="false" afterPath="$PROJECT_DIR$/elf/loader.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/elf/loader.h" beforeDir="false" afterPath="$PROJECT_DIR$/elf/loader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/bk.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/dev.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/dev.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/inode.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/namei.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/open.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/open.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_sync.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_sync.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/stat.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/stat.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/super.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/bk.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/bk.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/stat.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/stat.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ipc/fifo.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/fifo.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/fork.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/fork.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/signal.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/signal.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/sys.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sys.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/wait_pid.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/wait_pid.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dietlibc/include/limits.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/include/limits.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ls/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ls/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ls/arm/syscalls.h" beforeDir="false" afterPath="$PROJECT_DIR$/ls/arm/syscalls.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ls/include/endian.h" beforeDir="false" afterPath="$PROJECT_DIR$/ls/include/endian.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ls/include/limits.h" beforeDir="false" afterPath="$PROJECT_DIR$/ls/include/limits.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ls/include/sys/stat.h" beforeDir="false" afterPath="$PROJECT_DIR$/ls/include/sys/stat.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ls/syscall.c" beforeDir="false" afterPath="$PROJECT_DIR$/ls/syscall.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/fs_init.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/fs_init.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/ls.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/ls.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +302,7 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/shell" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="structure.view.defaults.are.configured" value="true" />
@@ -92,11 +312,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\app" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\app\shell" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\elf" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\arch\bsp" />
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app" />
-      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\rc-master" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Project\MyProject1\mkrtos-gcc\app\shell\GShell" />
@@ -115,6 +335,11 @@
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -215,7 +440,8 @@
       <workItem from="1646665673361" duration="24000" />
       <workItem from="1646666082223" duration="9000" />
       <workItem from="1646715427903" duration="5536000" />
-      <workItem from="1646721614969" duration="7305000" />
+      <workItem from="1646721614969" duration="29803000" />
+      <workItem from="1646796029225" duration="13215000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -476,7 +702,14 @@
       <option name="project" value="LOCAL" />
       <updated>1646729210647</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="现在可以通过调用execve执行可重定向的elf文件了，并且还挺稳定">
+      <created>1646729431177</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1646729431177</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -494,7 +727,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="bk缓存改进，主要在于写缓存时存在不同步的情况" />
     <MESSAGE value="解决了mkdir多进程创建写混乱问题，但是可能回创建一样的文件，这个问题咋解决啊。" />
     <MESSAGE value="完成了大部分的vfs支持的函数，但是没有详细的测试" />
     <MESSAGE value="增加了信号量和mutex，mutex支持优先级继承" />
@@ -519,15 +751,26 @@
     <MESSAGE value="搞定了消息队列，并且测试了下" />
     <MESSAGE value="想了下，mmap映射到文件的实现原理，首先申请size大小的内存，然后假设这片内存就是文件的对应于磁盘的内存，那么直接对这片区域进行读写就行了。然后后台定期去同步这部分的内存区域到文件就行了。这里会发生一个冲突，就是我也可以调用write等函数进行写入，此时就需要一种同步的方法" />
     <MESSAGE value="解决了诸多的bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="解决了诸多的bug" />
+    <MESSAGE value="现在可以通过调用execve执行可重定向的elf文件了，并且还挺稳定" />
+    <option name="LAST_COMMIT_MESSAGE" value="现在可以通过调用execve执行可重定向的elf文件了，并且还挺稳定" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/app/rc-1.7/wait.c</url>
+          <line>75</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/fs/open.c</url>
-          <line>291</line>
-          <option name="timeStamp" value="15" />
+          <line>125</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/app/fgetty-0.7/login.c</url>
+          <line>148</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

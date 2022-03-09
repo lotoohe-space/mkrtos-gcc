@@ -1,0 +1,28 @@
+I received an email and a patch on Sep 15 2002.  I incorporated the
+patch, here is the email.
+
+  From: <kromJx@crosswinds.net>
+  To: <web@fefe.de>
+  Subject: fgetty-0.6: a checkpassword with PAM support
+
+  Hi Felix,
+
+  I put together a checkpassword-pam program. I understand that
+  you don't like PAM, but nevertheless it could be useful to
+  someone else besides me. It is based on your checkpassword program
+  and the routines found in support-pam.c of the checkpassword-pam-0.95
+  program.
+
+  Feel free to edit/distribute/(or even ignore it)   :-)
+
+  Thanks for writing/sharing such great non-bloated tools.
+
+  - J
+
+To build it, say
+
+  $ make checkpassword-pam
+
+Please note that you can't link checkpassword-pam with the diet libc,
+and I could not test the patch because I don't have PAM installed on any
+box.

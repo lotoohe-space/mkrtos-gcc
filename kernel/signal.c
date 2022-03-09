@@ -79,6 +79,43 @@ int32_t sys_ssetmask(int32_t newmask)
     CUR_TASK->sig_mask = newmask & ~(1<<(SIGKILL-1)) & ~(1<<(SIGSTOP-1));
     return old;
 }
+int32_t sys_sigprocmask(int how, const sigset_t  *set, sigset_t  *oldset){
+    unsigned long tmp_mask=0;
+
+    if(oldset){
+        oldset->sig[0]=CUR_TASK->sig_mask;
+        oldset->sig[1]=0;
+    }
+    switch(how){
+        case SIG_BLOCK:
+            //值代表的功能是将newset所指向的信号集中所包含的信号加到当前的信号掩码中，作为新的信号屏蔽字(原有信号屏蔽字 + set屏蔽字)。
+            for(int i=0;i<32;i++){
+                if(((*set).sig[0]>>i)&0x1){
+                    CUR_TASK->sig_mask|=(1<<i);
+                }
+            }
+            break;
+        case SIG_UNBLOCK:
+            //将参数newset所指向的信号集中的信号从当前的信号掩码中移除。
+            for(int i=0;i<32;i++){
+                if(((*set).sig[0]>>i)&0x1){
+                    CUR_TASK->sig_mask&=~(1<<i);
+                }
+            }
+            break;
+        case SIG_SETMASK:
+            //设置当前信号掩码为参数newset所指向的信号集中所包含的信号。
+            for(int i=0;i<32;i++){
+                if(((*set).sig[0]>>i)&0x1){
+                    tmp_mask&=~(1<<i);
+                }
+            }
+            CUR_TASK->sig_mask=tmp_mask;
+            break;
+    }
+
+    return 0;
+}
 extern void rt_sigreturn();
 /**
  * 这里借鉴了linux 0.11
@@ -295,6 +332,9 @@ int32_t sys_sigreturn(void* psp){
 }
 int32_t sys_rt_sigreturn(void* psp){
     return sys_sigreturn(psp);
+}
+int32_t sys_rt_sigprocmask(int how, const sigset_t  *set, sigset_t  *oldset,int nr){
+    return sys_sigprocmask(how,set,oldset);
 }
 //#define __NR_rt_sigreturn		(__NR_SYSCALL_BASE+173)
 //#define __NR_rt_sigaction		(__NR_SYSCALL_BASE+174)

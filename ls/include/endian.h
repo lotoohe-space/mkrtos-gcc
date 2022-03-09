@@ -52,7 +52,7 @@
 #endif
 
 #ifndef __WORDSIZE
-#define __WORDSIZE 32
+#define __WORDSIZE 64
 #endif
 
 #endif

@@ -2,15 +2,17 @@
 
 void SysCtlDelay(u32 ulCount)
 {
-    __asm__ __volatile__(
-    "mov r1,%0\n"
-    "_SysCtlDelay:\n"
-    "subs r1,#1\n"
-    "bne _SysCtlDelay\n"
-    :
-    :"r"(ulCount)
-    :"r1"
-    );
+    int i=12;
+    while(i--);
+//    __asm__ __volatile__(
+//    "mov r1,%0\n"
+//    "_again:\n"
+//    "subs r1,#1\n"
+//    "bne _again\n"
+//    :
+//    :"r"(ulCount)
+//    :
+//    );
 }
 
 void delay_us(u32 nus)

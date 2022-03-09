@@ -65,7 +65,7 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
     ELFExec_t *e;
     loader_env_t loader_env;
     loader_env.env = &env;
-    printk("remain memory size is %d.\r\n",GetFreeMemory(1));
+//    printk("remain memory size is %d.\r\n",GetFreeMemory(1));
     ret=load_elf(filename, loader_env, &e);
     if(ret<0) {
         return -1;
@@ -73,9 +73,10 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
     if (!(e->entry)) {
         MSG("No entry defined.");
         unload_elf(e);
-        puts("Done");
+        printk("Done");
         return -1;
     }
+    (*(e->used_count))=1;
     int argc_len=0;
     if(argv) {
         while (argv[argc_len]) {
@@ -100,9 +101,19 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
     do_remove_sleep_tim(CUR_TASK);
     t=DisCpuInter();
 
+    //execv只是替换程序
+    //替换时，如果引用计数没有到0，需要释放掉data，因为data都是独立的
     if(CUR_TASK->exec) {
-        //卸载之前的elf
-        unload_elf(e);
+       (*(CUR_TASK->exec->used_count))--;
+        if(!(*(CUR_TASK->exec->used_count))) {
+            //卸载之前的elf
+            unload_elf(e);
+        }else {
+            OSFree(CUR_TASK->exec->data.data);
+            OSFree(CUR_TASK->exec->bss.data);
+            //fork后的exec也是新的
+            OSFree(CUR_TASK->exec);
+        }
     }
     CUR_TASK->exec=e;
     //4.重新初始化栈
