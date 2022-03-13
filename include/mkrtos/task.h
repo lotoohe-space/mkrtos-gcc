@@ -125,11 +125,6 @@ typedef struct task{
     */
     struct task *nextAll;
 
-//    //pipe中的next
-//    struct task* pipe_r_next;
-//    //pipe中的next
-//    struct task* pipe_w_next;
-
     /**
      * @brief 删除等待队列
      */

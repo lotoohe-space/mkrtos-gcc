@@ -5,6 +5,9 @@
 #include <type.h>
 #include <fcntl.h>
 #include <string.h>
+#include "stdio.h"
+#include "mkrtos/fs.h"
+
 struct user{
     //用户id
     uint32_t user_id;
@@ -34,12 +37,30 @@ struct user users[MAX_USER_NUM]={
                 .user_group_id=0
         }
 };
-
+//“root:root:0:/bin/zsh”
 //读用户的配置的配置信息
 void read_user_cfg(void){
     //读用户配置文件
     int32_t fd;
     int32_t res;
+    char buf[128];
+    FILE *fp;
+    fp=fopen("/etc/passwd","r");
+    if(fp==NULL) {
+        printk("not find passwd file.\r\n");
+        return;
+    }
+    fgets(buf,sizeof(buf),fp);
+
+    char *tmp=&buf;
+    char*p;
+    p=strsep(&tmp,":");
+    while(p!=NULL){
+        printk("%s\n",p);
+        p=strsep(&tmp,":");
+
+
+    fclose(fp);
 //    fd=open(USER_CFG_PATH,O_RDONLY,0777);
 //    if(fd<0){
 //        goto next;
