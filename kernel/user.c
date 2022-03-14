@@ -7,70 +7,87 @@
 #include <string.h>
 #include "stdio.h"
 #include "mkrtos/fs.h"
+#include "stdlib.h"
+#include "paths.h"
 
+
+#define USER_NAME_MAX_LEN 32
+#define USER_PWD_MAX_LEN 32
+#define USER_EXEC_PATH 32
+#define USER_PATH 32
 struct user{
     //用户id
     uint32_t user_id;
     //用户组id
     uint32_t user_group_id;
     //用户名
-    const char* user_name;
+    char user_name[USER_NAME_MAX_LEN];
     //用户密码
-    const char* pwd;
+    char pwd[USER_PWD_MAX_LEN];
+    char exec_path[USER_EXEC_PATH];
+    char user_path[USER_PATH];
     //是否再活动中
     uint8_t act;
+    //是否有效
+    uint8_t vaild;
 };
 
 //默认的用户配置文件路劲
-#define USER_CFG_PATH "/usr/user.cfg"
-
-#define DEFAULT_USER_NAME "root"
-#define DEFAULT_USER_PWD ""
-
 #define MAX_USER_NUM 6
 struct user users[MAX_USER_NUM]={
-        //没有读取到用户信息时的默认用户配置信息
-        [0]={
-                .pwd=DEFAULT_USER_PWD,
-                .user_name=DEFAULT_USER_NAME,
-                .user_id=0,
-                .user_group_id=0
-        }
+0
 };
-//“root:root:0:/bin/zsh”
+
+//“account:password:UID:GID:GECOS:directory:shell”
 //读用户的配置的配置信息
 void read_user_cfg(void){
+    int read_line=0;
     //读用户配置文件
-    int32_t fd;
-    int32_t res;
     char buf[128];
     FILE *fp;
-    fp=fopen("/etc/passwd","r");
+    fp=fopen(_PATH_PASSWD,"r");
     if(fp==NULL) {
-        printk("not find passwd file.\r\n");
+        fatalk("not find passwd file.\r\n");
         return;
     }
-    fgets(buf,sizeof(buf),fp);
-
-    char *tmp=&buf;
-    char*p;
-    p=strsep(&tmp,":");
-    while(p!=NULL){
-        printk("%s\n",p);
-        p=strsep(&tmp,":");
-
-
+    while(fgets(buf,sizeof(buf),fp)) {
+        int inx = 0;
+        char *tmp = &buf;
+        char *p;
+        p = strsep(&tmp, ":");
+        while (p != NULL) {
+            printk("%s\n", p);
+            switch (inx) {
+                case 0:
+                    strncpy(users[read_line].user_name, p, USER_NAME_MAX_LEN);
+                    break;
+                case 1:
+                    strncpy(users[read_line].pwd, p, USER_NAME_MAX_LEN);
+                    break;
+                case 2:
+                    users[read_line].user_id = atoi(p);
+                    break;
+                case 3:
+                    users[read_line].user_group_id = atoi(p);
+                    break;
+                case 5:
+                    strncpy(users[read_line].user_path, p, USER_PATH);
+                    break;
+                case 6:
+                    strncpy(users[read_line].exec_path, p, USER_NAME_MAX_LEN);
+                    break;
+            }
+            inx++;
+            p = strsep(&tmp, ":");
+        }
+        if(inx==7){
+            users[read_line].vaild=TRUE;
+            read_line++;
+        }else{
+            printk("user file exist a error.\r\n");
+        }
+    }
     fclose(fp);
-//    fd=open(USER_CFG_PATH,O_RDONLY,0777);
-//    if(fd<0){
-//        goto next;
-//    }
-//    res=read(fd,)
-//    goto end;
-    next:
-
-    //读配置文件失败则到这里，使用默认的root用户信息
-    end:
 
     return ;
 }

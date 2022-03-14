@@ -11,16 +11,37 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="基本完成了匿名管道的支持">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="更新readme">
+      <change afterPath="$PROJECT_DIR$/fs/mmap.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/mkrtos/user.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/fgetty-0.7/checkpassword.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/fgetty-0.7/checkpassword.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/fgetty-0.7/login.c" beforeDir="false" afterPath="$PROJECT_DIR$/app/fgetty-0.7/login.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/bk.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/dev.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/dev.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/inode.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_dir.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_dir.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_file.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_file.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/bk.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/bk.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/mem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/mem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/sp.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sp.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kernel/user.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/user.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/fs_init.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/fs_init.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,11 +130,11 @@
       <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\fs" />
+      <recent name="D:\Project\MyProject1\mkrtos-gcc\fs\sampleFS" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\app\shell\GShell" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\elf" />
       <recent name="D:\Project\MyProject1\mkrtos-gcc\ipc" />
-      <recent name="D:\Project\MyProject1\mkrtos-gcc\kernel" />
-      <recent name="C:\Users\Administrator\CLionProjects\mkrtos-gcc\app\bash-2.0" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -127,9 +148,9 @@
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -232,6 +253,8 @@
       <workItem from="1646715427903" duration="5536000" />
       <workItem from="1646721614969" duration="29803000" />
       <workItem from="1646796029225" duration="16525000" />
+      <workItem from="1647232016864" duration="13714000" />
+      <workItem from="1647257015373" duration="1223000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1642570191777</created>
@@ -590,19 +613,14 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/app/rc-1.7/wait.c</url>
-          <line>75</line>
-          <option name="timeStamp" value="24" />
+          <url>file://$PROJECT_DIR$/lib/dietlibc/libcruft/initgroups.c</url>
+          <line>42</line>
+          <option name="timeStamp" value="108" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/fs/open.c</url>
-          <line>125</line>
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/app/fgetty-0.7/login.c</url>
-          <line>148</line>
-          <option name="timeStamp" value="67" />
+          <url>file://$PROJECT_DIR$/app/fgetty-0.7/checkpassword.c</url>
+          <line>77</line>
+          <option name="timeStamp" value="116" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

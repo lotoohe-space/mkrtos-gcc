@@ -134,7 +134,8 @@ struct file_operations {
     int (*readdir) (struct inode *, struct file *, struct dirent *, int);
     int (*select) (struct inode *, struct file *, int, uint32_t *);
     int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);
-    int (*mmap) (struct inode *, struct file *, unsigned long, size_t, int, unsigned long);
+    int (*mmap) (struct inode * inode, struct file * fp, unsigned long addr, size_t len , int mask, unsigned long off);
+    int (*mumap)(struct inode * inode,void * start ,size_t len);
     int (*open) (struct inode * inode, struct file * fp);
     void (*release) (struct inode * ino, struct file * f);
     int (*fsync) (struct inode *, struct file *);
@@ -145,7 +146,6 @@ struct file_operations {
 struct inode_operations {
     struct file_operations * default_file_ops;
     int (*create) (struct inode *dir,const char *name,int len,int mode,struct inode **result);
-    //获得制定
     int (*lookup) (struct inode * dir,const char * file_name,int len,struct inode ** ret_inode);
     int (*link) (struct inode *,struct inode *,const char *,int);
     int (*unlink) (struct inode *,const char *,int);
@@ -267,9 +267,10 @@ struct bk_cache {
     uint32_t bk_size;
     //缓存擦除不需要缓存，则为Null
     uint8_t* cache;
+    uint8_t* oldcache;
     Atomic_t b_lock;
     struct wait_queue* b_wait;
-    //擦除标记 1bit写入 2bit读取 7bit被使用
+    //擦除标记 1bit写入 2bit读取 6bit 永久锁住，除非被使用者释放掉 7bit被使用
     uint8_t flag;
 };
 
@@ -290,6 +291,10 @@ int32_t _getname(const char* file_name,uint32_t len,char** to);
 int32_t getname(const char* file_name, char** to);
 void putname(const char* file_name);
 char* path_name(char* file_path);
+
+//mmap.c
+int general_mmap(struct inode * inode, struct file * fp, void* addr, size_t len , int mask, unsigned long off);
+int general_mumap(struct inode * inode,void * start ,size_t len);
 
 /**
  * @breif: 不同编译器Setion的定义

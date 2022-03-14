@@ -41,6 +41,7 @@ static struct file_operations sp_dir_operations = {
         NULL,			/* select - default */
         NULL,			/* ioctl - default */
         NULL,			/* mmap */
+        NULL,
         NULL,			/* no special open code */
         NULL,			/* no special release code */
         file_fsync		/* default fsync */

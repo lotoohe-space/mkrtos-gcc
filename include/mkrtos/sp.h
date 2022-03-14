@@ -156,4 +156,6 @@ void sp_truncate(struct inode* inode,int32_t len);
 
 //sp_link.c
 extern struct inode_operations sp_symlink_inode_operations;
+
+
 #endif //UNTITLED1_SP_H

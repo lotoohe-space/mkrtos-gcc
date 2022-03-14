@@ -31,7 +31,13 @@ void fs_init(void){
     int res;
     res=open(_PATH_PASSWD,O_RDWR|O_CREAT,0777);
     if(res>=0){
-        static const char* tmp="root:root:0:0:root:/root:/bin/zsh";
+        static const char* tmp="root:root:0:0:null:/root:/bin/zsh";
+        write(res,tmp,strlen(tmp));
+        close(res);
+    }
+    res=open(_PATH_GROUP,O_RDWR|O_CREAT,0777);
+    if(res>=0){
+        static const char* tmp="root:x:0:root";
         write(res,tmp,strlen(tmp));
         close(res);
     }

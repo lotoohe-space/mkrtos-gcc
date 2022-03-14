@@ -83,7 +83,7 @@ void DoExit(int32_t exitCode){
 void TaskToEnd(int32_t exitCode){
 //    printk("exit %d\n",exitCode);
     /*这里需要通过系统调用，这个函数是用户层调用的*/
-    exit(exitCode);
+    _exit(exitCode);
     /*for(;;);*/
 }
 

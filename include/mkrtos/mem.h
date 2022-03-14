@@ -49,7 +49,9 @@
 struct mem_struct {
     struct mem_struct* next;
     void *mem_start;
+    struct inode * inode;//如果映射到了文件，这项将会有效，否则该项为NULL
     int32_t length;
+    int32_t ofst;
 };
 /**
 * @breif 内存类型

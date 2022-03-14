@@ -295,14 +295,16 @@ void OSFree(void* mem) {
 	RestoreCpuInter(st);
 }
 
-static int32_t mem_add(void *mem,int32_t lenght){
+static int32_t mem_add(void *mem,int32_t lenght,struct inode *inode,int ofst){
     struct mem_struct* tmp;
     tmp= OSMalloc(sizeof(struct mem_struct));
     if(tmp==NULL){
         return -1;
     }
     tmp->length=lenght;
+    tmp->ofst=ofst;
     tmp->mem_start=mem;
+    tmp->inode=inode;
     tmp->next=NULL;
     uint32_t  t;
     t=DisCpuInter();
@@ -315,7 +317,7 @@ static int32_t mem_add(void *mem,int32_t lenght){
     RestoreCpuInter(t);
     return 0;
 }
-static void mem_remove(void *mem){
+static void mem_remove(void *mem,int length){
     struct mem_struct *tmp;
     tmp=CUR_TASK->mems;
     struct mem_struct *prev=NULL;
@@ -338,49 +340,163 @@ static void mem_remove(void *mem){
     }
     RestoreCpuInter(t);
 }
+struct mem_struct * mem_get(void *start){
+    struct mem_struct *tmp;
+    tmp=CUR_TASK->mems;
+    uint32_t t;
+    t=DisCpuInter();
+    while(tmp){
+        if(tmp->mem_start ==start) {
+            RestoreCpuInter(t);
+            return tmp;
+        }
+        tmp=tmp->next;
+    }
+    RestoreCpuInter(t);
+    return NULL;
+}
 /**
  * 清楚进程占用的内存，用戶的exit函數中調用
  */
 void mem_clear(void){
     uint32_t t;
     struct mem_struct **tmp;
-    t=DisCpuInter();
+   // t=DisCpuInter();
     tmp=&CUR_TASK->mems;
     while(*tmp){
         struct mem_struct *next;
         next=(*tmp)->next;
-        OSFree((*tmp)->mem_start);
-        OSFree((*tmp));
+
+        struct mem_struct *rel_mem;
+
+        rel_mem=(*tmp);
+        if(rel_mem->inode){
+            if(rel_mem->inode->i_ops
+               &&rel_mem->inode->i_ops->default_file_ops->mumap
+                    ){
+                rel_mem->inode->i_ops->default_file_ops->mumap(rel_mem->inode,rel_mem->mem_start,rel_mem->length);
+                atomic_dec(&rel_mem->inode->i_used_count);
+            }
+        }
+        OSFree(rel_mem->mem_start);
+        OSFree(rel_mem);
         *tmp=next;
     }
     CUR_TASK->mems=NULL;
-    RestoreCpuInter(t);
+  //  RestoreCpuInter(t);
 }
 void* sys_mmap(void *start, size_t length, int prot, int flags,int fd, off_t offset){
-    if(fd!=-1
-        ||start
-    ){
+    struct inode *inode=NULL;
+    int alloc_len=length;
+    if(start){
         return -1;
     }
-    void* res_mem = OSMalloc(length);
+    if(fd!=-1) {
+        if (fd < 0 || fd >= NR_FILE) {
+            printk("%s fp.\n", __FUNCTION__);
+            return -EBADF;
+        }
+        if (CUR_TASK->files[fd].used == 0) {
+            return -EINVAL;
+        }
+        inode = CUR_TASK->files[fd].f_inode;
+        struct super_block  *sb;
+        sb= CUR_TASK->files[fd].f_inode->i_sb;
+        //计算需要分配的长度
+        alloc_len=(
+                length/sb->s_bk_size+((length%sb->s_bk_size)?1:0)
+                + ((offset%sb->s_bk_size)?1:0)//offset如果没有刚好对齐bksize，则需要多加一块
+                )*sb->s_bk_size;
+    }
+
+    void* res_mem = OSMalloc(alloc_len);
     if(!res_mem){
         return -1;
     }
-//    printk("mmap %x start:%x length:%d prot:%d flags:%x fd:%d ost:%d\r\n",res_mem,start,length,prot,flags,fd,offset);
-    if(mem_add(res_mem,length)<0){
+    if(mem_add(res_mem,length,inode,offset)<0){
         OSFree(res_mem);
         return -ENOMEM;
     }
+//    printk("mmap %x start:%x length:%d prot:%d flags:%x fd:%d ost:%d\r\n",res_mem,start,length,prot,flags,fd,offset);
+    if(fd>=0) {
+        if (inode->i_ops &&
+            inode->i_ops->default_file_ops->mmap
+                ) {
+            int res = inode->i_ops->default_file_ops->mmap(inode, CUR_TASK->files + fd, res_mem, alloc_len, 0, offset);
+            if (res < 0) {
+                mem_remove(res_mem,length);
+                return res;
+            }
+            //mmap一次，引用计数器增加一次
+            //用户在mmap后，就可以调用关闭这个文件了
+            atomic_inc(&inode->i_used_count);
+        }
+
+    }
+
     return res_mem;
 }
 void sys_munmap(void *start, size_t length){
-    mem_remove(start);
-//    printk("munamp start:%x length:%d\r\n",start,length);
+    struct mem_struct *mem;
+    mem=mem_get(start);
+    if(!mem){
+        return ;
+    }
+    if(mem->inode){
+        if(mem->inode->i_ops
+        &&mem->inode->i_ops->default_file_ops->mumap
+        ){
+            mem->inode->i_ops->default_file_ops->mumap(mem->inode,start,length);
+           puti(mem->inode);
+        }
+    }
+    mem_remove(start,length);
 
-    return OSFree(start);
+    OSFree(start);
 }
 void *sys_mremap(void *__addr, size_t __old_len, size_t __new_len,
                  unsigned long __may_move){
-    mem_remove(__addr);
-    return OSRealloc(__addr,__new_len);
+    struct mem_struct *mem;
+    mem=mem_get(__addr);
+    if(!mem){
+        return NULL;
+    }
+    if(mem->inode){
+        void* newmem= OSMalloc(__new_len);
+        if(newmem==NULL){
+            return NULL;
+        }
+        //先释放文件映射
+        if(mem->inode->i_ops
+           &&mem->inode->i_ops->default_file_ops->mumap
+                ){
+            mem->inode->i_ops->default_file_ops->mumap(mem->inode,__addr,mem->length);
+        }else{
+            OSFree(newmem);
+            return NULL;
+        }
+
+        //重新映射
+        if (mem->inode->i_ops &&
+                mem->inode->i_ops->default_file_ops->mmap
+                ) {
+            int res = mem->inode->i_ops->default_file_ops->mmap(mem->inode, NULL, newmem, __new_len, 0, mem->ofst);
+            if (res < 0) {
+                OSFree(newmem);
+                return NULL;
+            }
+        }
+        OSFree(mem->mem_start);
+        mem->mem_start=newmem;
+        mem->length=__new_len;
+        return newmem;
+    }else{
+        //不需要重新映射文件
+//        mem_remove(__addr,__old_len);
+        void* newmem= OSRealloc(__addr,__new_len);
+        if(newmem!=NULL){
+            mem->length=__new_len;
+        }
+        return newmem;
+    }
 }

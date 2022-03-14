@@ -127,8 +127,8 @@ file(GLOB_RECURSE SOURCES
         #        "lib/dietlibc/libpthread/*.*"
         #        "lib/config/arm/*.*"
 
-#        app/fgetty-0.7/checkpassword.c
-#        app/fgetty-0.7/login.c
+        app/fgetty-0.7/checkpassword.c
+        app/fgetty-0.7/login.c
 #        "lib/soft-fp/*.*"
 
 

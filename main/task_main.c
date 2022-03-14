@@ -19,6 +19,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "mkrtos/user.h"
+#include "paths.h"
+
 int32_t sys_open(const char* path,int32_t flags,int32_t mode);
 int sys_write (int fd,uint8_t *buf,uint32_t len);
 int sys_readdir(unsigned int fd, struct dirent * dirent, uint32_t count);
@@ -615,6 +618,8 @@ void start_task(void* arg0,void*arg1){
 #if 0
     fs_init();
 #endif
+
+    read_user_cfg();
     devs_init();
     //打开三个串口输出
     open("/dev/tty", O_RDWR, 0777);
@@ -624,6 +629,8 @@ void start_task(void* arg0,void*arg1){
     printf("to init task.\r\n");
     printf("%d remain memory is %d.\n",getpid(),GetFreeMemory(1));
 #if 0
+    extern void fs_w_zshell(void);
+    fs_w_zshell();
     extern void fs_w_ls(void);
     fs_w_ls();
     extern void fs_w_cat(void);
@@ -634,13 +641,12 @@ void start_task(void* arg0,void*arg1){
     fs_w_mkdir();
     extern void fs_w_uname(void);
     fs_w_uname();
-    extern void fs_w_zshell(void);
-    fs_w_zshell();
+
     extern void fs_w_ls_(void);
     fs_w_ls_();
     extern void fs_w_start_info(void);
     fs_w_start_info();
-    sync();
+   sync();
 #endif
 //    fsync()
 //    int *ptr=malloc(100);
@@ -649,9 +655,10 @@ void start_task(void* arg0,void*arg1){
     if(ret<0){
         printf("init create error.\n");
     }else if(ret==0){
+        putenv("SHELL=/bin/zsh");
 //        extern int login_main(int argc,char *argv[]) ;
 //        static const char* argv[]={
-//                "zz"
+//                "root"
 //                ,NULL
 //        };
 //        login_main(1,argv);

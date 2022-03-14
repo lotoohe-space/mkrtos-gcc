@@ -9,7 +9,7 @@
 #include <string.h>
 
 //系统内支持的最大inode数量
-#define INODE_NUM 16
+#define INODE_NUM 22
 struct inode inode_ls[INODE_NUM];
 
 //空闲的inode数量

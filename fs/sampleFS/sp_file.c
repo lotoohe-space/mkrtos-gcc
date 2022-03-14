@@ -12,7 +12,8 @@ static struct file_operations sp_file_operations = {
         NULL,		/* readdir */
         NULL,			/* select - default */
         NULL,			/* ioctl - default */
-        NULL,			/* mmap */
+        general_mmap,			/* mmap */
+        general_mumap,/*mumap*/
         NULL,			/* no special open code */
         NULL,			/* no special release code */
         sp_sync_file		/* default fsync */

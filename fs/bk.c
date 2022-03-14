@@ -15,7 +15,8 @@
 #define GET_BIT(a,b) (((a)>>(b))&0x1)
 #define ABS(a) ((a)<0?-(a):(a))
 
-
+static struct bk_cache* find_bk_cache(dev_t dev_no,uint32_t bk_no);
+static struct bk_cache* sync_one_bk(dev_t dev_no);
 /**
  * 块缓存初始化
  * @param p_bk_ch_ls
@@ -57,16 +58,166 @@ int32_t bk_cache_destory(struct bk_cache* p_bk_ch_ls,uint32_t cache_len){
     OSFree(p_bk_ch_ls);
     return 0;
 }
+/**
+ * 占用指定bk，不会自动的解除占用，除非进程自己释放或者进程关闭
+ * @param dev_no
+ * @return
+ */
+struct bk_cache* occ_bk(dev_t dev_no,bk_no_t bk_no,void* addr){
+    struct bk_cache* bk_ch;
+    struct bk_operations *bk_ops;
+    if(!addr){
+        return NULL;
+    }
+    bk_ops=get_bk_ops(dev_no);
+    again:
+    bk_ch=find_bk_cache(dev_no,bk_no);
+    if(bk_ch==NULL){
+        //没有则释放一个
+        bk_ch=sync_rand_bk(dev_no);
+        if(bk_ch==NULL) {
+            return NULL;
+        }
+        goto again;
+    }
+    lock_bk(bk_ch);
+    //释放之前的缓存，并使用addr提供的缓存地址，这样能够保证对用户的缓存连续性
+    bk_ch->oldcache=bk_ch->cache;
+    bk_ch->cache=addr;
+    if (!GET_BIT(bk_ch->flag, 2)) {
+        if (bk_ops->read_bk(bk_no, bk_ch->cache) < 0) {
+        }
+        SET_BIT(bk_ch->flag, 2);
+    }
+//    if(may_write){
+        SET_BIT(bk_ch->flag,1);
+//    }
+    SET_BIT(bk_ch->flag,6);
+    unlock_bk(bk_ch);
+    return bk_ch;
+}
+int32_t rel_bk1(dev_t dev_no,void* addr){
+    struct bk_cache* bk_cache_ls;
+    struct bk_operations *bk_ops;
+    int cache_len;
+    int i;
+    bk_ops=get_bk_ops(dev_no);
+    if(bk_ops==NULL){
+        fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+    }
+    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
+
+    lock_bk_ls(dev_no);
+    for(i=0;i<cache_len;i++){
+        lock_bk(bk_cache_ls+i);
+        if(
+                bk_cache_ls[i].cache==addr
+                &&GET_BIT(bk_cache_ls[i].flag,6)
+                ) {
+            if (GET_BIT(bk_cache_ls[i].flag, 1)) {
+                //先擦除
+                if(bk_ops->erase_bk(bk_cache_ls[i].bk_no)<0){
+                    fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+                }
+                if(bk_ops->write_bk(bk_cache_ls[i].bk_no,bk_cache_ls[i].cache)<0){
+                    fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+                }
+                CLR_BIT(bk_cache_ls[i].flag,0);
+                CLR_BIT(bk_cache_ls[i].flag,1);
+            }
+            bk_cache_ls[i].flag = 0;
+            bk_cache_ls[i].cache = bk_cache_ls[i].oldcache;
+            bk_cache_ls[i].oldcache = NULL;
+
+            unlock_bk(bk_cache_ls + i);
+            unlock_bk_ls(dev_no);
+            return 0;
+        }
+    }
+    unlock_bk_ls(dev_no);
+    return 0;
+}
+int32_t rel_bk(dev_t dev_no,bk_no_t bk_no){
+    struct bk_cache* bk_cache_ls;
+    int cache_len;
+    int i;
+
+    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
+
+    lock_bk_ls(dev_no);
+    for(i=0;i<cache_len;i++) {
+        lock_bk(bk_cache_ls + i);
+        if (
+                bk_cache_ls[i].bk_no == bk_no
+                && GET_BIT(bk_cache_ls[i].flag, 6)
+                ) {
 
 
+            bk_cache_ls[i].flag = 0;
+            bk_cache_ls[i].cache = bk_cache_ls[i].oldcache;
+            bk_cache_ls[i].oldcache = NULL;
+            unlock_bk(bk_cache_ls + i);
+            unlock_bk_ls(dev_no);
+            return 0;
+        }
+        unlock_bk(bk_cache_ls + i);
+    }
+    unlock_bk_ls(dev_no);
+    return 0;
+}
 
+static struct bk_cache* sync_one_bk(dev_t dev_no){
+    struct bk_operations *bk_ops;
+    struct bk_cache *sync_cache;
+    uint32_t cache_len;
+    struct bk_cache* bk_cache_ls;
+
+    bk_ops=get_bk_ops(dev_no);
+    if(bk_ops==NULL){
+        fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+    }
+    bk_cache_ls = get_bk_dev_cache(dev_no,&cache_len);
+
+    lock_bk_ls(dev_no);
+    int i;
+    for(i=0;i<cache_len;i++){
+        if(GET_BIT(bk_cache_ls[i].flag,6)){
+            continue;
+        }
+    }
+    if(i==cache_len){
+        unlock_bk_ls(dev_no);
+        return NULL;
+    }
+    sync_cache=bk_cache_ls+i;
+    lock_bk(sync_cache);
+    if(GET_BIT(bk_cache_ls[i].flag,6)) {
+        goto end;
+    }
+    if (GET_BIT(sync_cache->flag, 1)) {
+        //先擦除
+        if(bk_ops->erase_bk(sync_cache->bk_no)<0){
+            fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+        }
+        if(bk_ops->write_bk(sync_cache->bk_no,sync_cache->cache)<0){
+            fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
+        }
+        CLR_BIT(sync_cache->flag,0);
+        CLR_BIT(sync_cache->flag,1);
+    }
+    sync_cache->flag=0;
+    end:
+    unlock_bk(sync_cache);
+    unlock_bk_ls(dev_no);
+    return sync_cache;
+}
 /**
  * 随机同步一个块
  * @param dev_no
  * @param bk_ch
  * @return
  */
-struct bk_cache* sync_rand_bk(dev_t dev_no,uint32_t new_bk) {
+struct bk_cache* sync_rand_bk(dev_t dev_no) {
     struct bk_operations *bk_ops;
     struct bk_cache *sync_cache;
     uint32_t cache_len;
@@ -91,16 +242,17 @@ struct bk_cache* sync_rand_bk(dev_t dev_no,uint32_t new_bk) {
     if (GET_BIT(sync_cache->flag, 1)) {
         //先擦除
         if(bk_ops->erase_bk(sync_cache->bk_no)<0){
-            sync_cache->flag=0;
             fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
         }
         if(bk_ops->write_bk(sync_cache->bk_no,sync_cache->cache)<0){
-            sync_cache->flag=0;
             fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
         }
+        CLR_BIT(sync_cache->flag,0);
+        CLR_BIT(sync_cache->flag,1);
     }
-//    sync_cache->bk_no=new_bk;
-    sync_cache->flag=0x0;
+    if(!GET_BIT(sync_cache->flag,6)) {
+        sync_cache->flag = 0x0;
+    }
     unlock_bk(sync_cache);
     unlock_bk_ls(dev_no);
     return sync_cache;
@@ -128,15 +280,19 @@ int32_t sync_all_bk(dev_t dev_no){
         if (GET_BIT(bk_cache_ls[i].flag, 1)) {
             //先擦除
             if(bk_ops->erase_bk(bk_cache_ls[i].bk_no)<0){
-                bk_cache_ls[i].flag=0;
+               // bk_cache_ls[i].flag=0;
                 fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
             if(bk_ops->write_bk(bk_cache_ls[i].bk_no,bk_cache_ls[i].cache)<0){
-                bk_cache_ls[i].flag=0;
+              //  bk_cache_ls[i].flag=0;
                 fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
+            CLR_BIT(bk_cache_ls[i].flag,0);
+            CLR_BIT(bk_cache_ls[i].flag,1);
         }
-        bk_cache_ls[i].flag=0;
+        if(!GET_BIT(bk_cache_ls[i].flag,6)) {
+            bk_cache_ls[i].flag=0;
+        }
         unlock_bk(bk_cache_ls+i);
     }
     unlock_bk_ls(dev_no);
@@ -152,21 +308,25 @@ int32_t sync_all_bk_raw(struct bk_cache* bk_cache_ls,struct bk_operations *bk_op
         if (GET_BIT(bk_cache_ls[i].flag, 1)) {
             //先擦除
             if(bk_ops->erase_bk(bk_cache_ls[i].bk_no)<0){
-                bk_cache_ls[i].flag=0;
+               // bk_cache_ls[i].flag=0;
                 fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
             if(bk_ops->write_bk(bk_cache_ls[i].bk_no,bk_cache_ls[i].cache)<0){
-                bk_cache_ls[i].flag=0;
+              //  bk_cache_ls[i].flag=0;
                 fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
+            CLR_BIT(bk_cache_ls[i].flag,0);
+            CLR_BIT(bk_cache_ls[i].flag,1);
         }
-        bk_cache_ls[i].flag=0;
+        if(!GET_BIT(bk_cache_ls[i].flag,6)) {
+            bk_cache_ls[i].flag=0;
+        }
         unlock_bk(bk_cache_ls+i);
     }
     return 0;
 }
 /**
- * 在表中找到指定的cache
+ * 在表中找到指定的cache，如果没有则返回一个空的，如果没有空的则返回NULL
  * @param bk_cache_ls
  * @param bk_no
  * @param cache_len
@@ -190,17 +350,14 @@ static struct bk_cache* find_bk_cache(dev_t dev_no,uint32_t bk_no){
         if(bk_cache_ls[i].bk_no!=bk_no){
             continue;
         }
-//        lock_bk(&bk_cache_ls[i]);
-//        bk_cache_ls[i].flag=0x80;
+
         unlock_bk_ls(dev_no);
        return &bk_cache_ls[i];
     }
     if(prev_i!=-1){
-//        lock_bk(&bk_cache_ls[prev_i]);
         //不等于-1则说明没有，而且有空的块
         bk_cache_ls[prev_i].flag=0x80;
         bk_cache_ls[prev_i].bk_no=bk_no;
-//        bk_cache_ls[prev_i].used_count++;
         unlock_bk_ls(dev_no);
 
         return &(bk_cache_ls[prev_i]);
@@ -239,15 +396,19 @@ struct bk_cache* sync_bk(dev_t dev_no,uint32_t bk_no){
         if (GET_BIT(sync_cache->flag, 1)) {
             //先擦除
             if(bk_ops->erase_bk(sync_cache->bk_no)<0){
-                sync_cache->flag=0;
+               // sync_cache->flag=0;
                 fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
             if(bk_ops->write_bk(sync_cache->bk_no,sync_cache->cache)<0){
-                sync_cache->flag=0;
+              //  sync_cache->flag=0;
                 fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
             }
+            CLR_BIT(bk_cache_ls[i].flag,0);
+            CLR_BIT(bk_cache_ls[i].flag,1);
         }
-        sync_cache->flag=0x0;
+        if(!GET_BIT( sync_cache->flag,6)) {
+            sync_cache->flag=0x0;
+        }
         unlock_bk(sync_cache);
     }
 
@@ -281,7 +442,7 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_rand_bk(dev_no,bk_no);
+        bk_tmp=sync_rand_bk(dev_no);
         goto again;
     }
     lock_bk(bk_tmp);
@@ -344,7 +505,7 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_rand_bk(dev_no,bk_no);
+        bk_tmp=sync_rand_bk(dev_no);
         goto again;
 
     }
@@ -393,7 +554,7 @@ struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
     bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){
         //没有则释放一个
-        bk_tmp=sync_rand_bk(dev_no,bk_no);
+        bk_tmp=sync_rand_bk(dev_no);
         goto again;
 
     }

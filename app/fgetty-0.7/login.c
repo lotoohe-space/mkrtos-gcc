@@ -37,12 +37,12 @@
 #include <signal.h>
 #include <write12.h>
 
-void die(const char *message) {
+static void die(const char *message) {
   __write2(message); __write2("\n");
   exit(1);
 }
 
-struct termios oldtermios;
+static struct termios oldtermios;
 
 static void echo_off() {
   struct termios foo;

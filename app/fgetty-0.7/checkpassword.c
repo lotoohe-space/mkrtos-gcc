@@ -50,18 +50,19 @@ int check_pwd_main(int argc,char* argv[]) {
     if ((spw=getspnam(login)))
       passwd=spw->sp_pwdp;
     ptr=login+strlen(login)+1;
-    if (!*passwd || !strcmp(crypt(ptr,passwd),passwd)) {
+    if (!*passwd || !strcmp(ptr,passwd)) {//去掉了加密
+//    if (!*passwd || !strcmp(crypt(ptr,passwd),passwd)) {
       char **env,**ep;
       char buf[100];
       for (len=0; environ[len]; ++len) ;
       env=malloc((len+4)*sizeof(char*));
       ep=env;
       for (len=0; environ[len]; ++len) {
-	if (!strncmp(environ[len],"USER=",5)) continue;
-	if (!strncmp(environ[len],"HOME=",5)) continue;
-	if (!strncmp(environ[len],"SHELL=",6)) continue;
-	if (!strncmp(environ[len],"UID=",4)) continue;
-	*ep=environ[len]; ++ep;
+        if (!strncmp(environ[len],"USER=",5)) continue;
+        if (!strncmp(environ[len],"HOME=",5)) continue;
+        if (!strncmp(environ[len],"SHELL=",6)) continue;
+        if (!strncmp(environ[len],"UID=",4)) continue;
+        *ep=environ[len]; ++ep;
       }
       *ep=malloc(strlen(pw->pw_shell)+7); strcat(strcpy(*ep,"SHELL="),pw->pw_shell); ++ep;
       *ep=malloc(strlen(login)+6); strcat(strcpy(*ep,"USER="),login); ++ep;
@@ -73,7 +74,8 @@ int check_pwd_main(int argc,char* argv[]) {
 
       ptr+=strlen(ptr)+1;	/* skip password */
 
-      if (initgroups(pw->pw_name,pw->pw_gid)==-1) return 1;
+//      if (initgroups(pw->pw_name,pw->pw_gid)==-1) return 1;
+        initgroups(pw->pw_name,pw->pw_gid);
 /*      if (setgroups(1,&pw->pw_gid)==-1) return 1; */
       if (setgid(pw->pw_gid)==-1) return 1;
       if (ptr) {
