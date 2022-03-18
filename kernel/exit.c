@@ -63,10 +63,13 @@ void DoExit(int32_t exitCode){
         if(!((*CUR_TASK->exec->used_count))) {
             unload_elf(CUR_TASK->exec);
         }else{
-            OSFree(CUR_TASK->exec->data.data);
-            OSFree(CUR_TASK->exec->bss.data);
-            //fork后的exec也是新的
-            OSFree(CUR_TASK->exec);
+            if(!CUR_TASK->exec->clone_vm) {
+                //没有与父进程使用相同的内存空间，则需要释放这个空间
+                OSFree(CUR_TASK->exec->data.data);
+                OSFree(CUR_TASK->exec->bss.data);
+                //fork后的exec也是新的
+                OSFree(CUR_TASK->exec);
+            }
         }
         CUR_TASK->exec=NULL;
     }

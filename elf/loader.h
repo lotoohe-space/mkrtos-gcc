@@ -71,8 +71,9 @@ typedef struct ELFExec {
     ELFSection_t sdram_bss;//fork时需要被复制
 
     unsigned int fini_array_size;
-
     uint32_t* used_count;//使用计数
+    uint8_t clone_vm;//子进程与父进程是否运行于相同的内存空间
+
 } ELFExec_t;
 
 

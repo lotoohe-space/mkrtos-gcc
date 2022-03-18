@@ -268,7 +268,6 @@ int32_t add_task(struct task* pTaskBlock){
 */
 void tasks_check(void){
     struct task* ptb;
-    /*关所有中断*/
     sysTasks.sysRunCount++;
     //检测所有的定时器信号
     ptb=sysTasks.allTaskList;

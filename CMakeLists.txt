@@ -73,6 +73,10 @@ include_directories(
         lib/dietlibc
         elf
         app/shell/include
+
+        net/lwip-2.1.2
+        net/lwip-2.1.2/arch
+        net/lwip-2.1.2/src/include
 #        lib/mpfr-master/src/arm
 #        lib/mpfr-master/src/
 #        lib/config/arm
@@ -126,6 +130,16 @@ file(GLOB_RECURSE SOURCES
         #        "lib/dietlibc/libdl/*.*"
         #        "lib/dietlibc/libpthread/*.*"
         #        "lib/config/arm/*.*"
+
+
+        "net/lwip-2.1.2/arch/*.*"
+        "net/lwip-2.1.2/src/api/*.*"
+        "net/lwip-2.1.2/src/core/*.*"
+        "net/lwip-2.1.2/src/core/ipv4/*.*"
+        "net/lwip-2.1.2/src/netif/ethernet.c"
+        "net/lwip-2.1.2/src/netif/ethernetif.c"
+
+
 
         app/fgetty-0.7/checkpassword.c
         app/fgetty-0.7/login.c
