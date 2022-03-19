@@ -39,6 +39,7 @@
 #include "app/sysent.h"
 #include "mkrtos/fs.h"
 #include "mkrtos/mem.h"
+#include "sched.h"
 #include <mkrtos/task.h>
 #include <arch/arch.h>
 
@@ -109,13 +110,15 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
             //卸载之前的elf
             unload_elf(e);
         }else {
-            if(!CUR_TASK->exec->clone_vm) {
-                //没有与父进程使用相同的内存空间，则需要释放这个空间
-                OSFree(CUR_TASK->exec->data.data);
-                OSFree(CUR_TASK->exec->bss.data);
+//            if(!CUR_TASK->exec->clone_vm) {
+                if(CUR_TASK->clone_flag&CLONE_VM) {
+                    //没有与父进程使用相同的内存空间，则需要释放这个空间
+                    OSFree(CUR_TASK->exec->data.data);
+                    OSFree(CUR_TASK->exec->bss.data);
+                }
                 //fork后的exec也是新的
                 OSFree(CUR_TASK->exec);
-            }
+//            }
         }
     }
     CUR_TASK->exec=e;

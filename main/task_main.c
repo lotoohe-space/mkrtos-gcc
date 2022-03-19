@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include "mkrtos/user.h"
 #include "paths.h"
+#include "sched.h"
 
 int32_t sys_open(const char* path,int32_t flags,int32_t mode);
 int sys_write (int fd,uint8_t *buf,uint32_t len);
@@ -611,11 +612,20 @@ void user_task(void* arg0,void *arg1){
     }
 #endif
 }
+
+int thread_fn(void*arg){
+
+  //  while(1){
+        sleep(1);
+        printf("thread test\n");
+   // }
+    return 0;
+}
 //启动进程
 void start_task(void* arg0,void*arg1){
     extern void fs_init(void);
     root_mount(CUR_TASK);
-#if 0
+#if 1
     fs_init();
 #endif
 
@@ -646,11 +656,13 @@ void start_task(void* arg0,void*arg1){
     fs_w_ls_();
     extern void fs_w_start_info(void);
     fs_w_start_info();
-   sync();
+    sync();
 #endif
 //    fsync()
 //    int *ptr=malloc(100);
 //    free(ptr);
+    static int thread_test[512];
+    clone(thread_fn,&thread_test[512-1],CLONE_VM|CLONE_FILES,NULL);
     int ret=fork();
     if(ret<0){
         printf("init create error.\n");
@@ -723,7 +735,7 @@ void KernelTaskInit(void){
 //    longjmp(buf,1);
     //初始化默认的磁盘设备
     bk_flash_init();
-#if 0
+#if 1
     //在这里格式化文件系统
     if(sp_mkfs(root_dev_no,30)<0){
         fatalk("根文件系统创建失败！\r\n");
@@ -740,7 +752,7 @@ void KernelTaskInit(void){
     tcp.kernelStackSize=1024;
     tcp.taskName="init";
 
-    pid=task_create(&tcp,NULL);
+    pid=task_create(&tcp);
     if(pid<0){
         while(1);
     }

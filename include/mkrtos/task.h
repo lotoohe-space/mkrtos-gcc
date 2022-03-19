@@ -108,129 +108,49 @@ struct tty_struct;
 * @brief	任务控制块
 */
 typedef struct task{
-    /**
-    * @brief 父节点
-    */
-    struct _SysTaskBaseLinks *parent;
-    /**
-     * @brief 父进程
-     */
-    struct task *parentTask;
-    /**
-    * @brief 同优先级链表
-    */
-    struct task *next;
-    /**
-    * @brief 所有任务的链表
-    */
-    struct task *nextAll;
+    struct _SysTaskBaseLinks *parent;//父节点
+    struct task *parentTask;//父进程
+    struct task *next;//同优先级链表
+    struct task *nextAll;//所有任务的链表
+    struct task *del_wait;//删除等待队列
+    struct wait_queue *close_wait;//关闭等待队列
 
-    /**
-     * @brief 删除等待队列
-     */
-    struct task *del_wait;
-    /**
-     * 关闭等待队列
-     */
-    struct wait_queue *close_wait;
-    /**
-    * @brief 堆栈的栈低指针，当任务终结时用于内存释放
-    */
-    void *memLowStack;
-    /**
-    * @brief 用户栈大小
-    */
-    uint32_t userStackSize;
-    /**
-    * @brief 内核栈大小
-    */
-    uint32_t kernelStackSize;
-    /**
-    * @brief 存储堆栈信息
-    */
-    struct _stackInfo skInfo;
+    void *memLowStack;//用戶堆栈的栈低指针，当任务终结时用于内存释放
+    void *knl_low_stack;//内核栈
+    uint32_t userStackSize;//用户栈大小
+    uint32_t kernelStackSize;//内核栈大小
+    struct _stackInfo skInfo;//存储堆栈信息
 
-    /**
-    * @brief 运行时间计数
-    */
-    uint32_t runCount;
-    /**
-    * @brief 进程id
-    */
-    pid_t PID;
-    /**
-     * @brief 组ID
-     */
-    int32_t PGID;
-    /**
-    * @brief 当前状态
-    */
-    TaskStatus status;
-    /**
-    * @brief 任务优先级
-    */
-    uint8_t prio;
-    /**
-    * @brief 任务运行标志,见 @BlockCon
-    *0bit 延时阻塞
-    *1bit 互斥锁加锁阻塞
-    *2bit 信号量pend阻塞
-    *3bit 消息获取阻塞
-    */
-    uint32_t flag;
-    /**
-     * @brief 信号的位图
-     */
-    uint32_t sig_bmp;
-    /**
-     * @brief 信号处理
-     */
-    struct sigaction signals[_NSIG];
-    /**
-     * @brief 信号mask，
-     */
-    uint32_t sig_mask;
+    uint32_t runCount;//运行时间计数
+    TaskStatus status;//当前状态
+    uint8_t prio;//任务优先级
+    const char*	taskName;// 任务名称
 
-    /**
-     * @brief 定时多少ms
-     */
-    uint32_t alarm;
+    uint32_t sig_bmp;//信号的位图
+    struct sigaction signals[_NSIG];//信号处理
+    uint32_t sig_mask;//信号mask
 
-    /**
-    * @brief 任务名称
-    */
-    const char*	taskName;
-    /**
-     * @brief 退出码
-     */
-    int32_t exitCode;
+    uint32_t alarm;//定时多少ms
 
-    /**
-     * 管理进程内存申请的链表，任务关闭时，链表中所有申请的内存将被释放
-     */
-    struct mem_struct *mems;
 
-    uint8_t is_s_user;
-    /**
-     * 真实id
-     */
-    uid_t ruid;
-    /**
-     * 有效id
-     */
-    uid_t euid;
-    /**
-     * 保存的id
-     */
-    uid_t suid;
+    int32_t exitCode;//退出码
+    struct mem_struct *mems;//管理进程内存申请的链表，任务关闭时，链表中所有申请的内存将被释放
 
-    /**
-     * 真实id
-     */
-    uid_t rgid;
+    uint8_t is_s_user; //是否超级用户
 
+    pid_t PID;//进程id
+    pid_t tpid;//线程的pid
+
+    uid_t ruid;//真实user id
+    uid_t euid;//有效user id
+    uid_t suid;//保存的user id
+    uid_t rgid;//真实group id
+    int32_t PGID; //组ID
     uid_t egid;//有效组id
     uid_t sgid;//保存的组id
+
+
+    int clone_flag;//克隆标志
 
     /**
      * 在进程创建一个新文件或新目录时，就一定会使用文件方式创建屏蔽字 (回忆3 . 3和3 . 4节，
@@ -238,11 +158,11 @@ typedef struct task{
      * 许可权位)。我们将在4 . 2 0节说明如何创建一个新目录，在文件方式创建屏蔽字中为 1的位，在
      * 文件m o d e中的相应位则一定被转成0。
      */
-    mode_t mask;
+    mode_t mask;//创建文件时设置的mask
     struct tty_struct *tty;//当前进程使用的tty，如果是后台进程，则该参数为NULL
     struct file files[NR_FILE];//文件
-    void* root_inode; //根inode
-    void* pwd_inode;//当前目录
+    struct inode* root_inode; //根inode
+    struct inode* pwd_inode;//当前目录
     char pwd_path[128];//当前的绝对路径
     ELFExec_t *exec;//当前应用的上下文
 }*PTaskBlock,TaskBlock;
@@ -333,7 +253,7 @@ struct task* find_task(int32_t PID);
 void    task_sche(void);
 int32_t add_task(struct task *add);
 void    del_task(struct task** task_ls, struct task* del);
-int32_t task_create(PTaskCreatePar tcp,void* progInfo);
+int32_t task_create(PTaskCreatePar tcp);
 
 //等待链表
 struct wait_queue{

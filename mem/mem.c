@@ -239,7 +239,9 @@ void* OSMalloc(uint32_t size) {
 	int32_t st=DisCpuInter();
 	void* res = _Malloc(OS_USE_MEM_AREA_INX, size);
 	RestoreCpuInter(st);
-    memset(res,0,size);
+    if(!res) {
+        memset(res, 0, size);
+    }
 	return res;
 }
 #ifndef NOT_USE_EX_MEM

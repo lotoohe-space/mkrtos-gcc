@@ -479,6 +479,7 @@ void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
     }
     RestoreCpuInter(t);
 }
+
 /**
  * @brief 调整当前任务优先级
  * @param increment

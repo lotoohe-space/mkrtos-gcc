@@ -1,6 +1,8 @@
 
-#include <errno.h>
+//#include <errno.h>
 #include "syscalls.h"
+syscall(clone,clone)
+/*
 .syntax unified
 .cpu cortex-m3
 .thumb
@@ -37,3 +39,4 @@ __clone:
 
 1:	b	_exit			@ branch to _exit (PIC safe)
 
+*/

@@ -15,7 +15,7 @@
  * @param progInfo 任务的代码信息
  * @return
  */
-int32_t task_create(PTaskCreatePar tcp,void* progInfo){
+int32_t task_create(PTaskCreatePar tcp){
     TaskFun taskFun;
     void *arg0;
     void *arg1;
@@ -60,8 +60,8 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
 
     /*初始化任务控制表*/
     pTaskBlock->runCount=0;
-//    pTaskBlock->delayCount=0;
     pTaskBlock->PID = (pid_t)atomic_read(&sysTasks.pidTemp);
+    pTaskBlock->tpid=-1;
     if(atomic_test(&(sysTasks.pidTemp),1)) {
         sysTasks.init_task=pTaskBlock;
     }
@@ -108,21 +108,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
         OSFree(memStack);
         return -1;
     }
-#if 0
-    //设置程序信息
-    pTaskBlock->taskInfo.peam=progInfo;
-    if( TaskUserInfoCreate(pTaskBlock) <0 ){
-        TaskAllLinksDel(pTaskBlock);
-        TaskPrioLinksDel(pTaskBlock);
-        //	RestoreCpuInter(t);
-        OSFree(pTaskBlock);
-        OSFree(memStack);
-        err= ERROR;
-        return -1;
-    }
 
-    TaskUserFileInit(pTaskBlock->PID);
-#else
     for(int32_t i=0;i<NR_FILE;i++){
         pTaskBlock->files[i].used=0;
     }
@@ -137,7 +123,7 @@ int32_t task_create(PTaskCreatePar tcp,void* progInfo){
         do_open(pTaskBlock->files, "/dev/tty", O_RDWR, 0777);
     }
 #endif
-#endif
+
 
     atomic_inc(&sysTasks.pidTemp);
 

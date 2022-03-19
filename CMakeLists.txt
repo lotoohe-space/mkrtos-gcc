@@ -74,9 +74,9 @@ include_directories(
         elf
         app/shell/include
 
-        net/lwip-2.1.2
-        net/lwip-2.1.2/arch
-        net/lwip-2.1.2/src/include
+#        net/lwip-2.1.2
+#        net/lwip-2.1.2/arch
+#        net/lwip-2.1.2/src/include
 #        lib/mpfr-master/src/arm
 #        lib/mpfr-master/src/
 #        lib/config/arm
@@ -89,8 +89,7 @@ include_directories(
 
         app/rc-1.7
         /
-        /
- )
+   )
 
 file(GLOB_RECURSE SOURCES
         "main/*.*"
@@ -132,12 +131,12 @@ file(GLOB_RECURSE SOURCES
         #        "lib/config/arm/*.*"
 
 
-        "net/lwip-2.1.2/arch/*.*"
-        "net/lwip-2.1.2/src/api/*.*"
-        "net/lwip-2.1.2/src/core/*.*"
-        "net/lwip-2.1.2/src/core/ipv4/*.*"
-        "net/lwip-2.1.2/src/netif/ethernet.c"
-        "net/lwip-2.1.2/src/netif/ethernetif.c"
+#        "net/lwip-2.1.2/arch/*.*"
+#        "net/lwip-2.1.2/src/api/*.*"
+#        "net/lwip-2.1.2/src/core/*.*"
+#        "net/lwip-2.1.2/src/core/ipv4/*.*"
+#        "net/lwip-2.1.2/src/netif/ethernet.c"
+#        "net/lwip-2.1.2/src/netif/ethernetif.c"
 
 
 

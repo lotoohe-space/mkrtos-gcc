@@ -6,7 +6,7 @@
 #include <mkrtos/task.h>
 #include <errno.h>
 #include <signal.h>
-void DoExit(int32_t exitCode);
+void do_exit(int32_t exitCode);
 
 //发送SIGCHLD给父进程
 void sig_chld(struct task *tk){
@@ -250,11 +250,11 @@ int32_t do_signal(void *cur_psp,uint32_t signr){
                 //直接干掉进程
                 //这里还应该进行core_dump
 //                if (core_dump(signr))
-                DoExit( (signr) | 0x80);
+                do_exit( (signr) | 0x80);
                 return 0;
             default:
                 //直接干掉进程
-                DoExit( signr);
+                do_exit( signr);
                 return 0;
         }
     }

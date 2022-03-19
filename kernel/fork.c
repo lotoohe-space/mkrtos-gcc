@@ -30,12 +30,11 @@ void do_fork_pipe(struct inode *inode,struct task* new_task,int fd);
 //  CLONE_THREAD    Linux 2.4中增加以支持POSIX线程标准，子进程与父进程共享相同的线程群
 
 //child_stack是用户栈，内核栈还是需要申请
-int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void* arg){
+int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg){
 
-    if(!fn){
+    if(!fn || !child_stack) {
         return -EINVAL;
     }
-
 
     uint32_t t=DisCpuInter();
     PTaskBlock ptb=CUR_TASK;
@@ -51,18 +50,20 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
     newPtb->next=NULL;
     newPtb->nextAll=NULL;
 
-    if(!child_stack) {
-        newPtb->memLowStack = (void *) OSMalloc(sizeof(uint32_t) * (newPtb->userStackSize + newPtb->kernelStackSize));
-        if (newPtb->memLowStack == NULL) {
-            OSFree(newPtb);
-            RestoreCpuInter(t);
-            return -1;
-        }
+    newPtb->memLowStack=NULL;
+
+    //申请内核栈空间
+    newPtb->knl_low_stack= (void *) OSMalloc(sizeof(uint32_t) * (newPtb->kernelStackSize));
+    if (newPtb->knl_low_stack == NULL) {
+        OSFree(newPtb);
+        RestoreCpuInter(t);
+        return -1;
     }
 
-    if(!(flags&CLONE_PID)){
-        newPtb->PID = (pid_t)atomic_read(&sysTasks.pidTemp);
+    if(!(flags&CLONE_PID)) {
+        newPtb->PID = (pid_t) atomic_read(&sysTasks.pidTemp);
     }
+
     //clone内存空间
     if (ptb->exec) {
         void *exec_tmp = newPtb->exec;
@@ -70,7 +71,7 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
         newPtb->exec = OSMalloc(sizeof(ELFExec_t));
         if (!newPtb->exec) {
             OSFree(newPtb);
-            OSFree(newPtb->memLowStack);
+            OSFree( newPtb->knl_low_stack);
             RestoreCpuInter(t);
             return -1;
         }
@@ -82,7 +83,7 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
             if (!newPtb->exec->data.data) {
                 OSFree(newPtb);
                 OSFree(ptb->exec);
-                OSFree(newPtb->memLowStack);
+                OSFree( newPtb->knl_low_stack);
                 RestoreCpuInter(t);
                 return -1;
             }
@@ -91,13 +92,13 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
             if (!newPtb->exec->bss.data) {
                 OSFree(newPtb);
                 OSFree(ptb->exec);
-                OSFree(newPtb->memLowStack);
                 OSFree(newPtb->exec->data.data);
+                OSFree( newPtb->knl_low_stack);
                 RestoreCpuInter(t);
                 return -1;
             }
             memcpy(newPtb->exec->bss.data, ptb->exec->bss.data, ptb->exec->bss.sh_size);
-            newPtb->exec->clone_vm=TRUE;
+//            newPtb->exec->clone_vm=TRUE;
         }
         //标志该exec块使用次数+1
         (*(ptb->exec->used_count))++;
@@ -111,7 +112,7 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
         /*释放申请的内存*/
         OSFree(newPtb);
         OSFree(ptb->exec);
-        OSFree(newPtb->memLowStack);
+        OSFree( newPtb->knl_low_stack);
         OSFree(newPtb->exec->data.data);
         OSFree(newPtb->exec->bss.data);
         RestoreCpuInter(t);
@@ -120,17 +121,13 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
 
     atomic_inc(&sysTasks.pidTemp);
 
+    //设置内核栈位置
+    newPtb->skInfo.mspStack=(void*)(&(((uint32_t*)newPtb->knl_low_stack)[ptb->kernelStackSize-1]));
+    //设置用户栈
+    newPtb->skInfo.pspStack=child_stack;
+    //重新定位
+    newPtb->skInfo.pspStack=OSTaskSetReg(newPtb->skInfo.pspStack,fn,arg,0,0);
 
-    //复制栈
-    memcpy(newPtb->memLowStack,ptb->memLowStack,sizeof(uint32_t)*(newPtb->userStackSize+newPtb->kernelStackSize));
-
-    //设置栈位置
-    newPtb->skInfo.mspStack=(void*)(&(((uint32_t*)newPtb->memLowStack)[ptb->kernelStackSize-1]));
-    if(newPtb->userStackSize!=0){
-        newPtb->skInfo.pspStack=(void*)&((((uint32_t*)(newPtb->memLowStack))[newPtb->userStackSize+newPtb->kernelStackSize-1]));
-    }else{
-        newPtb->skInfo.pspStack=(void*)(~(0L));
-    }
     //设置为用户模式
     newPtb->skInfo.svcStatus=0;
     newPtb->skInfo.stackType=1;
@@ -149,6 +146,9 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
         //用0号进程的吧
         newPtb->root_inode=sysTasks.init_task->root_inode;
         newPtb->pwd_inode=sysTasks.init_task->pwd_inode;
+        //引用计数器+1
+        atomic_inc(&newPtb->root_inode->i_used_count);
+        atomic_inc(&newPtb->pwd_inode->i_used_count);
         newPtb->mask=0;
         newPtb->pwd_path[0]='\0';
     }
@@ -172,9 +172,19 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
         }
     }else{
         //不复制父进程的file
+        //前三个不用管
         for (int i = 0; i < NR_FILE; i++) {
-            if(newPtb->files[i].used){
-                newPtb->files[i].used=0;
+            if(i<3){
+                if(newPtb->files[i].used) {
+                    if(newPtb->files[i].f_inode
+                    ){
+                        atomic_inc(&newPtb->files[i].f_inode->i_used_count);
+                    }
+                }
+            }else {
+                if (newPtb->files[i].used) {
+                    newPtb->files[i].used = 0;
+                }
             }
         }
     }
@@ -188,9 +198,15 @@ int32_t do_clone(uint32_t *psp,int (*fn)(void*),void* child_stack,int flags,void
             newPtb->signals[i]._u._sa_handler = SIG_DFL;
         }
     }
+    if(flags&CLONE_THREAD){
+        newPtb->parentTask=ptb->parentTask;
+        newPtb->tpid=ptb->PID;
+    }
+
     //mem信息不进行fork
     newPtb->mems=NULL;
     newPtb->status=TASK_RUNNING;
+    newPtb->clone_flag=flags;
     RestoreCpuInter(t);
 
     //返回pid
@@ -302,6 +318,9 @@ int32_t sys_fork(uint32_t *psp){
             }
         }
     }
+    //引用计数器+1
+    atomic_inc(&newPtb->root_inode->i_used_count);
+    atomic_inc(&newPtb->pwd_inode->i_used_count);
     newPtb->del_wait=NULL;
     newPtb->close_wait=NULL;
     newPtb->sig_bmp=0;
