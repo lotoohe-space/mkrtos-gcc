@@ -482,7 +482,7 @@ void *sys_mremap(void *__addr, size_t __old_len, size_t __new_len,
         if (mem->inode->i_ops &&
                 mem->inode->i_ops->default_file_ops->mmap
                 ) {
-            int res = mem->inode->i_ops->default_file_ops->mmap(mem->inode, NULL, newmem, __new_len, 0, mem->ofst);
+            int res = mem->inode->i_ops->default_file_ops->mmap(mem->inode, NULL, (unsigned long)newmem, __new_len, 0, mem->ofst);
             if (res < 0) {
                 OSFree(newmem);
                 return NULL;

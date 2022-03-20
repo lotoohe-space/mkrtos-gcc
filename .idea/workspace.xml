@@ -14,25 +14,16 @@
     <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="尝试实现clone系统调用">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/dm9000.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/dm9000.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/net_init.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/net_init.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/elf/elf_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/elf/elf_main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/elf/loader.h" beforeDir="false" afterPath="$PROJECT_DIR$/elf/loader.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/task.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/exit.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/exit.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/fork.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/fork.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sched.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sched.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/signal.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/signal.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/mem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/mem.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/dietlibc/arm/clone.S" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dietlibc/arm/clone.S" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
@@ -142,9 +133,9 @@
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -632,14 +623,19 @@
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>621</line>
-          <option name="timeStamp" value="127" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/kernel/exit.c</url>
           <line>42</line>
           <option name="timeStamp" value="129" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main/task_main.c</url>
+          <line>624</line>
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main/task_main.c</url>
+          <line>627</line>
+          <option name="timeStamp" value="131" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

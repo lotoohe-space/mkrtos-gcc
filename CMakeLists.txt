@@ -89,6 +89,7 @@ include_directories(
 
         app/rc-1.7
         /
+        /
    )
 
 file(GLOB_RECURSE SOURCES
@@ -110,6 +111,7 @@ file(GLOB_RECURSE SOURCES
         "lib/dietlibc/arm/dyn_syscalls.S"
         "lib/dietlibc/arm/start.S"
         "lib/dietlibc/arm/__guard.S"
+        "lib/dietlibc/arm/__testandset.S"
         "lib/dietlibc/dynlinker/*.*"
         "lib/dietlibc/lib/*.*"
         "lib/dietlibc/libcompat/*.*"
@@ -127,7 +129,7 @@ file(GLOB_RECURSE SOURCES
         #        "lib/dietlibc/arm/*.*"
         #        "lib/dietlibc/contrib/*.*"
         #        "lib/dietlibc/libdl/*.*"
-        #        "lib/dietlibc/libpthread/*.*"
+                "lib/dietlibc/libpthread/*.*"
         #        "lib/config/arm/*.*"
 
 

@@ -1,7 +1,7 @@
 
 //#include <errno.h>
 #include "syscalls.h"
-syscall(clone,clone)
+syscall_weak(clone,clone,__clone)
 /*
 .syntax unified
 .cpu cortex-m3

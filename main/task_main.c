@@ -612,7 +612,7 @@ void user_task(void* arg0,void *arg1){
     }
 #endif
 }
-
+#include <pthread.h>
 int thread_fn(void*arg){
 
   //  while(1){
@@ -620,6 +620,12 @@ int thread_fn(void*arg){
         printf("thread test\n");
    // }
     return 0;
+}
+void* myThreadID1(void* arg){
+    printf("thread_ID1\n");
+}
+void* myThreadID2(void* arg){
+    printf("thread_ID2\n");
 }
 //Æô¶¯½ø³Ì
 void start_task(void* arg0,void*arg1){
@@ -661,9 +667,24 @@ void start_task(void* arg0,void*arg1){
 //    fsync()
 //    int *ptr=malloc(100);
 //    free(ptr);
-    static int thread_test[512];
-    clone(thread_fn,&thread_test[512-1],CLONE_VM|CLONE_FILES,NULL);
-    int ret=fork();
+//    static int thread_test[512];
+//    clone(thread_fn,&thread_test[512-1],CLONE_VM|CLONE_FILES,NULL);
+
+    int ret;
+    pthread_t id1,id2;
+    ret= pthread_create(&id1,NULL,myThreadID1,NULL);
+    if(ret<0){
+        printf("Create pthread error!\n");
+
+    }
+    ret=pthread_create(&id2,NULL,myThreadID2,NULL);
+    if(ret<0){
+        printf("Create pthread error!\n");
+    }
+    pthread_join(id1,NULL);
+    pthread_join(id2,NULL);
+    printf("all thread done!\n");
+    ret=fork();
     if(ret<0){
         printf("init create error.\n");
     }else if(ret==0){
