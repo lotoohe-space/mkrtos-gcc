@@ -100,10 +100,12 @@ extern int sys_fsync();
 extern int sys_getdents();
 extern int sys_clone(); //120
 extern int sys_sigprocmask();
+extern int sys_sched_yield();//158
 extern int sys_nanosleep(); //162
 extern int sys_mremap();//163
 extern int sys_rt_sigaction(); //174
 extern int sys_rt_sigprocmask();
+extern int sys_rt_sigsuspend();//179
 extern int sys_getcwd();//183
 extern int sys_getenv();
 
@@ -115,6 +117,9 @@ extern int sys_fchdir();
 int sys_statfs(const char * path, struct statfs * buf);
 int sys_fstatfs(unsigned int fd, struct statfs * buf);
 extern int sys_sigreturn();
+
+//extern int sys_net_init();
+
 typedef void* fn_ptr ;
 
 const fn_ptr sys_call_table[] = {
@@ -190,7 +195,7 @@ const fn_ptr sys_call_table[] = {
         [69]sys_ssetmask,
         [70]sys_setreuid,
         [71]sys_setregid,
-//                           sys_sigsuspend,
+        [72]=sys_sigsuspend,
 //                           sys_sigpending,
 //                           sys_sethostname,
 //                           sys_setrlimit,
@@ -227,12 +232,14 @@ const fn_ptr sys_call_table[] = {
         [126]=sys_sigprocmask,
         [133]=sys_fchdir,
         [141]=sys_getdents,
+        [158]=sys_sched_yield,
         [162]=sys_nanosleep,
         [163]=sys_mremap,
         [173]=sys_rt_sigreturn,
         [174]=sys_rt_sigaction,
         [175]=sys_rt_sigprocmask,
+        [179]=sys_rt_sigsuspend,
         [182]=sys_chown,
         [183]=sys_getcwd,
-
+//        [500]=sys_net_init
 };

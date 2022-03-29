@@ -60,8 +60,13 @@ void task_run_1(struct task* tk){
     if(!tk){
         return ;
     }
-    if(tk->status!=TASK_RUNNING){
+    if(tk->status!=TASK_RUNNING
+       &&tk->status!=TASK_CLOSED
+            ){
         tk->parent->taskReadyCount++;
+        if(tk->prio>CUR_TASK->prio){
+            update_cur_task();
+        }
         tk->status = TASK_RUNNING;
     }
 }
@@ -189,13 +194,14 @@ void del_task(struct task** task_ls, struct task* del){
         pTemp=pTemp->next;
     }
     RestoreCpuInter(t);
+    update_cur_task();
 }
 /**
 * @brief 通过优先级添加任务，如果这个优先级不存在，则创建该优先级的任务节点
 * @param pSysTasks 任务管理对象
 * @return 添加是否成功
 */
-int32_t add_task(struct task* pTaskBlock){
+int32_t add_task(struct task* pTaskBlock,uint32_t into_all_ls){
 
     if(pTaskBlock==NULL){
         return -1;
@@ -203,10 +209,6 @@ int32_t add_task(struct task* pTaskBlock){
     /*关所有中断*/
     uint32_t t;
     t=DisCpuInter();
-//	/*锁住链表并关闭调度*/
-//	TaskSetIsSchedule(FALSE);
-//	SpinLock(&sysTasks.slh);
-
     PSysTaskBaseLinks taskLinks;
 
     taskLinks = FindTaskLinks(pTaskBlock->prio);
@@ -214,8 +216,6 @@ int32_t add_task(struct task* pTaskBlock){
         taskLinks=AddLinks(pTaskBlock->prio);
         if(taskLinks==NULL){
             RestoreCpuInter(t);
-//			TaskSetIsSchedule(TRUE);
-//			SpinUnlock(&sysTasks.slh);
             /*没有内存*/
             return -ENOMEM;
         }
@@ -235,27 +235,26 @@ int32_t add_task(struct task* pTaskBlock){
     }
     pTaskBlock->parent=taskLinks;
 
-    //存到所有任务的链表中
-    pstl=sysTasks.allTaskList;
-    if(pstl == NULL){
-        pTaskBlock->nextAll=NULL;
-        sysTasks.allTaskList=pTaskBlock;
-    }else{
-        /*放在链表最开头*/
-        pTaskBlock->nextAll=pstl;
-        sysTasks.allTaskList=pTaskBlock;
+    if(into_all_ls) {
+        //存到所有任务的链表中
+        pstl = sysTasks.allTaskList;
+        if (pstl == NULL) {
+            pTaskBlock->nextAll = NULL;
+            sysTasks.allTaskList = pTaskBlock;
+        } else {
+            /*放在链表最开头*/
+            pTaskBlock->nextAll = pstl;
+            sysTasks.allTaskList = pTaskBlock;
+        }
     }
-//
-//	TaskSetIsSchedule(TRUE);
-//	SpinUnlock(&sysTasks.slh);
     RestoreCpuInter(t);
 
     //更新优先级
     if(
-            sysTasks.currentMaxTaskNode!=NULL
-            &&
-            pTaskBlock->prio>sysTasks.currentMaxTaskNode->taskPriority
-            ) {
+        sysTasks.currentMaxTaskNode!=NULL
+        &&
+        pTaskBlock->prio>sysTasks.currentMaxTaskNode->taskPriority
+        ) {
         update_cur_task();
     }else if(sysTasks.currentMaxTaskNode==NULL){
         update_cur_task();
@@ -297,6 +296,7 @@ nextAll:
 int32_t task_change_prio(struct task *tk,int32_t new_prio){
     uint32_t t;
     uint32_t old_prio;
+    struct _SysTaskBaseLinks *base_links;
     if(!tk){
         return -1;
     }
@@ -304,14 +304,17 @@ int32_t task_change_prio(struct task *tk,int32_t new_prio){
         return 0;
     }
     t = DisCpuInter();
+    base_links=CUR_TASK->parent;
     old_prio=CUR_TASK->prio;
     CUR_TASK->prio = new_prio;
-    if (add_task(CUR_TASK) < 0) {
+    if (add_task(CUR_TASK,0) < 0) {
         //没有足够的内存了，恢复之前的
         CUR_TASK->prio = old_prio;
         RestoreCpuInter(t);
         return -ENOMEM;
     }
+    base_links->taskReadyCount--;
+    base_links->taskCount--;
     CUR_TASK->prio = old_prio;
     del_task(NULL,CUR_TASK);
     CUR_TASK->prio = new_prio;
@@ -400,6 +403,7 @@ int32_t sys_pause(void){
     task_sche();
     return -1;
 }
+
 //唤醒队列中所有的任务
 void wake_up(struct wait_queue *queue){
     uint32_t t;
@@ -485,11 +489,16 @@ void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue){
  * @param increment
  * @return
  */
-int32_t
-sys_nice (int32_t increment)
+int32_t sys_nice (int32_t increment)
 {
-    if (sysTasks.currentTask->prio - increment > 0)
-        sysTasks.currentTask->prio -= increment;
+    int new_prio;
+    new_prio=CUR_TASK->prio;
+    if (new_prio- increment > 0)
+        new_prio -= increment;
+
+    if(task_change_prio(CUR_TASK,new_prio)<=0){
+        return -ESRCH;
+    }
     return 0;
 }
 extern void KernelTaskInit(void);

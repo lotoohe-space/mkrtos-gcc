@@ -358,7 +358,9 @@ int sys_msgrcv(int msgid,void *ptr,size_t nbytes,long type,int flag){
         if(atomic_test(&msgid_ds_used[msgid],0)){
             return -ERMID;
         }
-        if(CUR_TASK->sig_bmp){
+        if(CUR_TASK->sig_bmp[0]
+        ||CUR_TASK->sig_bmp[1]
+        ){
             return -EINTR;
         }
         goto again_find;
@@ -432,7 +434,8 @@ int sys_msgsnd(int msgid,const void *ptr,size_t nbytes,int flag){
         if(atomic_test(&msgid_ds_used[msgid],0)){
             return -ERMID;
         }
-        if(CUR_TASK->sig_bmp){
+        if(CUR_TASK->sig_bmp[0]
+           ||CUR_TASK->sig_bmp[1]){
             return -EINTR;
         }
 

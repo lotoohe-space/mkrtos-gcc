@@ -286,7 +286,7 @@ int sys_creat(const char * pathname, int mode){
     return sys_open(pathname,O_CREAT|O_WRONLY,mode);
 }
 //╧ь╠унд╪Ч
-void sys_close(int fp){
+void file_close(int fp){
     struct inode *inode;
     if(fp<0||fp>=NR_FILE){
         printk("%s fp.\n",__FUNCTION__ );

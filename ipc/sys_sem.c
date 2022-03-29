@@ -352,7 +352,8 @@ int sys_semop(int semid,struct sembuf semoparray[],size_t ops){
                 return -ERMID;
             }
             //有信号，返回EINTR
-            if(CUR_TASK->sig_bmp){
+            if(CUR_TASK->sig_bmp[0]
+               ||CUR_TASK->sig_bmp[1]){
                 _sem->semzcnt--;
                 return -EINTR;
             }
@@ -392,7 +393,8 @@ int sys_semop(int semid,struct sembuf semoparray[],size_t ops){
                     return -ERMID;
                 }
                 //有信号，返回EINTR
-                if(CUR_TASK->sig_bmp){
+                if(CUR_TASK->sig_bmp[0]
+                   ||CUR_TASK->sig_bmp[1]){
                     _sem->semncnt--;
                     return -EINTR;
                 }

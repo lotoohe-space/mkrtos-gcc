@@ -10,7 +10,7 @@ __BEGIN_DECLS
 #include <sys/types.h>
 #include <endian.h>
 
-#define NSIG		32
+#define NSIG		64
 
 #ifdef __mips__
 #define _NSIG		128

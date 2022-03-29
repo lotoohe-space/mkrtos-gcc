@@ -41,6 +41,7 @@ int32_t task_create(PTaskCreatePar tcp){
         return -1;
     }
     void *memStack = NULL;
+    void *knlMemStack = NULL;
     PTaskBlock pTaskBlock=NULL;
     pTaskBlock=(PTaskBlock)OSMalloc(sizeof(TaskBlock));
     if(pTaskBlock == NULL){
@@ -51,13 +52,19 @@ int32_t task_create(PTaskCreatePar tcp){
     pTaskBlock->taskName = taskName;
 
     /*申请堆栈的内存*/
-    memStack = (void *)OSMalloc(sizeof(uint32_t)*(userStackSize+kernelSize));
+    memStack = (void *)OSMalloc(sizeof(uint32_t)*(userStackSize));
     if(memStack == NULL){
         OSFree(pTaskBlock);
         errno=ENOMEM;
         return -1;
     }
-
+    knlMemStack= (void *)OSMalloc(sizeof(uint32_t)*(kernelSize));
+    if(knlMemStack == NULL){
+        OSFree(pTaskBlock);
+        OSFree(memStack);
+        errno=ENOMEM;
+        return -1;
+    }
     /*初始化任务控制表*/
     pTaskBlock->runCount=0;
     pTaskBlock->PID = (pid_t)atomic_read(&sysTasks.pidTemp);
@@ -68,11 +75,12 @@ int32_t task_create(PTaskCreatePar tcp){
 
     pTaskBlock->memLowStack=memStack;
     if(userStackSize!=0){
-        pTaskBlock->skInfo.pspStack=(void*)(&(((uint32_t*)memStack)[userStackSize+kernelSize-1]));
+        pTaskBlock->skInfo.pspStack=(void*)(&(((uint32_t*)memStack)[userStackSize-1]));
     }else{
         pTaskBlock->skInfo.pspStack=(void*)(~(0L));
     }
-    pTaskBlock->skInfo.mspStack=(void*)(&(((uint32_t*)memStack)[kernelSize-1]));
+    pTaskBlock->knl_low_stack=knlMemStack;
+    pTaskBlock->skInfo.mspStack=(void*)(&(((uint32_t*)knlMemStack)[kernelSize-1]));
     pTaskBlock->skInfo.stackType=1;
     pTaskBlock->prio=prio;
     pTaskBlock->userStackSize=userStackSize;
@@ -88,9 +96,11 @@ int32_t task_create(PTaskCreatePar tcp){
         /*设置栈的初始化寄存器*/
         pTaskBlock->skInfo.pspStack=
                 OSTaskSetReg(pTaskBlock->skInfo.pspStack,taskFun,arg0,arg1,0);
+    }else{
+        pTaskBlock->skInfo.mspStack=
+                OSTaskSetReg(pTaskBlock->skInfo.mspStack,taskFun,arg0,arg1,0);
     }
-    pTaskBlock->skInfo.mspStack=
-            OSTaskSetReg(pTaskBlock->skInfo.mspStack,taskFun,arg0,arg1,0);
+
 
     if(userStackSize==0){
         //线程在内核模式;
@@ -100,12 +110,13 @@ int32_t task_create(PTaskCreatePar tcp){
     }
     pTaskBlock->skInfo.svcStatus=0;
     /*通过优先级添加任务*/
-    int32_t err = add_task(pTaskBlock);
+    int32_t err = add_task(pTaskBlock,1);
     if(err != 0){
         //	RestoreCpuInter(t);
         /*释放申请的内存*/
         OSFree(pTaskBlock);
         OSFree(memStack);
+        OSFree(knlMemStack);
         return -1;
     }
 

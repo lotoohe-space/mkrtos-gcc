@@ -612,7 +612,7 @@ void user_task(void* arg0,void *arg1){
     }
 #endif
 }
-#include <pthread.h>
+
 int thread_fn(void*arg){
 
   //  while(1){
@@ -622,11 +622,14 @@ int thread_fn(void*arg){
     return 0;
 }
 void* myThreadID1(void* arg){
-    printf("thread_ID1\n");
+    //printf("thread_ID1\n");
+    printk("knl thread test.\r\n");
+    while(1);
 }
 void* myThreadID2(void* arg){
-    printf("thread_ID2\n");
+    //printf("thread_ID2\n");
 }
+#include <bsp/net_init.h>
 //启动进程
 void start_task(void* arg0,void*arg1){
     extern void fs_init(void);
@@ -635,7 +638,7 @@ void start_task(void* arg0,void*arg1){
     fs_init();
 #endif
 
-    read_user_cfg();
+//    read_user_cfg();
     devs_init();
     //打开三个串口输出
     open("/dev/tty", O_RDWR, 0777);
@@ -644,9 +647,13 @@ void start_task(void* arg0,void*arg1){
 
     printf("to init task.\r\n");
     printf("%d remain memory is %d.\n",getpid(),GetFreeMemory(1));
-#if 0
+
     extern void fs_w_zshell(void);
     fs_w_zshell();
+    extern void fs_w_start_info(void);
+    fs_w_start_info();
+    sync();
+#if 0
     extern void fs_w_ls(void);
     fs_w_ls();
     extern void fs_w_cat(void);
@@ -660,9 +667,7 @@ void start_task(void* arg0,void*arg1){
 
     extern void fs_w_ls_(void);
     fs_w_ls_();
-    extern void fs_w_start_info(void);
-    fs_w_start_info();
-    sync();
+
 #endif
 //    fsync()
 //    int *ptr=malloc(100);
@@ -671,36 +676,46 @@ void start_task(void* arg0,void*arg1){
 //    clone(thread_fn,&thread_test[512-1],CLONE_VM|CLONE_FILES,NULL);
 
     int ret;
-    pthread_t id1,id2;
-    ret= pthread_create(&id1,NULL,myThreadID1,NULL);
-    if(ret<0){
-        printf("Create pthread error!\n");
 
-    }
-    ret=pthread_create(&id2,NULL,myThreadID2,NULL);
-    if(ret<0){
-        printf("Create pthread error!\n");
-    }
-    pthread_join(id1,NULL);
-    pthread_join(id2,NULL);
-    printf("all thread done!\n");
     ret=fork();
     if(ret<0){
         printf("init create error.\n");
     }else if(ret==0){
+//        int ret;
+//        ret=sys_clone(myThreadID1,NULL,CLONE_FS|CLONE_VM|CLONE_FILES|CLONE_PARENT,0);
+//        while(1);
+        lwip_comm_init();
+#include "net/lwiperf_interface.h"
+        lwiperf_init();
         putenv("SHELL=/bin/zsh");
+#if 0
+#include <pthread.h>
+        pthread_t id1,id2;
+        ret= pthread_create(&id1,NULL,myThreadID1,NULL);
+        if(ret<0){
+            printf("Create pthread error!\n");
+
+        }
+        ret=pthread_create(&id2,NULL,myThreadID2,NULL);
+        if(ret<0){
+            printf("Create pthread error!\n");
+        }
+        pthread_join(id1,NULL);
+        pthread_join(id2,NULL);
+        printf("all thread done!\n");
 //        extern int login_main(int argc,char *argv[]) ;
 //        static const char* argv[]={
 //                "root"
 //                ,NULL
 //        };
 //        login_main(1,argv);
+#endif
         extern int login(void);
         login();
         while(1) {
             int new_pid=fork();
             if(new_pid<0) {
-                printf("fork error.\n");
+                printf("fork error. pid:%d\n",new_pid);
             }else if(new_pid==0){
                     execv("/bin/start_info",0);
             }else{
@@ -723,6 +738,7 @@ void start_task(void* arg0,void*arg1){
         exit(0);
 
     }else {
+         nice(1);
          while(1){
 
            // delay_ms(1000);

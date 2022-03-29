@@ -155,6 +155,15 @@ static int32_t  uart_ioctl(struct tty_struct *tty, struct file * file,uint32_t c
     return -ENOSYS;
 }
 extern void EXTI9_5_IRQHandler(void);
+void console_write(const char* str){
+    if (!initFlag) {
+        Ch432_SPI_Init();
+        RegIsrFunc(EXTI9_5_IRQHandler,24,0);
+        CH432T_recv_1_data_fun = ch432t_read_cb;
+    }
+    CH432Seril1Send(str, strlen(str));
+}
+
 int32_t uart_open(struct tty_struct * tty, struct file * filp){
     if (initFlag) { return 0; }
     initFlag = 1;

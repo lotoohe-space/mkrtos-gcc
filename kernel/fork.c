@@ -8,7 +8,7 @@
 #include <string.h>
 #include <sched.h>
 extern PTaskBlock find_task(int32_t PID);
-extern int32_t add_task(PTaskBlock pTaskBlock);
+
 //pipe.c
 void do_fork_pipe(struct inode *inode,struct task* new_task,int fd);
 
@@ -32,7 +32,8 @@ void do_fork_pipe(struct inode *inode,struct task* new_task,int fd);
 //child_stack是用户栈，内核栈还是需要申请
 int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg){
 
-    if(!fn || !child_stack) {
+    if(!fn //|| !child_stack
+    ) {
         return -EINVAL;
     }
 
@@ -106,7 +107,7 @@ int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg){
 
     int32_t err;
     /*通过优先级添加任务*/
-    err = add_task(newPtb);
+    err = add_task(newPtb,1);
     if(err != 0){
         //	RestoreCpuInter(t);
         /*释放申请的内存*/
@@ -123,16 +124,23 @@ int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg){
 
     //设置内核栈位置
     newPtb->skInfo.mspStack=(void*)(&(((uint32_t*)newPtb->knl_low_stack)[ptb->kernelStackSize-1]));
+    newPtb->skInfo.mspStack = OSTaskSetReg(newPtb->skInfo.mspStack, fn, arg, 0, 0);
     //设置用户栈
     newPtb->skInfo.pspStack=child_stack;
-    //重新定位
-    newPtb->skInfo.pspStack=OSTaskSetReg(newPtb->skInfo.pspStack,fn,arg,0,0);
-
+    if(newPtb->skInfo.pspStack) {
+        //重新定位
+        newPtb->skInfo.pspStack = OSTaskSetReg(newPtb->skInfo.pspStack, fn, arg, 0, 0);
+    }else{
+        newPtb->userStackSize=0;
+        newPtb->skInfo.pspStack=(void*)(~(0L));
+    }
+    if(!newPtb->userStackSize){
+        newPtb->skInfo.stackType=2;
+    }else{
+        newPtb->skInfo.stackType=1;
+    }
     //设置为用户模式
     newPtb->skInfo.svcStatus=0;
-    newPtb->skInfo.stackType=1;
-
-
     if(flags&CLONE_PARENT){
         //CLONE_PARENT   创建的子进程的父进程是调用者的父进程，新进程与创建它的进程成了“兄弟”而不是“父子”
         newPtb->parentTask=ptb->parentTask;
@@ -193,7 +201,8 @@ int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg){
 
     if(!(flags&CLONE_SIGHAND)) {
         //不共享信号处理表
-        newPtb->sig_bmp = 0;
+        newPtb->sig_bmp[0] = 0;
+        newPtb->sig_bmp[1] = 0;
         for (int i = 0; i < _NSIG; i++) {
             newPtb->signals[i]._u._sa_handler = SIG_DFL;
         }
@@ -228,8 +237,16 @@ int32_t sys_fork(uint32_t *psp){
     newPtb->runCount=0;
     newPtb->next=NULL;
     newPtb->nextAll=NULL;
-    newPtb->memLowStack=(void *)OSMalloc(sizeof(uint32_t)*(newPtb->userStackSize+newPtb->kernelStackSize));
+    newPtb->memLowStack=(void *)OSMalloc(sizeof(uint32_t)*(newPtb->userStackSize));
     if(newPtb->memLowStack==NULL){
+        OSFree(newPtb);
+        RestoreCpuInter(t);
+        return -1;
+    }
+    newPtb->knl_low_stack=(void *)OSMalloc(sizeof(uint32_t)*(newPtb->kernelStackSize));
+    if(newPtb->knl_low_stack==NULL){
+        OSFree(newPtb->memLowStack);
+
         OSFree(newPtb);
         RestoreCpuInter(t);
         return -1;
@@ -243,6 +260,7 @@ int32_t sys_fork(uint32_t *psp){
         if(!newPtb->exec){
             OSFree(newPtb);
             OSFree(newPtb->memLowStack);
+            OSFree(newPtb->knl_low_stack);
             RestoreCpuInter(t);
             return -1;
         }
@@ -252,6 +270,7 @@ int32_t sys_fork(uint32_t *psp){
             OSFree(newPtb);
             OSFree(ptb->exec);
             OSFree(newPtb->memLowStack);
+            OSFree(newPtb->knl_low_stack);
             RestoreCpuInter(t);
             return -1;
         }
@@ -261,6 +280,7 @@ int32_t sys_fork(uint32_t *psp){
             OSFree(newPtb);
             OSFree(ptb->exec);
             OSFree(newPtb->memLowStack);
+            OSFree(newPtb->knl_low_stack);
             OSFree(newPtb->exec->data.data);
             RestoreCpuInter(t);
             return -1;
@@ -272,13 +292,14 @@ int32_t sys_fork(uint32_t *psp){
     int32_t err;
     newPtb->parent=NULL;
     /*通过优先级添加任务*/
-    err = add_task(newPtb);
+    err = add_task(newPtb,1);
     if(err != 0){
         //	RestoreCpuInter(t);
         /*释放申请的内存*/
         OSFree(newPtb);
         OSFree(ptb->exec);
         OSFree(newPtb->memLowStack);
+        OSFree(newPtb->knl_low_stack);
         OSFree(newPtb->exec->data.data);
         OSFree(newPtb->exec->bss.data);
         RestoreCpuInter(t);
@@ -289,10 +310,11 @@ int32_t sys_fork(uint32_t *psp){
     //设置父进程
     newPtb->parentTask=ptb;
     //复制栈
-    memcpy(newPtb->memLowStack,ptb->memLowStack,sizeof(uint32_t)*(newPtb->userStackSize+newPtb->kernelStackSize));
+    memcpy(newPtb->memLowStack,ptb->memLowStack,sizeof(uint32_t)*(newPtb->userStackSize));
+    memcpy(newPtb->knl_low_stack,ptb->knl_low_stack,sizeof(uint32_t)*(newPtb->kernelStackSize));
 
     //设置栈位置
-    newPtb->skInfo.mspStack=(void*)(&(((uint32_t*)newPtb->memLowStack)[ptb->kernelStackSize-1]));
+    newPtb->skInfo.mspStack=(void*)(&(((uint32_t*)newPtb->knl_low_stack)[ptb->kernelStackSize-1]));
     if(newPtb->userStackSize!=0){
         newPtb->skInfo.pspStack=(void*)((uint32_t)(newPtb->memLowStack)+((uint32_t)(psp)- (uint32_t)(ptb->memLowStack)));
         ((uint32_t*)(newPtb->skInfo.pspStack))[8]=0;
@@ -323,7 +345,10 @@ int32_t sys_fork(uint32_t *psp){
     atomic_inc(&newPtb->pwd_inode->i_used_count);
     newPtb->del_wait=NULL;
     newPtb->close_wait=NULL;
-    newPtb->sig_bmp=0;
+    newPtb->sig_bmp[0]=0;
+    newPtb->sig_bmp[1]=0;
+    newPtb->sig_mask[0]=0;
+    newPtb->sig_mask[1]=0;
     for(int i=0;i<_NSIG;i++) {
         newPtb->signals[i]._u._sa_handler=SIG_DFL;
     }

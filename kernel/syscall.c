@@ -58,6 +58,18 @@ uint32_t svcHandler(uint32_t* pwdSF,uint32_t call_num) {
                         (int) svc_r4
                 );
                 break;
+            case 72:
+                psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3)) sys_call_table[call_num])((int) (pwdSF+8),
+                                                                                                      (int) svc_r0,
+                                                                                                      (int) svc_r1,
+                                                                                                      (int) svc_r2);
+                break;
+            case 179:
+                psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3)) sys_call_table[call_num])((int) (pwdSF+8),
+                                                                                                      (int) svc_r0,
+                                                                                                      (int) svc_r1,
+                                                                                                      (int) svc_r2);
+                break;
             case 90:
                 psF[0] = ((int (*)(int arg0, int arg1, int arg2, int arg3, int arg4,
                                    int arg5)) sys_call_table[call_num])((int) (svc_r0),
@@ -74,6 +86,7 @@ uint32_t svcHandler(uint32_t* pwdSF,uint32_t call_num) {
                                                                                                       (int) svc_r2,
                                                                                                       (int) svc_r3);
         }
+//        printk("sys remain mem %d\r\n",GetFreeMemory(1));
     }else{
         psF[0]=-1;
     }

@@ -63,7 +63,7 @@ uint32_t atomic_inc_test(volatile Atomic_t* a);
  */
 uint32_t atomic_test_inc(volatile Atomic_t* a);
 /**
-* @breif 测试大于0，则减1;反之不动
+* @breif 测试大于0，则减1;反之不动;
 * @return 1：等于0 ，0：不等于0
 */
  uint32_t atomic_test_dec_nq(volatile Atomic_t* a);

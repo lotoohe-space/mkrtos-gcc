@@ -7,19 +7,19 @@ __BEGIN_DECLS
 
 enum {
   POLLIN	= 0x0001,
-#define POLLIN		POLLIN
+#define POLLIN		POLLIN /*有数据可读*/
   POLLPRI	= 0x0002,
-#define POLLPRI		POLLPRI
+#define POLLPRI		POLLPRI /*有紧急数据可读*/
   POLLOUT	= 0x0004,
-#define POLLOUT		POLLOUT
+#define POLLOUT		POLLOUT /*写数据不会导致阻塞，意思就是可以写数据了*/
   POLLERR	= 0x0008,
-#define POLLERR		POLLERR
+#define POLLERR		POLLERR/*指定的文件描述符发生错误*/
   POLLHUP	= 0x0010,
-#define POLLHUP		POLLHUP
+#define POLLHUP		POLLHUP/*指定的文件描述符挂起事件*/
   POLLNVAL	= 0x0020,
-#define POLLNVAL	POLLNVAL
+#define POLLNVAL	POLLNVAL/*无效的请求，打不开指定的文件描述符*/
   POLLRDNORM	= 0x0040,
-#define POLLRDNORM	POLLRDNORM
+#define POLLRDNORM	POLLRDNORM/*有普通数据可读，等效与POLLIN*/
   POLLRDBAND	= 0x0080,
 #define POLLRDBAND	POLLRDBAND
   POLLWRBAND	= 0x0200,

@@ -5,18 +5,22 @@
 #include "arch/arch.h"
 #include "sys.h"
 #include "arch/isr.h"
-
+#include "bsp/DM9000.h"
 void SysTick_Handler(void);
 extern void FSMC_SRAM_Init(void);
 extern int sram_test(void);
 extern uint8_t RTC_Init(void);
 //tim3.c
 extern void TIM3_BASEInitSys(int16_t arr,uint16_t psc);
+//net_init.c
+extern int lwip_hard_init(void);
 int32_t BSPInit(void){
+    DM9000_Init(0);
     FSMC_SRAM_Init();
     if(sram_test()<0){
 //        fatalk("ÄÚ´æ³õÊ¼»¯Ê§°Ü!\r\n");
     }
+    lwip_hard_init();
     RTC_Init();
     TIM3_BASEInitSys(719,99);
     return 0;
@@ -146,6 +150,16 @@ void SetPSP(void* newPSP){
     :
     );
 }
+uint32_t GetPSP(void){
+    uint32_t ret;
+    __asm__ __volatile__(
+    "MRS     %0, PSP\n"
+    :"=r"(ret)
+    :
+    :
+    );
+    return ret;
+}
 /**
 * @brief »Ö¸´cpuÖÐ¶Ï×´Ì¬
 */
@@ -180,7 +194,13 @@ extern void tasks_check(void);
 extern void task_sche(void);
 //sleep.c
 extern void do_check_sleep_tim(void);
+#include <mkrtos/knl_mutex.h>
+#include <mkrtos/knl_msg.h>
+#include <mkrtos/knl_sem.h>
 void SysTick_Handler(void){
+    check_msg_time();
+    check_sem_time();
+    check_mutex_time();
     do_check_sleep_tim();
     tasks_check();
     task_sche();

@@ -73,6 +73,7 @@ typedef struct _OSMem{
 	
 }*POSMem,OSMem;
 
+static int mem_init_flag=0;
 /**
 * @breif 内存管理变量初始化
 */
@@ -100,6 +101,9 @@ OSMem osMem={
 * @breif 初始化内存管理
 */
 void InitMem(void) {
+    if(mem_init_flag){
+        return ;
+    }
 	/*清空所有的内存管理项*/
 	uint16_t i;
 	for (i = 0; i < osMem.memNum; i++) {
@@ -109,6 +113,7 @@ void InitMem(void) {
 		}
 		//memset(osMem.OSMemItemLs[i].memManTb, 0, osMem.OSMemItemLs[i].memManTbSize * sizeof(MemTbType));
 	}
+    mem_init_flag=1;
 }
 /**
 * @breif 申请内存
@@ -124,6 +129,7 @@ void* _Malloc(uint16_t inxMem, uint32_t size) {
 	uint16_t bkSize;
 	MemTbType* manager_table;
 	MemType* malloc_mem;
+    InitMem();
 	if (inxMem >= osMem.memNum) {
 		/*超出索引*/
 		return NULL;
@@ -171,6 +177,7 @@ void* _Malloc(uint16_t inxMem, uint32_t size) {
 */
 void _Free(uint16_t inxMem, void* mem_addr) {
 	if (mem_addr == NULL) { return; }
+    InitMem();
 	uint32_t free_size;
 	uint16_t bkSize;
 	MemTbType* manager_table;
@@ -197,6 +204,7 @@ void _Free(uint16_t inxMem, void* mem_addr) {
 }
 uint32_t GetMemSize(uint16_t inxMem, void* mem_addr){
 	if (mem_addr == NULL) { return 0; }
+    InitMem();
 	uint32_t free_size;
 	uint16_t bkSize;
 	MemTbType* manager_table;
@@ -222,12 +230,13 @@ uint32_t GetMemSize(uint16_t inxMem, void* mem_addr){
 * @return 返回剩余多少字节
 */
 uint32_t GetFreeMemory(uint8_t mem_no) {
-	
+    InitMem();
 	/*剩余内存大小*/
 	return osMem.OSMemItemLs[mem_no].freeBlockNum * osMem.OSMemItemLs[OS_USE_MEM_AREA_INX].memBlockSize;
 
 }
 uint32_t GetTotalMemory(uint8_t mem_no){
+    InitMem();
 	return osMem.OSMemItemLs[mem_no].memSize;
 }
 /**
@@ -239,7 +248,7 @@ void* OSMalloc(uint32_t size) {
 	int32_t st=DisCpuInter();
 	void* res = _Malloc(OS_USE_MEM_AREA_INX, size);
 	RestoreCpuInter(st);
-    if(!res) {
+    if(res) {
         memset(res, 0, size);
     }
 	return res;

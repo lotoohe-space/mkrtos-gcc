@@ -75,7 +75,7 @@ int32_t lock_mutex(int32_t mt_l){
             uint32_t t;
             t = DisCpuInter();
             CUR_TASK->prio = max_prio;
-            if (add_task(CUR_TASK) < 0) {
+            if (add_task(CUR_TASK,0) < 0) {
                 //没有足够的内存了，恢复之前的
                 CUR_TASK->prio = mx->m_tk_prev_prio;
                 RestoreCpuInter(t);
@@ -120,7 +120,7 @@ int32_t unlock_mutex(int32_t mt_l){
         t = DisCpuInter();
         old_prio = mx->m_who_lock->prio;
         mx->m_who_lock->prio = mx->m_tk_prev_prio;
-        if (add_task(mx->m_who_lock)) {
+        if (add_task(mx->m_who_lock,0)) {
             CUR_TASK->prio = old_prio;
             RestoreCpuInter(t);
             goto next;

@@ -1,15 +1,15 @@
 #include "netif/ethernetif.h" 
-#include "dm9000.h"  
+#include "arch/bsp/dm9000.h"
 //#include "lwip_comm.h" 
 //#include "malloc.h"
 #include "netif/etharp.h"  
 #include "string.h"  
 //#include "includes.h"
 #include "lwip/timeouts.h"
-#include "sem.h"
-#include "net_init.h" 	   
+#include "mkrtos/knl_sem.h"
+#include "arch/bsp/net_init.h"
 
-extern SemHandler* dm9000input;		//DM9000接收数据信号量
+extern sys_sem_t dm9000input;		//DM9000接收数据信号量
 
 
 //由ethernetif_init()调用用于初始化硬件
@@ -52,13 +52,13 @@ static struct pbuf * low_level_input(struct netif *netif)
 
 err_t ethernetif_input(struct netif *netif)
 {
-	uint32 _err;
+	uint32_t _err;
 	err_t err;
 	struct pbuf *p;
 	while(1)
 	{
-		_err=SemPendISR(dm9000input,0xffffffff);		//请求信号量
-		if(_err == NoneError)
+		_err=sem_pend(dm9000input,0xffffffff);		//请求信号量
+		if(_err == 0)
 		{
 			while(1)
 			{

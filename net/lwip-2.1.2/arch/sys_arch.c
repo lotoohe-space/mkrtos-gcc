@@ -35,6 +35,8 @@
 #include <lwip/arch.h>
 #if !NO_SYS
 #include "sys_arch.h"
+#include "mkrtos/mem.h"
+
 #endif
 #include <lwip/stats.h>
 #include <lwip/debug.h>
@@ -44,81 +46,82 @@
 
 const void * const pvNullPointer = (mem_ptr_t*)0xffffffff;
 
-u32_t
-sys_jiffies(void)
+u32_t sys_jiffies(void)
 {
   return sysTasks.sysRunCount;
 }
 
-u32_t
-sys_now(void)
+u32_t sys_now(void)
 {
   return sysTasks.sysRunCount;
 }
 
-void
-sys_init(void)
+void sys_init(void)
 {
 }
 
 #if !NO_SYS
 
-err_t
-sys_sem_new(sys_sem_t *sem, u8_t count)
+err_t sys_sem_new(sys_sem_t *sem, u8_t count)
 {
-  LWIP_ASSERT("sem != NULL", sem != NULL);
-  *sem = SemCreateEx(count,65535);
-	if(*sem==NULL){
-		return ERR_MEM;
-	}
-  return ERR_OK;
+    LWIP_ASSERT("sem != NULL", sem != NULL);
+    struct sem_hdl * sem_h;
+    sem_h= sem_create(count,65535);
+    if(!sem_h){
+        return ERR_MEM;
+    }
+    *sem=sem_h;
+    return ERR_OK;
 }
 
-void
-sys_sem_free(sys_sem_t *sem)
+void sys_sem_free(sys_sem_t *sem)
 {
-  LWIP_ASSERT("sem != NULL", sem != NULL);
-  SemFree(*sem);
+    LWIP_ASSERT("sem != NULL", sem != NULL);
+    sem_free(sem);
 }
 
-void
-sys_sem_set_invalid(sys_sem_t *sem)
+void sys_sem_set_invalid(sys_sem_t *sem)
 {
-	if(sem==NULL)sem=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
-  LWIP_ASSERT("sem != NULL", sem != NULL);
-  (*sem)=0;
+    if(sem==NULL){
+        sem=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值
+    }
+    LWIP_ASSERT("sem != NULL", sem != NULL);
+    (*sem)=0;
 }
 
 /* semaphores are 1-based because RAM is initialized as 0, which would be valid */
-u32_t
-sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout)
+u32_t sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout)
 {
-	if(sem==NULL)sem=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
-  LWIP_ASSERT("sem != NULL", sem != NULL);
-	if(!timeout){
-		if(SemPendISR(*sem,0xFFFFFFFF)!=NoneError){
-			return 1;
-		}
-	}else{
-		if(SemPendISR(*sem,timeout)!=NoneError){
-			return 1;
-		}
-	}
-	return SYS_ARCH_TIMEOUT;
+    if(sem==NULL)sem=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值
+    LWIP_ASSERT("sem != NULL", sem != NULL);
+    if(!timeout){
+        if(sem_pend(*sem,0xFFFFFFFF)!=0){
+            return 1;
+        }
+    }else{
+        if(sem_pend(*sem,timeout)!=0){
+            return 1;
+        }
+    }
+    return SYS_ARCH_TIMEOUT;
 }
 
 void
 sys_sem_signal(sys_sem_t *sem)
 {
-		if(sem==NULL)sem=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
-  LWIP_ASSERT("sem != NULL", sem != NULL);
-	SemPostISR(*sem);
+    if(sem==NULL)sem=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值
+    LWIP_ASSERT("sem != NULL", sem != NULL);
+    sem_post(*sem);
 }
 
 void
 sys_arch_msleep(u32_t delay_ms)
 {
-  OSTaskDelay(-1,delay_ms);
+    extern int sys_nanosleep(const struct timespec *req, struct timespec *rem);
+    struct timespec tims;
+    tims.tv_nsec=1000*1000*(delay_ms%1000);
+    tims.tv_sec=delay_ms/1000;
+    sys_nanosleep(&tims,NULL);
 }
 #if !LWIP_COMPAT_MUTEX
 err_t
@@ -164,18 +167,18 @@ sys_mutex_unlock(sys_mutex_t *mutex)
 sys_thread_t
 sys_thread_new(const char *name, lwip_thread_fn function, void *arg, int stacksize, int prio)
 {
-	OSError err;
-	TaskCreatePar tcp;
-
-	tcp.taskFun=function;
-	tcp.arg0=(void*)arg;
-	tcp.arg1=0;
-	tcp.prio=prio;
-	tcp.userStackSize=0;
-	tcp.kernelStackSize=stacksize;
-	tcp.taskName=name;
-	sys_thread_t pid= SVCTaskCreate(&tcp,NULL,&err);
-	return pid;
+#include <sched.h>
+	extern int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg);
+//    void *mem=OSMalloc(stacksize);
+//    if(!mem){
+//        return -1;
+//    }
+    int ret;
+    ret=sys_clone(function,NULL,CLONE_FS|CLONE_VM|CLONE_FILES|CLONE_PARENT,arg);
+//    if(ret<0){
+//        OSFree(mem);
+//    }
+	return ret;
 }
 
 err_t
@@ -183,7 +186,7 @@ sys_mbox_new(sys_mbox_t *mbox, int size)
 {
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
   LWIP_ASSERT("size >= 0", size >= 0);
-	*mbox=MsgInit(size,4);
+	*mbox=msg_create(size,4);
 	if(*mbox==0){
 		return ERR_MEM;
 	}
@@ -195,16 +198,15 @@ sys_mbox_free(sys_mbox_t *mbox)
 {
   /* parameter check */
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
-	
-  MsgFree(*mbox);
+  msg_free(*mbox);
 }
 
 void
 sys_mbox_set_invalid(sys_mbox_t *mbox)
 {
-	if(*mbox==NULL)*mbox=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
-  LWIP_ASSERT("mbox != NULL", mbox != NULL);
-	*mbox=0;
+    if(*mbox==NULL)*mbox=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值
+    LWIP_ASSERT("mbox != NULL", mbox != NULL);
+    *mbox=0;
 }
 
 void
@@ -212,7 +214,7 @@ sys_mbox_post(sys_mbox_t *q, void *msg)
 {
 	if(*q==NULL)*q=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值
  
-	MsgPutISR(*q,(uint8_t*)&msg,0xFFFFFFFF);
+	msg_put(*q,(uint8_t*)&msg,0xFFFFFFFF);
 }
 
 err_t
@@ -220,7 +222,7 @@ sys_mbox_trypost(sys_mbox_t *q, void *msg)
 {
 	if(*q==NULL)*q=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
 	
-	if(MsgPutISR(*q,(uint8_t*)&msg,0)!=NoneError){
+	if(msg_put(*q,(uint8_t*)&msg,0)!=0){
 		return ERR_TIMEOUT;
 	}
   return ERR_OK;
@@ -237,11 +239,11 @@ sys_arch_mbox_fetch(sys_mbox_t *q, void **msg, u32_t timeout)
 {
 	if(*q==NULL)*q=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
 	if(timeout==0){
-		if(MsgGetISR(*q,(uint8*)msg,0xffffffff)!=NoneError){
+		if(msg_get(*q,(uint8_t*)msg,0xffffffff)!=0){
 			return 1;
 		}
 	}else{
-		if(MsgGetISR(*q,(uint8*)msg,timeout)!=NoneError){
+		if(msg_get(*q,(uint8_t*)msg,timeout)!=0){
 			return SYS_ARCH_TIMEOUT;
 		}
 	}
@@ -252,7 +254,7 @@ u32_t
 sys_arch_mbox_tryfetch(sys_mbox_t *q, void **msg)
 {
 	if(*q==NULL)*q=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
-	if(MsgGetISR(*q,(uint8*)msg,0)!=NoneError){
+	if(msg_get(*q,(uint8_t*)msg,0)!=0){
 		return SYS_ARCH_TIMEOUT;
 	}
 	return ERR_OK;

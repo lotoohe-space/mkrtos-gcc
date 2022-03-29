@@ -24,7 +24,7 @@ int32_t tty_def_line_read(struct tty_struct * tty,struct file* fp,uint8_t *buf,i
 int32_t tty_def_line_write(struct tty_struct * tty,struct file* fp,uint8_t *buf,int32_t count);
 
 
-#define TTY_MAX_NUM 6
+#define TTY_MAX_NUM 3
 struct tty_struct ttys[TTY_MAX_NUM]={0};
 struct tty_line tty_lines[TTY_MAX_NUM]={0};
 

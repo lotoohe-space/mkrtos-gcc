@@ -38,8 +38,8 @@ void ExternInter(void* sp){
 //	}else{
 //		用户线程调用中断
 //	}
-    extern void do_signal_isr(void* sp);
-    do_signal_isr(sp);
+   // extern void do_signal_isr(void* sp);
+   // do_signal_isr(sp);
 }
 
 //注册中断函数

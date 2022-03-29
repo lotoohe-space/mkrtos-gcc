@@ -14,14 +14,16 @@ int32_t  do_kill_pid(pid_t pid,int32_t sig){
    uint32_t t;
    t=DisCpuInter();
    tmp= find_task(pid);
-   if(tmp==NULL){
+   if(tmp==CUR_TASK && tmp->PID!=pid){
     return -ESRCH;
    }
    //发送kill信号
-    inner_set_sig(SIGKILL);
-   if(!sig) {//发送指定信号
-       inner_set_sig(sig);
+   if(sig) {
+       inner_set_task_sig(tmp,sig);
    }
+//   if(sig) {//发送指定信号
+//       inner_set_sig(sig);
+//   }
    RestoreCpuInter(t);
    return 0;
 }
@@ -38,10 +40,12 @@ int32_t do_kill_group(pid_t pgid,int32_t sig){
     tmp=sysTasks.allTaskList;
     while(tmp){
         if(pgid==tmp->PGID){
-            inner_set_sig(SIGKILL);
-            if(!sig) {//发送指定信号
-                inner_set_sig(sig);
+            if(sig) {
+                inner_set_task_sig(tmp,sig);
             }
+//            if(sig) {//发送指定信号
+//                inner_set_sig(sig);
+//            }
         }
         tmp=tmp->nextAll;
     }

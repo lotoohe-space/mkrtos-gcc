@@ -74,13 +74,13 @@
 //∫Í∂®“Â
 #ifndef LWIP_PLATFORM_ASSERT
 #define LWIP_PLATFORM_ASSERT(x) \
-//    do \
-//    {   printf("Assertion \"%s\" failed at line %d in %s\r\n", x, __LINE__, __FILE__); \
-//    } while(0)
+    do \
+    {   printk("Assertion \"%s\" failed at line %d in %s\r\n", x, __LINE__, __FILE__); \
+   } while(0)
 #endif
 
 #ifndef LWIP_PLATFORM_DIAG
-//#define LWIP_PLATFORM_DIAG(x) do {printf x;} while(0)
+#define LWIP_PLATFORM_DIAG(x) do {printk x;} while(0)
 #endif
 
 #endif /* __CC_H__ */

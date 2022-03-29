@@ -7,7 +7,7 @@
 
 __BEGIN_DECLS
 
-#define PTHREAD_STACK_SIZE	16384
+#define PTHREAD_STACK_SIZE	2048
 
 #if defined(__alpha__) || defined(__x86_64__) || defined(__sparc64__)
 #define PTHREAD_STACK_MAXSIZE (32<<20)
@@ -16,7 +16,7 @@ __BEGIN_DECLS
 #else
 #define PTHREAD_STACK_MAXSIZE (8<<20)
 #endif
-#define PTHREAD_STACK_MINSIZE	16384
+#define PTHREAD_STACK_MINSIZE	2048
 
 
 #define PTHREAD_THREADS_MAX	1024

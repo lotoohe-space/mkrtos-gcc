@@ -15,7 +15,7 @@
 #define MEMP_NUM_SYS_TIMEOUT    		8							//MEMP_NUM_SYS_TIMEOUT:能够同时激活的timeout个数
 
 //pbuf选项
-#define PBUF_POOL_SIZE          		25							//PBUF_POOL_SIZE:pbuf内存池个数
+#define PBUF_POOL_SIZE          		16							//PBUF_POOL_SIZE:pbuf内存池个数
 #define PBUF_POOL_BUFSIZE     			1528						//PBUF_POOL_BUFSIZE:每个pbuf内存池大小
 
 #define LWIP_TCP                		1  							//使用TCP
@@ -78,7 +78,7 @@
 
 #define LWIP_TCPIP_CORE_LOCKING_INPUT   1
 
-#define LWIP_TIMEVAL_PRIVATE 1
+#define LWIP_TIMEVAL_PRIVATE 0
 #endif /* __LWIPOPTS_H__ */
 
 

@@ -1,7 +1,7 @@
 
 #include "lwip/apps/lwiperf.h"
 
-void LwiperfInit(void){
+void lwiperf_init(void){
 	
 	ip_addr_t  perf_server_ip;  
 	IP_ADDR4( &perf_server_ip, 192, 168, 1, 30 ); //IP 为 407 自己的 静态IP

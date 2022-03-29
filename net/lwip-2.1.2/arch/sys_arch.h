@@ -50,18 +50,20 @@
 //#define sys_mbox_valid(mbox) ((mbox != NULL) && ((mbox)->sem != NULL)  && ((mbox)->sem != (void*)-1))
 //#define sys_mbox_valid_val(mbox) (((mbox).sem != NULL)  && ((mbox).sem != (void*)-1))
 #include <lwip/arch.h>
-#include "sem.h"
-#include "msg.h"
-#include "mutex.h"
+#include "ipc/ipc.h"
 #include "mkrtos/task.h"
-#include "arch.h"
-typedef SemHandler *sys_sem_t;    //LWIP使用的信号量
-typedef MutexHandler *sys_mutex_t; 	//LWIP使用的互斥信号量
-typedef MsgHandler *sys_mbox_t;    //LWIP使用的消息邮箱,其实就是UCOS中的消息队列
-typedef int16_t sys_thread_t;//线程任务
+#include <arch/arch.h>
+
+#include <mkrtos/knl_msg.h>
+#include <mkrtos/knl_sem.h>
+
+typedef struct sem_hdl* sys_sem_t;          //LWIP使用的信号量
+//typedef int sys_mutex_t; 	    //LWIP使用的互斥信号量
+typedef struct msg_hdl* sys_mbox_t;         //LWIP使用的消息邮箱
+typedef pid_t sys_thread_t;   //线程任务
 
 ///需要完成移植////////
-#define SYS_ARCH_DECL_PROTECT(lev) u32_t lev
+#define SYS_ARCH_DECL_PROTECT(lev) uint32_t lev
 #define SYS_ARCH_PROTECT(lev) lev=DisCpuInter()
 #define SYS_ARCH_UNPROTECT(lev) RestoreCpuInter(lev)
 

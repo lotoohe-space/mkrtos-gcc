@@ -124,19 +124,19 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
     CUR_TASK->exec=e;
     //4.重新初始化栈
     if(CUR_TASK->userStackSize!=0){
-        CUR_TASK->skInfo.pspStack=(void*)(&(((uint32_t*)CUR_TASK->memLowStack)[ CUR_TASK->userStackSize+CUR_TASK->kernelStackSize-1]));
+        CUR_TASK->skInfo.pspStack=(void*)(&(((uint32_t*)CUR_TASK->memLowStack)[ CUR_TASK->userStackSize-1]));
     }else{
         CUR_TASK->skInfo.pspStack=(void*)(~(0L));
     }
-    CUR_TASK->skInfo.mspStack=(void*)(&(((uint32_t*)CUR_TASK->memLowStack)[CUR_TASK->kernelStackSize-1]));
+    CUR_TASK->skInfo.mspStack=(void*)(&(((uint32_t*)CUR_TASK->knl_low_stack)[CUR_TASK->kernelStackSize-1]));
 
     if(CUR_TASK->userStackSize!=0){
         /*设置栈的初始化寄存器*/
         CUR_TASK->skInfo.pspStack=
                 OSTaskSetReg(CUR_TASK->skInfo.pspStack,entry,argc_len,argv,envp);
     }
-    CUR_TASK->skInfo.mspStack=
-            OSTaskSetReg(CUR_TASK->skInfo.mspStack,entry,argc_len,argv,envp);
+//    CUR_TASK->skInfo.mspStack=
+//            OSTaskSetReg(CUR_TASK->skInfo.mspStack,entry,argc_len,argv,envp);
 
     if(CUR_TASK->userStackSize==0){
         //线程在内核模式;
@@ -147,7 +147,8 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
     CUR_TASK->skInfo.svcStatus=0;
     CUR_TASK->status=TASK_RUNNING;
 
-    CUR_TASK->sig_bmp=0;
+    CUR_TASK->sig_bmp[0]=0;
+    CUR_TASK->sig_bmp[1]=0;
     for(int i=0;i<_NSIG;i++) {
         CUR_TASK->signals[i]._u._sa_handler=SIG_DFL;
     }

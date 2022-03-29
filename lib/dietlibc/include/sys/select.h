@@ -9,7 +9,7 @@ __BEGIN_DECLS
 typedef long int fd_mask;
 
 #define NFDBITS	(8 * sizeof(unsigned long))
-#define FD_SETSIZE	1024
+#define FD_SETSIZE	16  /*Ô­À´ÊÇ1024*/
 #define __FDSET_LONGS	(FD_SETSIZE/NFDBITS)
 #define __FDELT(d)	((d) / NFDBITS)
 #define __FDMASK(d)	(1UL << ((d) % NFDBITS))

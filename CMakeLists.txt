@@ -34,7 +34,7 @@ add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-le
 
 # Enable assembler files preprocessing
 add_compile_options($<$<COMPILE_LANGUAGE:ASM>:-x$<SEMICOLON>assembler-with-cpp>)
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     message(STATUS "Maximum optimization for speed")
     add_compile_options(-Ofast)
@@ -54,6 +54,7 @@ add_compile_options(-D__ARMEB__)
 add_compile_options(-D__ARM_ARCH_8M_BASE__)
 add_compile_options(-D__arm__)
 #add_compile_options(-E)
+add_compile_options(-DDEBUG)
 add_compile_options(-D__dietlibc__)
 add_compile_options(-mfloat-abi=softfp)
 add_compile_options(-DUSE_STDPERIPH_DRIVER)
@@ -74,9 +75,10 @@ include_directories(
         elf
         app/shell/include
 
-#        net/lwip-2.1.2
-#        net/lwip-2.1.2/arch
-#        net/lwip-2.1.2/src/include
+        net/lwip-2.1.2
+        net/lwip-2.1.2/arch
+        net/lwip-2.1.2/src/include
+
 #        lib/mpfr-master/src/arm
 #        lib/mpfr-master/src/
 #        lib/config/arm
@@ -88,7 +90,6 @@ include_directories(
 #        app/dash
 
         app/rc-1.7
-        /
         /
    )
 
@@ -129,16 +130,19 @@ file(GLOB_RECURSE SOURCES
         #        "lib/dietlibc/arm/*.*"
         #        "lib/dietlibc/contrib/*.*"
         #        "lib/dietlibc/libdl/*.*"
-                "lib/dietlibc/libpthread/*.*"
+#                "lib/dietlibc/libpthread/*.*"
         #        "lib/config/arm/*.*"
 
-
-#        "net/lwip-2.1.2/arch/*.*"
-#        "net/lwip-2.1.2/src/api/*.*"
-#        "net/lwip-2.1.2/src/core/*.*"
-#        "net/lwip-2.1.2/src/core/ipv4/*.*"
-#        "net/lwip-2.1.2/src/netif/ethernet.c"
-#        "net/lwip-2.1.2/src/netif/ethernetif.c"
+        "net/net.c"
+        "net/lwiperf_interface.c"
+        "net/tftp_interface.c"
+        "net/lwip-2.1.2/arch/*.*"
+        "net/lwip-2.1.2/src/api/*.*"
+        "net/lwip-2.1.2/src/core/*.*"
+        "net/lwip-2.1.2/src/core/ipv4/*.*"
+        "net/lwip-2.1.2/src/netif/ethernet.c"
+        "net/lwip-2.1.2/src/netif/ethernetif.c"
+        "net/lwip-2.1.2/src/apps/lwiperf/*.*"
 
 
 

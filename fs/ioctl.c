@@ -3,7 +3,7 @@
 #include <mkrtos/task.h>
 
 //io¿ØÖÆ
-int sys_ioctl(int fd, uint32_t cmd, uint32_t arg){
+int file_ioctl(int fd, uint32_t cmd, uint32_t arg){
     if(fd>=NR_FILE
        || CUR_TASK->files[fd].used==0
     ){

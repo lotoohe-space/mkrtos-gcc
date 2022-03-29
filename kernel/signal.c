@@ -6,8 +6,18 @@
 #include <mkrtos/task.h>
 #include <errno.h>
 #include <signal.h>
+#include <mkrtos/task.h>
 void do_exit(int32_t exitCode);
-
+static int get_bit(unsigned long bits[_NSIG_WORDS],int inx){
+    return (bits[inx/32]>>(inx%32))&0x1;
+}
+static void set_bit(unsigned long bits[_NSIG_WORDS],int inx,int status){
+    if(status){
+        bits[inx/32]|=(0x1)<<(inx%32);
+    }else{
+        bits[inx/32]&=~(0x1<<(inx%32));
+    }
+}
 //发送SIGCHLD给父进程
 void sig_chld(struct task *tk){
     struct sigaction *sig;
@@ -31,21 +41,40 @@ void sig_chld(struct task *tk){
 }
 int32_t inner_set_sig(uint32_t signum){
     if (
-            signum<1 || signum>32
+            signum<1 || signum>_NSIG
             ){
         return -EINVAL;
     }
     //设置相应的位
-    CUR_TASK->sig_bmp|=(1<<(signum-1));
+    set_bit(CUR_TASK->sig_bmp,signum-1,1);
+//    CUR_TASK->sig_bmp[0]|=(1<<(signum-1));
     //收到信号的进程都应该被设置为运行状态
-    if(CUR_TASK->status!=TASK_RUNNING){
+    if(CUR_TASK->status!=TASK_RUNNING
+     &&CUR_TASK->status!=TASK_CLOSED
+    ){
         task_run();
     }
     return 0;
 }
-int32_t inner_set_task_sig(pid_t pid,uint32_t signum){
+int32_t inner_set_task_sig(struct task *tk,uint32_t signum){
     if (
-            signum<1 || signum>32
+            signum<1 || signum>_NSIG
+            ){
+        return -EINVAL;
+    }
+    //设置相应的位
+    set_bit(tk->sig_bmp,signum-1,1);
+    //收到信号的进程都应该被设置为运行状态
+    if(tk->status!=TASK_RUNNING
+       &&tk->status!=TASK_CLOSED
+            ){
+        task_run_1(tk);
+    }
+    return 0;
+}
+int32_t inner_set_pid_sig(pid_t pid,uint32_t signum){
+    if (
+            signum<1 || signum>_NSIG
             ){
         return -EINVAL;
     }
@@ -58,9 +87,11 @@ int32_t inner_set_task_sig(pid_t pid,uint32_t signum){
         return -1;
     }
     //设置相应的位
-    tk->sig_bmp|=(1<<(signum-1));
+    set_bit(tk->sig_bmp,signum-1,1);
+//    tk->sig_bmp[0]|=(1<<(signum-1));
     //收到信号的进程都应该被设置为运行状态
-    if(tk->status!=TASK_RUNNING){
+    if(CUR_TASK->status!=TASK_RUNNING
+       &&CUR_TASK->status!=TASK_CLOSED){
         task_run_1(tk);
     }
     RestoreCpuInter(t);
@@ -69,51 +100,60 @@ int32_t inner_set_task_sig(pid_t pid,uint32_t signum){
 
 int32_t sys_sgetmask()
 {
-    return CUR_TASK->sig_mask;
+    return CUR_TASK->sig_mask[0];
 }
 
 int32_t sys_ssetmask(int32_t newmask)
 {
-    int32_t old=CUR_TASK->sig_mask;
+    int32_t old=CUR_TASK->sig_mask[0];
 
-    CUR_TASK->sig_mask = newmask & ~(1<<(SIGKILL-1)) & ~(1<<(SIGSTOP-1));
+    CUR_TASK->sig_mask[0]= newmask & ~(1<<(SIGKILL-1)) & ~(1<<(SIGSTOP-1));
     return old;
 }
+
 int32_t sys_sigprocmask(int how, const sigset_t  *set, sigset_t  *oldset){
-    unsigned long tmp_mask=0;
+    unsigned long tmp_mask[_NSIG_WORDS]={0};
 
     if(oldset){
-        oldset->sig[0]=CUR_TASK->sig_mask;
-        oldset->sig[1]=0;
+        oldset->sig[0]=CUR_TASK->sig_mask[0];
+        oldset->sig[1]=CUR_TASK->sig_mask[1];
     }
-    switch(how){
-        case SIG_BLOCK:
-            //值代表的功能是将newset所指向的信号集中所包含的信号加到当前的信号掩码中，作为新的信号屏蔽字(原有信号屏蔽字 + set屏蔽字)。
-            for(int i=0;i<32;i++){
-                if(((*set).sig[0]>>i)&0x1){
-                    CUR_TASK->sig_mask|=(1<<i);
+    if(set) {
+        switch (how) {
+            case SIG_BLOCK:
+                //值代表的功能是将newset所指向的信号集中所包含的信号加到当前的信号掩码中，作为新的信号屏蔽字(原有信号屏蔽字 + set屏蔽字)。
+                for (int i = 0; i < _NSIG; i++) {
+                    if (((*set).sig[0] >> i) & 0x1) {
+                        CUR_TASK->sig_mask[0] |= (1 << i);
+                    }
                 }
-            }
-            break;
-        case SIG_UNBLOCK:
-            //将参数newset所指向的信号集中的信号从当前的信号掩码中移除。
-            for(int i=0;i<32;i++){
-                if(((*set).sig[0]>>i)&0x1){
-                    CUR_TASK->sig_mask&=~(1<<i);
+                break;
+            case SIG_UNBLOCK:
+                //将参数newset所指向的信号集中的信号从当前的信号掩码中移除。
+                for (int i = 0; i < _NSIG; i++) {
+                    int bit = get_bit((*set).sig, i);
+                    if(bit) {
+                        set_bit(CUR_TASK->sig_mask, i, 0);
+                    }
+//                if(((*set).sig[0]>>i)&0x1){
+//                    CUR_TASK->sig_mask[0]&=~(1<<i);
+//                }
                 }
-            }
-            break;
-        case SIG_SETMASK:
-            //设置当前信号掩码为参数newset所指向的信号集中所包含的信号。
-            for(int i=0;i<32;i++){
-                if(((*set).sig[0]>>i)&0x1){
-                    tmp_mask&=~(1<<i);
+                break;
+            case SIG_SETMASK:
+                //设置当前信号掩码为参数newset所指向的信号集中所包含的信号。
+                for (int i = 0; i < _NSIG; i++) {
+                    int bit = get_bit((*set).sig, i);
+                    set_bit(tmp_mask, i, bit);
+//                if(((*set).sig[0]>>i)&0x1){
+//                    tmp_mask&=~(1<<i);
+//                }
                 }
-            }
-            CUR_TASK->sig_mask=tmp_mask;
-            break;
+                CUR_TASK->sig_mask[0] = tmp_mask[0];
+                CUR_TASK->sig_mask[1] = tmp_mask[1];
+                break;
+        }
     }
-
     return 0;
 }
 extern void rt_sigreturn();
@@ -128,7 +168,7 @@ int32_t sys_signal(int32_t signum, int32_t handler, int32_t restorer)
 {
     struct sigaction temp;
 
-    if (signum<1 || signum>32
+    if (signum<1 || signum>_NSIG
             || signum==SIGKILL
             || signum==SIGSTOP
             ) {
@@ -145,6 +185,31 @@ int32_t sys_signal(int32_t signum, int32_t handler, int32_t restorer)
     CUR_TASK->signals[signum-1] = temp;
     return handler;
 }
+void do_signal_isr(void* sp);
+//sigsuspend( )系统调用将进程置于TASK_INTERRUPTIBLE状态，
+// 在阻断了由掩码参数指向的位掩码阵列指定的标准信号后。
+// 只有当一个未被忽略的、未被屏蔽的信号被送到它面前时，
+// 该进程才会被唤醒。相应的sys_sigsuspend( ) 服务例程执行这些
+int sys_sigsuspend(void* psp,const sigset_t *sigmask){
+    int32_t ret;
+    sigset_t oldset;
+    //设置屏蔽字
+    ret=sys_sigprocmask(SIG_SETMASK, sigmask,&oldset);
+    sys_pause();
+
+    //执行信号处理函数
+    //内核要调用用户态函数
+    //先伪造它的用户栈
+    //然后以用户态模式返回
+
+    do_signal_isr(psp);
+
+    ret=sys_sigprocmask(SIG_SETMASK, &oldset,NULL);
+
+
+    return -EINTR;
+}
+
 // 如果参数act不是一个空指针，它将指向一个结构，指定与指定信号相关的动作。
 // 与指定信号相关联的结构。
 // 如果参数oact不是一个空指针，那么之前与信号相关的动作 被存储在参数oact所指向的位置。
@@ -161,7 +226,7 @@ int32_t sys_signal(int32_t signum, int32_t handler, int32_t restorer)
 
 int sys_sigaction(int sig, const struct sigaction *restrict act,struct sigaction *restrict oact){
 
-    if (sig<1 || sig>32 || sig==SIGKILL || sig==SIGSTOP){
+    if (sig<1 || sig>_NSIG || sig==SIGKILL || sig==SIGSTOP){
         return -EINVAL;
     }
     if(!act){
@@ -178,7 +243,8 @@ int sys_sigaction(int sig, const struct sigaction *restrict act,struct sigaction
         CUR_TASK->signals[sig - 1].sa_mask.sig[0]=0;
         CUR_TASK->signals[sig - 1].sa_mask.sig[1]=0;
     }else {
-        CUR_TASK->signals[sig - 1].sa_mask.sig[0] |= (1 << (sig - 1));
+        set_bit(CUR_TASK->signals[sig - 1].sa_mask.sig,sig-1,1);
+//        CUR_TASK->signals[sig - 1].sa_mask.sig[0] |= (1 << (sig - 1));
     }
 //    if(CUR_TASK->signals[sig-1].sa_flags&SA_RESETHAND){
 //        CUR_TASK->signals[sig - 1].sa_mask.sig[0]=0;
@@ -190,7 +256,9 @@ int sys_rt_sigaction(int signum, const struct sigaction * action,
                      struct sigaction * oldaction){
     return sys_sigaction(signum,action,oldaction);
 }
-
+int sys_rt_sigsuspend(void*psp ,const sigset_t *sigmask,int bytes) {
+    return sys_sigsuspend(psp,sigmask);
+}
 /**
  * 这里处理信号，信号处理是在中断调用结束后处理的，信号不能够在
  * @param signr
@@ -200,7 +268,6 @@ int32_t do_signal(void *cur_psp,uint32_t signr){
     struct sigaction  *sig;
     if(
             CUR_TASK->status==TASK_CLOSED
-//        ||CUR_TASK->skInfo.svcStatus==1
         ||CUR_TASK->userStackSize==0
         ){
         // 任务必须没有正在执行系统调用
@@ -209,7 +276,8 @@ int32_t do_signal(void *cur_psp,uint32_t signr){
     }
     sig = &(CUR_TASK->signals[signr - 1]);
     //先复位信号
-    sysTasks.currentTask->sig_bmp&=~(1<<(signr-1));
+    set_bit(sysTasks.currentTask->sig_bmp,signr-1,0);
+   // sysTasks.currentTask->sig_bmp&=~(1<<(signr-1));
     //忽略信号
     if(sig->sa_handler==SIG_IGN){
         return -1;
@@ -274,6 +342,7 @@ int32_t do_signal(void *cur_psp,uint32_t signr){
 //        *(_psp) = ;
         //不阻塞，则压入阻塞列表
         *(_psp) = sig->sa_mask.sig[0];
+        *(--_psp) = sig->sa_mask.sig[1];
         *(--_psp) = (uint32_t)0x01000000L; /* xPSR */
 //    }else{
 //        *(_psp) = 0;
@@ -307,7 +376,9 @@ int32_t do_signal(void *cur_psp,uint32_t signr){
         //恢复默认值
         sig->sa_flags=0;
     }
-    CUR_TASK->sig_mask|=sig->sa_mask.sig[0];
+
+    CUR_TASK->sig_mask[0]|=sig->sa_mask.sig[0];
+    CUR_TASK->sig_mask[1]|=sig->sa_mask.sig[1];
 //    if(!(sig->sa_flags&SA_NODEFER)) {
 //        //在处理信号时不在收到该信号
 //        sysTasks.currentTask->sig_mask |= (1<<(signr-1));
@@ -325,8 +396,9 @@ int32_t sys_sigreturn(void* psp){
     uint32_t *_psp=psp;
     //针对SA_NODEFER标志，复位sig_mask
 //    sysTasks.currentTask->sig_mask &= ~(1<<(_psp[8]-1));
-    CUR_TASK->sig_mask&=~(_psp[9]);
-    void* newPSP=((uint32_t)psp)+9*4;
+    CUR_TASK->sig_mask[0]&=~(_psp[10]);
+    CUR_TASK->sig_mask[1]&=~(_psp[9]);
+    void* newPSP=((uint32_t)psp)+10*4;
     SetPSP(newPSP);
     return 0;
 }
@@ -345,17 +417,25 @@ int32_t sys_rt_sigprocmask(int how, const sigset_t  *set, sigset_t  *oldset,int 
 //#define __NR_rt_sigsuspend		(__NR_SYSCALL_BASE+179)
 
 void do_signal_isr(void* sp){
-    if(CUR_TASK->status!=TASK_CLOSED){
+    if(CUR_TASK
+    &&CUR_TASK->skInfo.stackType!=2
+    &&CUR_TASK->status!=TASK_CLOSED
+    ){
         //过滤掉阻塞的
-        uint32_t bBmp=(~CUR_TASK->sig_mask) & CUR_TASK->sig_bmp;
-        if(!bBmp) {
+        uint32_t bBmp[2];
+        bBmp[0]=(~CUR_TASK->sig_mask[0]) & CUR_TASK->sig_bmp[0];
+        bBmp[1]=(~CUR_TASK->sig_mask[1]) & CUR_TASK->sig_bmp[1];
+        if((!bBmp[0]) && (!bBmp[1])) {
             return ;
         }
         for (uint32_t i = 0; i < _NSIG; i++) {
             //检查信号是否有效
-            if (!(bBmp & (1 << i))) {
+            if(!get_bit(bBmp,i)){
                 continue;
             }
+//            if (!(bBmp & (1 << i))) {
+//                continue;
+//            }
             //信号一个一个处理，处理完成则返回,下次到来在处理另外一个
             if (do_signal(sp, i + 1) == 1) {
                 task_sche();

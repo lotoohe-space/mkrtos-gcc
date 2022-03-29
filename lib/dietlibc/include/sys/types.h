@@ -120,6 +120,7 @@ typedef long int fpos_t;
 
 #define __socklen_t_defined
 typedef uint32_t socklen_t;
+#define SA_FAMILY_T_DEFINED 1
 typedef uint16_t sa_family_t;
 
 

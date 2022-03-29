@@ -58,25 +58,20 @@ typedef struct inode {
     uint32_t i_rdev_no;
 
     //上面的数据需要存到磁盘
-
     struct inode *i_mount;
-    //设备号码
-    struct wait_queue *i_wait_q;
-    //用来锁这个inode
-    Atomic_t i_lock;
-
+    struct wait_queue *i_wait_q;//这个inode的等待队列
+    Atomic_t i_lock;//用来锁这个inode
     //打开计数
 //    Atomic_t i_open_count;
-    //使用计数
-    Atomic_t i_used_count;
-    //是否被修改过
-    uint8_t i_dirt;
-    struct super_block *i_sb;
-    struct inode_operations* i_ops;
+    Atomic_t i_used_count;//使用计数
+    struct wait_queue *poll_wait;//poll_wait的inode 的队列
+//    struct wait_queue *w_wait;//等待写这个inode 的队列
+    uint8_t i_dirt;//是否被修改过
+    struct super_block *i_sb; //inode的sb
+    struct inode_operations* i_ops;//inode的ops
     //文件系统编号，通过该编号查找到对应的文件系统
-    uint32_t i_fs_no;
-    //文件系统拥有的私有信息
-    void *i_fs_priv_info;
+//    uint32_t i_fs_no;
+    void *i_fs_priv_info;//文件系统拥有的私有信息
 }*p_inode, inode;
 
 //SupberBlock节点
@@ -113,6 +108,8 @@ struct file {
     struct inode * f_inode;		/* 文件对应的inode */
     struct file_operations * f_op; /*文件对应的操作符*/
     uint32_t used;   /*是否被使用标记*/
+    int net_sock;/*网络sock*/
+    uint8_t net_file;/*网络文件*/
 };
 
 #include <dirent.h>
@@ -132,7 +129,8 @@ struct file_operations {
     int (*read) (struct inode *, struct file *, char *, int);
     int (*write) (struct inode *, struct file *, char *, int);
     int (*readdir) (struct inode *, struct file *, struct dirent *, int);
-    int (*select) (struct inode *, struct file *, int, uint32_t *);
+//    int (*select) (struct inode *, struct file *, int, uint32_t *);
+    int (*poll) (struct inode * inode,struct file *fp, void *wait_tb,struct timeval *timeout);
     int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);
     int (*mmap) (struct inode * inode, struct file * fp, unsigned long addr, size_t len , int mask, unsigned long off);
     int (*mumap)(struct inode * inode,void * start ,size_t len);

@@ -15,18 +15,18 @@ extern int sys_mkdir(const char * pathname, int mode);
 
 void fs_init(void){
     //创建设备目录
-    sys_mkdir("/dev",0777);
-    sys_mkdir("/mnt",0777);
-    sys_mkdir("/bin",0777);
-    sys_mkdir("/etc",0777);
+    mkdir("/dev",0777);
+    mkdir("/mnt",0777);
+    mkdir("/bin",0777);
+    mkdir("/etc",0777);
     //null设备
-    sys_mknod(_PATH_DEVNULL,MK_MODE(S_IFCHR,0777),MKDEV(NULL_MAJOR,0));
+    mknod(_PATH_DEVNULL,MK_MODE(S_IFCHR,0777),MKDEV(NULL_MAJOR,0));
     //创建两个终端设备
-    sys_mknod("/dev/tty0",MK_MODE(S_IFCHR,0777),MKDEV(TTY_MAJOR,0));
-    sys_mknod("/dev/tty1",MK_MODE(S_IFCHR,0777),MKDEV(TTY_MAJOR,1));
+    mknod("/dev/tty0",MK_MODE(S_IFCHR,0777),MKDEV(TTY_MAJOR,0));
+    mknod("/dev/tty1",MK_MODE(S_IFCHR,0777),MKDEV(TTY_MAJOR,1));
 
-    sys_mknod("/dev/tty",MK_MODE(S_IFCHR,0777),MKDEV(TTYMAUX_MAJOR,0));
-    sys_mknod(_PATH_CONSOLE,MK_MODE(S_IFCHR,0777),MKDEV(TTYMAUX_MAJOR,0));
+    mknod("/dev/tty",MK_MODE(S_IFCHR,0777),MKDEV(TTYMAUX_MAJOR,0));
+    mknod(_PATH_CONSOLE,MK_MODE(S_IFCHR,0777),MKDEV(TTYMAUX_MAJOR,0));
 
     int res;
     res=open(_PATH_PASSWD,O_RDWR|O_CREAT,0777);

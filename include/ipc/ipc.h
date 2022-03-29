@@ -28,4 +28,16 @@ int32_t mutex_put(sem_t mid) ;
 int32_t lock_mutex(int32_t mt_l);
 int32_t unlock_mutex(int32_t mt_l);
 
+
+int sys_msgget(key_t key,int flag);
+int sys_msgctl(int msgid,int cmd,struct msqid_ds *buf);
+int sys_msgrcv(int msgid,void *ptr,size_t nbytes,long type,int flag);
+int sys_msgsnd(int msgid,const void *ptr,size_t nbytes,int flag);
+
+
+int32_t sys_semget(key_t key,int nsems,int flag);
+int32_t sys_semctl(int semid,int semnum,int cmd,union semun arg);
+int sys_semop(int semid,struct sembuf semoparray[],size_t ops);
+
+
 #endif //UNTITLED1_IPC_H

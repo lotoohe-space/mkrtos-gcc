@@ -23,6 +23,7 @@ uint32_t DisCpuInter(void);
 */
 void RestoreCpuInter(uint32_t s);
 void SetPSP(void* newPSP);
+uint32_t GetPSP(void);
 /**
 * @breif ¿ªÆôCPUÖÐ¶Ï
 */

@@ -249,9 +249,12 @@ void __thread_suspend(_pthread_descr this,int cancel) {
 
 /* restart a thread */
 void __thread_restart(_pthread_descr td) {
+sched_yield();
+sched_yield();
+sched_yield();
+sched_yield();
   kill(td->pid,PTHREAD_SIG_RESTART);
-  sched_yield();
-  sched_yield();
+    sched_yield();
 }
 
 /* restart signal handler */

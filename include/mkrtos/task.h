@@ -89,7 +89,7 @@ struct _stackInfo{
     void *pspStack;
     void *mspStack;
     /**
-    * @brief 使用的是MSP还是PSP 0使用msp 1使用psp
+    * @brief 使用的是MSP还是PSP 0使用msp 1使用psp 2内核线程模式
     */
     uint16_t stackType;
     /**
@@ -126,9 +126,9 @@ typedef struct task{
     uint8_t prio;//任务优先级
     const char*	taskName;// 任务名称
 
-    uint32_t sig_bmp;//信号的位图
+    uint32_t sig_bmp[_NSIG_WORDS];//信号的位图
     struct sigaction signals[_NSIG];//信号处理
-    uint32_t sig_mask;//信号mask
+    uint32_t sig_mask[_NSIG_WORDS];//信号mask
 
     uint32_t alarm;//定时多少ms
 
@@ -251,7 +251,7 @@ extern SysTasks sysTasks;
 
 struct task* find_task(int32_t PID);
 void    task_sche(void);
-int32_t add_task(struct task *add);
+int32_t add_task(struct task *add,uint32_t into_all_ls);
 void    del_task(struct task** task_ls, struct task* del);
 int32_t task_create(PTaskCreatePar tcp);
 
@@ -270,6 +270,7 @@ void update_cur_task(void);
 void task_suspend(void);
 void task_run(void);
 void task_run_1(struct task* tk);
+int32_t sys_pause(void);
 
 //printk.c
 void printk(const char *fmt, ...);
@@ -277,11 +278,25 @@ void fatalk(const char* fmt, ...);
 
 //signal.c
 int32_t inner_set_sig(uint32_t signum);
-int32_t inner_set_task_sig(pid_t pid,uint32_t signum);
+int32_t inner_set_task_sig(struct task *tk,uint32_t signum);
+int32_t inner_set_pid_sig(pid_t pid,uint32_t signum);
 
 //exit.c
 void pre_exit(void);
 
 //sleep.c
+struct sleep_time_queue{
+    struct task* task;
+    struct sleep_time_queue *next;
+    uint32_t slp_ms;
+    uint32_t cur_ms;
+};
+void _do_check_sleep_tim(struct sleep_time_queue *slp_ls);
+void do_check_sleep_tim(void);
 void do_remove_sleep_tim(struct task* tk) ;
+void add_sleep(struct sleep_time_queue **queue,struct sleep_time_queue *add);
+void remove_sleep(struct sleep_time_queue **queue,struct sleep_time_queue *rm);
+int do_nanosleep(struct sleep_time_queue **slp_ls,const struct timespec *req,struct timespec *rem);
+int sys_nanosleep(const struct timespec *req, struct timespec *rem);
+void wake_up_sleep(struct sleep_time_queue *queue);
 #endif //UNTITLED1_TASK_H
