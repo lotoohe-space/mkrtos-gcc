@@ -56,7 +56,7 @@ add_compile_options(-D__arm__)
 #add_compile_options(-E)
 add_compile_options(-DDEBUG)
 add_compile_options(-D__dietlibc__)
-add_compile_options(-mfloat-abi=softfp)
+add_compile_options(-D__SOFTFP__)
 add_compile_options(-DUSE_STDPERIPH_DRIVER)
 add_compile_options(-fno-builtin)
 add_compile_options(-nostdinc)
@@ -126,6 +126,7 @@ file(GLOB_RECURSE SOURCES
         "lib/dietlibc/libstdio/*.*"
         "lib/dietlibc/libugly/*.*"
         "lib/dietlibc/libutf8/*.*"
+        "lib/dietlibc/softfpu/*.*"
 
         #        "lib/dietlibc/arm/*.*"
         #        "lib/dietlibc/contrib/*.*"
