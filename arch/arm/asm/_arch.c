@@ -177,8 +177,8 @@ void RestoreCpuInter(uint32_t s){
 * @brief 手动触发PendSv进行任务切换
 */
 void _TaskSchedule(void){
-    uint32_t t;
-    t=DisCpuInter();
+  //  uint32_t t;
+   // t=DisCpuInter();
     __asm__ __volatile__(
     "LDR R0, =0xE000ED04\n"
     "LDR R1, =0x10000000\n"
@@ -187,7 +187,7 @@ void _TaskSchedule(void){
     :
     :
     );
-    RestoreCpuInter(t);
+  //  RestoreCpuInter(t);
 }
 
 extern void tasks_check(void);

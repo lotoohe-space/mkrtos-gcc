@@ -8,7 +8,7 @@
 #include <string.h>
 #include <sched.h>
 extern PTaskBlock find_task(int32_t PID);
-
+extern int lwip_fork(int s) ;
 //pipe.c
 void do_fork_pipe(struct inode *inode,struct task* new_task,int fd);
 
@@ -167,14 +167,18 @@ int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg){
         for (int i = 0; i < NR_FILE; i++) {
             if (newPtb->files[i].used) {
                 struct inode *tmp;
-                tmp = newPtb->files[i].f_inode;
-                if (tmp) {
-                    if (i < 3) {
-                        tmp->i_ops->default_file_ops->open(tmp, &newPtb->files[i]);
+                if(newPtb->files[i].net_file){
+                    lwip_fork(newPtb->files[i].net_sock);
+                }else {
+                    tmp = newPtb->files[i].f_inode;
+                    if (tmp) {
+                        if (i < 3) {
+                            tmp->i_ops->default_file_ops->open(tmp, &newPtb->files[i]);
+                        }
+                        //对pipe进行fork
+                        do_fork_pipe(tmp, newPtb, i);
+                        atomic_inc(&(tmp->i_used_count));
                     }
-                    //对pipe进行fork
-                    do_fork_pipe(tmp, newPtb, i);
-                    atomic_inc(&(tmp->i_used_count));
                 }
             }
         }
@@ -184,10 +188,14 @@ int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg){
         for (int i = 0; i < NR_FILE; i++) {
             if(i<3){
                 if(newPtb->files[i].used) {
-                    if(newPtb->files[i].f_inode
-                    ){
-                        atomic_inc(&newPtb->files[i].f_inode->i_used_count);
-                    }
+//                    if(newPtb->files[i].net_file){
+//                        newPtb->files[i].sock_used_cn++;
+//                    }else {
+                        if (newPtb->files[i].f_inode
+                                ) {
+                            atomic_inc(&newPtb->files[i].f_inode->i_used_count);
+                        }
+//                    }
                 }
             }else {
                 if (newPtb->files[i].used) {
@@ -224,12 +232,11 @@ int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg){
 
 //创建一个子进程
 int32_t sys_fork(uint32_t *psp){
-    TaskStatus oldStatus;
-    uint32_t t=DisCpuInter();
+//    uint32_t t=DisCpuInter();
     PTaskBlock ptb=CUR_TASK;
     PTaskBlock newPtb=OSMalloc(sizeof(TaskBlock));
     if(newPtb==NULL){
-        RestoreCpuInter(t);
+//        RestoreCpuInter(t);
         return -1;
     }
     memcpy(newPtb,ptb,sizeof(TaskBlock));
@@ -240,19 +247,18 @@ int32_t sys_fork(uint32_t *psp){
     newPtb->memLowStack=(void *)OSMalloc(sizeof(uint32_t)*(newPtb->userStackSize));
     if(newPtb->memLowStack==NULL){
         OSFree(newPtb);
-        RestoreCpuInter(t);
+//        RestoreCpuInter(t);
         return -1;
     }
     newPtb->knl_low_stack=(void *)OSMalloc(sizeof(uint32_t)*(newPtb->kernelStackSize));
     if(newPtb->knl_low_stack==NULL){
         OSFree(newPtb->memLowStack);
-
         OSFree(newPtb);
-        RestoreCpuInter(t);
+//        RestoreCpuInter(t);
         return -1;
     }
     newPtb->PID = (pid_t)atomic_read(&sysTasks.pidTemp);
-
+    uint32_t t=DisCpuInter();
     if(ptb->exec){
         void* exec_tmp=newPtb->exec;
         //重新复制应用信息
@@ -321,6 +327,7 @@ int32_t sys_fork(uint32_t *psp){
     }else{
         newPtb->skInfo.pspStack=(void*)(~(0L));
     }
+    RestoreCpuInter(t);
     //设置为用户模式
     newPtb->skInfo.svcStatus=0;
     newPtb->skInfo.stackType=1;
@@ -329,14 +336,18 @@ int32_t sys_fork(uint32_t *psp){
     for(int i=0;i<NR_FILE;i++){
         if(newPtb->files[i].used){
             struct inode *tmp;
-            tmp=newPtb->files[i].f_inode;
-            if(tmp){
-                if(i<3){
-                    tmp->i_ops->default_file_ops->open(tmp,&newPtb->files[i]);
+            if(newPtb->files[i].net_file){
+                lwip_fork(newPtb->files[i].net_sock);
+            }else {
+                tmp = newPtb->files[i].f_inode;
+                if (tmp) {
+                    if (i < 3) {
+                        tmp->i_ops->default_file_ops->open(tmp, &newPtb->files[i]);
+                    }
+                    //对pipe进行fork
+                    do_fork_pipe(tmp, newPtb, i);
+                    atomic_inc(&(tmp->i_used_count));
                 }
-                //对pipe进行fork
-                do_fork_pipe(tmp,newPtb,i);
-                atomic_inc(&(tmp->i_used_count));
             }
         }
     }
@@ -355,7 +366,7 @@ int32_t sys_fork(uint32_t *psp){
     //mem信息不进行fork
     newPtb->mems=NULL;
     newPtb->status=TASK_RUNNING;
-    RestoreCpuInter(t);
+
 
     //返回pid
     return newPtb->PID;

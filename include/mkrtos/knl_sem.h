@@ -7,11 +7,12 @@
 
 #include "arch/atomic.h"
 #include "task.h"
-
+#include <ipc/spin_lock.h>
 struct sem_hdl{
 
     Atomic_t    sem_cnt;
     Atomic_t    max_cnt;
+
 
     struct sleep_time_queue *slp_sem_ls;
 };

@@ -47,7 +47,7 @@ int32_t spin_lock(pspinlock_handler psh){
 		return -1;
 	}
 again:
-	if(!atomic_set_test(&(psh->lock),1)){
+	if(!atomic_test_set(&(psh->lock),1)){
 		/*加锁失败，挂起任务，休眠并等待被解锁*/
 		goto again;
 	}else{

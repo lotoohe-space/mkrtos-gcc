@@ -82,7 +82,7 @@ int32_t lock_mutex(int32_t mt_l){
                 return -ENOMEM;
             }
             CUR_TASK->prio = mx->m_tk_prev_prio;
-            del_task(NULL,CUR_TASK);
+            del_task(NULL,CUR_TASK,0);
             CUR_TASK->prio = max_prio;
             RestoreCpuInter(t);
         }
@@ -126,7 +126,7 @@ int32_t unlock_mutex(int32_t mt_l){
             goto next;
         }
         mx->m_who_lock->prio=old_prio;
-        del_task(NULL,mx->m_who_lock);
+        del_task(NULL,mx->m_who_lock,0);
         mx->m_who_lock->prio=mx->m_tk_prev_prio;
         RestoreCpuInter(t);
     }

@@ -1,1 +1,3 @@
-int h_errno;
+
+
+extern int h_errno;

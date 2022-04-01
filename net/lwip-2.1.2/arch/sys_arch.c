@@ -77,7 +77,7 @@ err_t sys_sem_new(sys_sem_t *sem, u8_t count)
 void sys_sem_free(sys_sem_t *sem)
 {
     LWIP_ASSERT("sem != NULL", sem != NULL);
-    sem_free(sem);
+    sem_free(*sem);
 }
 
 void sys_sem_set_invalid(sys_sem_t *sem)
@@ -92,18 +92,23 @@ void sys_sem_set_invalid(sys_sem_t *sem)
 /* semaphores are 1-based because RAM is initialized as 0, which would be valid */
 u32_t sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout)
 {
+    int ret;
     if(sem==NULL)sem=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值
     LWIP_ASSERT("sem != NULL", sem != NULL);
     if(!timeout){
-        if(sem_pend(*sem,0xFFFFFFFF)!=0){
-            return 1;
+        ret=sem_pend(*sem,0xffffffff);
+        if(ret<0){
+            return SYS_ARCH_TIMEOUT;
+
         }
     }else{
-        if(sem_pend(*sem,timeout)!=0){
-            return 1;
+        ret=sem_pend(*sem,timeout);
+        if(ret<0){
+            return SYS_ARCH_TIMEOUT;
+
         }
     }
-    return SYS_ARCH_TIMEOUT;
+    return ret;
 }
 
 void
@@ -135,24 +140,24 @@ sys_mutex_new(sys_mutex_t *mutex)
 void
 sys_mutex_free(sys_mutex_t *mutex)
 {
-  LWIP_ASSERT("mutex != NULL", mutex != NULL);
-	mutex_free(*mutex);
+    LWIP_ASSERT("mutex != NULL", mutex != NULL);
+    mutex_free(*mutex);
 }
 
 void
 sys_mutex_set_invalid(sys_mutex_t *mutex)
 {
-		if(mutex==NULL)mutex=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
-  LWIP_ASSERT("mutex != NULL", mutex != NULL);
-	*mutex=0;
+    if(mutex==NULL)mutex=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值
+    LWIP_ASSERT("mutex != NULL", mutex != NULL);
+    *mutex=0;
 }
 
 void
 sys_mutex_lock(sys_mutex_t *mutex)
 {
-	if(mutex==NULL)mutex=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
-  LWIP_ASSERT("mutex != NULL", mutex != NULL);
-	mutex_lock(*mutex,MUTEX_WAIT_ENDLESS);
+    if(mutex==NULL)mutex=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值
+    LWIP_ASSERT("mutex != NULL", mutex != NULL);
+    mutex_lock(*mutex,0xffffffff);
 }
 
 void
@@ -169,28 +174,22 @@ sys_thread_new(const char *name, lwip_thread_fn function, void *arg, int stacksi
 {
 #include <sched.h>
 	extern int32_t sys_clone(int (*fn)(void*),void* child_stack,int flags,void* arg);
-//    void *mem=OSMalloc(stacksize);
-//    if(!mem){
-//        return -1;
-//    }
     int ret;
     ret=sys_clone(function,NULL,CLONE_FS|CLONE_VM|CLONE_FILES|CLONE_PARENT,arg);
-//    if(ret<0){
-//        OSFree(mem);
-//    }
+
 	return ret;
 }
 
 err_t
 sys_mbox_new(sys_mbox_t *mbox, int size)
 {
-  LWIP_ASSERT("mbox != NULL", mbox != NULL);
-  LWIP_ASSERT("size >= 0", size >= 0);
-	*mbox=msg_create(size,4);
-	if(*mbox==0){
-		return ERR_MEM;
-	}
-  return ERR_OK;
+    LWIP_ASSERT("mbox != NULL", mbox != NULL);
+    LWIP_ASSERT("size >= 0", size >= 0);
+    *mbox=msg_create(size,4);
+    if(*mbox==0){
+        return ERR_MEM;
+    }
+    return ERR_OK;
 }
 
 void
@@ -222,8 +221,8 @@ sys_mbox_trypost(sys_mbox_t *q, void *msg)
 {
 	if(*q==NULL)*q=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
 	
-	if(msg_put(*q,(uint8_t*)&msg,0)!=0){
-		return ERR_TIMEOUT;
+	if(msg_put(*q,(uint8_t*)&msg,0)<0){
+		return ERR_MEM;
 	}
   return ERR_OK;
 }
@@ -237,25 +236,28 @@ sys_mbox_trypost_fromisr(sys_mbox_t *q, void *msg)
 u32_t
 sys_arch_mbox_fetch(sys_mbox_t *q, void **msg, u32_t timeout)
 {
+    int ret;
 	if(*q==NULL)*q=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
 	if(timeout==0){
-		if(msg_get(*q,(uint8_t*)msg,0xffffffff)!=0){
-			return 1;
-		}
+		ret=msg_get(*q,(uint8_t*)msg,0xffffffff);
+        if(ret<0){
+            return SYS_ARCH_TIMEOUT;
+        }
 	}else{
-		if(msg_get(*q,(uint8_t*)msg,timeout)!=0){
+		ret=msg_get(*q,(uint8_t*)msg,timeout);
+        if(ret<0){
 			return SYS_ARCH_TIMEOUT;
 		}
 	}
-	return timeout;
+	return ret;
 }
 
 u32_t
 sys_arch_mbox_tryfetch(sys_mbox_t *q, void **msg)
 {
 	if(*q==NULL)*q=(void*)&pvNullPointer;//当msg为空时 msg等于pvNullPointer指向的值 
-	if(msg_get(*q,(uint8_t*)msg,0)!=0){
-		return SYS_ARCH_TIMEOUT;
+	if(msg_get(*q,(uint8_t*)(msg),0)<0){
+		return ERR_MEM;
 	}
 	return ERR_OK;
 }
@@ -282,8 +284,8 @@ int sys_sem_valid(sys_sem_t *sem)
 	}
 	return 1;           
 } 
-#if LWIP_NETCONN_SEM_PER_THREAD
-#error LWIP_NETCONN_SEM_PER_THREAD==1 not supported
-#endif /* LWIP_NETCONN_SEM_PER_THREAD */
+//#if LWIP_NETCONN_SEM_PER_THREAD
+//#error LWIP_NETCONN_SEM_PER_THREAD==1 not supported
+//#endif /* LWIP_NETCONN_SEM_PER_THREAD */
 
 #endif /* !NO_SYS */

@@ -1,3 +1,5 @@
+
+
 #ifndef _SYS_SOCKET_H
 #define _SYS_SOCKET_H
 
@@ -5,7 +7,7 @@
 #include <sys/types.h>
 
 __BEGIN_DECLS
-
+#define LWIP_SOCK 1
 /* For setsockoptions(2) */
 #if defined(__alpha__) || defined(__mips__)
 #define SOL_SOCKET	0xffff
@@ -178,11 +180,18 @@ __BEGIN_DECLS
 					/* level.  For writing rarp and	*/
 					/* other similar things on the	*/
 					/* user level.			*/
-
+#if !LWIP_SOCK
 struct sockaddr {
   sa_family_t sa_family;
   char sa_data[14];
 };
+#else
+struct sockaddr {
+    uint8_t        sa_len;
+    sa_family_t sa_family;
+    char        sa_data[14];
+};
+#endif
 
 struct linger {
   int32_t l_onoff;
@@ -359,11 +368,23 @@ struct ucred {
 				  (struct cmsghdr *)NULL)
 #define CMSG_FIRSTHDR(msg)	__CMSG_FIRSTHDR((msg)->msg_control, (msg)->msg_controllen)
 
+#if !LWIP_SOCK
 struct sockaddr_storage {
   sa_family_t  ss_family;
   uint32_t  __ss_align;
   char __ss_padding[(128  - (2 * sizeof (uint32_t ))) ];
 };
+#else
+struct sockaddr_storage {
+    uint8_t        s2_len;
+    sa_family_t ss_family;
+    char        s2_data1[2];
+    uint32_t       s2_data2[3];
+#if LWIP_IPV6
+    u32_t       s2_data3[3];
+#endif /* LWIP_IPV6 */
+};
+#endif
 
 #ifndef SOCK_DGRAM
 /* the Linux kernel headers suck really badly on non-x86 */

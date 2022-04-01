@@ -108,8 +108,10 @@ struct file {
     struct inode * f_inode;		/* 文件对应的inode */
     struct file_operations * f_op; /*文件对应的操作符*/
     uint32_t used;   /*是否被使用标记*/
+
     int net_sock;/*网络sock*/
     uint8_t net_file;/*网络文件*/
+//    uint32_t sock_used_cn;/*网络文件使用计数*/
 };
 
 #include <dirent.h>

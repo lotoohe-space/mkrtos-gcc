@@ -60,7 +60,7 @@
 #include "lwip/stats.h"
 #include "lwip/err.h"
 
-#include "string.h"
+#include <string.h>
 
 #if MEM_LIBC_MALLOC
 #include <stdlib.h> /* for malloc()/free() */
@@ -375,10 +375,12 @@ struct mem {
  * If so, make sure the memory at that location is big enough (see below on
  * how that space is calculated). */
 #ifndef LWIP_RAM_HEAP_POINTER
-///** the heap. we need one struct mem at the end and some room for alignment */
+/** the heap. we need one struct mem at the end and some room for alignment */
 //LWIP_DECLARE_MEMORY_ALIGNED(ram_heap, MEM_SIZE_ALIGNED + (2U * SIZEOF_STRUCT_MEM));
-u8_t *ram_heap;	
+const uint32_t lwip_heap_size=MEM_SIZE_ALIGNED + (2U * SIZEOF_STRUCT_MEM);
+uint8_t *ram_heap=NULL;
 #define LWIP_RAM_HEAP_POINTER ram_heap
+
 #endif /* LWIP_RAM_HEAP_POINTER */
 
 /** pointer to the heap (ram_heap): for alignment, ram is now a pointer instead of an array */

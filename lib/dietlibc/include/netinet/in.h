@@ -111,6 +111,7 @@ struct in_pktinfo {
 
 /* Structure describing an Internet (IP) socket address. */
 #define __SOCK_SIZE__	16		/* sizeof(struct sockaddr)	*/
+#if 0
 struct sockaddr_in {
   sa_family_t		sin_family;	/* Address family		*/
   in_port_t		sin_port;	/* Port number			*/
@@ -118,6 +119,16 @@ struct sockaddr_in {
   /* Pad to size of `struct sockaddr'. */
   unsigned char		sin_zero[__SOCK_SIZE__ - sizeof(int16_t) -
 			sizeof(uint16_t) - sizeof(struct in_addr)];
+};
+#endif
+/* members are in network byte order */
+struct sockaddr_in {
+    uint8_t         sin_len;
+    sa_family_t     sin_family;
+    in_port_t       sin_port;
+    struct in_addr  sin_addr;
+#define SIN_ZERO_LEN 8
+    char            sin_zero[SIN_ZERO_LEN];
 };
 
 

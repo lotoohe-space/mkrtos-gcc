@@ -33,8 +33,8 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
 	//默认远端IP为:192.168.1.106
 	lwipx->remoteip[0]=192;	
 	lwipx->remoteip[1]=168;
-	lwipx->remoteip[2]=1;
-	lwipx->remoteip[3]=106;
+	lwipx->remoteip[2]=3;
+	lwipx->remoteip[3]=1;
 	//MAC地址设置(高三字节固定为:2.0.0,低三字节用STM32唯一ID)
 	lwipx->mac[0]=dm9000cfg.mac_addr[0];
 	lwipx->mac[1]=dm9000cfg.mac_addr[1];
@@ -45,8 +45,8 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
 	//默认本地IP为:192.168.1.30
 	lwipx->ip[0]=192;	
 	lwipx->ip[1]=168;
-	lwipx->ip[2]=1;
-	lwipx->ip[3]=30;
+	lwipx->ip[2]=3;
+	lwipx->ip[3]=120;
 	//默认子网掩码:255.255.255.0
 	lwipx->netmask[0]=255;	
 	lwipx->netmask[1]=255;
@@ -55,37 +55,84 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
 	//默认网关:192.168.1.1
 	lwipx->gateway[0]=192;	
 	lwipx->gateway[1]=168;
-	lwipx->gateway[2]=1;
+	lwipx->gateway[2]=3;
 	lwipx->gateway[3]=1;	
 	lwipx->dhcpstatus=0;//没有DHCP	
 }
-extern u8 MempPoolsInit(void);
+
+
+
+//extern u8 MempPoolsInit(void);
 //lwip内核部分,内存申请
 //返回值:0,成功;
 //    其他,失败
 u8 lwip_comm_mem_malloc(void)
 {
 	
-	u32 ramheapsize; 
-	ramheapsize=LWIP_MEM_ALIGN_SIZE(MEM_SIZE)+2*LWIP_MEM_ALIGN_SIZE(4*3)+MEM_ALIGNMENT;//得到ram heap大小
-	
-	ram_heap=OSMalloc(ramheapsize);	//这里暂时用OS的内存申请函数,为ram_heap申请内存
+    extern const uint32_t lwip_heap_size;
+    extern uint8_t *ram_heap;
+	ram_heap=OSMalloc(lwip_heap_size);	//这里暂时用OS的内存申请函数,为ram_heap申请内存
 	if(!ram_heap){//有申请失败的
 		return 1;
 	}
-	if(MempPoolsInit()==0){
-		//内存申请失败
-		return 1;
-	}
+//	if(MempPoolsInit()==0){
+//		//内存申请失败
+//		return 1;
+//	}
 	return 0;	
 }
 int lwip_hard_init(void){
     dm9000input=sem_create(0,1);			//创建数据接收信号量,必须在DM9000初始化之前创建
-    dm9000lock=mutext_create();			//创建互斥信号量,提高到优先级4
+    dm9000lock=mutex_create();			//创建互斥信号量,提高到优先级4
     if(DM9000_Init(1)){
         return -1;			//初始化DM9000AEP
     }
     return 0;
+}
+
+//struct sem_hdl *sem0;
+//struct sem_hdl *sem1;
+//pspinlock_handler sh;
+struct msg_hdl *msg0;
+struct msg_hdl *msg1;
+void kel_thread_test(void *arg){
+    char data[10];
+    while(1){
+
+        msg_put(msg0,"12345678\n",0xffffffff);
+        msg_get(msg1,data,0xffffffff);
+//        printk("thread 0 try lock.\r\n");
+//        spin_lock(sh);
+//        printk("thread 0 run\r\n");
+//        spin_unlock(sh);
+//        printk("thread 0 unlock.\r\n");
+//        sem_pend(sem0,0xffffffff);
+//        printk("thread 0 sleep\r\n");
+//        sleep(1);
+//        printk("thread 0 run\r\n");
+//        sem_post(sem0);
+//        sleep(1);
+    }
+}
+void kel_thread_test1(void *arg){
+    char data[10];
+    while(1){
+        msg_get(msg0,data,0xffffffff);
+        msg_put(msg1,"87654321\n",0xffffffff);
+        printf(data);
+//        printk("thread 1 try lock.\r\n");
+//        spin_lock(sh);
+//        printk("thread 1 run\r\n");
+//        spin_unlock(sh);
+//        printk("thread 1 unlock.\r\n");
+//        sleep(1);
+//        sem_pend(sem0,0xffffffff);
+//        printk("thread 1 sleep\r\n");
+//        sleep(2);
+//        printk("thread 1 run\r\n");
+//        sem_post(sem0);
+//        sleep(1);
+    }
 }
 //LWIP初始化(LWIP启动的时候使用)
 //返回值:0,成功
@@ -140,7 +187,19 @@ u8 lwip_comm_init(void)
 
     extern sys_thread_t sys_thread_new(const char *name, lwip_thread_fn function, void *arg, int stacksize, int prio);
 
-    sys_thread_new("net recv thread",lwip_dm9000_input_task,0,1024,6);
+
+
+    sys_thread_new("net recv thread",lwip_dm9000_input_task,0,512*4,6);
+
+//    sem0= sem_create(1,1);
+//    sem1= sem_create(1,1);
+//    sh=spin_lock_create();
+//    msg0= msg_create(32,10);
+//    msg1= msg_create(32,10);
+//    sys_thread_new("net recv thread",kel_thread_test,0,512*4,6);
+//    sys_thread_new("net recv thread",kel_thread_test1,0,512*4,6);
+//
+
 
 	return 0;//操作OK.
 }   

@@ -16,17 +16,17 @@
 __unified_syscall4:
 	ldmfd	sp!, {r4, r5, r6}
 __unified_syscall:
-	cmn	r0, #4096
-	movcc	pc, lr
-	rsb	r1, r0, #0
+	//cmn	r0, #4096
+	//movcc	pc, lr
+	//rsb	r1, r0, #0
 
 	/* and PIC-code with no REAL changes ... ARM RULZ ! */
-	stmdb	sp!, {r1, lr}
-	bl	__errno_location(PLT)
-	ldmia	sp!, {r1, lr}
-	str	r1, [r0]
+	//stmdb	sp!, {r1, lr}
+	//bl	__errno_location(PLT)
+	//ldmia	sp!, {r1, lr}
+	//str	r1, [r0]
 
-	mvn	r0, #0
+	//mvn	r0, #0
 #include "dietuglyweaks.h"
 	mov	pc, lr
 

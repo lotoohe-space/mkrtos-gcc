@@ -19,9 +19,10 @@ struct sem_hdl* alloc_sem_hdl(void){
     return NULL;
 }
 void free_sem_hdl(struct sem_hdl* sem){
-    for(int i;i<KNL_SEM_MAX_SIZE;i++){
-        if(sem_ls+i==sem){
+    for(int i=0;i<KNL_SEM_MAX_SIZE;i++){
+        if(&sem_ls[i]==sem){
             sem_used[i]=0;
+            break;
         }
     }
 }
@@ -45,9 +46,11 @@ void sem_init(struct sem_hdl *sem,uint32_t init_cnt,uint32_t max_cnt){
 }
 
 void check_sem_time(void){
-    for(int i;i<KNL_SEM_MAX_SIZE;i++){
+    for(int i=0;i<KNL_SEM_MAX_SIZE;i++){
         if(sem_used[i]){
-            _do_check_sleep_tim(sem_ls[i].slp_sem_ls);
+            if(sem_ls[i].slp_sem_ls) {
+                _do_check_sleep_tim(&(sem_ls[i].slp_sem_ls));
+            }
         }
     }
 }
@@ -60,9 +63,11 @@ void sem_free(struct sem_hdl * sem){
 }
 
 int sem_pend(struct sem_hdl* sem,uint32_t wait){
+    int old_wait;
     if(sem==NULL){
         return -EINVAL;
     }
+    old_wait=wait;
     again:
     if(atomic_test_dec_nq(&sem->sem_cnt)){
         /*加锁失败，挂起任务，休眠并等待被解锁*/
@@ -76,7 +81,7 @@ int sem_pend(struct sem_hdl* sem,uint32_t wait){
             int ret;
 
         again_sleep:
-            ret=do_nanosleep(&sem->slp_sem_ls,&times,&rem);
+            ret=do_nanosleep(&sem->slp_sem_ls,&times,&rem,&sem->sem_cnt,0);
             if(ret==-EINTR){
                 //这里需要重新设定延时
                 times.tv_nsec=rem.tv_nsec;
@@ -90,7 +95,7 @@ int sem_pend(struct sem_hdl* sem,uint32_t wait){
             goto again;
         }
     }
-    return 0;
+    return old_wait-wait;
 }
 int sem_post(struct sem_hdl *sem){
     if(!sem){
@@ -98,13 +103,12 @@ int sem_post(struct sem_hdl *sem){
     }
     if(atomic_read(&sem->sem_cnt)>=atomic_read(&sem->max_cnt)){
         //唤醒所有等待休眠的进程
-        wake_up_sleep(sem->slp_sem_ls);
+        wake_up_sleep(&sem->slp_sem_ls);
         return 0;
     }
     atomic_inc(&sem->sem_cnt);
-
     //唤醒所有等待休眠的进程
-    wake_up_sleep(sem->slp_sem_ls);
+    wake_up_sleep(&sem->slp_sem_ls);
 
     return 0;
 }

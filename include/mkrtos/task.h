@@ -7,6 +7,7 @@
 #include "type.h"
 #include "arch/atomic.h"
 #include "mkrtos/signal.h"
+#include "ipc/spin_lock.h"
 #include <mkrtos/fs.h>
 #include <loader.h>
 #define NR_FILE 8
@@ -20,18 +21,10 @@
 */
 typedef enum{
 
-    /**
-    * @brief	任务运行
-    */
-    TASK_RUNNING,
-    /**
-    * @brief	任务挂起
-    */
-    TASK_SUSPEND,
-    /**
-     * @brief 任务已经被关闭了
-     */
-    TASK_CLOSED,
+    TASK_RUNNING,//任务运行
+    TASK_SUSPEND,//任务挂起
+    TASK_CLOSED,// 任务已经被关闭了
+    TASK_UNINTR,//任务不可被中断
 }TaskStatus;
 
 /**
@@ -252,7 +245,7 @@ extern SysTasks sysTasks;
 struct task* find_task(int32_t PID);
 void    task_sche(void);
 int32_t add_task(struct task *add,uint32_t into_all_ls);
-void    del_task(struct task** task_ls, struct task* del);
+void    del_task(struct task** task_ls, struct task* del,int flag);
 int32_t task_create(PTaskCreatePar tcp);
 
 //等待链表
@@ -268,6 +261,7 @@ void remove_wait_queue(struct wait_queue ** queue,struct wait_queue* add_queue);
 int32_t task_change_prio(struct task *tk,int32_t new_prio);
 void update_cur_task(void);
 void task_suspend(void);
+void task_unintr(void);
 void task_run(void);
 void task_run_1(struct task* tk);
 int32_t sys_pause(void);
@@ -291,12 +285,13 @@ struct sleep_time_queue{
     uint32_t slp_ms;
     uint32_t cur_ms;
 };
-void _do_check_sleep_tim(struct sleep_time_queue *slp_ls);
+void _do_check_sleep_tim(struct sleep_time_queue **slp_ls);
 void do_check_sleep_tim(void);
 void do_remove_sleep_tim(struct task* tk) ;
 void add_sleep(struct sleep_time_queue **queue,struct sleep_time_queue *add);
 void remove_sleep(struct sleep_time_queue **queue,struct sleep_time_queue *rm);
-int do_nanosleep(struct sleep_time_queue **slp_ls,const struct timespec *req,struct timespec *rem);
+int do_nanosleep(struct sleep_time_queue **slp_ls,const struct timespec *req,struct timespec *rem,Atomic_t *lock,int check_val
+        );
 int sys_nanosleep(const struct timespec *req, struct timespec *rem);
-void wake_up_sleep(struct sleep_time_queue *queue);
+void wake_up_sleep(struct sleep_time_queue **queue);
 #endif //UNTITLED1_TASK_H

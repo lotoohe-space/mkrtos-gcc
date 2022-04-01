@@ -182,6 +182,7 @@ void msg_wake_up(struct msg_queue *queue//,int32_t msgtype
                     //( msgtype<0 || queue->msgtype==msgtype)
                    // &&
                     queue->task->status==TASK_SUSPEND
+                    ||queue->task->status==TASK_UNINTR
                     )
             {
                 task_run_1(queue->task);

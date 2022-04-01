@@ -14,8 +14,8 @@ struct mutex_hdl{
     struct sleep_time_queue *slp_mutex_ls;
 };
 
-struct mutex_hdl * mutext_create(void);
-void mutext_init(struct mutex_hdl* mutex);
+struct mutex_hdl * mutex_create(void);
+void mutex_init(struct mutex_hdl* mutex);
 void mutex_free(struct mutex_hdl* mutex);
 int mutex_lock(struct mutex_hdl *mutex,uint32_t wait);
 int mutex_unlock(struct mutex_hdl *mutex);

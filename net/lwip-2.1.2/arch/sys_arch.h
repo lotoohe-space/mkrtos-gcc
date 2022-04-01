@@ -56,9 +56,10 @@
 
 #include <mkrtos/knl_msg.h>
 #include <mkrtos/knl_sem.h>
+#include <mkrtos/knl_mutex.h>
 
 typedef struct sem_hdl* sys_sem_t;          //LWIP使用的信号量
-//typedef int sys_mutex_t; 	    //LWIP使用的互斥信号量
+typedef struct mutex_hdl* sys_mutex_t; 	    //LWIP使用的互斥信号量
 typedef struct msg_hdl* sys_mbox_t;         //LWIP使用的消息邮箱
 typedef pid_t sys_thread_t;   //线程任务
 

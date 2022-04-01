@@ -49,7 +49,7 @@
 #include "lwip/sys.h"
 #include "lwip/stats.h"
 
-#include "string.h"
+#include <string.h>
 
 /* Make sure we include everything we need for size calculation required by memp_std.h */
 #include "lwip/pbuf.h"
@@ -78,22 +78,11 @@
 #define LWIP_MEMPOOL(name,num,size,desc) LWIP_MEMPOOL_DECLARE(name,num,size,desc)
 #include "lwip/priv/memp_std.h"
 
-struct memp_desc *const memp_pools[MEMP_MAX] = {
+const struct memp_desc *const memp_pools[MEMP_MAX] = {
 #define LWIP_MEMPOOL(name,num,size,desc) &memp_ ## name,
 #include "lwip/priv/memp_std.h"
 };
 
-#include "mkrtos/mem.h"
-uint8_t MempPoolsInit(void){
-	u16_t i;
-	for (i = 0; i < LWIP_ARRAYSIZE(memp_pools); i++) {
-    memp_pools[i]->base=(uint8_t*)OSMallocEx(memp_pools[i]->memSize);
-		if(memp_pools[i]->base==NULL){
-			return 0;
-		}
-  }
-	return 1;
-}
 #ifdef LWIP_HOOK_FILENAME
 #include LWIP_HOOK_FILENAME
 #endif

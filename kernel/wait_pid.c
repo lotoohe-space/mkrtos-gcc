@@ -86,8 +86,8 @@ static void wait_task(struct wait_queue **wait_c){
 }
 static pid_t shutdown_task(struct task* ls){
     int32_t res_pid;
-    del_task(NULL, ls);
-    del_task(&sysTasks.allTaskList, ls);
+    del_task(NULL, ls,0);
+    del_task(&sysTasks.allTaskList, ls,1);
     res_pid = ls->PID;
     OSFree(ls);
     return res_pid;

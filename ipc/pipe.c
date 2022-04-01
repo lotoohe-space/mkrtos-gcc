@@ -42,7 +42,9 @@ static void wakup_pipe(struct pipe_queue* pipe_q){
     t=DisCpuInter();
     while(pipe_q){
         if(pipe_q->task){
-            if(pipe_q->task->status==TASK_SUSPEND){
+            if(pipe_q->task->status==TASK_SUSPEND
+        ||pipe_q->task->status==TASK_UNINTR
+            ){
                 task_run_1(pipe_q->task);
 //                queue->task->status=TASK_RUNNING;
             }

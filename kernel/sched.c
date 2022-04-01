@@ -33,11 +33,24 @@ struct task* find_task(int32_t PID){
   //  RestoreCpuInter(t);
     return NULL;
 }
-
+//设置任务不可打断
+void task_unintr(void){
+    if(CUR_TASK->status!=TASK_UNINTR
+       &&CUR_TASK->status!=TASK_CLOSED
+            ) {
+        CUR_TASK->status = TASK_UNINTR;
+//        sysTasks.currentMaxTaskNode->taskReadyCount--;
+//        if(sysTasks.currentMaxTaskNode->taskReadyCount==0){
+//            //任务更新
+//            update_cur_task();
+//        }
+    }
+}
 //让任务挂起
 void task_suspend(void){
     if(CUR_TASK->status!=TASK_SUSPEND
      &&CUR_TASK->status!=TASK_CLOSED
+     &&CUR_TASK->status!=TASK_UNINTR
     ) {
         sysTasks.currentMaxTaskNode->taskReadyCount--;
         if(sysTasks.currentMaxTaskNode->taskReadyCount==0){
@@ -52,7 +65,9 @@ void task_run(void){
     if(CUR_TASK->status!=TASK_RUNNING
        &&CUR_TASK->status!=TASK_CLOSED
     ){
-        sysTasks.currentMaxTaskNode->taskReadyCount++;
+        if(CUR_TASK->status==TASK_SUSPEND) {
+            sysTasks.currentMaxTaskNode->taskReadyCount++;
+        }
         CUR_TASK->status = TASK_RUNNING;
     }
 }
@@ -63,9 +78,11 @@ void task_run_1(struct task* tk){
     if(tk->status!=TASK_RUNNING
        &&tk->status!=TASK_CLOSED
             ){
-        tk->parent->taskReadyCount++;
-        if(tk->prio>CUR_TASK->prio){
-            update_cur_task();
+        if(tk->status==TASK_SUSPEND) {
+            tk->parent->taskReadyCount++;
+            if (tk->prio > sysTasks.currentMaxTaskNode->taskPriority) {
+                update_cur_task();
+            }
         }
         tk->status = TASK_RUNNING;
     }
@@ -166,7 +183,7 @@ static PSysTaskBaseLinks AddLinks(uint8_t prio){
  * 删除任务
  * @param del
  */
-void del_task(struct task** task_ls, struct task* del){
+void del_task(struct task** task_ls, struct task* del,int flag){
     PSysTaskBaseLinks taskLinks;
     uint32_t t;
     t=DisCpuInter();
@@ -183,10 +200,18 @@ void del_task(struct task** task_ls, struct task* del){
     while(pTemp){
         if(del==pTemp){
             if(lastP==NULL){
-                *task_ls=pTemp->next;
+                if(!flag) {
+                    *task_ls = pTemp->next;
+                }else {
+                    *task_ls = pTemp->nextAll;
+                }
                 break;
             }else{
-                lastP->next=pTemp->next;
+                if(!flag) {
+                    lastP->next = pTemp->next;
+                }else{
+                    lastP->nextAll = pTemp->nextAll;
+                }
                 break;
             }
         }
@@ -316,7 +341,7 @@ int32_t task_change_prio(struct task *tk,int32_t new_prio){
     base_links->taskReadyCount--;
     base_links->taskCount--;
     CUR_TASK->prio = old_prio;
-    del_task(NULL,CUR_TASK);
+    del_task(NULL,CUR_TASK,0);
     CUR_TASK->prio = new_prio;
     RestoreCpuInter(t);
     return 0;
@@ -353,28 +378,31 @@ struct _stackInfo* sys_task_sche(void* psp,void* msp,uint32_t spType){
         }
     }else{
         /*修改当前线程的栈顶地址*/
-        sysTasks.currentTask->skInfo.pspStack=psp;
-        sysTasks.currentTask->skInfo.mspStack=msp;
-        if(sysTasks.currentTask->skInfo.stackType!=2){
-            sysTasks.currentTask->skInfo.stackType=spType;
+        sysTasks.currentTask->skInfo.pspStack = psp;
+        sysTasks.currentTask->skInfo.mspStack = msp;
+        if (sysTasks.currentTask->skInfo.stackType != 2) {
+            sysTasks.currentTask->skInfo.stackType = spType;
         }
-        sysTasks.currentTask->skInfo.svcStatus=svcStatus;
-        /*之前分配过，直接找下一个有效的*/
-        PTaskBlock ptb;
-        ptb= sysTasks.currentTask->next;
-        do{
-            if(ptb == NULL){
-                ptb = sysTasks.currentMaxTaskNode->pSysTaskLinks;
-            }
-            if(ptb->status==TASK_RUNNING
-                /*|| ptb->delayCount>0*/
-                    ){
-                sysTasks.currentTask=ptb;
-                break;
-            }
+        sysTasks.currentTask->skInfo.svcStatus = svcStatus;
+        /*当前任务没有处于TASK_UNINTR状态才可以进行切换，不然不能够动*/
+        if(CUR_TASK->status!=TASK_UNINTR) {
+            /*之前分配过，直接找下一个有效的*/
+            PTaskBlock ptb;
+            ptb = sysTasks.currentTask->next;
+            do {
+                if (ptb == NULL) {
+                    ptb = sysTasks.currentMaxTaskNode->pSysTaskLinks;
+                }
+                if (ptb->status == TASK_RUNNING
+                    /*|| ptb->delayCount>0*/
+                        ) {
+                    sysTasks.currentTask = ptb;
+                    break;
+                }
 
-            ptb=ptb->next;
-        }while(1);
+                ptb = ptb->next;
+            } while (1);
+        }
     }
     //恢复任务的svc状态
     if(sysTasks.currentTask->skInfo.svcStatus==TRUE){
@@ -410,7 +438,9 @@ void wake_up(struct wait_queue *queue){
     t=DisCpuInter();
     while(queue){
         if(queue->task){
-            if(queue->task->status==TASK_SUSPEND){
+            if(queue->task->status==TASK_SUSPEND
+            ||queue->task->status==TASK_UNINTR
+            ){
                 task_run_1(queue->task);
 //                queue->task->status=TASK_RUNNING;
             }

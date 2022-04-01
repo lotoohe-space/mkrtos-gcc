@@ -89,7 +89,8 @@ void sem_wake_up(struct sem_queue *queue,int semnum){
         if(queue->task){
             if(
                     ( queue->semid==semnum ||semnum<0)
-                    &&queue->task->status==TASK_SUSPEND
+                    &&(queue->task->status==TASK_SUSPEND
+                        ||queue->task->status==TASK_UNINTR)
                     ){
                 task_run_1(queue->task);
             }

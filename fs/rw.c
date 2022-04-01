@@ -78,7 +78,7 @@ int sys_lseek(unsigned int fd, int32_t ofs, uint32_t origin){
     CUR_TASK->files[fd].f_ofs=ofs_temp;
     return CUR_TASK->files[fd].f_ofs;
 }
-int sys_read (int fd,uint8_t *buf,uint32_t len){
+int file_read (int fd,uint8_t *buf,uint32_t len){
     if(fd>=NR_FILE){
         return  -EBADF;
     }
@@ -103,7 +103,7 @@ int sys_read (int fd,uint8_t *buf,uint32_t len){
     return -ENOSYS;
 }
 
-int sys_write (int fd,uint8_t *buf,uint32_t len){
+int file_write (int fd,uint8_t *buf,uint32_t len){
     if(fd>=NR_FILE){
         return  -EBADF;
     }

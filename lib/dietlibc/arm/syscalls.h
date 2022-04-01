@@ -299,6 +299,8 @@
 #define __NR_getsockopt			(__NR_SYSCALL_BASE+295)
 #define __NR_sendmsg			(__NR_SYSCALL_BASE+296)
 #define __NR_recvmsg			(__NR_SYSCALL_BASE+297)
+
+                    /*下面的系统调用在ipc里面实现过一次，不明白为啥这里还要弄一次*/
 #define __NR_semop			(__NR_SYSCALL_BASE+298)
 #define __NR_semget			(__NR_SYSCALL_BASE+299)
 #define __NR_semctl			(__NR_SYSCALL_BASE+300)
@@ -641,7 +643,23 @@
 #define __ARGS_get_mempolicy		1
 #define __ARGS_set_mempolicy		1
 
-
+#define __ARGS_socket			0
+#define __ARGS_bind			0
+#define __ARGS_connect			0
+#define __ARGS_listen			0
+#define __ARGS_accept			0
+#define __ARGS_getsockname		0
+#define __ARGS_getpeername		0
+#define __ARGS_socketpair		0
+#define __ARGS_send			0
+#define __ARGS_sendto			1
+#define __ARGS_recv			0
+#define __ARGS_recvfrom			1
+#define __ARGS_shutdown			0
+#define __ARGS_setsockopt		1
+#define __ARGS_getsockopt		1
+#define __ARGS_sendmsg			0
+#define __ARGS_recvmsg			0
 #ifdef __ASSEMBLER__
 
 #ifndef _SYSCALL_USED

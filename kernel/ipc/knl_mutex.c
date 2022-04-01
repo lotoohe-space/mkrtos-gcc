@@ -23,22 +23,23 @@ struct mutex_hdl* alloc_mutex_hdl(void){
     return NULL;
 }
 void free_mutex_hdl(struct sem_hdl* sem){
-    for(int i;i<KNL_MUTEX_MAX_SIZE;i++){
+    for(int i=0;i<KNL_MUTEX_MAX_SIZE;i++){
         if(mutex_ls+i==sem){
             mutex_used[i]=0;
+            break;
         }
     }
 }
 
 void check_mutex_time(void){
-    for(int i;i<KNL_MUTEX_MAX_SIZE;i++){
+    for(int i=0;i<KNL_MUTEX_MAX_SIZE;i++){
         if(mutex_used[i]){
-            _do_check_sleep_tim(mutex_ls[i].slp_mutex_ls);
+            _do_check_sleep_tim(&mutex_ls[i].slp_mutex_ls);
         }
     }
 }
 
-struct mutex_hdl * mutext_create(void){
+struct mutex_hdl * mutex_create(void){
     struct mutex_hdl *mutex;
     mutex=alloc_mutex_hdl();
     if(!mutex){
@@ -47,7 +48,7 @@ struct mutex_hdl * mutext_create(void){
     atomic_set(&mutex->mutex_fg,0);
     return mutex;
 }
-void mutext_init(struct mutex_hdl* mutex){
+void mutex_init(struct mutex_hdl* mutex){
     if(!mutex){
         return ;
     }
@@ -76,7 +77,7 @@ int mutex_lock(struct mutex_hdl *mutex,uint32_t wait){
 
             again_sleep:
             //获取休眠
-            ret=do_nanosleep(&mutex->slp_mutex_ls,&times,&rem);
+            ret=do_nanosleep(&mutex->slp_mutex_ls,&times,&rem,&mutex->mutex_fg,1);
             if(ret==-EINTR){
                 //这里需要重新设定延时
                 times.tv_nsec=rem.tv_nsec;
@@ -97,6 +98,6 @@ int mutex_unlock(struct mutex_hdl *mutex){
         return -EINVAL;
     }
     atomic_set(&mutex->mutex_fg,0);
-    wake_up_sleep(mutex->slp_mutex_ls);
+    wake_up_sleep(&mutex->slp_mutex_ls);
     return 0;
 }

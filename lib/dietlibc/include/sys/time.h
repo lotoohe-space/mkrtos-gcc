@@ -12,8 +12,10 @@ struct timespec {
 };
 
 struct timeval {
-  time_t tv_sec;	/* seconds */
-  suseconds_t tv_usec;	/* microseconds */
+//  time_t tv_sec;	/* seconds */
+//  suseconds_t tv_usec;	/* microseconds */
+long tv_sec;
+long tv_usec;
 };
 
 struct timezone {

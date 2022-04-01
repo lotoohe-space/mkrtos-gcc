@@ -89,10 +89,11 @@ struct lwip_sock {
 #define LWIP_SOCK_FD_FREE_TCP  1
 #define LWIP_SOCK_FD_FREE_FREE 2
 #endif
+  int used_cn;
 };
-
+extern int errno_lwip;
 #ifndef set_errno
-#define set_errno(err) do { if (err) { errno = (err); } } while(0)
+#define set_errno(err) do { if (err) { errno_lwip = (err); } } while(0)
 #endif
 
 #if !LWIP_TCPIP_CORE_LOCKING

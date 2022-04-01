@@ -58,7 +58,7 @@ err_t ethernetif_input(struct netif *netif)
 	while(1)
 	{
 		_err=sem_pend(dm9000input,0xffffffff);		//ÇëÇóÐÅºÅÁ¿
-		if(_err == 0)
+		if(_err >= 0)
 		{
 			while(1)
 			{

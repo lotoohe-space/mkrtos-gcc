@@ -688,10 +688,8 @@ void start_task(void* arg0,void*arg1){
 #include "net/lwiperf_interface.h"
         lwiperf_init();
 
-//#include <sys/types.h>
-//#include <sys/socket.h>
-//        socket(0,0,0);
-//        bind(0,0,0);
+extern int net_main();
+        net_main();
         putenv("SHELL=/bin/zsh");
 #if 0
 #include <pthread.h>

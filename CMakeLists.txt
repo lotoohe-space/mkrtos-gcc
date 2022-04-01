@@ -34,7 +34,7 @@ add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-le
 
 # Enable assembler files preprocessing
 add_compile_options($<$<COMPILE_LANGUAGE:ASM>:-x$<SEMICOLON>assembler-with-cpp>)
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     message(STATUS "Maximum optimization for speed")
     add_compile_options(-Ofast)
@@ -50,7 +50,7 @@ else ()
 endif ()
 
 add_compile_options(-DSTM32F10X_HD)
-add_compile_options(-D__ARMEB__)
+#add_compile_options(-D__ARMEB__)
 add_compile_options(-D__ARM_ARCH_8M_BASE__)
 add_compile_options(-D__arm__)
 #add_compile_options(-E)
@@ -78,6 +78,7 @@ include_directories(
         net/lwip-2.1.2
         net/lwip-2.1.2/arch
         net/lwip-2.1.2/src/include
+        net/lwip-2.1.2/
 
 #        lib/mpfr-master/src/arm
 #        lib/mpfr-master/src/
@@ -90,6 +91,7 @@ include_directories(
 #        app/dash
 
         app/rc-1.7
+        /
         /
    )
 

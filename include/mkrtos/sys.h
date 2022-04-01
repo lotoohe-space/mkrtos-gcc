@@ -94,6 +94,7 @@ extern int sys_ftruncate();//93
 extern int sys_fchown();//95
 extern int sys_getpriority(); //96
 extern int sys_setpriority(); //97
+extern int sys_socketcall();
 extern int sys_wait4();     //114-wait4
 extern int sys_ipc();       //117
 extern int sys_fsync();
@@ -103,6 +104,7 @@ extern int sys_sigprocmask();
 extern int sys_sched_yield();//158
 extern int sys_nanosleep(); //162
 extern int sys_mremap();//163
+extern int sys_poll();//168
 extern int sys_rt_sigaction(); //174
 extern int sys_rt_sigprocmask();
 extern int sys_rt_sigsuspend();//179
@@ -117,6 +119,25 @@ extern int sys_fchdir();
 int sys_statfs(const char * path, struct statfs * buf);
 int sys_fstatfs(unsigned int fd, struct statfs * buf);
 extern int sys_sigreturn();
+
+extern int sys_socket();//281
+extern int sys_bind();//282
+extern int sys_connect();//283
+extern int sys_listen();//284
+extern int sys_accept();//285
+extern int sys_getsockname();//286
+extern int sys_getpeername();//287
+extern int sys_socketpair();//288
+extern int sys_send();//289
+extern int sys_sendto();//290
+extern int sys_recv();//291
+extern int sys_recvfrom();//292
+extern int sys_shutdown();//293
+extern int sys_setsockopt();//294
+extern int sys_getsockopt();//295
+extern int sys_sendmsg();//296
+extern int sys_recvmsg();//297
+
 
 //extern int sys_net_init();
 
@@ -205,9 +226,9 @@ const fn_ptr sys_call_table[] = {
                            [79]=sys_settimeofday,
 //                           sys_getgroups,
 //                           sys_setgroups,
-//                           sys_select,
-                          [83]=sys_symlink,
-                           [84]=sys_lstat,
+        [82]=sys_select,
+        [83]=sys_symlink,
+        [84]=sys_lstat,
 //                           sys_readlink,
 //                           sys_uselib,
         [89]=sys_readdir,
@@ -221,6 +242,7 @@ const fn_ptr sys_call_table[] = {
         [97]=sys_setpriority,
         [99]=sys_statfs,
         [100]=sys_fstatfs,
+        [102]=sys_socketcall,
         [106]=sys_stat,
         [107]=sys_lstat,
         [114]=sys_wait4,
@@ -235,11 +257,30 @@ const fn_ptr sys_call_table[] = {
         [158]=sys_sched_yield,
         [162]=sys_nanosleep,
         [163]=sys_mremap,
+        [168]=sys_poll,
         [173]=sys_rt_sigreturn,
         [174]=sys_rt_sigaction,
         [175]=sys_rt_sigprocmask,
         [179]=sys_rt_sigsuspend,
         [182]=sys_chown,
         [183]=sys_getcwd,
+
+        [281]=sys_socket,
+        [282]=sys_bind,
+        [283]=sys_connect,
+        [284]=sys_listen,
+        [285]=sys_accept,
+        [286]=sys_getsockname,
+        [287]=sys_getpeername,
+        [288]=sys_socketpair,
+        [289]=sys_send,
+        [290]=sys_sendto,
+        [291]=sys_recv,
+        [292]=sys_recvfrom,
+        [293]=sys_shutdown,
+        [294]=sys_setsockopt,
+        [295]=sys_getsockopt,
+        [296]=sys_sendmsg,
+        [297]=sys_recvmsg,
 //        [500]=sys_net_init
 };

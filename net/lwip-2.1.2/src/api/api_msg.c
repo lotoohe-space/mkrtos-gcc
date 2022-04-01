@@ -54,7 +54,7 @@
 #include "lwip/mld6.h"
 #include "lwip/priv/tcpip_priv.h"
 
-#include "string.h"
+#include <string.h>
 
 /* netconns are polled once per second (e.g. continue write on memory error) */
 #define NETCONN_TCP_POLL_INTERVAL 2
@@ -716,6 +716,9 @@ netconn_alloc(enum netconn_type t, netconn_callback callback)
   conn->pending_err = ERR_OK;
   conn->type = t;
   conn->pcb.tcp = NULL;
+#if LWIP_NETCONN_FULLDUPLEX
+  conn->mbox_threads_waiting = 0;
+#endif
 
   /* If all sizes are the same, every compiler should optimize this switch to nothing */
   switch (NETCONNTYPE_GROUP(t)) {

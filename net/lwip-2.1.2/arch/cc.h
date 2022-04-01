@@ -80,7 +80,7 @@
 #endif
 
 #ifndef LWIP_PLATFORM_DIAG
-#define LWIP_PLATFORM_DIAG(x) do {printk x;} while(0)
+#define LWIP_PLATFORM_DIAG(x) do {printk x;printk("\r\n");} while(0)
 #endif
 
 #endif /* __CC_H__ */

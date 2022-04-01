@@ -42,7 +42,6 @@
 
 #include "lwip/errno.h"
 
-extern int errno;
 #if !NO_SYS
 /** Table to quickly map an lwIP error (err_t) to a socket error
   * by using -err as an index */

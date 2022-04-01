@@ -125,8 +125,6 @@ struct memp_desc {
   /** Base address */
   u8_t *base;
 
-	/** Memory size */
-	u32_t memSize;
   /** First free element of each pool. Elements form a linked list. */
   struct memp **tab;
 #endif /* MEMP_MEM_MALLOC */

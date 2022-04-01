@@ -57,7 +57,7 @@
 #include "lwip/stats.h"
 #include "lwip/prot/iana.h"
 
-#include "string.h"
+#include <string.h>
 
 #ifdef LWIP_HOOK_FILENAME
 #include LWIP_HOOK_FILENAME

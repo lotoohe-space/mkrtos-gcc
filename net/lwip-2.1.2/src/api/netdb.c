@@ -46,8 +46,8 @@
 #include "lwip/api.h"
 #include "lwip/dns.h"
 
-#include "string.h" /* memset */
-#include "stdlib.h" /* atoi */
+#include <string.h> /* memset */
+#include <stdlib.h> /* atoi */
 
 /** helper struct for gethostbyname_r to access the char* buffer */
 struct gethostbyname_r_helper {
@@ -58,7 +58,7 @@ struct gethostbyname_r_helper {
 
 /** h_errno is exported in netdb.h for access by applications. */
 #if LWIP_DNS_API_DECLARE_H_ERRNO
-extern int h_errno;
+int h_errno;
 #endif /* LWIP_DNS_API_DECLARE_H_ERRNO */
 
 /** define "hostent" variables storage: 0 if we use a static (but unprotected)
@@ -128,8 +128,7 @@ lwip_gethostbyname(const char *name)
   if (s_hostent.h_addr_list != NULL) {
     u8_t idx;
     for (idx = 0; s_hostent.h_addr_list[idx]; idx++) {
-      LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_addr_list[%i]   == %p\n", idx, s_hostent.h_addr_list[idx]));
-      LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_addr_list[%i]-> == %s\n", idx, ipaddr_ntoa((ip_addr_t *)s_hostent.h_addr_list[idx])));
+      LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_addr_list[%i]-> == %s\n", idx, ipaddr_ntoa(s_phostent_addr[idx])));
     }
   }
 #endif /* DNS_DEBUG */
@@ -306,7 +305,11 @@ lwip_getaddrinfo(const char *nodename, const char *servname,
     /* service name specified: convert to port number
      * @todo?: currently, only ASCII integers (port numbers) are supported (AI_NUMERICSERV)! */
     port_nr = atoi(servname);
-    if ((port_nr <= 0) || (port_nr > 0xffff)) {
+    if (port_nr == 0 && (servname[0] != '0')) {
+      /* atoi failed - service was not numeric */
+      return EAI_SERVICE;
+    }
+    if ((port_nr < 0) || (port_nr > 0xffff)) {
       return EAI_SERVICE;
     }
   }
