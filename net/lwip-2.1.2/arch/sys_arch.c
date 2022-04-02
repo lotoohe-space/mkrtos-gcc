@@ -284,8 +284,8 @@ int sys_sem_valid(sys_sem_t *sem)
 	}
 	return 1;           
 } 
-//#if LWIP_NETCONN_SEM_PER_THREAD
-//#error LWIP_NETCONN_SEM_PER_THREAD==1 not supported
-//#endif /* LWIP_NETCONN_SEM_PER_THREAD */
+#if LWIP_NETCONN_SEM_PER_THREAD
+#error LWIP_NETCONN_SEM_PER_THREAD==1 not supported
+#endif /* LWIP_NETCONN_SEM_PER_THREAD */
 
 #endif /* !NO_SYS */

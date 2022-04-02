@@ -22,6 +22,8 @@ volatile struct mutex_hdl *dm9000lock;					//DM9000读写互锁控制信号量
 //DM9000数据接收处理任务
 void lwip_dm9000_input_task(void *pdata)
 {
+#include "net/lwiperf_interface.h"
+    lwiperf_init();
 	//从网络缓冲区中读取接收到的数据包并将其发送给LWIP处理 
 	ethernetif_input(&lwip_netif);
 }
@@ -186,8 +188,6 @@ u8 lwip_comm_init(void)
 	dns_setserver(0, &dns_addr);
 
     extern sys_thread_t sys_thread_new(const char *name, lwip_thread_fn function, void *arg, int stacksize, int prio);
-
-
 
     sys_thread_new("net recv thread",lwip_dm9000_input_task,0,512*4,6);
 

@@ -685,8 +685,7 @@ void start_task(void* arg0,void*arg1){
 //        ret=sys_clone(myThreadID1,NULL,CLONE_FS|CLONE_VM|CLONE_FILES|CLONE_PARENT,0);
 //        while(1);
         lwip_comm_init();
-#include "net/lwiperf_interface.h"
-        lwiperf_init();
+
 
 extern int net_main();
         net_main();

@@ -11,8 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="基本支持了lwip，解決了lwip不支持多進程的問題，并且還解決了一些并發性問題。">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="修复了几个比较严重的bug">
       <change beforePath="$PROJECT_DIR$/arch/bsp/net_init.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/net_init.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
@@ -241,14 +240,7 @@
       <workItem from="1647788920645" duration="5835000" />
       <workItem from="1648275021445" duration="52382000" />
       <workItem from="1648610108096" duration="2961000" />
-      <workItem from="1648648335142" duration="70675000" />
-    </task>
-    <task id="LOCAL-00002" summary="inode增加等待队列，修正bug">
-      <created>1642584052999</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1642584052999</updated>
+      <workItem from="1648648335142" duration="70775000" />
     </task>
     <task id="LOCAL-00003" summary="emmmm">
       <created>1642587019404</created>
@@ -586,7 +578,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648826640848</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="修复了几个比较严重的bug">
+      <created>1648867494321</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1648867494321</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -604,7 +603,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="需要重写设备号的驱动，区分主设备与次设备，所有主设备" />
     <MESSAGE value="tty能够写了，默认/dev/tty就是/dev/tty0" />
     <MESSAGE value="正在搞waitpid" />
     <MESSAGE value="正在搞sys_kill" />
@@ -629,18 +627,10 @@
     <MESSAGE value="简单的支持lwip，可以联网了，但是系统调用还没有搞" />
     <MESSAGE value="emmm" />
     <MESSAGE value="基本支持了lwip，解決了lwip不支持多進程的問題，并且還解決了一些并發性問題。" />
-    <option name="LAST_COMMIT_MESSAGE" value="基本支持了lwip，解決了lwip不支持多進程的問題，并且還解決了一些并發性問題。" />
+    <MESSAGE value="修复了几个比较严重的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复了几个比较严重的bug" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>686</line>
-          <option name="timeStamp" value="309" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="time_tick" language="ObjectiveC" />
