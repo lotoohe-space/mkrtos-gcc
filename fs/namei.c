@@ -15,6 +15,7 @@
 int follow_link(struct inode * dir, struct inode * inode,
                 int flag, int mode, struct inode ** res_inode)
 {
+    //根目录并且需要跟踪的inode为NULL
     if (!dir || !inode) {
         puti(dir);
         puti(inode);
@@ -46,13 +47,17 @@ int lookup(struct inode * dir,const char * name, int len,
         return -ENOENT;
 //    perm = permission(dir,MAY_EXEC);
     if (len==2 && name[0] == '.' && name[1] == '.') {
+        //如果查看的是..目录
         if (dir == ROOT_INODE) {
+            //如果当前是跟节点，则直接返回根节点就行了，因为根节点的上一个目录就是自己
             *result = dir;
             return 0;
         }
         else if ((sb = dir->i_sb) && (dir == sb->root_inode)) {
+            //如果等于super_block的根目录
             sb = dir->i_sb;
             puti(dir);
+            //重新设置为sb的挂载的inode
             dir = sb->s_covered;
             if (!dir) {
                 return -ENOENT;
@@ -111,13 +116,7 @@ static int _namei(const char * pathname, struct inode * base,
 int lnamei(const char * pathname, struct inode ** res_inode)
 {
     int error;
-//    char * tmp;
-
-//    error = getname(pathname,&tmp);
-//    if (!error) {
-        error = _namei(pathname,NULL,0,res_inode);
-//        putname(tmp);
-//    }
+    error = _namei(pathname,NULL,0,res_inode);
     return error;
 }
 int namei(const char * pathname, struct inode ** res_inode)
@@ -144,15 +143,14 @@ int32_t dir_namei(const char * pathname, int32_t * namelen, const char ** name,
 
     *res_inode = NULL;
     if (!base) {
-//        if(!PWD_INODE){
-//            return -1;
-//        }
+        //从那个目录开始扫描
         base=PWD_INODE;
         if(base) {
             atomic_inc(&base->i_used_count);
         }
     }
     if ((c = *pathname) == '/' || (c = *pathname) == '\\') {
+        // 以 / 或者 \开始的路径，说明是从根目录开始的
         puti(base);
         base = ROOT_INODE;
         pathname++;
@@ -162,6 +160,7 @@ int32_t dir_namei(const char * pathname, int32_t * namelen, const char ** name,
     }
     while (1) {
         thisname = pathname;
+        //找到一段路径或者到字符串结尾
         for(len=0;(c = *(pathname++))&&(c != '/') && c!='\0';len++);
         if (!c) {
             //到最后直接退出
@@ -196,15 +195,15 @@ int32_t open_namei(const char* file_path,int32_t flags,int32_t mode,struct inode
     int32_t res=0;
     int32_t f_len;
     char *file_name ;
-    again:
+    //打开目录
     res= dir_namei(file_path,&f_len,&file_name,base_dir,&dir);
     if(res<0){
         return res;
     }
     //打开一个目录
     if( f_len == 0 ){
-        if (flags & O_WRONLY) {
-            //目录不能写
+        if ((flags & O_WRONLY) || (flags & O_RDWR)) {
+            //目录不能在写模式或者在读写模式
             puti(dir);
             return -EISDIR;
         }

@@ -137,11 +137,10 @@ int32_t task_create(PTaskCreatePar tcp){
 
 
     atomic_inc(&sysTasks.pidTemp);
-
     //最后设置为运行模式，之前都是挂起的9
-    uint32_t t=DisCpuInter();
+//    uint32_t t=DisCpuInter();
     pTaskBlock->status=TASK_RUNNING;
-    RestoreCpuInter(t);
+//    RestoreCpuInter(t);
     err= 0;
 
     return pTaskBlock->PID;

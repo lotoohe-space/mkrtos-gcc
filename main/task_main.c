@@ -632,14 +632,7 @@ void* myThreadID2(void* arg){
 #include <bsp/net_init.h>
 //启动进程
 void start_task(void* arg0,void*arg1){
-    extern void fs_init(void);
-    root_mount(CUR_TASK);
-#if 1
-    fs_init();
-#endif
-
-//    read_user_cfg();
-    devs_init();
+    setup();
     //打开三个串口输出
     open("/dev/tty", O_RDWR, 0777);
     open("/dev/tty", O_RDWR, 0777);
@@ -684,8 +677,6 @@ void start_task(void* arg0,void*arg1){
 //        int ret;
 //        ret=sys_clone(myThreadID1,NULL,CLONE_FS|CLONE_VM|CLONE_FILES|CLONE_PARENT,0);
 //        while(1);
-        lwip_comm_init();
-
 
 extern int net_main();
         net_main();

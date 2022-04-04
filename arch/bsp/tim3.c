@@ -10,7 +10,8 @@ void TIM3_BASEInitSys(int16_t arr,uint16_t psc)
     NVIC_InitTypeDef NVIC_InitStructure;
 
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE); //时钟使能
-
+    extern void tim3_isr(void);
+    RegIsrFunc(tim3_isr,30,0);
     //定时器TIM3初始化
     TIM_TimeBaseStructure.TIM_Period = arr; //设置在下一个更新事件装入活动的自动重装载寄存器周期的值
     TIM_TimeBaseStructure.TIM_Prescaler =psc; //设置用来作为TIMx时钟频率除数的预分频值
@@ -29,8 +30,7 @@ void TIM3_BASEInitSys(int16_t arr,uint16_t psc)
 
 
     TIM_Cmd(TIM3, ENABLE);  //使能TIMx
-    extern void tim3_isr(void);
-    RegIsrFunc(tim3_isr,30,0);
+
 }
 void tim3_isr(void){
     if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)  //检查TIM3更新中断发生与否

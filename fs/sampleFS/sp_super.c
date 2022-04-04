@@ -19,6 +19,7 @@ struct super_block* sp_alloc_sb(struct super_block* sb){
     if(sb->s_sb_priv_info==NULL){
         return NULL;
     }
+    memset(sb->s_sb_priv_info,0,sizeof(struct sp_super_block));
     return sb;
 }
 

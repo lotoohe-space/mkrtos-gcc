@@ -10,6 +10,12 @@
 int sys_ustat(int dev, struct ustat * ubuf){
     return -ENOSYS;
 }
+/**
+ * 获取文件系统状态
+ * @param path
+ * @param buf
+ * @return
+ */
 int sys_statfs(const char * path, struct statfs * buf){
     struct inode * inode;
     int32_t res;
@@ -28,15 +34,17 @@ int sys_statfs(const char * path, struct statfs * buf){
     return 0;
 }
 int sys_fstatfs(unsigned int fd, struct statfs * buf){
-    if(fd>=NR_FILE || CUR_TASK->files[fd].used==0){
+    struct file *files;
+    files=CUR_TASK->files;
+    if(fd>=NR_FILE || files[fd].used==0){
         //文件已经关闭了
         return -EBADF;
     }
-    if(!(CUR_TASK->files[fd].f_inode)){
+    if(!(files[fd].f_inode)){
         return -ENOENT;
     }
-    if((CUR_TASK->files[fd].f_inode->i_sb->s_ops->statfs)){
-        CUR_TASK->files[fd].f_inode->i_sb->s_ops->statfs(CUR_TASK->files[fd].f_inode->i_sb,buf);
+    if((files[fd].f_inode->i_sb->s_ops->statfs)){
+        files[fd].f_inode->i_sb->s_ops->statfs(files[fd].f_inode->i_sb,buf);
     }else{
         return -ENOSYS;
     }
@@ -71,14 +79,16 @@ int sys_truncate(const char * path, unsigned int length){
 }
 int sys_ftruncate(unsigned int fd, unsigned int length){
     struct inode *inode;
-    if(fd>=NR_FILE || CUR_TASK->files[fd].used==0){
+    struct file *files;
+    files=CUR_TASK->files;
+    if(fd>=NR_FILE || files[fd].used==0){
         //文件已经关闭了
         return -EBADF;
     }
-    if(!(CUR_TASK->files[fd].f_inode)){
+    if(!(files[fd].f_inode)){
         return -ENOENT;
     }
-    inode=&CUR_TASK->files[fd].f_inode;
+    inode=&files[fd].f_inode;
     if (inode->i_ops && inode->i_ops->truncate) {
         inode->i_ops->truncate(inode,length);
     }
@@ -92,7 +102,11 @@ int sys_utime(char * filename, struct utimbuf * times){
 int sys_access(const char * filename,int mode){
     return -ENOSYS;
 }
-//进入某个目录
+/**
+ * 进入某个目录
+ * @param filename
+ * @return
+ */
 int sys_chdir(const char * filename){
     struct inode *o_inode;
     const char* file_name;
@@ -122,20 +136,33 @@ int sys_chdir(const char * filename){
 
     return 0;
 }
+/**
+ * 获取当前工作目录
+ * @param source
+ * @param cn
+ * @return
+ */
 int sys_getcwd(char* source,int cn){
     strncpy(source,CUR_TASK->pwd_path,cn);
     return strlen(CUR_TASK->pwd_path);
 }
+/**
+ * 进入某个目录
+ * @param fd
+ * @return
+ */
 int sys_fchdir(unsigned int fd){
     struct inode *o_inode;
-    if(fd>=NR_FILE || CUR_TASK->files[fd].used==0){
+    struct file *files;
+    files=CUR_TASK->files;
+    if(fd>=NR_FILE || files[fd].used==0){
         //文件已经关闭了
         return -EBADF;
     }
-    if(!(CUR_TASK->files[fd].f_inode)){
+    if(!(files[fd].f_inode)){
         return -ENOENT;
     }
-    o_inode =CUR_TASK->files[fd].f_inode;
+    o_inode =files[fd].f_inode;
     if(o_inode==NULL){
         return -ENOENT;
     }
@@ -175,20 +202,22 @@ int sys_chroot(const char * filename){
 //更改文件的权限
 int sys_fchmod(unsigned int fd, mode_t mode){
     struct inode *o_inode;
-    if(fd>=NR_FILE || CUR_TASK->files[fd].used==0){
+    struct file *files;
+    files=CUR_TASK->files;
+    if(fd>=NR_FILE || files[fd].used==0){
         //文件已经关闭了
         return -EBADF;
     }
-    if(!(CUR_TASK->files[fd].f_inode)){
+    if(!(files[fd].f_inode)){
         return -ENOENT;
     }
 
-    if(CUR_TASK->files[fd].f_flags&O_RDONLY){
+    if(files[fd].f_flags&O_RDONLY){
         return -EROFS;
     }
     //需要检查权限，还没做
 
-    o_inode=CUR_TASK->files[fd].f_inode;
+    o_inode=files[fd].f_inode;
     o_inode->i_type_mode&=0xffff0000;
     o_inode->i_type_mode|=mode;
 
@@ -223,44 +252,45 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
     uint32_t i;
     int32_t res;
     struct inode *o_inode;
+    //找到一个空的
     for(i=0;i<NR_FILE;i++){
         if(files[i].used==0){
             files[i].used=1;
             break;
         }
     }
+    //是否没有多余的文件描述符了
     if(i>=NR_FILE){
         errno = EMFILE;
         return -1;
     }
-
     //打开文件
     res= open_namei(path,flags,mode,&o_inode,NULL);
     if(res<0){
         files[i].used=0;
         return res;
     }
+    //设置文件操作标志
     files[i].f_flags=flags;
-    //设置文件操作符号
+    //设置操作的函数集
     if((!files[i].f_op)
-       &&  o_inode->i_ops->default_file_ops
+       && o_inode->i_ops
+       && o_inode->i_ops->default_file_ops
             ) {
         files[i].f_op = o_inode->i_ops->default_file_ops;
     }
-    //调用打开函数
-    if(
-            files[i].f_op
-            &&files[i].f_op->open
-            ) {
+    //调用驱动或者文件open函数
+    if(files[i].f_op&&files[i].f_op->open) {
         if ((res=files[i].f_op->open(o_inode, &(files[i]))) < 0) {
             files[i].used = 0;
             puti(o_inode);
             return res;
         }
-
     }
+    //偏移默认为0
     files[i].f_ofs=0;
     files[i].f_inode=o_inode;
+    //设置权限与模式
     files[i].f_mode= o_inode->i_type_mode;
 
 //    static int count;
@@ -270,7 +300,7 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
 
     return i;
 }
-/**NR_FILE
+/**
  * 打开文件
  * @param path
  * @param flags
@@ -281,59 +311,69 @@ int32_t sys_open(const char* path,int32_t flags,int32_t mode){
     return do_open(CUR_TASK->files,path,flags,mode);
 }
 
-//创建文件
+/**
+ * 创建一个文件
+ * @param pathname
+ * @param mode
+ * @return
+ */
 int sys_creat(const char * pathname, int mode){
     return sys_open(pathname,O_CREAT|O_WRONLY,mode);
 }
-//关闭文件
-void file_close(int fp){
+/**
+ * 关闭一个文件
+ * @param fp
+ */
+void file_close(int fp){\
+    struct file *files;
     struct inode *inode;
     if(fp<0||fp>=NR_FILE){
         printk("%s fp.\n",__FUNCTION__ );
         return ;
     }
-    if(CUR_TASK->files[fp].used==0){
+    files=CUR_TASK->files;
+    if(files[fp].used==0){
         //文件已经关闭了
         return ;
     }
-    inode=CUR_TASK->files[fp].f_inode;
+    inode=files[fp].f_inode;
 
-    if(CUR_TASK->files[fp].f_op
-    &&CUR_TASK->files[fp].f_op->release
+    if(files[fp].f_op
+    &&files[fp].f_op->release
     ){
-        CUR_TASK->files[fp].f_op->release(inode,&CUR_TASK->files[fp]);
+        files[fp].f_op->release(inode,&files[fp]);
     }
-    if(CUR_TASK->files[fp].f_op
-       &&CUR_TASK->files[fp].f_op->fsync
+    if(files[fp].f_op
+       &&files[fp].f_op->fsync
             ) {
-        CUR_TASK->files[fp].f_op->fsync(inode,&CUR_TASK->files[fp]);
+        files[fp].f_op->fsync(inode,&files[fp]);
     }
 
-    CUR_TASK->files[fp].f_op=NULL;
-    CUR_TASK->files[fp].used=0;
-    CUR_TASK->files[fp].f_ofs=0;
-    CUR_TASK->files[fp].f_inode=NULL;
+    files[fp].f_op=NULL;
+    files[fp].used=0;
+    files[fp].f_ofs=0;
+    files[fp].f_inode=NULL;
     puti(inode);
 }
-int sys_vhangup(void){
-    return -ENOSYS;
-}
+
 int sys_fsync(int fp){
     int res=-ENOSYS;
+    struct file *files;
     struct inode *inode;
     if(fp<0||fp>=NR_FILE){
         printk("%s fp.\n",__FUNCTION__ );
         return -EBADF;
     }
-    if(CUR_TASK->files[fp].used==0){
+    files=CUR_TASK->files;
+    if(files[fp].used==0){
         //文件已经关闭了
         return -EINVAL;
     }
-    inode=CUR_TASK->files[fp].f_inode;
-    if(CUR_TASK->files[fp].f_op
-       &&CUR_TASK->files[fp].f_op->fsync
+    inode=files[fp].f_inode;
+    if(files[fp].f_op
+       &&files[fp].f_op->fsync
             ) {
-        res=CUR_TASK->files[fp].f_op->fsync(inode,&CUR_TASK->files[fp]);
+        res=files[fp].f_op->fsync(inode,&files[fp]);
     }
     return res;
 }

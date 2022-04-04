@@ -25,13 +25,12 @@ CPSID   I
 	LDR R1, =0x10000000
 	//进入pendsv中断
 	STR R1, [R0]
+	//打开中断
+    CPSIE I ;
 	//用户线程模式,用户以非特权模式运行
 	MOV R0,#1
 	MSR CONTROL, R0
-	//打开中断
-	CPSIE I ;
 	BX LR
-
 
 
 /**

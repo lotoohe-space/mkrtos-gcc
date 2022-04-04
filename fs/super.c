@@ -131,7 +131,7 @@ int32_t sys_mount(char * dev_name, char * dir_name, char * type,
  *
  */
 void root_mount(struct task* task){
-    uint32_t i=0;
+    uint32_t i;
     struct super_block* sb;
     for(i=0;i<fs_type_len;i++){
         //一个一个尝试挂载

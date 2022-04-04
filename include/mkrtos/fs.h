@@ -197,6 +197,7 @@ struct fs_type *find_fs_type(const char *fs_name);
 
 //open.c
 //
+void sys_close(int fd);
 
 //inode.c 根目录的设备号
 void lose_inode(struct inode* p_inode);
@@ -329,4 +330,5 @@ void trace(const char* fmt, ...);
 void printk(const char *fmt, ...);
 void fatalk(const char* fmt, ...);
 void console_write(const char* str);
+
 #endif //UNTITLED1_FS_H

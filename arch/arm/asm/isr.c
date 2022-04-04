@@ -32,7 +32,7 @@ void ExternInter(void* sp){
     if(isrFuncList[isrNum-ISR_START_INX].isrFunc!=NULL){
         isrFuncList[isrNum-ISR_START_INX].isrFunc();
     }else{
-        printk("unreg isr %d.\r\n",isrNum);
+        //printk("unreg isr %d.\r\n",isrNum);
     }
 
 //	}else{

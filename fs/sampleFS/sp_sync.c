@@ -9,6 +9,12 @@
 #include <mkrtos/sp.h>
 #include <mkrtos/bk.h>
 
+/**
+ * 同步当前文件
+ * @param inode
+ * @param filp
+ * @return
+ */
 int file_fsync (struct inode *inode, struct file *filp)
 {
     struct super_block *sb;

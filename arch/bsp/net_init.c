@@ -22,8 +22,7 @@ volatile struct mutex_hdl *dm9000lock;					//DM9000读写互锁控制信号量
 //DM9000数据接收处理任务
 void lwip_dm9000_input_task(void *pdata)
 {
-#include "net/lwiperf_interface.h"
-    lwiperf_init();
+
 	//从网络缓冲区中读取接收到的数据包并将其发送给LWIP处理 
 	ethernetif_input(&lwip_netif);
 }
@@ -149,7 +148,6 @@ u8 lwip_comm_init(void)
 	struct ip4_addr ipaddr;  			//ip地址
 	struct ip4_addr netmask; 			//子网掩码
 	struct ip4_addr gw;      			//默认网关 
- 	//if(lwip_comm_mem_malloc())return 1;	//内存申请失败
 
     if(lwip_comm_mem_malloc()){
         return 1;

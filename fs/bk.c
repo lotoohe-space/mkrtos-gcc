@@ -151,8 +151,6 @@ int32_t rel_bk(dev_t dev_no,bk_no_t bk_no){
                 bk_cache_ls[i].bk_no == bk_no
                 && GET_BIT(bk_cache_ls[i].flag, 6)
                 ) {
-
-
             bk_cache_ls[i].flag = 0;
             bk_cache_ls[i].cache = bk_cache_ls[i].oldcache;
             bk_cache_ls[i].oldcache = NULL;

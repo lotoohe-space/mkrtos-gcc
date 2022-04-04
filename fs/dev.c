@@ -254,21 +254,18 @@ int32_t unreg_bk_dev(dev_t major_no,const char* name){
     return 0;
 }
 
-
 static void __wait_on_bk_ch_ls(dev_t bk_dev_no){
     struct wait_queue wait = {CUR_TASK , NULL };
 
     add_wait_queue(&(devs_bk[bk_dev_no].b_ch_ls_wait), &wait);
     again:
     task_suspend();
-//    CUR_TASK->status = TASK_SUSPEND;
     if (atomic_read(&(devs_bk[bk_dev_no].bk_ch_ls_lock))) {
         task_sche();
         goto again;
     }
     remove_wait_queue(&(devs_bk[bk_dev_no].b_ch_ls_wait), &wait);
     task_run();
-//    CUR_TASK->status = TASK_RUNNING;
 }
 
 void wait_on_bk_ch_ls(dev_t bk_dev_no){
@@ -332,10 +329,11 @@ int chrdev_open(struct inode * inode, struct file * filp)
     if(MAJOR(inode->i_rdev_no) >=BK_DEV_MAX_NUM){
         return -ENODEV;
     }
-
+    //通过主设备号获取字符设备的操作函数
     filp->f_op = devs_char[MAJOR(inode->i_rdev_no) ].d_fops;
-    if (filp->f_op->open)
-        return filp->f_op->open(inode,filp);
+    if (filp->f_op && filp->f_op->open) {
+        return filp->f_op->open(inode, filp);
+    }
     return 0;
 }
 /* 默认的字符设备操作函数集 */
@@ -376,8 +374,9 @@ int blkdev_open(struct inode * inode, struct file * filp)
         return -ENODEV;
     }
     filp->f_op = devs_bk[MAJOR(inode->i_rdev_no) ].d_fops;
-    if (filp->f_op->open)
-        return filp->f_op->open(inode,filp);
+    if (filp->f_op && filp->f_op->open) {
+        return filp->f_op->open(inode, filp);
+    }
     return 0;
 }
 struct file_operations def_blk_fops = {

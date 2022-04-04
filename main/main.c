@@ -4,12 +4,12 @@
 //#include <unistd.h>
 #include <stdio.h>
 
-//static inline _syscall0(int,setup);
+
+extern int32_t arch_init(void);
 int main(void)
 {
-    setup();
-//    fopen("/dev","r");
-//    printf("test");
+    arch_init();
+
 	while(1);
 }
 //MODE COM2 115200,0,8,1

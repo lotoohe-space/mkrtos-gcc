@@ -84,7 +84,7 @@ int32_t bk_flash_init(void){
 //        if((used_dev_no=alloc_bk_no())<0){
 //            return -1;
 //        }
-        mknod("/dev/flash",0777|(3<<16),FLASH_DEV_NO);
+        sys_mknod("/dev/flash",0777|(3<<16),FLASH_DEV_NO);
         return -1;
     }
 

@@ -13,6 +13,9 @@
 char* sys_getenv(char* key){
     return NULL;
 }
+int sys_vhangup(void){
+    return -ENOSYS;
+}
 // ·ÏÆúÁË
 int sys_ftime ()
 {

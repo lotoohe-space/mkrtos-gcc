@@ -10,7 +10,7 @@
 #include <time.h>
 #include "sys/wait.h"
 
-static char sendBuff[128];
+static char sendBuff[512];
 
 static void sock_sock(int fd){
     printf("to write data.\n");

@@ -366,7 +366,7 @@ int sys_semop(int semid,struct sembuf semoparray[],size_t ops){
             //下面应该原子操作的
             //锁住当前的信号集
             if(_sem->semval>=ABS(semoparray[i].sem_op)) {
-                //则直接进行操作
+                //则直接进行操作SOFTFPU
                 if (semoparray->sem_flg & SEM_UNDO) {
                     _sem->semval += ABS(semoparray[i].sem_op);
                 } else {
