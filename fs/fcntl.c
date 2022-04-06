@@ -62,27 +62,42 @@ int sys_dup(unsigned int fildes)
 }
 int sys_fcntl(unsigned int fd, unsigned int cmd, unsigned long arg)
 {
+    struct file* files;
+    int new_fd;
     struct file * filp;
-    if (fd >= NR_FILE || (filp = &(CUR_TASK->files[fd]))->used==0) {
+    int new_flag;
+
+    files=CUR_TASK->files;
+    if (fd >= NR_FILE || (filp = &(files[fd]))->used==0) {
         return -EBADF;
     }
 
     switch(cmd){
         case F_DUPFD:
-            break;
+            new_fd=dupfd(fd,0);
+            files[new_fd].fo_flag&=~FD_CLOEXEC;
+            return new_fd;
         case F_GETFD:
-            break;
+            return files[fd].fo_flag;
         case F_SETFD:
-            break;
+            files[fd].fo_flag=arg;
+            return 0;
         case F_GETFL:
-            break;
+            return files[fd].f_flags;
         case F_SETFL:
-            break;
+            new_flag=(arg&O_APPEND)|(arg&O_NONBLOCK)|(arg&O_SYNC)|(arg&O_ASYNC);
+            files[fd].f_flags=new_flag;
+            return 0;
         case F_GETOWN:
-            break;
+            return -ENOSYS;
         case F_SETOWN:
-            break;
-        case F_GETLK
+            return -ENOSYS;
+        case F_GETLK:
+            return -ENOSYS;
+        case F_SETLK:
+            return -ENOSYS;
+        case F_SETLKW:
+            return -ENOSYS;
     }
 
     return 0;

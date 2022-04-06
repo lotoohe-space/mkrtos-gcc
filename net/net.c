@@ -10,6 +10,9 @@
 //open.c
 extern int file_read (int fd,uint8_t *buf,uint32_t len);
 extern int file_write (int fd,uint8_t *buf,uint32_t len);
+extern void file_close(int fd);
+
+
 #define GET_FILE_INFO (CUR_TASK->files)
 int errno_lwip=0;
 
@@ -19,7 +22,11 @@ int sys_read(int s,uint8_t * buf,uint32_t len){
         return -EBADF;
     }
     if(files[s].net_file){
-        return lwip_read(files[s].net_sock,buf,len);
+        int ret= lwip_read(files[s].net_sock,buf,len);
+        if(ret<0){
+            return -errno_lwip;
+        }
+        return ret;
     }else{
         return file_read(s,buf,len);
     }
@@ -34,7 +41,8 @@ int sys_write (int s,uint8_t *buf,uint32_t len){
     if(files[s].net_file){
         ret = lwip_write(files[s].net_sock,buf,len);
         if(ret<0) {
-            printk("write err is %d.\r\n", ret);
+            return -errno_lwip;
+//            printk("write err is %d.\r\n", ret);
         }
         return ret;
     }else{
@@ -60,7 +68,7 @@ ssize_t sys_recv(int s,void* mem,size_t len,int flags){
     }
 
     if(files[s].net_file){
-        int ret= lwip_recv(GET_FILE_INFO[s].net_sock,mem,len,flags);
+        int ret= lwip_recv(files[s].net_sock,mem,len,flags);
         if(ret<0){
             return -errno_lwip;
         }
@@ -75,7 +83,7 @@ int sys_send(int s,const void* data,size_t size,int flags){
         return -EBADF;
     }
     if(files[s].net_file){
-        int ret= lwip_send(GET_FILE_INFO[s].net_sock,data,size,flags);
+        int ret= lwip_send(files[s].net_sock,data,size,flags);
         if(ret<0){
             return -errno_lwip;
         }
@@ -105,10 +113,10 @@ int sys_accept(int s,struct sockaddr *addr,socklen_t *addrlen){
         if(i==NR_FILE){
             return -ENOSYS;
         }
-        int new_sock= lwip_accept(GET_FILE_INFO->net_sock,addr,addrlen);
+        int new_sock= lwip_accept(files[s].net_sock,addr,addrlen);
         if(new_sock<0){
             files[i].used=0;
-            printk("accept error is %d %d.\r\n",new_sock,errno_lwip);
+//            printk("accept error is %d %d.\r\n",new_sock,errno_lwip);
             return -errno_lwip;
         }
         files[i].net_sock=new_sock;
@@ -125,7 +133,7 @@ int sys_bind(int s,const struct sockaddr* name,socklen_t namelen){
         return -EBADF;
     }
     if(files[s].net_file){
-        int ret= lwip_bind(GET_FILE_INFO[s].net_sock,name,namelen);
+        int ret= lwip_bind(files[s].net_sock,name,namelen);
         if(ret<0){
             return -errno_lwip;
         }
@@ -140,7 +148,7 @@ int sys_shutdown(int s,int how){
         return -EBADF;
     }
     if(files[s].net_file){
-        int ret= lwip_shutdown(GET_FILE_INFO[s].net_sock,how);
+        int ret= lwip_shutdown(files[s].net_sock,how);
         if(ret<0){
             return -errno_lwip;
         }
@@ -176,7 +184,7 @@ int sys_connect(int s,const struct sockaddr* name, socklen_t namelen){
         return -EBADF;
     }
     if(files[s].net_file){
-        int ret= lwip_connect(GET_FILE_INFO[s].net_sock,name,namelen);
+        int ret= lwip_connect(files[s].net_sock,name,namelen);
         if(ret<0){
             return -errno_lwip;
         }
@@ -191,7 +199,7 @@ int sys_listen(int s,int backlog){
         return -EBADF;
     }
     if(files[s].net_file){
-        int ret= lwip_listen(GET_FILE_INFO[s].net_sock,backlog);
+        int ret= lwip_listen(files[s].net_sock,backlog);
         if(ret<0){
             return -errno_lwip;
         }
@@ -206,7 +214,7 @@ int sys_setsockopt(int s, int level, int optname, const void *optval, socklen_t 
         return -EBADF;
     }
     if(files[s].net_file) {
-        int ret= lwip_setsockopt(GET_FILE_INFO[s].net_sock, level, optname, optval, optlen);
+        int ret= lwip_setsockopt(files[s].net_sock, level, optname, optval, optlen);
         if(ret<0){
             return -errno_lwip;
         }
@@ -221,7 +229,7 @@ int sys_getsockopt(int s, int level, int optname, void *optval, socklen_t *optle
         return -EBADF;
     }
     if(files[s].net_file) {
-        int ret= lwip_getsockopt(GET_FILE_INFO[s].net_sock, level, optname, optval, optlen);
+        int ret= lwip_getsockopt(files[s].net_sock, level, optname, optval, optlen);
         if(ret<0){
             return -errno_lwip;
         }
@@ -236,7 +244,7 @@ ssize_t sys_recvmsg(int s, struct msghdr *message, int flags){
         return -EBADF;
     }
     if(files[s].net_file) {
-        int ret= lwip_recvmsg(GET_FILE_INFO[s].net_sock, message, flags);
+        int ret= lwip_recvmsg(files[s].net_sock, message, flags);
         if(ret<0){
             return -errno_lwip;
         }
@@ -252,7 +260,7 @@ ssize_t sys_recvfrom(int s, void *mem, size_t len, int flags,
         return -EBADF;
     }
     if(files[s].net_file) {
-        int ret= lwip_recvfrom(GET_FILE_INFO[s].net_sock, mem, len, flags, from, fromlen);
+        int ret= lwip_recvfrom(files[s].net_sock, mem, len, flags, from, fromlen);
         if(ret<0){
             return -errno_lwip;
         }
@@ -267,7 +275,7 @@ ssize_t sys_sendmsg(int s, const struct msghdr *msg, int flags){
         return -EBADF;
     }
     if(files[s].net_file) {
-        int ret= lwip_sendmsg(GET_FILE_INFO[s].net_sock, msg, flags);
+        int ret= lwip_sendmsg(files[s].net_sock, msg, flags);
         if(ret<0){
             return -errno_lwip;
         }
@@ -283,7 +291,7 @@ ssize_t sys_sendto(int s, const void *data, size_t size, int flags,
         return -EBADF;
     }
     if(files[s].net_file) {
-        int ret= lwip_sendto(GET_FILE_INFO[s].net_sock, data, size, flags, to, tolen);
+        int ret= lwip_sendto(files[s].net_sock, data, size, flags, to, tolen);
         if(ret<0){
             return -errno_lwip;
         }
@@ -337,7 +345,7 @@ int sys_getpeername(int s, struct sockaddr *name, socklen_t *namelen)
         return -EBADF;
     }
     if(files[s].net_file) {
-        int ret= lwip_getpeername(GET_FILE_INFO[s].net_sock, name, namelen);
+        int ret= lwip_getpeername(files[s].net_sock, name, namelen);
         if(ret<0){
             return -errno_lwip;
         }
@@ -353,7 +361,7 @@ int sys_getsockname(int s, struct sockaddr *name, socklen_t *namelen)
         return -EBADF;
     }
     if(files[s].net_file) {
-        int ret= lwip_getsockname(GET_FILE_INFO[s].net_sock, name, namelen);
+        int ret= lwip_getsockname(files[s].net_sock, name, namelen);
         if(ret<0){
             return -errno_lwip;
         }

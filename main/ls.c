@@ -1142,22 +1142,20 @@ static const unsigned char ls[18108] = {
 #include "fcntl.h"
 #include <stdio.h>
 void fs_w_ls(void){
-    int32_t sys_open(const char* path,int32_t flags,int32_t mode);
-    int sys_write (int fd,uint8_t *buf,uint32_t len);
-    void sys_close(int fp);
+
     int len;
 
     int res;
-    res=sys_open("/bin/_ls",O_RDWR|O_CREAT,0777);
+    res=open("/bin/_ls",O_RDWR|O_CREAT,0777);
     if(res<0){
         printf("cat write is error.");
         return ;
     }
-    len=sys_write(res,ls,sizeof(ls));
+    len=write(res,ls,sizeof(ls));
     if(len!=sizeof(ls)){
         printf("cat write is error.");
-        sys_close(res);
+        close(res);
         return ;
     }
-    sys_close(res);
+    close(res);
 }

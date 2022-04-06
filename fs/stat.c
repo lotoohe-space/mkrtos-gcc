@@ -3,7 +3,7 @@
 //
 #include <mkrtos/fs.h>
 #include <mkrtos/stat.h>
-
+#include <mkrtos/task.h>
 static void cp_new_stat(struct inode * inode, struct new_stat * statbuf)
 {
     statbuf->st_dev = inode->i_sb->s_dev_no;
@@ -29,6 +29,17 @@ int32_t sys_stat(char * filename, struct new_stat * statbuf)
     }
     cp_new_stat(inode,statbuf);
     puti(inode);
+    return 0;
+}
+int32_t sys_fstat(int fd,struct new_stat* stat){
+    struct file* files=CUR_TASK->files;
+    if((fd<0||fd>=NR_FILE)||files[fd].used==0){
+        return -EBADF;
+    }
+    if(!files[fd].f_inode){
+        return -EINVAL;
+    }
+    cp_new_stat(files[fd].f_inode,stat);
     return 0;
 }
 int32_t sys_lstat(char * filename, struct new_stat * statbuf) {

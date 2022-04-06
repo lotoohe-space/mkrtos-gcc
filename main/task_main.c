@@ -640,13 +640,11 @@ void start_task(void* arg0,void*arg1){
 
     printf("to init task.\r\n");
     printf("%d remain memory is %d.\n",getpid(),GetFreeMemory(1));
-
+#if 0
     extern void fs_w_zshell(void);
     fs_w_zshell();
     extern void fs_w_start_info(void);
     fs_w_start_info();
-    sync();
-#if 0
     extern void fs_w_ls(void);
     fs_w_ls();
     extern void fs_w_cat(void);
@@ -662,7 +660,7 @@ void start_task(void* arg0,void*arg1){
     fs_w_ls_();
 
 #endif
-//    fsync()
+    sync();
 //    int *ptr=malloc(100);
 //    free(ptr);
 //    static int thread_test[512];
@@ -674,12 +672,9 @@ void start_task(void* arg0,void*arg1){
     if(ret<0){
         printf("init create error.\n");
     }else if(ret==0){
-//        int ret;
-//        ret=sys_clone(myThreadID1,NULL,CLONE_FS|CLONE_VM|CLONE_FILES|CLONE_PARENT,0);
-//        while(1);
 
-extern int net_main();
-        net_main();
+//extern int net_main();
+//        net_main();
         putenv("SHELL=/bin/zsh");
 #if 0
 #include <pthread.h>
@@ -760,12 +755,9 @@ void KernelTaskInit(void){
     int res=0;
     extern int32_t sp_mkfs(dev_t dev_no,int32_t inode_count);
     extern int32_t bk_flash_init(void);
-//    sigjmp_buf buf;
-//    res=setjmp(buf);
-//    longjmp(buf,1);
     //初始化默认的磁盘设备
     bk_flash_init();
-#if 1
+#if 0
     //在这里格式化文件系统
     if(sp_mkfs(root_dev_no,30)<0){
         fatalk("根文件系统创建失败！\r\n");

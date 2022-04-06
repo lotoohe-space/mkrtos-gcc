@@ -11,37 +11,31 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="修复了几个比较严重的bug">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="后面的工作挺多的。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/asm/init.S" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/init.S" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/asm/isr.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/isr.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/net_init.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/net_init.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/tim3.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/tim3.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/bk_flash.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/bk_flash.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/bk.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/dev.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/dev.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/fcntl.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/fcntl.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/namei.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/open.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/open.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_sync.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_sync.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/super.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/stat.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/stat.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipc/sys_sem.c" beforeDir="false" afterPath="$PROJECT_DIR$/ipc/sys_sem.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/sys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sys.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kernel/setup.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/setup.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/sys.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/sys.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/task_create.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/task_create.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/fs_init.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/fs_init.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/socket_test.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/socket_test.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/cat.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/cat.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/clear.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/clear.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/ls.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/ls.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/ls_.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/ls_.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/mkdir.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/mkdir.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/uname.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/uname.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/net/lwiperf_interface.c" beforeDir="false" afterPath="$PROJECT_DIR$/net/lwiperf_interface.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/net/net.c" beforeDir="false" afterPath="$PROJECT_DIR$/net/net.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,6 +140,11 @@
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -256,14 +255,8 @@
       <workItem from="1648275021445" duration="52382000" />
       <workItem from="1648610108096" duration="2961000" />
       <workItem from="1648648335142" duration="85988000" />
-      <workItem from="1648986194043" duration="9797000" />
-    </task>
-    <task id="LOCAL-00004" summary="emmmm">
-      <created>1642595764368</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1642595764368</updated>
+      <workItem from="1648986194043" duration="19268000" />
+      <workItem from="1649251395716" duration="3550000" />
     </task>
     <task id="LOCAL-00005" summary="修复了几个bug，并给bk_cache添加了缓存">
       <created>1642597678430</created>
@@ -601,7 +594,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648867503970</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="后面的工作挺多的。">
+      <created>1649085503619</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1649085503620</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -619,7 +619,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="tty能够写了，默认/dev/tty就是/dev/tty0" />
     <MESSAGE value="正在搞waitpid" />
     <MESSAGE value="正在搞sys_kill" />
     <MESSAGE value="cortex没有mmu，所以mmap和mumap直接调用malloc和free函数进行申请内存了" />
@@ -644,18 +643,10 @@
     <MESSAGE value="emmm" />
     <MESSAGE value="基本支持了lwip，解決了lwip不支持多進程的問題，并且還解決了一些并發性問題。" />
     <MESSAGE value="修复了几个比较严重的bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复了几个比较严重的bug" />
+    <MESSAGE value="后面的工作挺多的。" />
+    <option name="LAST_COMMIT_MESSAGE" value="后面的工作挺多的。" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main/task_main.c</url>
-          <line>679</line>
-          <option name="timeStamp" value="326" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="time_tick" language="ObjectiveC" />

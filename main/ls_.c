@@ -2491,22 +2491,20 @@ unsigned AnsiChar data[39708] = {
 #include "fcntl.h"
 #include <stdio.h>
 void fs_w_ls_(void){
-    int32_t sys_open(const char* path,int32_t flags,int32_t mode);
-    int sys_write (int fd,uint8_t *buf,uint32_t len);
-    void sys_close(int fp);
+
     int len;
 
     int res;
-    res=sys_open("/bin/ls",O_RDWR|O_CREAT,0777);
+    res=open("/bin/ls",O_RDWR|O_CREAT,0777);
     if(res<0){
         printf("write is error.");
         return ;
     }
-    len=sys_write(res,data,sizeof(data));
+    len=write(res,data,sizeof(data));
     if(len!=sizeof(data)){
         printf("write is error.");
-        sys_close(res);
+        close(res);
         return ;
     }
-    sys_close(res);
+    close(res);
 }

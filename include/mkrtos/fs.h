@@ -109,6 +109,8 @@ struct file {
     struct file_operations * f_op; /*文件对应的操作符*/
     uint32_t used;   /*是否被使用标记*/
 
+    int fo_flag;
+
     int net_sock;/*网络sock*/
     uint8_t net_file;/*网络文件*/
 //    uint32_t sock_used_cn;/*网络文件使用计数*/
@@ -197,7 +199,7 @@ struct fs_type *find_fs_type(const char *fs_name);
 
 //open.c
 //
-void sys_close(int fd);
+//void sys_close(int fd);
 
 //inode.c 根目录的设备号
 void lose_inode(struct inode* p_inode);
