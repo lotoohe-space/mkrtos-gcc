@@ -27,7 +27,7 @@ void sp_truncate(struct inode* inode,int32_t len){
 
     inode->i_file_size=len;
 
-   for(uint32_t i = bk_ofs+1;i<bk_end_ofs;i++){
+   for(uint32_t i = bk_ofs;i<bk_end_ofs;i++){
        if (i < A_BK_NUM(sp_ino)) {
             if(sp_ino->p_ino[i]!=0){
                 free_bk(sb,sp_ino->p_ino[i]);

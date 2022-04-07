@@ -356,6 +356,7 @@ static struct bk_cache* find_bk_cache(dev_t dev_no,uint32_t bk_no){
         //不等于-1则说明没有，而且有空的块
         bk_cache_ls[prev_i].flag=0x80;
         bk_cache_ls[prev_i].bk_no=bk_no;
+        atomic_set(&bk_cache_ls[prev_i].b_lock.counter,0);
         unlock_bk_ls(dev_no);
 
         return &(bk_cache_ls[prev_i]);
@@ -427,7 +428,14 @@ int32_t wbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     uint32_t cache_len;
     uint32_t i;
     struct bk_cache* bk_tmp;
-
+    uint32_t bk_cn;
+    if(get_bk_cn(dev_no,&bk_cn)<0){
+        return NULL;
+    }
+    if(bk_no>=bk_cn){
+        //超过了可读写的块范围
+        return NULL;
+    }
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
@@ -487,7 +495,14 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
     uint32_t cache_len;
     uint32_t i;
     struct bk_cache* bk_tmp;
-
+    uint32_t bk_cn;
+    if(get_bk_cn(dev_no,&bk_cn)<0){
+        return NULL;
+    }
+    if(bk_no>=bk_cn){
+        //超过了可读写的块范围
+        return NULL;
+    }
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
@@ -540,6 +555,14 @@ struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
     struct bk_operations *bk_ops;
     struct bk_cache* bk_tmp;
     uint32_t cache_len=0;
+    uint32_t bk_cn;
+    if(get_bk_cn(dev_no,&bk_cn)<0){
+        return NULL;
+    }
+    if(bk_no>=bk_cn){
+        //超过了可读写的块范围
+        return NULL;
+    }
     bk_ops=get_bk_ops(dev_no);
     if(bk_ops==NULL){
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
@@ -548,6 +571,7 @@ struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
     if(bk_cache_ls==NULL){
         fatalk("%s %s 致命错误",__FUNCTION__ ,__LINE__);
     }
+
     again:
     bk_tmp=find_bk_cache(dev_no,bk_no);
     if(bk_tmp==NULL){

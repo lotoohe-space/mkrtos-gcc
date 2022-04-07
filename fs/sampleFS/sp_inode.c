@@ -4,6 +4,8 @@
 #include <mkrtos/mem.h>
 #include <mkrtos/sp.h>
 #include <string.h>
+#include "mkrtos/debug.h"
+
 struct inode * sp_alloc_inode(struct inode * p_inode){
     struct sp_inode* sp_ino;
     p_inode->i_fs_priv_info= OSMalloc(sizeof(struct sp_inode));
@@ -170,15 +172,15 @@ void sp_write_inode (struct inode * i_node){
 }
 //删除这个inode，释放其占用的空间，
 void sp_put_inode(struct inode * i_node){
-    if(i_node->i_hlink==0){
+    if(i_node->i_hlink>0){
         return ;
     }
-    i_node->i_file_size=0;
+    //刪除文件占用的bk
     sp_truncate(i_node,0);
+    //释放占用inode
     free_inode_no(i_node->i_sb,i_node->i_no);
-    //这里需要删除文件的所有内容
-    //然后让这个inode空闲
-    OSFree(i_node->i_fs_priv_info);
+    DEBUG("fs",INFO,"剩余块数:%d.",get_free_bk(i_node->i_sb));
+    DEBUG("fs",INFO,"剩余inode:%d.",get_free_inode(i_node->i_sb));
 }
 //释放超级块
 void sp_put_super(struct super_block * sb){

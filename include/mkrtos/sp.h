@@ -157,5 +157,9 @@ void sp_truncate(struct inode* inode,int32_t len);
 //sp_link.c
 extern struct inode_operations sp_symlink_inode_operations;
 
+//sp_bmap.c
+int32_t get_free_bk(struct super_block* sb);
+int32_t get_free_inode(struct super_block* sb);
+
 
 #endif //UNTITLED1_SP_H

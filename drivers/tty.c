@@ -328,14 +328,16 @@ int32_t tty_def_line_write(struct tty_struct * tty,struct file* fp,uint8_t *buf,
     int32_t ret;
     int32_t i;
     uint8_t r;
-
+    uint32_t t;
+    spin_lock(&tty->w_lock);
     for(i=0;i<count;i++){
         r=buf[i];
         tty_add_w_queue(tty,r);
     }
-
+    spin_unlock(&tty->w_lock);
     //µ÷ÓÃÐ´º¯Êý
     ret=tty->write(tty);
+
     return i;
 }
 /**

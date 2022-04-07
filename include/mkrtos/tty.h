@@ -9,7 +9,7 @@
 #include <mkrtos/fs.h>
 #include "mkrtos/task.h"
 //buf长度
-#define TTY_READ_BUF_LEN 256
+#define TTY_READ_BUF_LEN 512
 
 struct tty_queue{
     //读取缓存利用环形队列
@@ -37,6 +37,8 @@ struct tty_struct{
     struct tty_queue w_queue;
     //然后通过handler处理机制存放到per_queue中，pre_queue中的数据直接可以给用户，或者进行回显
     struct tty_queue pre_queue;
+
+    spinlock_handler w_lock;
 
     //有多少列
     int col;

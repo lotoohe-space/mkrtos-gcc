@@ -9,7 +9,7 @@
 int32_t sys_setup(void){
     extern void fs_init(void);
     root_mount(CUR_TASK);
-#if 0
+#if 1
     fs_init();
 #endif
 

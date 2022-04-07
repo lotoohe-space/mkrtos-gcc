@@ -352,8 +352,12 @@ int32_t sys_fork(uint32_t *psp){
         }
     }
     //引用计数器+1
-    atomic_inc(&newPtb->root_inode->i_used_count);
-    atomic_inc(&newPtb->pwd_inode->i_used_count);
+    if(newPtb->root_inode) {
+        atomic_inc(&newPtb->root_inode->i_used_count);
+    }
+    if(newPtb->pwd_inode) {
+        atomic_inc(&newPtb->pwd_inode->i_used_count);
+    }
     newPtb->del_wait=NULL;
     newPtb->close_wait=NULL;
     newPtb->sig_bmp[0]=0;

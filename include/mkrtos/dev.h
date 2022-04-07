@@ -5,9 +5,14 @@
 #ifndef UNTITLED1_DEV_H
 #define UNTITLED1_DEV_H
 
+//字符设备
 #define NULL_MAJOR 6
 #define TTY_MAJOR 4
 #define TTYMAUX_MAJOR 5
+//块设备
+#define BK_FLASH 0
+#define MMC 1
+
 //主次设备号码获取
 #define MAJOR(a) (a>>16)
 #define MINOR(a) (a&0xffff)

@@ -37,7 +37,40 @@ int32_t set_bk_no_status(struct super_block *sb, uint32_t usedBkInx, uint8_t sta
 
     return 0;
 }
-
+int32_t get_free_bk(struct super_block* sb){
+    struct sp_super_block * sp_sb=sb->s_sb_priv_info;
+    uint32_t free_bk=0;
+    int fn_inx=0;
+    uint32_t j;
+    uint8_t r;
+    uint8_t m;
+    struct bk_cache *bk_tmp;
+    for (uint32_t i = 0; i <sp_sb->bkUsedBkCount; i++) {
+        bk_tmp=bk_read(sb->s_dev_no,sp_sb->bkUsedBkStInx + i,1);
+        trace("bk map %x %x\n",bk_tmp->cache[0],bk_tmp->cache[1]);
+        for (j = 0; j < sb->s_bk_size; j++) {
+            r = bk_tmp->cache[j];
+            if (r != 0) {
+                //有空的
+                for (m = 0; m < 8; m++) {
+                    fn_inx++;
+                    if (fn_inx >= sp_sb->blockCount) {
+                        bk_release(bk_tmp);
+                        return free_bk;
+                    }
+                    if (((r) & (1 << m))) {
+                        free_bk++;
+                    }
+                }
+            }
+            else {
+                fn_inx+=8;
+            }
+        }
+        bk_release(bk_tmp);
+    }
+    return free_bk;
+}
 /**
  * 从磁盘获得一个bk号码
  * @param sb
@@ -68,7 +101,7 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
                     if (((r) & (1 << m))) {
                         //找到为1的空块
                         free_bk = fn_inx;
-                        if (fn_inx >= sp_sb->blockCount) {
+                        if ((free_bk+1) >= sp_sb->blockCount) {
                             bk_release(bk_tmp);
                             return -1;
                         }
@@ -129,6 +162,42 @@ int32_t free_bk(struct super_block* sb,bk_no_t bk_no){
     sb->s_dirt=1;
     return 0;
 }
+int32_t get_free_inode(struct super_block* sb){
+    uint32_t i;
+    uint32_t free_inode=0;
+    uint32_t fn_inx = 0;
+    uint32_t j;
+    uint8_t m;
+    uint8_t r;
+    struct sp_super_block * sp_sb;
+    struct bk_cache* bk_tmp;
+    sp_sb=sb->s_sb_priv_info;
+    //先从bitmap中查找空闲的inode
+    for (i = 0; i < sp_sb->inode_used_bk_count; i++) {
+        bk_tmp=bk_read(sb->s_dev_no,sp_sb->inode_used_bk_st_inx + i,1);
+        for (j = 0; j < sb->s_bk_size; j++) {
+            r=bk_tmp->cache[j];
+            if (r != 0) {
+                //有空的
+                for (m = 0; m < 8; m++) {
+                    fn_inx++;
+                    if (fn_inx >= sp_sb->iNodeCount) {
+                        bk_release(bk_tmp);
+                        return free_inode;
+                    }
+                    if (((r) & (1 << m))) {
+                        free_inode++;
+                    }
+                }
+            }
+            else {
+                fn_inx+=8;
+            }
+        }
+        bk_release(bk_tmp);
+        return free_inode;
+    }
+}
 /**
  * 从磁盘申请一个inode号
  * @param sb
@@ -158,13 +227,15 @@ int32_t alloc_inode_no(struct super_block* sb,ino_t *res_ino){
                 //有空的
                 for (m = 0; m < 8; m++) {
                     if (((r) & (1 << m))) {
-                        f_inx += m;
+//                        f_inx += m;
                         free_inode = f_inx;
-                        if (free_inode >= sp_sb->iNodeCount) {
+                        if ((free_inode+1) >= sp_sb->iNodeCount) {
                             bk_release(bk_tmp);
                             return -1;
                         }
                         goto next;
+                    }else {
+                        f_inx++;
                     }
                 }
             }

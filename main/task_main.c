@@ -630,18 +630,31 @@ void* myThreadID2(void* arg){
     //printf("thread_ID2\n");
 }
 #include <bsp/net_init.h>
+#include <arch/arch.h>
 //启动进程
 void start_task(void* arg0,void*arg1){
-    setup();
-    //打开三个串口输出
-    open("/dev/tty", O_RDWR, 0777);
-    open("/dev/tty", O_RDWR, 0777);
-    open("/dev/tty", O_RDWR, 0777);
 
-    printf("to init task.\r\n");
-    printf("%d remain memory is %d.\n",getpid(),GetFreeMemory(1));
+//    int *ptr=malloc(100);
+//    free(ptr);
+//    static int thread_test[512];
+//    clone(thread_fn,&thread_test[512-1],CLONE_VM|CLONE_FILES,NULL);
+
+    int ret;
+
+    ret=fork();
+    if(ret<0){
+        printf("init create error.\n");
+    }else if(ret==0){
+        setup();
+        //打开三个串口输出
+        open("/dev/tty", O_RDWR, 0777);
+        open("/dev/tty", O_RDWR, 0777);
+        open("/dev/tty", O_RDWR, 0777);
+
+        printf("to init task.\r\n");
+        printf("%d remain memory is %d.\n",getpid(),GetFreeMemory(1));
 #if 0
-    extern void fs_w_zshell(void);
+        extern void fs_w_zshell(void);
     fs_w_zshell();
     extern void fs_w_start_info(void);
     fs_w_start_info();
@@ -660,21 +673,9 @@ void start_task(void* arg0,void*arg1){
     fs_w_ls_();
 
 #endif
-    sync();
-//    int *ptr=malloc(100);
-//    free(ptr);
-//    static int thread_test[512];
-//    clone(thread_fn,&thread_test[512-1],CLONE_VM|CLONE_FILES,NULL);
-
-    int ret;
-
-    ret=fork();
-    if(ret<0){
-        printf("init create error.\n");
-    }else if(ret==0){
-
-//extern int net_main();
-//        net_main();
+        sync();
+#include <test/test.h>
+        fs_test();
         putenv("SHELL=/bin/zsh");
 #if 0
 #include <pthread.h>
@@ -711,7 +712,6 @@ void start_task(void* arg0,void*arg1){
                 user_task(0,0);
             }
         }
-        //while(1)   rc_shell_exec();
 
         DIR				*dp;
         struct dirent	*dirp;
@@ -727,11 +727,7 @@ void start_task(void* arg0,void*arg1){
 
     }else {
          nice(1);
-         while(1){
-
-           // delay_ms(1000);
-           // printf("remain memory is %d.\n",GetFreeMemory(1));
-        }
+         while(1){}
     }
 #if 0
     int ret=fork();
@@ -757,7 +753,7 @@ void KernelTaskInit(void){
     extern int32_t bk_flash_init(void);
     //初始化默认的磁盘设备
     bk_flash_init();
-#if 0
+#if 1
     //在这里格式化文件系统
     if(sp_mkfs(root_dev_no,30)<0){
         fatalk("根文件系统创建失败！\r\n");

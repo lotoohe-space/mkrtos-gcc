@@ -22,20 +22,32 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x_it.h" 
+#include "stm32f10x_it.h"
+#include "mkrtos/task.h"
 
 
- 
 void NMI_Handler(void)
 {
 }
  
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    unsigned char *mfsr=(void*)0xe000ed28;
+    unsigned char *bfsr=(void*)0xe000ed29;
+    unsigned short *ufsr=(void*)0xe000ed2a;
+    unsigned int *hard_fsr=(void*)0xe000ed2c;
+    unsigned char *dfsr=(void*)0xe000ed30;
+    printk("----------------------%s----------------\r\n",__FUNCTION__);
+    printk("mfsr 0x%x\r\n",*mfsr);
+    printk("bfsr 0x%x\r\n",*bfsr);
+    printk("ufsr 0x%x\r\n",*ufsr);
+    printk("hard_fsr 0x%x\r\n",*hard_fsr);
+    printk("dfsr 0x%x\r\n",*dfsr);
+    printk("----------------------------------------\r\n");
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while (1)
+    {
+    }
 }
  
 void MemManage_Handler(void)

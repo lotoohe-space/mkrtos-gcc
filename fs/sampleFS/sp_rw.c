@@ -8,6 +8,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <mkrtos/stat.h>
+#include "mkrtos/debug.h"
+
 int sp_file_read(struct inode * inode, struct file * filp, char * buf, int count){
     uint32_t fileUsedBKNum;
     uint32_t rLen = 0;
@@ -201,67 +203,56 @@ int32_t inode_alloc_new_bk(struct inode* inode, uint32_t* newBkNum){
         *newBkNum = b;
     }
     else if (usedNewBkNum <= A_BK_NUM(sp_ino) + B_BK_NUM(sb, sp_ino) + C_BK_NUM(sb, sp_ino)) {
-//        //三级大小
-//        uint32_t overANum = usedNewBkNum - A_BK_NUM(pINode)-B_BK_NUM(pFsInfo, pINode)-1;
-//        //得到一级偏移
-//        uint32_t pFileBksInx = overANum/(BK_INC_X_NUM(pFsInfo)*BK_INC_X_NUM(pFsInfo));
-//        //计算二级偏移，等于超出部分大小，除以
-//        uint32_t ppFileBksInx = (overANum%(BK_INC_X_NUM(pFsInfo)*BK_INC_X_NUM(pFsInfo)))/BK_INC_X_NUM(pFsInfo);
-//        uint32_t pppFileBksInx= (overANum%(BK_INC_X_NUM(pFsInfo)*BK_INC_X_NUM(pFsInfo)))%BK_INC_X_NUM(pFsInfo);
-//        //填充一级
-//        uint32_t a;
-//        if (pINode->ppFileBks[pFileBksInx] == BK_IDLE_NUM) {
-//
-//            FIND_BK_TO_SET_USED(a);
-//            pINode->ppFileBks[pFileBksInx] = a;
-//
-//            uint8_t *temp=ShareMemLock(pFsInfo->blockSize);
-//            if (BkCacheAddOp(pFsInfo->bkDev, 2, a,  temp, 0, pFsInfo->blockSize) < 0) {ShareMemUnlock();
-//                ShareMemUnlock();
-//                return -1;
-//            }
-//            ShareMemUnlock();
-//
-//            //写INode
-//            pFsInfo->fsOper->inodeOper.DirtyInode(pINode);
-//        }
-//
-//        uint32_t pBkNum;
-//        if (BkCacheAddOp(pFsInfo->bkDev, 3, pINode->ppFileBks[pFileBksInx],
-//                         (uint8_t*)(&pBkNum), ppFileBksInx*sizeof(uint32_t), sizeof(uint32_t)) < 0) {
-//            return -1;
-//        }
-//        uint32_t b;
-//        if(	pBkNum == BK_IDLE_NUM){
-//            if(FIND_BK_TO_SET_USED(b)<0){
-//                ToSetBKUsed(pFsInfo, a, FALSE);
-//                pINode->pFileBks[pFileBksInx]=BK_IDLE_NUM;
-//                return -1;
-//            }
-//
-//            pBkNum=b;
-//            if (BKWrite(pFsInfo, pINode->ppFileBks[pFileBksInx], ppFileBksInx*sizeof(uint32_t), (uint8_t*)&b, sizeof(b)) != 0) {
-//                return -1;
-//            }
-//        }
-//        uint32_t c;
-//        if(FIND_BK_TO_SET_USED(c)<0){
-//            ToSetBKUsed(pFsInfo, a, FALSE);
-//            ToSetBKUsed(pFsInfo, b, FALSE);
-//            pINode->pFileBks[pFileBksInx]=BK_IDLE_NUM;
-//        }
-//
-//        if (BKWrite(pFsInfo, pBkNum, pppFileBksInx * 4, (uint8_t*)&c, sizeof(c)) != 0) {
-//            //printk("%s %s 写入数据失败:%d\r\n", __DATE__, __FUNCTION__, pINode->pFileBks[pFileBksInx]);
-//            ToSetBKUsed(pFsInfo, a, FALSE);
-//            ToSetBKUsed(pFsInfo, b, FALSE);
-//            ToSetBKUsed(pFsInfo, c, FALSE);
-//            pINode->pFileBks[pFileBksInx]=BK_IDLE_NUM;
-//            return FsWriteBkErr;
-//        }
-//        *newBkNum = c;
-        trace("没有新的块\r\n");
-        return -1;
+        //三级大小
+        uint32_t overANum = usedNewBkNum - A_BK_NUM(sp_ino)-B_BK_NUM(sb, sp_ino);
+        //在初级块中的偏移
+        uint32_t pFileBksInx = overANum/(BK_INC_X_NUM(sb)*BK_INC_X_NUM(sb));
+        //计算二级偏移，等于超出部分大小，除以
+        uint32_t ppFileBksInx = (overANum%(BK_INC_X_NUM(sb)*BK_INC_X_NUM(sb)))/BK_INC_X_NUM(sb);
+        uint32_t pppFileBksInx= overANum%BK_INC_X_NUM(sb);
+        uint32_t a;
+        struct bk_cache* tmp;
+        if(!sp_ino->ppp_ino[pppFileBksInx]){
+            if(alloc_bk(sb,&a)<0){
+                return -1;
+            }
+            //全部设置为0
+            tmp=bk_read(sb->s_dev_no,a,1);
+            memset(tmp->cache,0,sb->s_bk_size);
+            bk_release(tmp);
+            sp_ino->ppp_ino[pFileBksInx] = a;
+            inode->i_dirt=1;
+        }
+        //得到二级的值
+        uint32_t b;
+        tmp=bk_read(sb->s_dev_no,sp_ino->pp_ino[pFileBksInx],1);
+        memcpy(&b, tmp->cache+ppFileBksInx * 4,sizeof(b));
+        bk_release(tmp);
+        if(!b){
+            if(alloc_bk(sb,&b)<0){
+                sp_ino->ppp_ino[pFileBksInx]=0;
+                free_bk(sb,a);
+                return -1;
+            }
+            //全部设置为0
+            tmp=bk_read(sb->s_dev_no,b,1);
+            memset(tmp->cache,0,sb->s_bk_size);
+            bk_release(tmp);
+            inode->i_dirt=1;
+        }
+        uint32_t c;
+        if(alloc_bk(sb,&c)<0){
+            sp_ino->ppp_ino[pFileBksInx]=0;
+
+            free_bk(sb,a);
+            free_bk(sb,b);
+            return -1;
+        }
+        tmp=bk_read(sb->s_dev_no,b,1);
+        memcpy(tmp->cache+pppFileBksInx * 4, (uint8_t*)&c,sizeof(c));
+        bk_release(tmp);
+
+        return 0;
     }
     else {
        return -1;
@@ -362,6 +353,8 @@ int sp_file_write(struct inode * inode, struct file * filp, char * buf, int coun
             bk_release(tmp);
         }
     }
+    DEBUG("fs",INFO,"剩余块数:%d.",get_free_bk(sb));
+    DEBUG("fs",INFO,"剩余inode:%d.",get_free_inode(sb));
     trace("file size %d\r\n",inode->i_file_size);
     return wLen;
 }

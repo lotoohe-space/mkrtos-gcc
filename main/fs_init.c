@@ -46,8 +46,5 @@ void fs_init(void){
         sys_write(res,tmp,strlen(tmp));
         sys_close(res);
     }
-
-
-
 }
 

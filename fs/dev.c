@@ -203,22 +203,7 @@ int32_t unreg_ch_dev(dev_t major_no,const char* name){
     devs_char[major_no].d_fops=NULL;
     return 0;
 }
-
-/**
- * 注册字符设备
- * @param major_no
- * @param name
- * @param d_fops
- * @return
- */
-int32_t reg_bk_dev(
-        dev_t major_no,
-       const char* name ,
-       struct bk_operations *bk_ops,
-        uint32_t bk_count,
-        uint32_t cache_len,
-        uint32_t bk_size
-        ){
+int32_t bk_dev_reg_param(dev_t major_no,uint32_t bk_count,uint32_t cache_len,uint32_t bk_size) {
     uint32_t tmp_ch_len;
     if(major_no>=BK_DEV_MAX_NUM){
         return -EINVAL;
@@ -231,9 +216,63 @@ int32_t reg_bk_dev(
     }
     devs_bk[major_no].bk_count=bk_count;
     devs_bk[major_no].bk_cache_count=tmp_ch_len;
+    devs_bk[major_no].bk_size=bk_size;
+    return 0;
+}
+int32_t bk_dev_unreg_param(dev_t major_no) {
+    uint32_t tmp_ch_len;
+    if(major_no>=BK_DEV_MAX_NUM){
+        return -EINVAL;
+    }
+    if(devs_bk[major_no].bk_ops){
+        return -EBUSY;
+    }
+    bk_cache_destory(&(devs_bk[major_no].bk_cache_ls),devs_bk[major_no].bk_cache_count);
+    devs_bk[major_no].bk_cache_count=0;
+    return 0;
+}
+/**
+ * 注册字符设备
+ * @param major_no
+ * @param name
+ * @param d_fops
+ * @return
+ */
+int32_t reg_bk_dev(
+        dev_t major_no,
+        const char* name ,
+        struct bk_operations *bk_ops,
+        struct file_operations *file_ops
+//                ,
+//        uint32_t bk_count,
+//        uint32_t cache_len,
+//        uint32_t bk_size
+        ){
+//    uint32_t tmp_ch_len;
+    if(major_no>=BK_DEV_MAX_NUM){
+        return -EINVAL;
+    }
+    if(devs_bk[major_no].bk_ops){
+        return -EBUSY;
+    }
+//    if((tmp_ch_len=bk_cache_init(&(devs_bk[major_no].bk_cache_ls),cache_len,bk_size))<=0) {
+//        return -1;
+//    }
+//    devs_bk[major_no].bk_count=bk_count;
+//    devs_bk[major_no].bk_cache_count=tmp_ch_len;
     devs_bk[major_no].d_name=name;
     devs_bk[major_no].bk_ops=bk_ops;
-    devs_bk[major_no].bk_size=bk_size;
+//    devs_bk[major_no].bk_size=bk_size;
+    return 0;
+}
+int32_t get_bk_cn(dev_t major_no,uint32_t *res_bk_no) {
+    if(major_no>=BK_DEV_MAX_NUM){
+        return -EINVAL;
+    }
+    if(devs_bk[major_no].bk_ops){
+        return -EBUSY;
+    }
+    *res_bk_no= devs_bk[major_no].bk_count;
     return 0;
 }
 /**
@@ -367,7 +406,12 @@ struct inode_operations chrdev_inode_operations = {
         NULL,			/* truncate */
         NULL			/* permission */
 };
-
+/**
+ * bk如果当成文件打开则
+ * @param inode
+ * @param filp
+ * @return
+ */
 int blkdev_open(struct inode * inode, struct file * filp)
 {
     if(MAJOR(inode->i_rdev_no) >=BK_DEV_MAX_NUM){

@@ -7,6 +7,7 @@
 #include <mkrtos/fs.h>
 #include <mkrtos/task.h>
 #include <fcntl.h>
+#include <mkrtos/debug.h>
 int sys_ustat(int dev, struct ustat * ubuf){
     return -ENOSYS;
 }
@@ -75,6 +76,9 @@ int sys_truncate(const char * path, unsigned int length){
     inode->i_dirt = 1;
 //    error = notify_change(NOTIFY_SIZE, inode);
     puti(inode);
+
+    DEBUG("fs",INFO,"截断文件：%s",path);
+
     return error;
 }
 int sys_ftruncate(unsigned int fd, unsigned int length){
@@ -264,6 +268,7 @@ int32_t do_open(struct file* files,const char *path,int32_t flags,int32_t mode){
         errno = EMFILE;
         return -1;
     }
+    DEBUG("fs",INFO,"打开%s,flags:0x%x,mode:0x%x,fd:%d.",path,flags,mode,i);
     //打开文件
     res= open_namei(path,flags,mode,&o_inode,NULL);
     if(res<0){
@@ -318,17 +323,19 @@ int32_t sys_open(const char* path,int32_t flags,int32_t mode){
  * @return
  */
 int sys_creat(const char * pathname, int mode){
+    DEBUG("fs",ERR,"创建文件:%s,mode:0x%x",pathname,mode);
     return sys_open(pathname,O_CREAT|O_WRONLY,mode);
 }
 /**
  * 关闭一个文件
  * @param fp
  */
-void file_close(int fp){\
+void file_close(int fp){
     struct file *files;
     struct inode *inode;
     if(fp<0||fp>=NR_FILE){
-        printk("%s fp.\n",__FUNCTION__ );
+        DEBUG("fs",ERR,"文件fd：%d有误.",fp);
+//        printk("%s fp.\n",__FUNCTION__ );
         return ;
     }
     files=CUR_TASK->files;
@@ -353,6 +360,10 @@ void file_close(int fp){\
     files[fp].used=0;
     files[fp].f_ofs=0;
     files[fp].f_inode=NULL;
+
+
+    DEBUG("fs",INFO,"关闭文件：%d",fp);
+
     puti(inode);
 }
 
@@ -361,7 +372,7 @@ int sys_fsync(int fp){
     struct file *files;
     struct inode *inode;
     if(fp<0||fp>=NR_FILE){
-        printk("%s fp.\n",__FUNCTION__ );
+        DEBUG("fs",ERR,"文件fd：%d有误.",fp);
         return -EBADF;
     }
     files=CUR_TASK->files;
@@ -375,5 +386,6 @@ int sys_fsync(int fp){
             ) {
         res=files[fp].f_op->fsync(inode,&files[fp]);
     }
+    DEBUG("fs",INFO,"文件同步：%d",fp);
     return res;
 }

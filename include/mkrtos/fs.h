@@ -226,16 +226,13 @@ extern dev_t root_dev_no;
 extern struct inode_operations chrdev_inode_operations;
 extern struct inode_operations blkdev_inode_operations;
 struct bk_operations{
-    /**
-     * 读取块
-     * @param bk_no 块号
-     * @param data 存放读取的数据
-     * @return
-     */
+    int32_t (*open)(uint32_t bk_no);
     int32_t (*read_bk)(uint32_t bk_no,uint8_t *data);
     int32_t (*write_bk)(uint32_t bk_no,uint8_t *data);
     int32_t (*erase_bk)(uint32_t bk_no);
+    void (*release)(uint32_t bk_no);
 };
+int32_t get_bk_cn(dev_t major_no,uint32_t *res_bk_no);
 uint32_t get_bk_size(dev_t major_no) ;
 struct bk_operations* get_bk_ops(dev_t major_no);
 uint32_t get_bk_count(dev_t major_no);
@@ -244,10 +241,14 @@ int32_t reg_bk_dev(
         dev_t major_no,
         const char* name ,
         struct bk_operations *bk_ops,
-        uint32_t bk_count,
-        uint32_t cache_len,
-        uint32_t bk_size
+        struct file_operations *file_ops
+//                ,
+//        uint32_t bk_count,
+//        uint32_t cache_len,
+//        uint32_t bk_size
 );
+int32_t bk_dev_reg_param(dev_t major_no,uint32_t bk_count,uint32_t cache_len,uint32_t bk_size) ;
+int32_t bk_dev_unreg_param(dev_t major_no) ;
 int32_t unreg_bk_dev(dev_t major_no,const char* name);
 struct file_operations* get_ch_dev_ops(dev_t major_no);
 int32_t reg_ch_dev(dev_t major_no,const char* name ,struct file_operations *d_fops);
@@ -298,6 +299,13 @@ char* path_name(char* file_path);
 //mmap.c
 int general_mmap(struct inode * inode, struct file * fp, void* addr, size_t len , int mask, unsigned long off);
 int general_mumap(struct inode * inode,void * start ,size_t len);
+
+//bk_rw.c
+int bk_file_open(struct inode * ino, struct file * filp);
+int bk_file_read(struct inode *ino, struct file *fp, char * buf, int count);
+int bk_file_write(struct inode *ino, struct file * fp, char * buf, int count);
+int bK_file_fsync(struct inode *inode, struct file *filp);
+int bk_file_release(struct inode * ino, struct file * fp);
 
 /**
  * @breif: 不同编译器Setion的定义
