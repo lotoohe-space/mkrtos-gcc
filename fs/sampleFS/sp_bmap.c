@@ -46,7 +46,7 @@ int32_t get_free_bk(struct super_block* sb){
     uint8_t m;
     struct bk_cache *bk_tmp;
     for (uint32_t i = 0; i <sp_sb->bkUsedBkCount; i++) {
-        bk_tmp=bk_read(sb->s_dev_no,sp_sb->bkUsedBkStInx + i,1);
+        bk_tmp=bk_read(sb->s_dev_no,sp_sb->bkUsedBkStInx + i,1,0);
         trace("bk map %x %x\n",bk_tmp->cache[0],bk_tmp->cache[1]);
         for (j = 0; j < sb->s_bk_size; j++) {
             r = bk_tmp->cache[j];
@@ -95,7 +95,7 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
     st_byte_inx=(sp_sb->last_alloc_bk_inx%(sb->s_bk_size<<3))>>3;
     fn_inx+=st_byte_inx<<3;
     for (uint32_t i = st_bk; i <sp_sb->bkUsedBkCount; i++) {
-        bk_tmp=bk_read(sb->s_dev_no,sp_sb->bkUsedBkStInx + i,1);
+        bk_tmp=bk_read(sb->s_dev_no,sp_sb->bkUsedBkStInx + i,1,0);
         for (j = st_byte_inx; j < sb->s_bk_size; j++) {
             r = bk_tmp->cache[j];
             if (r) {
@@ -179,7 +179,7 @@ int32_t get_free_inode(struct super_block* sb){
     sp_sb=sb->s_sb_priv_info;
     //先从bitmap中查找空闲的inode
     for (i = 0; i < sp_sb->inode_used_bk_count; i++) {
-        bk_tmp=bk_read(sb->s_dev_no,sp_sb->inode_used_bk_st_inx + i,1);
+        bk_tmp=bk_read(sb->s_dev_no,sp_sb->inode_used_bk_st_inx + i,1,0);
         for (j = 0; j < sb->s_bk_size; j++) {
             r=bk_tmp->cache[j];
             if (r != 0) {
@@ -225,7 +225,7 @@ int32_t alloc_inode_no(struct super_block* sb,ino_t *res_ino){
 //    }
     //先从bitmap中查找空闲的inode
     for (i = 0; i < sp_sb->inode_used_bk_count; i++) {
-        bk_tmp=bk_read(sb->s_dev_no,sp_sb->inode_used_bk_st_inx + i,1);
+        bk_tmp=bk_read(sb->s_dev_no,sp_sb->inode_used_bk_st_inx + i,1,0);
         for (j = 0; j < sb->s_bk_size; j++) {
             r=bk_tmp->cache[j];
             if (r != 0) {

@@ -54,7 +54,7 @@ int sp_dir_find(struct inode* dir,const char* file_name,int len,ino_t* res_inode
     for (uint32_t i = 0; i < inode_bk_num; i++) {
         if (i < A_BK_NUM(p_sp_inode)) {
             struct bk_cache* bk_tmp;
-            bk_tmp=bk_read(sb->s_dev_no,p_sp_inode->p_ino[i],0);
+            bk_tmp=bk_read(sb->s_dev_no,p_sp_inode->p_ino[i],0,0);
             for (uint16_t j = 0; j < DIR_NUM(dir); j++) {
                 struct dir_item *pdi;
                 if (tempi >= dir_num) {
@@ -182,7 +182,7 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
         strcpy(pdi.name, name);
         pdi.inode_no = p_inode->i_no;
         pdi.used = TRUE;
-        tmp_bk_ch=bk_read(sb->s_dev_no,new_bk,1);
+        tmp_bk_ch=bk_read(sb->s_dev_no,new_bk,1,0);
         if(dir->i_file_size!=file_size){
             bk_release(tmp_bk_ch);
             goto again;
@@ -205,7 +205,7 @@ int32_t add_file_to_entry(struct inode* dir, const char* name,struct inode* p_in
             return -1;
         }
 
-        tmp_bk_ch=bk_read(sb->s_dev_no,bk_num,1);
+        tmp_bk_ch=bk_read(sb->s_dev_no,bk_num,1,0);
         trace("旧文件大小%d,新文件大小%d\r\n",file_size,dir->i_file_size);
         if(file_size != dir->i_file_size){
             //需要重新检查块号
@@ -678,7 +678,7 @@ int sp_symlink(struct inode * dir, const char * name, int len, const char * symn
         return -ENOSPC;
     }
     ((struct sp_inode*)inode->i_fs_priv_info)->p_ino[0]=no_t;
-    tmp=bk_read(dir->i_sb->s_dev_no,no_t,1);
+    tmp=bk_read(dir->i_sb->s_dev_no,no_t,1,0);
     i = 0;
     while (i < dir->i_sb->s_bk_size && (c=*(symname++)))
         tmp->cache[i++] = c;

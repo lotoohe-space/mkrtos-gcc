@@ -255,7 +255,7 @@ void sp_write_super (struct super_block * sb){
     if(!sb->s_dirt){
         return ;
     }
-    bk_tmp=bk_read(sb->s_dev_no,1,1);
+    bk_tmp=bk_read(sb->s_dev_no,1,1,1);
     memcpy(bk_tmp->cache,sb,sizeof(struct super_block));
 //    wbk(sb->s_dev_no,1,sb,0,sizeof(struct super_block));
     memcpy(bk_tmp->cache+sizeof(struct super_block),sb->s_sb_priv_info,sizeof(struct sp_super_block));

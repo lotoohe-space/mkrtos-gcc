@@ -11,42 +11,29 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="完善块设备">
-      <change afterPath="$PROJECT_DIR$/drivers/fb_lcd.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/mkrtos/fb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/kernel/fb.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="显示驱动雏形">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/arm/asm/isr.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/arm/asm/isr.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/dm9000.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/dm9000.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/arch/bsp/sd_card.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/sd_card.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/sd_card.h" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/sd_card.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/cpu/startup_stm32f103xe.S" beforeDir="false" afterPath="$PROJECT_DIR$/arch/cpu/startup_stm32f103xe.S" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drivers/bk_flash.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/bk_flash.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drivers/mmc.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/mmc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/elf/elf_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/elf/elf_main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/dev.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/dev.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/inode.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/namei.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/bk.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/bk_rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk_rw.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_bmap.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_bmap.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_link.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_link.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_rw.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_super.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/super.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/super.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/dev.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/dev.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_sync.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_sync.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_truncate.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_truncate.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/bk.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/bk.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/mkrtos/mem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/mem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/sp.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/sp.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/setup.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/setup.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/fs_init.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/fs_init.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel/fb.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/fb.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mem/mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/mem/mem.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/fs_test.c" beforeDir="false" afterPath="$PROJECT_DIR$/test/fs_test.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -285,14 +272,7 @@
       <workItem from="1648610108096" duration="2961000" />
       <workItem from="1648648335142" duration="85988000" />
       <workItem from="1648986194043" duration="19268000" />
-      <workItem from="1649251395716" duration="89537000" />
-    </task>
-    <task id="LOCAL-00007" summary="解决了mkdir多进程创建写混乱问题，但是可能回创建一样的文件，这个问题咋解决啊。">
-      <created>1642681727401</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1642681727402</updated>
+      <workItem from="1649251395716" duration="95935000" />
     </task>
     <task id="LOCAL-00008" summary="完成了大部分的vfs支持的函数，但是没有详细的测试">
       <created>1642917315438</created>
@@ -630,7 +610,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649348158410</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="显示驱动雏形">
+      <created>1649684929417</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1649684929417</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -649,7 +636,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="cortex没有mmu，所以mmap和mumap直接调用malloc和free函数进行申请内存了" />
     <MESSAGE value="bash没搞出来，但是我移植了rcshell，目前能运行了，还修复了不少的bug" />
     <MESSAGE value="实现了sys_pipe函数，还没有测试。" />
     <MESSAGE value="完成了posix中的sem的部分支持，还没有测试" />
@@ -674,7 +660,8 @@
     <MESSAGE value="后面的工作挺多的。" />
     <MESSAGE value="实现了fcntl" />
     <MESSAGE value="完善块设备" />
-    <option name="LAST_COMMIT_MESSAGE" value="完善块设备" />
+    <MESSAGE value="显示驱动雏形" />
+    <option name="LAST_COMMIT_MESSAGE" value="显示驱动雏形" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -683,11 +670,6 @@
           <url>file://$PROJECT_DIR$/arch/arm/asm/isr.c</url>
           <line>34</line>
           <option name="timeStamp" value="73" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/fs/bk.c</url>
-          <line>245</line>
-          <option name="timeStamp" value="129" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

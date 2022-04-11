@@ -8,6 +8,8 @@
 #include <mkrtos/mem.h>
 #include <ipc/ipc.h>
 #include "arch/arch.h"
+#include <mkrtos/debug.h>
+
 //设置BIT
 #define SET_BIT(a,b) ((a)|=1<<(b))
 //清楚BIT
@@ -231,6 +233,7 @@ struct bk_cache* sync_rand_bk(dev_t dev_no) {
     again:
     //随机进行同步，不行，两个进程如果要操作同一个bk，但是随机出来的不一样，那么要等待的也不一样，两个则释放了不同的bk块
     sync_cache=&bk_cache_ls[ABS(rand()) % cache_len];
+//    sync_cache=&bk_cache_ls[cache_len>>1];
     if(atomic_read(&sync_cache->b_lock)){
         //遇到已经被锁定的，则重新随机一个
         task_sche();
@@ -548,9 +551,10 @@ int32_t rbk(dev_t dev_no,uint32_t bk_no,uint8_t *data,uint32_t ofs,uint32_t size
  * 获取缓存
  * @param dev_no
  * @param bk_no
+ * @param not_r 这个参数为1，代表不进行读，意义在于如果直接写一块数据，则不需要读，但是函数任然会给bk_cache结构体设置已读标志
  * @return
  */
-struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
+struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write,int32_t not_r){
     struct bk_cache* bk_cache_ls;
     struct bk_operations *bk_ops;
     struct bk_cache* bk_tmp;
@@ -560,6 +564,7 @@ struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
         return NULL;
     }
     if(bk_no>=bk_cn){
+        DEBUG("bk",ERR,"bk_no %d,bk_cn %d.",bk_no,bk_cn);
         //超过了可读写的块范围
         return NULL;
     }
@@ -586,11 +591,12 @@ struct bk_cache* bk_read(dev_t dev_no,uint32_t bk_no,uint32_t may_write){
         unlock_bk(bk_tmp);
         goto again;
     }
-    if (!GET_BIT(bk_tmp->flag, 2)) {
+    if (!not_r && !GET_BIT(bk_tmp->flag, 2)) {
         if (bk_ops->read_bk(bk_no, bk_tmp->cache) < 0) {
         }
-        SET_BIT(bk_tmp->flag, 2);
+
     }
+    SET_BIT(bk_tmp->flag, 2);
     if(may_write){
         SET_BIT(bk_tmp->flag,1);
     }

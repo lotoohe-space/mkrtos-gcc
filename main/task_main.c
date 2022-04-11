@@ -670,8 +670,7 @@ void start_task(void* arg0,void*arg1){
         fs_w_zshell();
         extern void fs_w_start_info(void);
         fs_w_start_info();
-        extern void fs_w_ls(void);
-        fs_w_ls();
+
         extern void fs_w_mkdir(void);
         fs_w_mkdir();
         extern void fs_w_cat(void);
@@ -687,6 +686,8 @@ void start_task(void* arg0,void*arg1){
         extern void fs_w_ls_(void);
         fs_w_ls_();
 #if 0
+        extern void fs_w_ls(void);
+        fs_w_ls();
 #endif
         sync();
 #include <test/test.h>

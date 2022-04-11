@@ -35,7 +35,7 @@ static int sp_follow_link(struct inode * dir, struct inode * inode,
     if(sp_ino->p_ino[0]==0){
         return -1;
     }
-    tmp=bk_read(inode->i_sb,sp_ino->p_ino[0],0);
+    tmp=bk_read(inode->i_sb,sp_ino->p_ino[0],0,0);
 
     puti(inode);
 //    CUR_TASK->link_count++;
@@ -61,7 +61,7 @@ static int sp_readlink(struct inode * inode, char * buffer, int buflen)
     struct sp_inode *sp_ino;
     sp_ino=inode->i_fs_priv_info;
 
-    bh = bk_read(inode,sp_ino->p_ino[0], 0);
+    bh = bk_read(inode,sp_ino->p_ino[0], 0,0);
     puti(inode);
     i = 0;
     while (i<buflen && (c = bh->cache[i])) {

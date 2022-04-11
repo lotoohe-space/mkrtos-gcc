@@ -16,7 +16,6 @@
 
 #define FLASH_W_BASE_ADDR        (0x8000000+CODE_KB*1024)
 
-//#define FLASH_DEV_NO 0
 #define FLASH_BK_CACHE_LEN 3
 
 #define BK_SIZE 2048

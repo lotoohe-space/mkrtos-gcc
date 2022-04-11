@@ -80,6 +80,7 @@ void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
         return ;
     }
     rwlen=0;
+    gettimeofday(&tv,NULL);
     for(int i=0;i<w_cn;i++) {
         int ret;
         ret=read(fd, rbuf, sizeof(rbuf));
@@ -93,10 +94,12 @@ void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
     }
     printf("读取长度:%d\n",rwlen);
     close(fd);
+    gettimeofday(&tv1,NULL);
+    printf("读取费时:%dms.\n",(tv1.tv_sec-tv.tv_sec)*1000+(tv1.tv_usec/1000-tv.tv_usec/1000));
     printf("文件读写测试成功.\n");
 }
 void fs_big_test(void){
-    fs_rw_test("/mnt/mmc/bigtxt.txt", rbuf, sizeof(rbuf),1000);
+    fs_rw_test("/bin/bigtxt.txt", rbuf, sizeof(rbuf),256);
 }
 //static const char * testw1;
 //static const char * testw2;

@@ -2,16 +2,14 @@
 // Created by Administrator on 2022/4/7.
 //
 
-//
-// Created by Administrator on 2022/1/16.
-//
 #include <type.h>
 #include <mkrtos/fs.h>
 #include <bsp/lib/sys.h>
 #include <bsp/sd_card.h>
 #include <arch/isr.h>
+#include <mkrtos/debug.h>
 #define FLASH_DEV_NO 1
-#define FLASH_BK_CACHE_LEN 16
+#define FLASH_BK_CACHE_LEN 32
 
 #define BK_SIZE 512
 #define BK_COUNT 512
@@ -22,7 +20,7 @@ static int32_t open_bk(uint32_t bk_no) {
         RegIsrFunc(SDIO_IRQHandler,50,0);
 
         if (SD_Init() != SD_OK) {
-            printk("mmc 初始化失败\r\n");
+            DEBUG("mmc",ERR,"mmc 初始化失败\r\n");
             return -1;
         }
         //设置块设备参数

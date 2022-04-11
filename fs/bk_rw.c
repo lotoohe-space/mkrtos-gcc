@@ -59,7 +59,7 @@ int bk_file_read(struct inode *ino, struct file *fp, char * buf, int count){
         w_ofs_bk = w_ofs / sb->s_bk_size;//0
         //当前读取块剩余的大小
         cur_bk_rm_size = sb->s_bk_size - (w_ofs % sb->s_bk_size);//2048
-        tmp_bk = bk_read(dev_no, w_ofs_bk, 1);
+        tmp_bk = bk_read(dev_no, w_ofs_bk, 1,0);
         if (!tmp_bk) {
             ino->i_file_size-=count;
             //运行到这里说明当前的块设备没有存储空间了
@@ -111,7 +111,7 @@ int bk_file_write(struct inode *ino, struct file * fp, char * buf, int count){
         w_ofs_bk = w_ofs / sb->s_bk_size;//0
         //当前写入块剩余的大小
         cur_bk_rm_size = sb->s_bk_size - (w_ofs % sb->s_bk_size);//2048
-        tmp_bk = bk_read(dev_no, w_ofs_bk, 1);
+        tmp_bk = bk_read(dev_no, w_ofs_bk, 1,0);
         if (!tmp_bk) {
             ino->i_file_size-=count;
             //运行到这里说明当前的块设备没有存储空间了

@@ -42,7 +42,7 @@ int sp_sync_file(struct inode * inode, struct file * file) {
     for(int32_t i=0;i< ARRARY_LEN(sp_ino->pp_ino);i++){
         if(sp_ino->pp_ino[i]){
             struct bk_cache *tmp;
-            tmp= bk_read(sb->s_dev_no,sp_ino->pp_ino[i],0);
+            tmp= bk_read(sb->s_dev_no,sp_ino->pp_ino[i],0,0);
             for(int32_t j=0;j<sb->s_bk_size;i+=4){
                 uint32_t ino;
                 ino=*((uint32_t*)(tmp->cache+i));

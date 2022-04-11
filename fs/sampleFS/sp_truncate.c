@@ -39,7 +39,7 @@ void sp_truncate(struct inode* inode,int32_t len){
             uint32_t p_bk=bk_ofs/(512/4);
             uint32_t p_bk_ofs=bk_ofs%(512/4);
             struct bk_cache *bk_tmp;
-            bk_tmp=bk_read(sb->s_dev_no,sp_ino->pp_ino[p_bk],1);
+            bk_tmp=bk_read(sb->s_dev_no,sp_ino->pp_ino[p_bk],1,0);
             uint32_t w;
             memcpy(&w,bk_tmp->cache+(p_bk_ofs<<2),4);
             free_bk(sb,w);

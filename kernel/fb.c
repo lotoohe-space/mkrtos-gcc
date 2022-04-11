@@ -1,35 +1,18 @@
 //
 // Created by Administrator on 2022/4/11.
 //
-
 #include <mkrtos/fb.h>
 #include <mkrtos/fs.h>
 #include <mkrtos/dev.h>
-#define FB_INFO_NUM 3
 
-
+#define FB_INFO_NUM 2
 
 static struct fb_info fb_infos[FB_INFO_NUM]={0};
 static int fb_info_used[FB_INFO_NUM]={0};
-//struct fb_info* alloc_fb_info(void){
-//    int i;
-//    for(i=0;i<FB_INFO_NUM;i++){
-//        if(!fb_info_used[i]){
-//            fb_info_used[i]=1;
-//            return fb_info+i;
-//        }
-//    }
-//    return NULL;
-//}
-//void free_fb_info(struct fb_info* fb){
-//    int i;
-//    for(i=0;i<FB_INFO_NUM;i++){
-//        if(&fb_info[i]==fb){
-//            fb_info_used[i]=0;
-//            break;
-//        }
-//    }
-//}
+
+#if FB_INFO_NUM<1
+#error FB NUM must be over 1!
+#endif
 
 static int open(struct inode * inode, struct file * fp){
     int major;
@@ -44,16 +27,17 @@ static int open(struct inode * inode, struct file * fp){
         return -ENODEV;
     }
 
-    fb_info_used[minor]=1;
-
     if(fb_infos[minor]._fb_ops
     &&fb_infos[minor]._fb_ops->fb_open
     ){
        ret=fb_infos[minor]._fb_ops->fb_open(&fb_infos[minor],0);
     }
+    if(ret>=0){
+        fb_info_used[minor]=1;
+    }
     return ret;
 }
-static void release(struct inode * inode, struct file * f){
+static void release(struct inode * inode, struct file * fp){
     int major;
     int minor;
     major=MAJOR(inode->i_rdev_no);
@@ -74,9 +58,7 @@ static void release(struct inode * inode, struct file * f){
     }
     fb_info_used[minor]=0;
 }
-static int lseek (struct inode *inode, struct file *fp, off_t ofs, int cn){
 
-}
 static int read(struct inode *inode, struct file *fp, char * data, int cn){
     int major;
     int minor;
@@ -89,7 +71,9 @@ static int read(struct inode *inode, struct file *fp, char * data, int cn){
     if(minor<0||minor>=FB_DEV_MAJOR){
         return -ENODEV;
     }
-
+    if(!fb_info_used[minor]){
+        return -ENODEV;
+    }
     if(fb_infos[minor]._fb_ops
        && fb_infos[minor]._fb_ops->fb_read
             ){
@@ -107,6 +91,9 @@ static int write(struct inode *inode, struct file *fp, char * data, int cn){
         return -ENODEV;
     }
     if(minor<0||minor>=FB_DEV_MAJOR){
+        return -ENODEV;
+    }
+    if(!fb_info_used[minor]){
         return -ENODEV;
     }
     if(fb_infos[minor]._fb_ops
@@ -127,6 +114,9 @@ static int ioctl(struct inode *inode, struct file *fp, unsigned int cmd, unsigne
         return -ENODEV;
     }
     if(minor<0||minor>=FB_DEV_MAJOR){
+        return -ENODEV;
+    }
+    if(!fb_info_used[minor]){
         return -ENODEV;
     }
     if(fb_infos[minor]._fb_ops
@@ -158,7 +148,9 @@ static int mmap(struct inode * inode, struct file * fp, unsigned long addr, size
     if(minor<0||minor>=FB_DEV_MAJOR){
         return -ENODEV;
     }
-
+    if(!fb_info_used[minor]){
+        return -ENODEV;
+    }
     if(fb_infos[minor]._fb_ops
        &&fb_infos[minor]._fb_ops->fb_mmap
             ){
@@ -177,7 +169,6 @@ static int fsync (struct inode *inode, struct file *fp){
 static struct file_operations f_ops={
         .open=open,
         .release=release,
-        .lseek=lseek,
         .read=read,
         .write=write,
         .ioctl=ioctl,
@@ -186,7 +177,6 @@ static struct file_operations f_ops={
         .fsync=fsync
 };
 static int fb_init(void){
-
     if(reg_ch_dev(FB_DEV_MAJOR,
                   "fb",
                   &f_ops
