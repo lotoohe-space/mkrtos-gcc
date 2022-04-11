@@ -54,7 +54,7 @@ u8 DM9000_Init(u8 mode)
 	GPIOF->ODR|=1<<11;						//PF11 上拉
 	//DM9000_IO_Init();
 	Ex_NVIC_Config(GPIO_F,11,FTIR);			//下降沿触发 
-	MY_NVIC_Init(1,0,EXTI15_10_IRQn,2);		//抢占2，子优先级3，组2	
+	MY_NVIC_Init(0,1,EXTI15_10_IRQn,2);		//抢占2，子优先级3，组2
 	
 	//注册中断
 	RegIsrFunc(EXTI15_10_IRQHandler,41,0);

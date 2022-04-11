@@ -1,12 +1,14 @@
 #include <mkrtos/fs.h>
 #include <mkrtos/task.h>
 #include <mkrtos/stat.h>
+#include "mkrtos/dev.h"
+
 #define SB_MAX_NUM 6
 
 //系统最大支持的sb
-struct super_block sb_list[SB_MAX_NUM]={0};
+static struct super_block sb_list[SB_MAX_NUM]={0};
 //使用标志位
-uint8_t sb_used_flag[SB_MAX_NUM]={0};
+static uint8_t sb_used_flag[SB_MAX_NUM]={0};
 
 //没有直接返回NULL
 struct super_block* get_empty_sb(void){
@@ -121,7 +123,7 @@ int32_t sys_mount(char * dev_name, char * dir_name, char * type,
         return -1;
     }
 
-    res= do_mount(inode->i_sb->s_dev_no, dir_name, type, new_flags, data);
+    res= do_mount(MAJOR(inode->i_rdev_no), dir_name, type, new_flags, data);
 
     puti(inode);
     return res;

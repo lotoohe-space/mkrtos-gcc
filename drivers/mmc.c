@@ -9,44 +9,61 @@
 #include <mkrtos/fs.h>
 #include <bsp/lib/sys.h>
 #include <bsp/sd_card.h>
-#define TOTAL_KB        (512)
-#define CODE_KB         (256)
+#include <arch/isr.h>
 #define FLASH_DEV_NO 1
-#define FLASH_BK_CACHE_LEN 3
+#define FLASH_BK_CACHE_LEN 16
 
 #define BK_SIZE 512
 #define BK_COUNT 512
+static uint8_t open_cn=0;
 static int32_t open_bk(uint32_t bk_no) {
-    if (SD_Init() != SD_OK) {
-        return -1;
-    }
-    //设置块设备参数
-    if (bk_dev_reg_param(
-            FLASH_DEV_NO,
-            SDCardInfo.CardCapacity / 512,
-            FLASH_BK_CACHE_LEN,
-            SDCardInfo.CardBlockSize) < 0) {
-        return -1;
+    if(!open_cn) {
+        extern void SDIO_IRQHandler(void) ;
+        RegIsrFunc(SDIO_IRQHandler,50,0);
+
+        if (SD_Init() != SD_OK) {
+            printk("mmc 初始化失败\r\n");
+            return -1;
+        }
+        //设置块设备参数
+        if (bk_dev_reg_param(
+                FLASH_DEV_NO,
+                SDCardInfo.CardCapacity / 512,
+                FLASH_BK_CACHE_LEN,
+                SDCardInfo.CardBlockSize) < 0) {
+            return -1;
+        }
+        open_cn=1;
     }
     return 0;
 }
 static int32_t read_bk(uint32_t bk_no,uint8_t *data){
+    if(!open_cn){
+        return -1;
+    }
     if(SD_ReadDisk(data,bk_no,1)!=SD_OK){
         return -1;
     }
     return 0;
 }
 static int32_t write_bk(uint32_t bk_no,uint8_t *data){
+    if(!open_cn){
+        return -1;
+    }
     if(SD_WriteDisk(data,bk_no,1)!=SD_OK){
         return -1;
     }
     return 0;
 }
 static int32_t erase_bk(uint32_t bk_no){
+    if(!open_cn){
+        return -1;
+    }
    return 0;
 }
 static void release_bk(uint32_t bk_no){
     bk_dev_unreg_param(bk_no);
+    open_cn=0;
 }
 static struct bk_operations bk_flash={
         .open=open_bk,
@@ -83,12 +100,13 @@ int32_t mmc_init(void){
     )<0){
         return -1;
     }
-
+    if(open_bk(FLASH_DEV_NO)<0){
+        printk("初始化设备失败:%d.\r\n",FLASH_DEV_NO);
+    }
     return used_dev_no;
 }
 int32_t mmc_exit(void){
-
     unreg_bk_dev(used_dev_no,DEV_NAME);
-
+    bk_dev_unreg_param(used_dev_no);
 }
 DEV_BK_EXPORT(mmc_init,mmc_exit,mmc);

@@ -175,8 +175,9 @@ void* _Malloc(uint16_t inxMem, uint32_t size) {
 * @param inxMem 从那一块内存上释放
 * @param mem_addr 释放的内存首地址
 */
-void _Free(uint16_t inxMem, void* mem_addr) {
-	if (mem_addr == NULL) { return; }
+int32_t _Free(uint16_t inxMem, void* mem_addr) {
+    uint32_t i;
+    if (mem_addr == NULL) { return -2; }
     InitMem();
 	uint32_t free_size;
 	uint16_t bkSize;
@@ -184,15 +185,20 @@ void _Free(uint16_t inxMem, void* mem_addr) {
 	MemType* malloc_mem;
 	uint32_t i_mem_offset;
 	uint32_t i_manager_offset;
+
+    if(mem_addr<osMem.OSMemItemLs[inxMem].mem
+        ||mem_addr>(osMem.OSMemItemLs[inxMem].mem+osMem.OSMemItemLs[inxMem].memSize)){
+        return -1;
+    }
+
 	malloc_mem = osMem.OSMemItemLs[inxMem].mem;
 	manager_table = osMem.OSMemItemLs[inxMem].memManTb;
 	bkSize = osMem.OSMemItemLs[inxMem].memBlockSize;
 
 	i_mem_offset = (uint32_t)mem_addr - (uint32_t)malloc_mem;
 	i_manager_offset = i_mem_offset / bkSize;
-	uint32_t i;
 	if (i_manager_offset > osMem.OSMemItemLs[inxMem].memManTbSize) {
-		return;
+		return -1;
 	}
 	
 	osMem.OSMemItemLs[inxMem].freeBlockNum += manager_table[i_manager_offset];
@@ -201,6 +207,7 @@ void _Free(uint16_t inxMem, void* mem_addr) {
 	for (i = i_manager_offset; i < free_size + i_manager_offset; i++) {
 		manager_table[i] = 0;
 	}
+    return 0;
 }
 uint32_t GetMemSize(uint16_t inxMem, void* mem_addr){
 	if (mem_addr == NULL) { return 0; }
@@ -246,11 +253,14 @@ uint32_t GetTotalMemory(uint8_t mem_no){
 */
 void* OSMalloc(uint32_t size) {
 	int32_t st=DisCpuInter();
-	void* res = _Malloc(OS_USE_MEM_AREA_INX, size);
-	RestoreCpuInter(st);
-    if(res) {
-        memset(res, 0, size);
+	void* res = _Malloc(0, size);
+    if(!res){
+        res=_Malloc(1,size);
     }
+	RestoreCpuInter(st);
+//    if(res) {
+//        memset(res, 0, size);
+//    }
 	return res;
 }
 #ifndef NOT_USE_EX_MEM
@@ -280,8 +290,8 @@ void *OSReallocEx(void* mem,uint32_t size){
 #endif
 void *OSRealloc(void *mem,uint32_t size){
 	int32_t st=DisCpuInter();
-	void* res = _Malloc(OS_USE_MEM_AREA_INX, size);
-	if(res==NULL){
+	void* res = OSMalloc(size);
+	if(!res){
 		RestoreCpuInter(st);
 		return NULL;
 	}
@@ -297,12 +307,17 @@ void *OSRealloc(void *mem,uint32_t size){
 */
 void OSFree(void* mem) {
 	int32_t st;
+    int ret;
+
     if(!mem){
         return ;
     }
 //    printk("free %x.\n\n",mem);
     st=DisCpuInter();
-	_Free(OS_USE_MEM_AREA_INX, mem);
+    ret=_Free(0, mem);
+    if(ret<0){
+        _Free(1, mem);
+    }
 	RestoreCpuInter(st);
 }
 

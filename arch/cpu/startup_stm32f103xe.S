@@ -145,11 +145,67 @@ g_pfnVectors:
   .word DebugMon_Handler
   .word 0
   .word PendSV_Handler
-  .word isr_handler
+  .word isr_handler//1
 
   .word isr_handler
   .word isr_handler
   .word isr_handler
+  .word isr_handler//5
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//10
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//15
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//20
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//25
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//30
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//35
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//40
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//45
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//50
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//55
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler
+  .word isr_handler//60
   .word isr_handler
   .word isr_handler
   .word isr_handler
@@ -195,62 +251,6 @@ g_pfnVectors:
   .word isr_handler
   .word isr_handler
   .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word isr_handler
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
   .word BootRAM       /* @0x1E0. This is for boot in RAM mode for
                          STM32F10x High Density devices. */
 

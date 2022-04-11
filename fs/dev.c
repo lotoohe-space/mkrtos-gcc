@@ -208,7 +208,7 @@ int32_t bk_dev_reg_param(dev_t major_no,uint32_t bk_count,uint32_t cache_len,uin
     if(major_no>=BK_DEV_MAX_NUM){
         return -EINVAL;
     }
-    if(devs_bk[major_no].bk_ops){
+    if(!devs_bk[major_no].bk_ops){
         return -EBUSY;
     }
     if((tmp_ch_len=bk_cache_init(&(devs_bk[major_no].bk_cache_ls),cache_len,bk_size))<=0) {
@@ -227,8 +227,10 @@ int32_t bk_dev_unreg_param(dev_t major_no) {
     if(devs_bk[major_no].bk_ops){
         return -EBUSY;
     }
-    bk_cache_destory(&(devs_bk[major_no].bk_cache_ls),devs_bk[major_no].bk_cache_count);
-    devs_bk[major_no].bk_cache_count=0;
+    if(devs_bk[major_no].bk_cache_count) {
+        bk_cache_destory(&(devs_bk[major_no].bk_cache_ls), devs_bk[major_no].bk_cache_count);
+        devs_bk[major_no].bk_cache_count = 0;
+    }
     return 0;
 }
 /**
@@ -269,7 +271,7 @@ int32_t get_bk_cn(dev_t major_no,uint32_t *res_bk_no) {
     if(major_no>=BK_DEV_MAX_NUM){
         return -EINVAL;
     }
-    if(devs_bk[major_no].bk_ops){
+    if(!devs_bk[major_no].bk_ops){
         return -EBUSY;
     }
     *res_bk_no= devs_bk[major_no].bk_count;

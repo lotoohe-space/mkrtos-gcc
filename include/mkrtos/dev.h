@@ -9,9 +9,10 @@
 #define NULL_MAJOR 6
 #define TTY_MAJOR 4
 #define TTYMAUX_MAJOR 5
+#define FB_DEV_MAJOR 7
 //块设备
 #define BK_FLASH 0
-#define MMC 1
+#define MMC_MAJOR 1
 
 //主次设备号码获取
 #define MAJOR(a) (a>>16)

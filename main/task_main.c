@@ -646,6 +646,18 @@ void start_task(void* arg0,void*arg1){
         printf("init create error.\n");
     }else if(ret==0){
         setup();
+
+#include <sys/mount.h>
+        mkdir("/mnt/mmc",0777);
+        int ret;
+//        ret=mount("/dev/mmc", "/mnt/mmc", "sp",0, 0);
+//        if(ret<0){
+//            printf("挂载失败\n");
+//        }
+        ret=mount("/dev/mmc", "/bin", "sp",0, 0);
+        if(ret<0){
+            printf("挂载失败\n");
+        }
         //打开三个串口输出
         open("/dev/tty", O_RDWR, 0777);
         open("/dev/tty", O_RDWR, 0777);
@@ -653,25 +665,28 @@ void start_task(void* arg0,void*arg1){
 
         printf("to init task.\r\n");
         printf("%d remain memory is %d.\n",getpid(),GetFreeMemory(1));
-#if 0
+
         extern void fs_w_zshell(void);
-    fs_w_zshell();
-    extern void fs_w_start_info(void);
-    fs_w_start_info();
-    extern void fs_w_ls(void);
-    fs_w_ls();
-    extern void fs_w_cat(void);
-    fs_w_cat();
-    extern void fs_w_clear(void);
-    fs_w_clear();
-    extern void fs_w_mkdir(void);
-    fs_w_mkdir();
-    extern void fs_w_uname(void);
-    fs_w_uname();
+        fs_w_zshell();
+        extern void fs_w_start_info(void);
+        fs_w_start_info();
+        extern void fs_w_ls(void);
+        fs_w_ls();
+        extern void fs_w_mkdir(void);
+        fs_w_mkdir();
+        extern void fs_w_cat(void);
+        fs_w_cat();
 
-    extern void fs_w_ls_(void);
-    fs_w_ls_();
 
+        extern void fs_w_clear(void);
+        fs_w_clear();
+
+        extern void fs_w_uname(void);
+        fs_w_uname();
+
+        extern void fs_w_ls_(void);
+        fs_w_ls_();
+#if 0
 #endif
         sync();
 #include <test/test.h>
@@ -712,19 +727,6 @@ void start_task(void* arg0,void*arg1){
                 user_task(0,0);
             }
         }
-
-        DIR				*dp;
-        struct dirent	*dirp;
-
-        if ((dp = opendir("./")) == NULL) {
-            printf("can't open %s", "./");
-        }
-        while ((dirp = readdir(dp)) != NULL)
-            printf("%s\t", dirp->d_name);
-
-        closedir(dp);
-        exit(0);
-
     }else {
          nice(1);
          while(1){}
@@ -758,6 +760,7 @@ void KernelTaskInit(void){
     if(sp_mkfs(root_dev_no,30)<0){
         fatalk("根文件系统创建失败！\r\n");
     }
+
 #endif
     //下面创建内核线程
     static TaskCreatePar tcp;
@@ -766,8 +769,8 @@ void KernelTaskInit(void){
     tcp.arg0=(void*)0;
     tcp.arg1=0;
     tcp.prio=6;
-    tcp.userStackSize=1024;
-    tcp.kernelStackSize=1024;
+    tcp.userStackSize=512;
+    tcp.kernelStackSize=638;
     tcp.taskName="init";
 
     pid=task_create(&tcp);

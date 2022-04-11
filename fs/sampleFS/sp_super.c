@@ -97,7 +97,7 @@ int32_t sp_mkfs(dev_t dev_no,int32_t inode_count){
 
     //数据的开始位置
     sp_sb->dataBkStInx = sp_sb->iNodeDataBkStInx + sp_sb->iNodeDataBkCount;
-
+    sp_sb->last_alloc_bk_inx=0;
     //写FSInfo到FS_INFO_ST_BK_INX块
     sb->s_magic_num=SP_MAGIC_NUM;
 

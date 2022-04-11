@@ -94,6 +94,7 @@ struct sp_super_block{
     //数据块开始位置
     uint32_t dataBkStInx;
 
+    uint32_t last_alloc_bk_inx;
 };
 //sp_inode.c
 extern struct super_operations sp_s_ops;

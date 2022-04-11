@@ -97,7 +97,7 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
         }
     }
 
-//替换不用释放申请的内存，不然可能bug
+
     mem_clear();
     do_remove_sleep_tim(CUR_TASK);
     t=DisCpuInter();
@@ -164,27 +164,6 @@ int sys_execve(const char *filename, char *const argv[ ], char *const envp[ ]){
 
     return ret;
 }
-//static int exec_elf(const char *path,char *const argv[ ], char *const envp[ ],const ELFEnv_t *env) {
-//  ELFExec_t *exec;
-//  loader_env_t loader_env;
-//  loader_env.env = env;
-//  load_elf(path, loader_env, &exec);
-//  int ret = jumpTo(exec,argv,envp);
-////  void (*doit)(void) = get_func(exec, "doit");
-////  if (doit) {
-////    (doit)();
-////  }
-//  unload_elf(exec);
-//  puts("Done");
-//  return ret;
-//}
-//int exec_program(const char *path,char *const argv[ ], char *const envp[ ]) {
-//    return exec_elf(path,argv,envp,&env);
-//}
-//int elf_main(void) {
-//  exec_elf(APP_PATH APP_NAME, argv,envp,&env);
-//  puts("Done");
-//}
 
 void *do_alloc(size_t size, size_t align, ELFSecPerm_t perm) {
   (void) perm;

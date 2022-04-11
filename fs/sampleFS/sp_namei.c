@@ -319,7 +319,7 @@ int sp_mknod(struct inode * dir, const char * name, int len, int mode, int rdev)
         inode->i_ops = &blkdev_inode_operations;
 //    else if (S_ISFIFO(inode->i_mode))
 //        init_fifo(inode);
-    if (IS_CHAR_FILE(inode->i_type_mode) || IS_CHAR_FILE(inode->i_type_mode))
+    if (IS_CHAR_FILE(inode->i_type_mode) || IS_BK_FILE(inode->i_type_mode))
         inode->i_rdev_no = rdev;
     inode->i_dirt = 1;
     error = add_file_to_entry(dir, name, inode);

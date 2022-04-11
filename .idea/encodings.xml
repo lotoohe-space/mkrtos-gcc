@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/../../../BaiduNetdiskDownload/2，标准例程-库函数版本(1)/2，标准例程-库函数版本/实验38 SD卡_SDIO实验/HARDWARE/SDIO/sdio_sdcard.c" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/../../../BaiduNetdiskDownload/2，标准例程-库函数版本(1)/2，标准例程-库函数版本/实验38 SD卡_SDIO实验/HARDWARE/SDIO/sdio_sdcard.h" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/fgetty-0.7" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/include/assert.h" charset="GBK" />
     <file url="file://$PROJECT_DIR$/ls/elf.ld" charset="UTF-8" />

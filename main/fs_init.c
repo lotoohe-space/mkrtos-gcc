@@ -32,6 +32,7 @@ void fs_init(void){
 
     sys_mknod("/dev/tty",MK_MODE(S_IFCHR,0777),MKDEV(TTYMAUX_MAJOR,0));
     sys_mknod(_PATH_CONSOLE,MK_MODE(S_IFCHR,0777),MKDEV(TTYMAUX_MAJOR,0));
+    sys_mknod("/dev/mmc",MK_MODE(S_IFBLK,0777),MKDEV(MMC_MAJOR,0));
 
     int res;
     res=sys_open(_PATH_PASSWD,O_RDWR|O_CREAT,0777);

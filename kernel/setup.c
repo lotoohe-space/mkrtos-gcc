@@ -18,6 +18,9 @@ int32_t sys_setup(void){
     lwip_comm_init();
 #include "net/lwiperf_interface.h"
     lwiperf_init();
+    if(sp_mkfs(1,128)<0){
+        fatalk("根文件系统创建失败！\r\n");
+    }
     return 0;
 }
 int32_t arch_init(void){

@@ -81,7 +81,6 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
     struct sp_super_block * sp_sb=sb->s_sb_priv_info;
     uint32_t free_bk=0;
     uint32_t fn_inx=0;
-    uint32_t bk_inx=0;
     uint32_t j;
     uint8_t r;
     uint8_t m;
@@ -89,13 +88,17 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
 //    if(sp_sb->blockFree==0) {
 //        return -1;
 //    }
-    for (uint32_t i = 0; i <sp_sb->bkUsedBkCount; i++) {
-
+    uint32_t st_bk;
+    uint32_t st_byte_inx;
+    st_bk=sp_sb->last_alloc_bk_inx/(sb->s_bk_size<<3);
+    fn_inx+=st_bk*(sb->s_bk_size<<3);
+    st_byte_inx=(sp_sb->last_alloc_bk_inx%(sb->s_bk_size<<3))>>3;
+    fn_inx+=st_byte_inx<<3;
+    for (uint32_t i = st_bk; i <sp_sb->bkUsedBkCount; i++) {
         bk_tmp=bk_read(sb->s_dev_no,sp_sb->bkUsedBkStInx + i,1);
-        trace("bk map %x %x\n",bk_tmp->cache[0],bk_tmp->cache[1]);
-        for (j = 0; j < sb->s_bk_size; j++) {
+        for (j = st_byte_inx; j < sb->s_bk_size; j++) {
             r = bk_tmp->cache[j];
-            if (r != 0) {
+            if (r) {
                 //сп©у╣д
                 for (m = 0; m < 8; m++) {
                     if (((r) & (1 << m))) {
@@ -116,10 +119,12 @@ int32_t alloc_bk(struct super_block* sb,bk_no_t *res_bk){
                 fn_inx += 8;
             }
         }
+        st_byte_inx=0;
         bk_release(bk_tmp);
     }
     return -1;
     next:
+    sp_sb->last_alloc_bk_inx=free_bk;
     r &= ~(1<<( free_bk % 8));
     bk_tmp->cache[j] = r;
 

@@ -83,10 +83,11 @@ struct inode* get_empty_inode(void){
  * @param ino
  * @return
  */
-struct inode* get_inode(ino_t ino){
+struct inode* get_inode(dev_t dev_no,ino_t ino){
     uint32_t i;
     for(i=0;i<INODE_NUM;i++){
         if(atomic_read(&(inode_ls[i].i_used_count))
+        && inode_ls[i].i_sb->s_dev_no==dev_no
         && inode_ls[i].i_no==ino
         ){
 //            memset(&(inode_ls[i]),0,sizeof(struct inode));
@@ -133,7 +134,7 @@ int sync_all_inode(void){
     return 0;
 }
 /**
- * 获取inode
+ * 获取指定sb得inode号码
  * @param p_sb
  * @param ino
  * @return
@@ -142,7 +143,7 @@ struct inode* geti(struct super_block* p_sb,ino_t ino){
 
     struct inode* r_inode= NULL;
 
-    r_inode=get_inode(ino);
+    r_inode=get_inode(p_sb->s_dev_no,ino);
     if(r_inode!=NULL){
         if (r_inode->i_mount) {
             //如果被挂载了，则获取挂载的点

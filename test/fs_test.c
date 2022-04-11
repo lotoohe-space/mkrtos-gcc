@@ -48,7 +48,7 @@ static void new_proc(void(*fn)(void*arg),void* arg){
         waitpid(new_pid,0,0);
     }
 }
-uint8_t rbuf[128];
+uint8_t rbuf[4096];
 void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
 //#define RW_TEST_CN 20
     int rwlen=0;
@@ -58,6 +58,9 @@ void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
         printf("文件打开错误.\n");
         return ;
     }
+    struct timeval tv;
+    struct timeval tv1;
+    gettimeofday(&tv,NULL);
     for(int i=0;i<w_cn;i++) {
         int ret=write(fd, data, len);
         if(ret<0){
@@ -66,10 +69,11 @@ void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
             return ;
         }
         rwlen+=ret;
+        write(0,".",1);
     }
-    printf("写入长度:%d\n",rwlen);
     close(fd);
-
+    gettimeofday(&tv1,NULL);
+    printf("单次写入数据长度:%d，总共写如:%d，写入费时:%dms.\n",sizeof(rbuf),rwlen,(tv1.tv_sec-tv.tv_sec)*1000+(tv1.tv_usec/1000-tv.tv_usec/1000));
     fd=open(file_name,O_RDONLY,0777);
     if(fd<0){
         printf("文件打开错误.\n");
@@ -81,7 +85,7 @@ void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
         ret=read(fd, rbuf, sizeof(rbuf));
         rwlen +=ret;
         for (int i = 0; i < len; i++) {
-            if (rbuf[i] != data[i]) {
+            if (rbuf[i] != 0) {
                 printf("读写数据存在错误.\n");
                 break;
             }
@@ -92,16 +96,16 @@ void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
     printf("文件读写测试成功.\n");
 }
 void fs_big_test(void){
-    fs_rw_test("mnt/bigtxt.txt", rbuf, sizeof(rbuf),1000);
+    fs_rw_test("/mnt/mmc/bigtxt.txt", rbuf, sizeof(rbuf),1000);
 }
 //static const char * testw1;
 //static const char * testw2;
-uint8_t wbuf[512];
+//const uint8_t wbuf[4096];
 void fs_test(void){
-    for(int i=0;i<sizeof(wbuf);i++){
-        wbuf[i]=i;
-    }
-
+//    for(int i=0;i<sizeof(wbuf);i++){
+//        wbuf[i]=i;
+//    }
+#if 0
     uint8_t file_name[32];
     for(int i=0;i<17;i++) {
         sprintf(file_name, "mnt/txt%d", i);
@@ -111,8 +115,11 @@ void fs_test(void){
         sprintf(file_name, "mnt/txt%d", i);
         unlink(file_name);
     }
+#endif
 
+#if 1
     fs_big_test();
+#endif
 //    testw1="12345678902345678901234567890\r\n";
 //    testw2="qwertyuiopasdfghjklklzxcvbnm\r\n";
 //    int new_pid;

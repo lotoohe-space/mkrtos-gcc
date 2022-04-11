@@ -28,7 +28,7 @@
 /**
 * @breif 内存大小
 */
-#define MALLOC_MEM0_SIZE (30*1024)
+#define MALLOC_MEM0_SIZE (40*1024)
 /**
 * @breif 内存块大小
 */
@@ -78,7 +78,7 @@ void* _Malloc(uint16_t inxMem, uint32_t size) ;
 * @param inxMem 从那一块内存上释放
 * @param mem_addr 释放的内存首地址
 */
-void _Free(uint16_t inxMem, void* mem_addr) ;
+int32_t _Free(uint16_t inxMem, void* mem_addr) ;
 /**
 * @breif 获取剩余的内存
 * @param inxMem 内存块索引

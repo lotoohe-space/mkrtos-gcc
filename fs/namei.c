@@ -48,7 +48,7 @@ int lookup(struct inode * dir,const char * name, int len,
 //    perm = permission(dir,MAY_EXEC);
     if (len==2 && name[0] == '.' && name[1] == '.') {
         //如果查看的是..目录
-        if (dir == ROOT_INODE) {
+        if (dir == CUR_TASK->root_inode) {
             //如果当前是跟节点，则直接返回根节点就行了，因为根节点的上一个目录就是自己
             *result = dir;
             return 0;
