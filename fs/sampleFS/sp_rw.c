@@ -184,7 +184,6 @@ int32_t get_ofs_bk_no(struct inode* inode, uint32_t offset,uint32_t* fpBkNum) {
     else {
        return -1;
     }
-    return -1;
 }
 int32_t inode_alloc_new_bk(struct inode* inode, uint32_t* newBkNum){
     struct super_block* sb;

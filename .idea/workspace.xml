@@ -11,30 +11,22 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="显示驱动雏形">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="spFS支持几百M得大文件了">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arch/bsp/sd_card.c" beforeDir="false" afterPath="$PROJECT_DIR$/arch/bsp/sd_card.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/bk_flash.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/bk_flash.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drivers/mmc.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/mmc.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/bk.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/bk_rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk_rw.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_bmap.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_bmap.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_inode.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_link.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_link.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_namei.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_rw.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_sync.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_sync.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_truncate.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_truncate.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/mkrtos/bk.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/bk.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/mem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/mem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel/fb.c" beforeDir="false" afterPath="$PROJECT_DIR$/kernel/fb.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/fs_test.c" beforeDir="false" afterPath="$PROJECT_DIR$/test/fs_test.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/~$笔记.docx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,11 +138,6 @@
       <debugger kind="GDB" isBundled="true" />
       <method v="2">
         <option name="RunConfigurationTask" enabled="true" run_configuration_name="OCD untitled1" run_configuration_type="com.jetbrains.cidr.embedded.openocd.conf.type" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="untitled1.elf" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="tcp:127.0.0.1:2331" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="untitled1" TARGET_NAME="untitled1.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="untitled1" RUN_TARGET_NAME="untitled1.elf">
@@ -272,14 +259,8 @@
       <workItem from="1648610108096" duration="2961000" />
       <workItem from="1648648335142" duration="85988000" />
       <workItem from="1648986194043" duration="19268000" />
-      <workItem from="1649251395716" duration="95935000" />
-    </task>
-    <task id="LOCAL-00008" summary="完成了大部分的vfs支持的函数，但是没有详细的测试">
-      <created>1642917315438</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1642917315438</updated>
+      <workItem from="1649251395716" duration="119653000" />
+      <workItem from="1650794969124" duration="626000" />
     </task>
     <task id="LOCAL-00009" summary="增加了信号量和mutex，mutex支持优先级继承">
       <created>1643121215650</created>
@@ -617,7 +598,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649684929417</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="spFS支持几百M得大文件了">
+      <created>1649691861007</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1649691861007</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -636,7 +624,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="bash没搞出来，但是我移植了rcshell，目前能运行了，还修复了不少的bug" />
     <MESSAGE value="实现了sys_pipe函数，还没有测试。" />
     <MESSAGE value="完成了posix中的sem的部分支持，还没有测试" />
     <MESSAGE value="下一步增加msg支持，以及解决其中存在的原子问题。" />
@@ -661,18 +648,10 @@
     <MESSAGE value="实现了fcntl" />
     <MESSAGE value="完善块设备" />
     <MESSAGE value="显示驱动雏形" />
-    <option name="LAST_COMMIT_MESSAGE" value="显示驱动雏形" />
+    <MESSAGE value="spFS支持几百M得大文件了" />
+    <option name="LAST_COMMIT_MESSAGE" value="spFS支持几百M得大文件了" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/arch/arm/asm/isr.c</url>
-          <line>34</line>
-          <option name="timeStamp" value="73" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="time_tick" language="ObjectiveC" />

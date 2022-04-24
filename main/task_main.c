@@ -671,10 +671,7 @@ void start_task(void* arg0,void*arg1){
         extern void fs_w_start_info(void);
         fs_w_start_info();
 
-        extern void fs_w_mkdir(void);
-        fs_w_mkdir();
-        extern void fs_w_cat(void);
-        fs_w_cat();
+
 
 
         extern void fs_w_clear(void);
@@ -688,6 +685,10 @@ void start_task(void* arg0,void*arg1){
 #if 0
         extern void fs_w_ls(void);
         fs_w_ls();
+        extern void fs_w_mkdir(void);
+        fs_w_mkdir();
+        extern void fs_w_cat(void);
+        fs_w_cat();
 #endif
         sync();
 #include <test/test.h>

@@ -9,7 +9,7 @@
 #include <arch/isr.h>
 #include <mkrtos/debug.h>
 #define FLASH_DEV_NO 1
-#define FLASH_BK_CACHE_LEN 32
+#define FLASH_BK_CACHE_LEN 8
 
 #define BK_SIZE 512
 #define BK_COUNT 512

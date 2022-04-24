@@ -264,6 +264,7 @@ int sync_all_bk_dev(void) ;
 
 //bk.c
 struct wait_queue;
+
 //块缓存相关
 struct bk_cache {
     //块的Inx
@@ -273,11 +274,32 @@ struct bk_cache {
     uint8_t* cache;
     uint8_t* oldcache;
     Atomic_t b_lock;
+    //使用计数
+    uint32_t used_cn;
+    //等待队列
     struct wait_queue* b_wait;
-    //擦除标记 1bit写入 2bit读取 6bit 永久锁住，除非被使用者释放掉 7bit被使用
+    //擦除标记 1bit写入 2bit读取 (4bit 永久锁住，除非被使用者释放掉) (5bit mmap映射)  (6bit 7bit 00为空 01被使用 10被删除)
     uint8_t flag;
 };
+#define KEY_ACCESS(a) ((a)&0xC0)
+//是否支持某种访问条件
+#define IS_NULLKEY(a)   (KEY_ACCESS((a).flag)==0x00)
+#define IS_USEDKEY(a)   (KEY_ACCESS((a).flag)==0x40)
+#define IS_DELKEY(a)    (KEY_ACCESS((a).flag)==0x80)
 
+//是否被mmap了
+#define IS_MMAP(a)      ((a).flag&((1<<5)))
+//是否冻结了
+#define IS_FREEZE(a)    ((a).flag&((1<<4)))
+
+#define SET_FREEZE(a)   (a).flag&=(~(1<<4));(a).flag|=(1<<4)
+//mmap位设置后freeze一定要设置
+#define SET_MMAP(a)     SET_FREEZE(a);(a).flag&=(~(1<<5));(a).flag|=(1<<5)
+
+#define SET_NULLKEY(a)  (a).flag&=~0xC0
+#define SET_USEDKEY(a)  (a).flag&=~0xC0;(a).flag|=0x40
+#define SET_DELKEY(a)   (a).flag&=~0xC0;(a).flag|=0x80
+#define CLR_KEY(a)  (a).flag=0;
 ////////
 
 

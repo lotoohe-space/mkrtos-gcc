@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <arch/arch.h>
+
 static void fs_write_test(void*arg){
     int fd=open("/mnt/txt1",O_CREAT|O_RDWR,0);
     if(fd<0){
@@ -48,7 +50,7 @@ static void new_proc(void(*fn)(void*arg),void* arg){
         waitpid(new_pid,0,0);
     }
 }
-uint8_t rbuf[4096];
+const uint8_t rbuf[4096];
 void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
 //#define RW_TEST_CN 20
     int rwlen=0;
@@ -58,6 +60,7 @@ void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
         printf("文件打开错误.\n");
         return ;
     }
+
     struct timeval tv;
     struct timeval tv1;
     gettimeofday(&tv,NULL);
@@ -69,37 +72,38 @@ void fs_rw_test(const char *file_name,uint8_t *data,uint32_t len,int w_cn){
             return ;
         }
         rwlen+=ret;
-        write(0,".",1);
+//        write(0,".",1);
     }
-    close(fd);
     gettimeofday(&tv1,NULL);
     printf("单次写入数据长度:%d，总共写如:%d，写入费时:%dms.\n",sizeof(rbuf),rwlen,(tv1.tv_sec-tv.tv_sec)*1000+(tv1.tv_usec/1000-tv.tv_usec/1000));
+    close(fd);
+
     fd=open(file_name,O_RDONLY,0777);
     if(fd<0){
         printf("文件打开错误.\n");
         return ;
     }
-    rwlen=0;
-    gettimeofday(&tv,NULL);
-    for(int i=0;i<w_cn;i++) {
-        int ret;
-        ret=read(fd, rbuf, sizeof(rbuf));
-        rwlen +=ret;
-        for (int i = 0; i < len; i++) {
-            if (rbuf[i] != 0) {
-                printf("读写数据存在错误.\n");
-                break;
-            }
-        }
-    }
-    printf("读取长度:%d\n",rwlen);
-    close(fd);
-    gettimeofday(&tv1,NULL);
-    printf("读取费时:%dms.\n",(tv1.tv_sec-tv.tv_sec)*1000+(tv1.tv_usec/1000-tv.tv_usec/1000));
+//    rwlen=0;
+//    gettimeofday(&tv,NULL);
+//    for(int i=0;i<w_cn;i++) {
+//        int ret;
+//        ret=read(fd, rbuf, sizeof(rbuf));
+//        rwlen +=ret;
+//        for (int i = 0; i < len; i++) {
+//            if (rbuf[i] != 0) {
+//                printf("读写数据存在错误.\n");
+//                break;
+//            }
+//        }
+//    }
+//    printf("读取长度:%d\n",rwlen);
+//    close(fd);
+//    gettimeofday(&tv1,NULL);
+//    printf("读取费时:%dms.\n",(tv1.tv_sec-tv.tv_sec)*1000+(tv1.tv_usec/1000-tv.tv_usec/1000));
     printf("文件读写测试成功.\n");
 }
 void fs_big_test(void){
-    fs_rw_test("/bin/bigtxt.txt", rbuf, sizeof(rbuf),256);
+    fs_rw_test("/bin/bigtxt.txt", rbuf, sizeof(rbuf),100);
 }
 //static const char * testw1;
 //static const char * testw2;
