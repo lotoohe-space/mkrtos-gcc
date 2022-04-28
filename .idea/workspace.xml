@@ -11,22 +11,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="spFS支持几百M得大文件了">
+    <list default="true" id="f8c04c16-23b8-433a-96d9-f10f0f7b7c67" name="Changes" comment="STM32F1上sd卡写入速度测试为230+KB/S">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/untitled1.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/mmc.c" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/mmc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/bk.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/bk.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_bmap.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_bmap.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fs/sampleFS/sp_rw.c" beforeDir="false" afterPath="$PROJECT_DIR$/fs/sampleFS/sp_rw.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/bk.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/bk.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/mkrtos/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/mkrtos/fs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/task_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/task_main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/fs_test.c" beforeDir="false" afterPath="$PROJECT_DIR$/test/fs_test.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/~$笔记.docx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,14 +250,7 @@
       <workItem from="1648648335142" duration="85988000" />
       <workItem from="1648986194043" duration="19268000" />
       <workItem from="1649251395716" duration="119653000" />
-      <workItem from="1650794969124" duration="626000" />
-    </task>
-    <task id="LOCAL-00009" summary="增加了信号量和mutex，mutex支持优先级继承">
-      <created>1643121215650</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1643121215650</updated>
+      <workItem from="1650794969124" duration="6858000" />
     </task>
     <task id="LOCAL-00010" summary="编译有问题">
       <created>1643984791332</created>
@@ -605,7 +588,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649691861007</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="STM32F1上sd卡写入速度测试为230+KB/S">
+      <created>1650797151563</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1650797151564</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -624,7 +614,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="实现了sys_pipe函数，还没有测试。" />
     <MESSAGE value="完成了posix中的sem的部分支持，还没有测试" />
     <MESSAGE value="下一步增加msg支持，以及解决其中存在的原子问题。" />
     <MESSAGE value="测试了一下pipe" />
@@ -649,7 +638,8 @@
     <MESSAGE value="完善块设备" />
     <MESSAGE value="显示驱动雏形" />
     <MESSAGE value="spFS支持几百M得大文件了" />
-    <option name="LAST_COMMIT_MESSAGE" value="spFS支持几百M得大文件了" />
+    <MESSAGE value="STM32F1上sd卡写入速度测试为230+KB/S" />
+    <option name="LAST_COMMIT_MESSAGE" value="STM32F1上sd卡写入速度测试为230+KB/S" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
